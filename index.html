@@ -1,0 +1,233 @@
+<!-- ========================= -->
+<!-- SQUADUP FINAL PRO STACK -->
+<!-- ========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SquadUp | Elite Sports Network</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root { --volt:#ccff00; --carbon:#0a0a0a; }
+body { font-family:'Plus Jakarta Sans',sans-serif; background:#0a0a0a; color:white; }
+.btn-volt{background:var(--volt);color:black;font-weight:900;border-radius:12px;}
+.input-dark{background:#141414;border:1px solid #333;padding:1rem;border-radius:12px;width:100%;}
+.glass{background:rgba(15,15,15,.95);backdrop-filter:blur(20px);}
+</style>
+</head>
+
+<body>
+
+<!-- ========================= -->
+<!-- CORE SCRIPT -->
+<!-- ========================= -->
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbz1RT0wKuO4B8n9I5NgnNtGeivpKAOQfBtAb4YQn1gA3atw_TH3XwytvVEzd04Shc8/exec";
+
+let activeVenue = null;
+let currentUser = null;
+
+/* ========================= */
+/* 🔒 TIME SLOT PROTECTION  */
+/* ========================= */
+
+function isSlotExpired(slot, selectedDate) {
+    const now = new Date();
+    const todayStr = now.toISOString().split("T")[0];
+
+    // if future date → allow
+    if (selectedDate > todayStr) return false;
+
+    // if past date → block
+    if (selectedDate < todayStr) return true;
+
+    // SAME DAY → check time
+    let slotStart = slot.split("-")[0].trim(); // "06:00 AM"
+    
+    let [time, modifier] = slotStart.split(" ");
+    let [hours, minutes] = time.split(":");
+
+    hours = parseInt(hours);
+    minutes = parseInt(minutes);
+
+    if (modifier === "PM" && hours !== 12) hours += 12;
+    if (modifier === "AM" && hours === 12) hours = 0;
+
+    let slotDate = new Date();
+    slotDate.setHours(hours, minutes, 0, 0);
+
+    return now >= slotDate;
+}
+
+/* ========================= */
+/* 🧠 AUTO SLOT FILTER      */
+/* ========================= */
+
+function populateTimeSlots() {
+    const select = document.getElementById("book-time");
+    select.innerHTML = "";
+
+    const selectedDate = document.getElementById("book-date").value;
+
+    activeVenue.times.split(",").forEach(slot => {
+        if (!isSlotExpired(slot, selectedDate)) {
+            select.innerHTML += `<option value="${slot}">${slot}</option>`;
+        }
+    });
+
+    if (select.innerHTML === "") {
+        select.innerHTML = `<option>No Slots Available</option>`;
+    }
+}
+
+/* ========================= */
+/* 💰 ADVANCE ENFORCEMENT   */
+/* ========================= */
+
+function calculateAdvance(total, players) {
+    if (players >= 6) return total; // full payment
+    if (players >= 3) return Math.ceil(total * 0.5);
+    return Math.ceil(total * 0.2);
+}
+
+/* ========================= */
+/* 🚀 BOOKING FLOW          */
+/* ========================= */
+
+function openBooking(name){
+    activeVenue = window.venues.find(v => v.name === name);
+
+    document.getElementById("booking-modal").classList.remove("hidden");
+
+    populateTimeSlots();
+}
+
+function updatePrice(){
+    let count = parseInt(document.getElementById("book-count").value) || 1;
+    let total = count * activeVenue.price;
+
+    document.getElementById("total-price").innerText = "₹" + total;
+
+    let advance = calculateAdvance(total, count);
+
+    document.getElementById("advance-price").innerText = "₹" + advance;
+}
+
+/* ========================= */
+/* 💳 PAYMENT FLOW          */
+/* ========================= */
+
+function processBooking(){
+
+    let total = parseInt(document.getElementById("total-price").innerText.replace("₹",""));
+    let count = parseInt(document.getElementById("book-count").value);
+
+    let advance = calculateAdvance(total, count);
+
+    document.getElementById("upi-price").innerText = "₹" + advance;
+
+    let upiLink = `upi://pay?pa=8777096107@upi&pn=SquadUp&am=${advance}&cu=INR`;
+
+    document.getElementById("upi-qr-image").src =
+    `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}`;
+
+    document.getElementById("upi-modal").classList.remove("hidden");
+}
+
+/* ========================= */
+/* 🔁 JSONP BACKEND         */
+/* ========================= */
+
+function fetchJSONP(params){
+    return new Promise(resolve=>{
+        const cb="cb_"+Date.now();
+        window[cb]=(data)=>{ resolve(data); delete window[cb]; script.remove(); };
+        const script=document.createElement("script");
+        params.callback=cb;
+        script.src=scriptURL+"?"+new URLSearchParams(params);
+        document.body.appendChild(script);
+    });
+}
+
+/* ========================= */
+/* INIT                     */
+/* ========================= */
+
+window.onload = ()=>{
+    document.getElementById("book-date").min =
+        new Date().toISOString().split("T")[0];
+};
+</script>
+
+<!-- ========================= -->
+<!-- UI (UNCHANGED CORE)      -->
+<!-- ========================= -->
+
+<div class="p-6">
+
+<h1 class="text-3xl font-black mb-6">SQUADUP</h1>
+
+<button onclick="openBooking('Demo Arena')" class="btn-volt px-6 py-3">
+Book Now
+</button>
+
+</div>
+
+<!-- ========================= -->
+<!-- BOOKING MODAL            -->
+<!-- ========================= -->
+
+<div id="booking-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
+
+<div class="glass p-6 rounded-2xl w-80">
+
+<h2 class="text-xl font-black mb-4">Book Slot</h2>
+
+<input type="date" id="book-date" class="input-dark mb-3" onchange="populateTimeSlots()">
+
+<select id="book-time" class="input-dark mb-3"></select>
+
+<input type="number" id="book-count" value="1" min="1"
+class="input-dark mb-3"
+onchange="updatePrice()">
+
+<p>Total: <span id="total-price">₹0</span></p>
+<p>Advance: <span id="advance-price">₹0</span></p>
+
+<button onclick="processBooking()" class="btn-volt w-full mt-4 py-3">
+Proceed
+</button>
+
+</div>
+</div>
+
+<!-- ========================= -->
+<!-- UPI MODAL                -->
+<!-- ========================= -->
+
+<div id="upi-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
+
+<div class="glass p-6 rounded-2xl text-center">
+
+<h2 class="text-xl font-black mb-4">Pay Now</h2>
+
+<p id="upi-price" class="text-2xl font-black mb-4">₹0</p>
+
+<img id="upi-qr-image" class="mx-auto mb-4">
+
+<input type="text" placeholder="Enter UTR"
+class="input-dark mb-3">
+
+<button class="btn-volt w-full py-3">
+Confirm Payment
+</button>
+
+</div>
+</div>
+
+</body>
+</html>
