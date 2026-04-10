@@ -131,14 +131,35 @@
             <div id="view-outdoor" class="view-section hidden w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 py-10"></div>
             <div id="view-indoor" class="view-section hidden w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 py-10"></div>
             <div id="view-rank" class="view-section hidden w-full max-w-3xl py-10"><h2 class="text-3xl font-black italic text-center mb-10">GLOBAL REPUTATION</h2><div id="rank-list" class="space-y-4"></div></div>
+
             <div id="view-admin" class="view-section hidden w-full max-w-2xl py-10">
                 <h2 class="text-3xl font-black italic text-center mb-4 text-[#ccff00]">ADMIN COMMAND CENTER</h2>
+                <p id="admin-notice" class="text-center text-sm text-gray-400 mb-10">Staff Protocol Active</p>
+                
                 <div id="staff-panel" class="glass p-8 rounded-[2rem] border border-white/10 space-y-6">
                     <h3 class="text-xl font-bold uppercase tracking-widest border-b border-white/5 pb-4">Manage Existing Venues</h3>
                     <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-2 block">Select Target Arena</label><select id="admin-venue-select" class="input-dark py-3" onchange="loadAdminVenueData()"></select></div>
                     <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-2 block">Max Slot Capacity</label><input type="number" id="admin-cap" class="input-dark py-3"></div>
-                    <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-2 block">Time Shifts</label><input type="text" id="admin-times" class="input-dark py-3 text-sm"></div>
+                    <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-2 block">Time Shifts (Comma Separated)</label><input type="text" id="admin-times" class="input-dark py-3 text-sm"></div>
                     <button onclick="updateVenue()" id="admin-btn" class="w-full py-4 btn-volt shadow-lg">Push Update to Server</button>
+                </div>
+                
+                <div id="owner-panel" class="hidden mt-8 p-8 border border-red-500/30 rounded-[2rem] bg-red-500/5 text-center">
+                    <h3 class="text-2xl font-black text-red-500 uppercase italic mb-2">God-Mode: Deploy New Arena</h3>
+                    <p class="text-sm text-gray-400 mb-6">Instantly push a new venue directly to the live website.</p>
+                    
+                    <div class="grid grid-cols-2 gap-3 text-left mb-6">
+                        <div><label class="text-[9px] text-red-500 font-bold uppercase ml-2">Sport</label><input type="text" id="new-v-sport" class="input-dark py-2 border-red-500/30 focus:border-red-500"></div>
+                        <div><label class="text-[9px] text-red-500 font-bold uppercase ml-2">Arena Name</label><input type="text" id="new-v-name" class="input-dark py-2 border-red-500/30 focus:border-red-500"></div>
+                        <div><label class="text-[9px] text-red-500 font-bold uppercase ml-2">Location Area</label><input type="text" id="new-v-loc" class="input-dark py-2 border-red-500/30 focus:border-red-500"></div>
+                        <div><label class="text-[9px] text-red-500 font-bold uppercase ml-2">Price (₹)</label><input type="number" id="new-v-price" class="input-dark py-2 border-red-500/30 focus:border-red-500"></div>
+                        <div><label class="text-[9px] text-red-500 font-bold uppercase ml-2">Type</label><select id="new-v-type" class="input-dark py-2 border-red-500/30 focus:border-red-500"><option value="outdoor">Outdoor</option><option value="indoor">Indoor</option></select></div>
+                        <div><label class="text-[9px] text-red-500 font-bold uppercase ml-2">Status</label><select id="new-v-status" class="input-dark py-2 border-red-500/30 focus:border-red-500"><option value="Active">Active</option><option value="Pending">Pending</option></select></div>
+                        <div class="col-span-2"><label class="text-[9px] text-red-500 font-bold uppercase ml-2">Image URL or Emoji (e.g. 🏟️)</label><input type="text" id="new-v-img" placeholder="https://..." class="input-dark py-2 border-red-500/30 focus:border-red-500"></div>
+                    </div>
+
+                    <button onclick="deployNewVenue()" id="add-venue-btn" class="w-full py-4 bg-red-600 text-white font-black uppercase rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:bg-red-700 transition">Push Live to Network</button>
+                    <a href="https://docs.google.com/spreadsheets/d/1_T9g0gS3O-t-cZf9y6F_h5m3V2N8K_B5" target="_blank" class="block w-full py-3 mt-4 border border-red-500/30 text-red-500 font-bold uppercase text-xs rounded-xl hover:bg-red-500/10 transition">Open Master Google Sheet</a>
                 </div>
             </div>
         </main>
@@ -148,10 +169,21 @@
         <div class="glass p-10 rounded-[2.5rem] max-w-lg w-full text-center border-red-500/20 shadow-2xl">
             <h2 class="text-4xl font-black mb-6 text-red-500 uppercase italic">Legal Disclaimer</h2>
             <div class="text-gray-400 text-sm leading-relaxed mb-10 text-left space-y-5 overflow-y-auto max-h-72 pr-2">
-                <p><b>1. Assumption of Risk:</b> SquadUp is not liable for injuries.</p>
-                <p><b>2. Verification:</b> All bookings are cryptographically verified via Razorpay.</p>
+                <p><b>1. Assumption of Personal Risk:</b> The use of facilities listed on SquadUp involves physical activities that carry inherent risks. By entering any arena, you acknowledge that SquadUp is not liable for any bodily injury, health complications, or medical emergencies.</p>
+                <p><b>2. Digital Aggregator Scope:</b> SquadUp acts strictly as a booking interface. We do not own or manage the physical venues. Quality of facilities, lighting, or staff conduct at the venue is the sole responsibility of the respective venue management.</p>
+                <p><b>3. Mandatory Reputation Protocol:</b> To maintain an elite environment, every session requires a mandatory peer review. Failure to adhere to professional conduct may result in a permanent reputation ban.</p>
+                <p><b>4. Booking & Payment Verification:</b> Transactions are secured and verified via Razorpay cryptography. Fraudulent confirmation attempts result in immediate legal reporting.</p>
+                <p><b>5. Mandatory ID Verification:</b> Athletes are strictly advised to carry a valid physical or digital Identity Proof to the venue. Arena management reserves the full right to verify identity and deny entry without refund if ID is not presented.</p>
             </div>
             <button onclick="closeModal('disc-modal')" class="w-full py-5 btn-volt text-xl shadow-lg">Acknowledge & Deploy</button>
+        </div>
+    </div>
+
+    <div id="about-modal" class="hidden fixed inset-0 bg-black/98 z-[200] flex items-center justify-center p-6 backdrop-blur-xl">
+        <div class="glass p-10 rounded-[2.5rem] max-w-md w-full text-center">
+            <h2 class="text-3xl font-black mb-6 text-[#ccff00] uppercase italic">About SquadUp</h2>
+            <p class="text-gray-400 text-sm leading-relaxed mb-10 text-left">SquadUp is Kolkata's premier digital sports network. We are building the infrastructure for the next generation of elite athletes, providing real-time access to the city's finest turfs and arenas with a focus on competitive skill and professional behavior.</p>
+            <button onclick="closeModal('about-modal')" class="w-full py-4 border border-white/20 rounded-xl font-bold uppercase text-xs">Return to Dugout</button>
         </div>
     </div>
 
@@ -165,26 +197,38 @@
                     <input type="number" id="book-count" min="1" max="10" value="1" class="input-dark py-2 text-center text-xl font-black" onchange="updatePrice()">
                     <p class="text-right text-xs mt-2 text-gray-400">Total: <span id="total-price" class="text-white font-black">₹0</span></p>
                 </div>
+                
                 <input type="date" id="book-date" class="input-dark text-sm" onchange="checkAvailability()">
                 <select id="book-time" class="input-dark text-sm" onchange="checkAvailability()"></select>
+                
                 <p id="slot-status" class="text-[10px] text-[#ccff00] font-black uppercase tracking-widest text-center mt-2"></p>
+                
                 <select id="book-pay" class="input-dark text-sm" onchange="toggleWarning()"></select>
+                
                 <p id="liquidation-warning" class="text-[8px] text-red-500 font-bold uppercase tracking-widest mt-1 leading-relaxed hidden"></p>
-                <button id="main-deploy-btn" onclick="processBooking()" class="w-full py-4 btn-volt shadow-lg">Initialize Run</button>
-                <button onclick="closeModal('booking-modal')" class="w-full py-2 text-xs font-bold text-gray-500 uppercase hover:text-white">Cancel</button>
+
+                <button onclick="processBooking()" id="main-deploy-btn" class="w-full py-4 btn-volt shadow-lg">Initialize Run</button>
+                <button onclick="closeModal('booking-modal')" class="w-full py-2 text-xs font-bold text-gray-500 uppercase hover:text-white">Cancel Slot Booking</button>
             </div>
         </div>
     </div>
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; 
+        
         let currentUser = null; let activeBgIdx = 0; let activeVenue = null; window.venues = [];
         let tapCount = 0; let tapTimer;
 
         const legends = [
-            { img: 'https://plus.unsplash.com/premium_photo-1685231505281-c77644c5a195?q=80&w=1171', q: "I have to fight to reach my dream.", a: "Lionel Messi" },
+            { img: 'https://plus.unsplash.com/premium_photo-1685231505281-c77644c5a195?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', q: "I have to fight to reach my dream.", a: "Lionel Messi" },
+            { img: 'https://plus.unsplash.com/premium_photo-1685231505281-c77644c5a195?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', q: "Your love makes me strong, your hate makes me unstoppable.", a: "Cristiano Ronaldo" },
             { img: 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e', q: "Don't stop when you are tired. Stop when you are done.", a: "Sachin Tendulkar" },
-            { img: 'https://images.unsplash.com/photo-1544919982-b61976f0ba43', q: "I've failed over and over again, that is why I succeed.", a: "Michael Jordan" }
+            { img: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da', q: "Self-belief and hard work will always earn you success.", a: "Virat Kohli" },
+            { img: 'https://images.unsplash.com/photo-1544919982-b61976f0ba43', q: "I've failed over and over again, that is why I succeed.", a: "Michael Jordan" },
+            { img: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b', q: "Tactics is knowing what to do.", a: "Magnus Carlsen" },
+            { img: 'https://images.unsplash.com/photo-1611091807601-38378393527b', q: "Focus on the striker, the rest will follow.", a: "Carrom Pro" },
+            { img: 'https://images.unsplash.com/photo-1577054941913-0599507f3118', q: "The speed of the ball is the speed of your mind.", a: "TT Master" },
+            { img: 'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0', q: "Success is a journey, not a destination.", a: "Roger Federer" }
         ];
 
         function ghostTrigger() {
@@ -220,7 +264,7 @@
             dateInput.min = today.toISOString().split('T')[0]; dateInput.value = today.toISOString().split('T')[0];
         }
 
-        // GEOLOCATION ENGINE
+        // ADDED: Geo-Location Core
         function getDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
@@ -230,11 +274,9 @@
         function sortVenuesByProximity() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((pos) => {
-                    window.venues.forEach(v => { 
-                        if(v.lat && v.lon) v.distance = getDistance(pos.coords.latitude, pos.coords.longitude, v.lat, v.lon).toFixed(1); 
-                    });
+                    window.venues.forEach(v => { if(v.lat && v.lon) v.distance = getDistance(pos.coords.latitude, pos.coords.longitude, v.lat, v.lon).toFixed(1); });
                     window.venues.sort((a, b) => (a.distance || 99) - (b.distance || 99));
-                    renderContent('outdoor'); renderContent('indoor');
+                    renderContent('outdoor'); renderContent('indoor'); // Re-render sorted
                 });
             }
         }
@@ -248,14 +290,70 @@
             const res = await fetchJSONP({ action: 'login', loginId: document.getElementById(idField).value, password: document.getElementById(passField).value });
             
             if(res.status === 'success') {
-                currentUser = res.user; window.venues = res.venues || []; window.activeBookings = res.bookings || []; 
+                currentUser = res.user; window.venues = res.venues || []; window.themeConfig = res.settings; 
+                window.activeBookings = res.bookings || []; 
+                
+                const pendingVenues = [
+                    { sport: "Basketball", name: "Hoops Pro Arena", loc: "Pending Deployment", price: 250, type: "outdoor", cap: 10, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1544919982-b61976f0ba43?w=800", times: "" },
+                    { sport: "Tennis Elite", name: "Grand Slam Court", loc: "Pending Deployment", price: 300, type: "outdoor", cap: 4, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=800", times: "" },
+                    { sport: "Table Tennis", name: "TT Pro Arena", loc: "Pending Deployment", price: 100, type: "indoor", cap: 4, status: "Pending", map: "", img: "🏓", times: "" }
+                ];
+                pendingVenues.forEach(p => { if(!window.venues.find(v => v.name === p.name)) window.venues.push(p); });
+
+                if(res.settings && res.settings.BrandColor) { document.documentElement.style.setProperty('--volt', res.settings.BrandColor); }
+                
                 document.getElementById('auth-overlay').style.display = 'none'; document.getElementById('main-content').classList.remove('hidden');
                 document.getElementById('user-name').innerText = currentUser.name.split(' ')[0]; document.getElementById('dropdown-name').innerText = currentUser.name; document.getElementById('avatar').innerText = currentUser.name[0].toUpperCase();
-                if(currentUser.role === 'owner' || currentUser.role === 'staff') document.getElementById('nav-admin').classList.remove('hidden');
-                else document.getElementById('disc-modal').classList.remove('hidden');
-                initBackgrounds(); initDatePicker(); renderRankings(); sortVenuesByProximity();
+                
+                if(currentUser.role === 'owner' || currentUser.role === 'staff') {
+                    document.getElementById('nav-admin').classList.remove('hidden');
+                    document.getElementById('admin-notice').innerText = currentUser.role === 'owner' ? "God-Mode Activated" : "Staff Protocol Active";
+                    if(currentUser.role === 'owner') document.getElementById('owner-panel').classList.remove('hidden');
+                    populateAdminSelect();
+                } else { document.getElementById('disc-modal').classList.remove('hidden'); }
+                
+                initBackgrounds(); initDatePicker(); renderRankings();
+                sortVenuesByProximity(); // ADDED: Trigger Location
             } else { alert(res.msg); btn.innerText = type === 'admin' ? "OVERRIDE PROTOCOL" : "LOGIN"; btn.classList.remove('logging-in'); }
         }
+
+        function populateAdminSelect() {
+            const select = document.getElementById('admin-venue-select'); select.innerHTML = '';
+            window.venues.forEach(v => { select.innerHTML += `<option value="${v.name}">${v.sport} | ${v.name}</option>`; });
+            loadAdminVenueData();
+        }
+        function loadAdminVenueData() {
+            const selected = document.getElementById('admin-venue-select').value;
+            const v = window.venues.find(ven => ven.name === selected);
+            if(v) { document.getElementById('admin-cap').value = v.cap; document.getElementById('admin-times').value = v.times || "06:00-08:00 AM,04:00-06:00 PM,06:00-08:00 PM,08:00-10:00 PM"; }
+        }
+        async function updateVenue() {
+            const btn = document.getElementById('admin-btn'); btn.innerText = "UPDATING SERVER...";
+            const res = await fetchJSONP({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
+            alert(res.msg); btn.innerText = "Push Update to Server"; if(res.status==='success') { loadAdminVenueData(); alert("Update synced locally. Reload to see changes publicly."); }
+        }
+
+        async function deployNewVenue() {
+            const btn = document.getElementById('add-venue-btn'); btn.innerText = "DEPLOYING TO LEDGER...";
+            const data = {
+                action: 'addVenue', vSport: document.getElementById('new-v-sport').value, vName: document.getElementById('new-v-name').value,
+                vLoc: document.getElementById('new-v-loc').value, vPrice: document.getElementById('new-v-price').value,
+                vType: document.getElementById('new-v-type').value, vStatus: document.getElementById('new-v-status').value, vImg: document.getElementById('new-v-img').value
+            };
+            if(!data.vName || !data.vSport) { alert("Arena Name and Sport are strictly required."); btn.innerText = "Push Live to Network"; return; }
+            const res = await fetchJSONP(data);
+            alert(res.msg); btn.innerText = "Push Live to Network";
+            if(res.status === 'success') { alert("Venue deployed locally. Reload page to fetch from server."); } 
+        }
+
+        async function handleRegister() {
+            const btn = document.getElementById('reg-btn'); btn.innerText = "GENERATING ID..."; btn.classList.add('logging-in');
+            const phoneVal = document.getElementById('reg-phone').value;
+            if(phoneVal.length !== 10 || isNaN(phoneVal)) { alert("Protocol Error: Phone number must be exactly 10 digits."); btn.innerText = "Generate ID"; btn.classList.remove('logging-in'); return; }
+            const data = { action: 'register', name: document.getElementById('reg-name').value, phone: phoneVal, email: document.getElementById('reg-email').value, password: document.getElementById('reg-pass').value, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value };
+            fetchJSONP(data).then(res => { if(res.status === 'success') { alert("Profile Created! Proceed to Login."); toggleAuth('login'); } else { alert(res.msg); btn.innerText = "Generate ID"; btn.classList.remove('logging-in');} });
+        }
+        async function handleForgot() { const res = await fetchJSONP({ action: 'forgot', email: document.getElementById('forgot-email').value, newPassword: document.getElementById('forgot-new-pass').value }); alert(res.msg); if(res.status === 'success') showForgot(false); }
 
         function switchView(v) { document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden')); document.getElementById('view-'+v).classList.remove('hidden'); if(v==='outdoor'||v==='indoor') renderContent(v); toggleSidebar(false); window.scrollTo(0, 0); }
 
@@ -264,89 +362,164 @@
             window.venues.filter(v => v.type === type).forEach(v => {
                 const isP = v.status === "Pending";
                 const visual = v.type === 'outdoor' ? `<img src="${v.img}" class="w-full h-48 object-cover rounded-2xl mb-6 shadow-xl ${isP ? 'grayscale opacity-40' : ''}">` : `<div class="text-7xl text-center py-10 bg-[#1a1a1a] rounded-2xl mb-6 border border-[#333] ${isP ? 'opacity-40' : ''}">${v.img}</div>`;
-                const btn = isP ? `<button class="w-full py-4 bg-white/5 text-gray-500 rounded-xl text-[8px] font-black uppercase tracking-widest cursor-not-allowed">Pending</button>` : 
-                `<div class="flex space-x-2"><a href="http://googleusercontent.com/maps.google.com/search?q=${v.map}" target="_blank" class="p-4 glass rounded-2xl hover:bg-white/10 transition">📍</a><button onclick="openBooking('${v.name}')" class="px-8 py-4 btn-volt text-[10px] flex-grow shadow-lg tracking-widest font-black">Deploy</button></div>`;
+                const btn = isP ? `<button class="w-full py-4 bg-white/5 text-gray-500 rounded-xl text-[8px] font-black uppercase tracking-widest cursor-not-allowed border border-white/5">Proceeding: Pending Deployment</button>` : 
+                `<div class="flex space-x-2"><a href="http://googleusercontent.com/maps.google.com/search?q=${v.map}" target="_blank" class="p-4 glass rounded-2xl hover:bg-white/10 transition">📍</a><button onclick="openBooking('${v.name}')" class="px-8 py-4 btn-volt text-[10px] flex-grow shadow-lg">Deploy</button></div>`;
                 
-                const locDisplay = v.distance ? `${v.loc} • <span class="text-[#ccff00]">${v.distance}km away</span>` : v.loc;
+                const rideOptions = isP ? '' : `
+                <div class="mt-4 pt-4 border-t border-white/5 grid grid-cols-3 gap-2">
+                    <a href="https://m.uber.com/ul/?action=setPickup&dropoff[query]=${v.map}" target="_blank" class="py-2 glass rounded-lg text-[8px] font-black text-gray-400 text-center uppercase tracking-widest hover:text-white transition">🚕 Uber</a>
+                    <a href="https://www.rapido.bike/" target="_blank" class="py-2 glass rounded-lg text-[8px] font-black text-gray-400 text-center uppercase tracking-widest hover:text-white transition">🛵 Rapido</a>
+                    <a href="https://indrive.com/" target="_blank" class="py-2 glass rounded-lg text-[8px] font-black text-gray-400 text-center uppercase tracking-widest hover:text-white transition">🚗 InDrive</a>
+                </div>`;
+
+                // ADDED: Distance Indicator
+                const distDisplay = v.distance ? `<span class="text-[#ccff00] ml-2 font-black">• ${v.distance}km</span>` : '';
 
                 cont.innerHTML += `<div class="glass p-8 rounded-[2rem] border border-white/5 relative hover:border-[#ccff00]/30 transition-all">
                     ${isP ? '' : `<div class="absolute top-6 right-6 text-[9px] font-black text-[#ccff00] uppercase tracking-widest px-2 py-1 border border-[#ccff00]/30 rounded bg-black/50 backdrop-blur-md">Active</div>`}
                     ${visual}
                     <p class="text-xs text-[#ccff00] font-black uppercase tracking-widest mb-1">${v.sport}</p>
-                    <h3 class="text-2xl font-black italic uppercase text-white tracking-tight">${v.name}</h3>
-                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-2 mb-8">${locDisplay} <span class="text-white ml-1">&bull; ${v.cap} MAX</span></p>
+                    <h3 class="text-2xl font-black italic uppercase text-white">${v.name}</h3>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-2 mb-8">${v.loc}${distDisplay} <span class="text-white ml-1">&bull; ${v.cap} SLOTS MAX</span></p>
                     <div class="flex items-center justify-between mt-8 border-t border-white/5 pt-6">
                         <p class="text-2xl font-black text-[#ccff00]">₹${v.price}</p>${btn}
                     </div>
+                    ${rideOptions}
                     </div>`;
             });
         }
 
         function renderRankings() {
+            const uName = currentUser ? currentUser.name : "Player";
+            const uSkill = currentUser && currentUser.skill ? currentUser.skill : "Intermediate";
             const list = document.getElementById('rank-list');
-            list.innerHTML = `<div class="glass p-6 rounded-3xl border-l-4 border-[#ccff00]/50 mt-4 opacity-80">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="font-black text-white text-lg flex items-center">${currentUser ? currentUser.name : 'Player'} <span class="ml-2 px-2 py-0.5 btn-volt text-[8px] font-black uppercase rounded shadow-[0_0_10px_var(--volt)]">Active Athlete</span></span>
+            list.innerHTML = `
+                <div class="glass p-6 rounded-3xl border-l-4 border-yellow-500 shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex flex-col">
+                            <span class="font-black text-white text-lg flex items-center">Rahul Das <span class="ml-2 px-2 py-0.5 bg-yellow-500 text-black text-[8px] font-black uppercase rounded shadow-[0_0_10px_rgba(234,179,8,0.5)]">Founding Athlete</span></span>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Pro | Football</span>
+                        </div>
+                        <span class="font-black text-[#ccff00]">42 Sessions</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-[8px] text-gray-500 font-bold mb-1 uppercase">Conduct</p><div class="text-[#ccff00] text-xs">★★★★★</div></div>
+                        <div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-[8px] text-gray-500 font-bold mb-1 uppercase">Tactical Skill</p><div class="text-[#ccff00] text-xs">★★★★☆</div></div>
+                    </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-[8px] text-gray-500 font-bold mb-1 uppercase">Conduct</p><div class="text-[#ccff00] text-xs">★★★★★</div></div>
-                    <div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-[8px] text-gray-500 font-bold mb-1 uppercase">Tactical Skill</p><div class="text-[#ccff00] text-xs">★★★★★</div></div>
-                </div>
-            </div>`;
+                <div class="glass p-6 rounded-3xl border-l-4 border-[#ccff00]/50 mt-4 opacity-80">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex flex-col">
+                            <span class="font-black text-white text-lg flex items-center">${uName} <span class="ml-2 px-2 py-0.5 btn-volt text-[8px] font-black uppercase rounded shadow-[0_0_10px_var(--volt)]">Active Athlete</span></span>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">${uSkill} | Active Athlete</span>
+                        </div>
+                        <span class="font-black text-white">35 Sessions</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-[8px] text-gray-500 font-bold mb-1 uppercase">Conduct</p><div class="text-[#ccff00] text-xs">★★★★★</div></div>
+                        <div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-[8px] text-gray-500 font-bold mb-1 uppercase">Tactical Skill</p><div class="text-[#ccff00] text-xs">★★★★★</div></div>
+                    </div>
+                </div>`;
         }
 
         function toggleWarning() {
             const payType = document.getElementById('book-pay').value;
             const warning = document.getElementById('liquidation-warning');
-            if(payType === 'Token') { warning.innerText = "⚠️ 2-Hour Check-in Rule Active."; warning.classList.remove('hidden'); }
-            else if (payType === 'Waitlist') { warning.innerText = "🕒 STANDBY MODE ACTIVE."; warning.classList.remove('hidden'); }
-            else warning.classList.add('hidden');
+            
+            if(payType === 'Token') {
+                warning.innerText = "⚠️ 2-Hour Check-in Rule Active. Failure to verify 2 hours prior will liquidate your slot to the Mercenary Board.";
+                warning.className = "text-[8px] font-bold uppercase tracking-widest mt-1 leading-relaxed text-red-500";
+            } else if (payType === 'Waitlist') {
+                warning.innerText = "🕒 STANDBY MODE: You pay nothing now. If a booked squad ghosts, you get first priority to lock the slot.";
+                warning.className = "text-[8px] font-bold uppercase tracking-widest mt-1 leading-relaxed text-[#ccff00]";
+            } else {
+                warning.classList.add('hidden');
+            }
         }
 
         function checkAvailability() {
             if(!activeVenue) return;
-            const rawDate = document.getElementById('book-date').value; if(!rawDate) return;
+            const rawDate = document.getElementById('book-date').value;
+            if(!rawDate) return;
+            
             const fDate = rawDate.split("-").reverse().join("-");
             const selTime = document.getElementById('book-time').value;
             const targetDetail = `${activeVenue.sport} | ${fDate} | ${selTime}`;
 
             let bookedSlots = 0;
+            
             window.activeBookings.forEach(b => {
-                if(b.venue === activeVenue.name && b.details === targetDetail && b.method !== 'Standby Waitlist') {
-                    let slots = Math.round(parseInt(b.amount) / activeVenue.price);
-                    bookedSlots += (isNaN(slots) ? 0 : slots);
+                if(b.venue === activeVenue.name && b.details === targetDetail) {
+                    if(b.method !== 'Standby Waitlist') {
+                        let slots = Math.round(parseInt(b.amount) / activeVenue.price);
+                        bookedSlots += (isNaN(slots) ? 0 : slots);
+                    }
                 }
             });
 
-            let remaining = activeVenue.cap - bookedSlots; if(remaining < 0) remaining = 0;
-            document.getElementById('slot-status').innerText = `${bookedSlots} BOOKED | ${remaining} OPEN`;
-            const countInput = document.getElementById('book-count'); countInput.max = remaining;
-            if(parseInt(countInput.value) > remaining) countInput.value = remaining;
+            let remaining = activeVenue.cap - bookedSlots;
+            if(remaining < 0) remaining = 0;
+
+            document.getElementById('slot-status').innerText = `${bookedSlots} SLOTS BOOKED | ${remaining} REMAINING`;
+            
+            const countInput = document.getElementById('book-count');
+            countInput.max = remaining;
+            
+            if(parseInt(countInput.value) > remaining) { countInput.value = remaining; }
+            
             const paySelect = document.getElementById('book-pay');
-            if(remaining === 0) { countInput.value = 0; paySelect.innerHTML = `<option value="Waitlist">Join Waitlist (₹0)</option>`; }
+            if(remaining === 0) {
+                countInput.value = 0;
+                paySelect.innerHTML = `<option value="Waitlist">Join Standby Waitlist (₹0)</option>`;
+            } else {
+                if (countInput.value == 0) countInput.value = 1;
+            }
             updatePrice();
         }
 
         function openBooking(name) { 
             activeVenue = window.venues.find(v => v.name === name); 
             document.getElementById('book-venue-name').innerText = `${activeVenue.sport} | ${name}`; 
-            document.getElementById('book-count').max = activeVenue.cap; document.getElementById('book-count').value = 1;
+            document.getElementById('book-count').max = activeVenue.cap;
+            document.getElementById('book-count').value = 1;
+            
             const timeSelect = document.getElementById('book-time'); timeSelect.innerHTML = '';
-            if(activeVenue.times) activeVenue.times.split(',').forEach(t => { timeSelect.innerHTML += `<option value="${t}">⚽ ${t}</option>`; });
-            document.getElementById('booking-modal').classList.remove('hidden'); checkAvailability(); 
+            if(activeVenue.times) {
+                activeVenue.times.split(',').forEach(t => { 
+                    let emoji = '⚽';
+                    if (t.includes('AM') || t.includes('Morning') || t.includes('06:00-08:00 AM')) emoji = '🌅';
+                    else if (t.includes('04:00') || t.includes('16:00') || t.includes('04:00-06:00 PM')) emoji = '🌆';
+                    else if (t.includes('06:00 PM') || t.includes('18:00') || t.includes('Prime')) emoji = '🌃';
+                    timeSelect.innerHTML += `<option value="${t}">${emoji} ${t}</option>`; 
+                });
+            } else { timeSelect.innerHTML = `<option value="Morning">🌅 06:00-08:00 AM</option>`; }
+
+            document.getElementById('booking-modal').classList.remove('hidden'); 
+            checkAvailability(); 
         }
         
         function updatePrice() { 
             const count = parseInt(document.getElementById('book-count').value) || 0;
             const total = count * activeVenue.price; 
             document.getElementById('total-price').innerText = `₹${total}`; 
+            
+            let tokenText = "Token Protocol (20% Advance)";
+            if (count >= 3 && count <= 5) tokenText = "Token Protocol (50% Advance)";
+            
             const paySelect = document.getElementById('book-pay');
-            if (parseInt(document.getElementById('book-count').max) === 0) paySelect.innerHTML = `<option value="Waitlist">Waitlist (₹0)</option>`;
-            else paySelect.innerHTML = `<option value="Token">Token (Advance)</option><option value="Razorpay">Full Verified (100%)</option><option value="Waitlist">Waitlist (₹0)</option>`;
+            const remainingSlots = parseInt(document.getElementById('book-count').max);
+
+            if (remainingSlots === 0) {
+                paySelect.innerHTML = `<option value="Waitlist">Join Standby Waitlist (₹0)</option>`;
+            } else if (count >= 6) {
+                paySelect.innerHTML = `<option value="Razorpay">Full Digital Verification (100% Required for Bulk)</option><option value="Waitlist">Join Standby Waitlist (₹0)</option>`;
+            } else {
+                paySelect.innerHTML = `<option value="Token">${tokenText}</option><option value="Razorpay">Full Digital Verification (100%)</option><option value="Waitlist">Join Standby Waitlist (₹0)</option>`;
+            }
             toggleWarning();
         }
         
-        // SECURE RAZORPAY DEPLOYMENT
+        // ADDED: Razorpay God Mode Integration (Replaces confirmUPI logic)
         async function processBooking() {
             const rawDate = document.getElementById('book-date').value; if(!rawDate) return alert("Select Launch Date.");
             const total = parseInt(document.getElementById('total-price').innerText.replace('₹', '')) || 0;
@@ -355,34 +528,72 @@
             const btn = document.getElementById('main-deploy-btn');
 
             if (payType === 'Waitlist') {
-                btn.innerText = "WAITLISTING...";
+                btn.innerText = "JOINING WAITLIST...";
                 const fDate = rawDate.split("-").reverse().join("-"); 
-                await fetchJSONP({ action: 'book', name: currentUser.name, phone: currentUser.phone || "", game: activeVenue.sport, playDate: fDate, timeSlot: document.getElementById('book-time').value, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0 });
-                alert("Waitlist Joined."); document.getElementById('booking-modal').classList.add('hidden'); switchView('home'); 
-                btn.innerText = "Initialize Run"; return;
+                const data = { action: 'book', name: currentUser.name, phone: currentUser.phone || "", email: currentUser.email || "", skill: currentUser.skill || "", game: activeVenue.sport, playDate: fDate, timeSlot: document.getElementById('book-time').value, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0 };
+                
+                await fetchJSONP(data);
+                alert("WAITLIST JOINED: You will be automatically pinged if a booked squad ghosts.");
+                document.getElementById('booking-modal').classList.add('hidden');
+                
+                switchView('home'); 
+                btn.innerText = "Initialize Run";
+                return;
+            }
+
+            if (count === 0) return alert("Please select at least 1 slot.");
+
+            // Calculate Amount (Token vs Full)
+            let tokenPct = 0.20;
+            if(count >= 3 && count <= 5) tokenPct = 0.50;
+            if(count >= 6) tokenPct = 1.00; 
+
+            let finalAmount = total;
+            if(payType === 'Token' && tokenPct < 1.00) {
+                finalAmount = Math.ceil(total * tokenPct);
             }
 
             btn.innerText = "SECURING ROUTE...";
-            const orderRes = await fetchJSONP({ action:'createOrder', amount: payType === 'Token' ? Math.ceil(total * 0.20) : total, venue: activeVenue.name, date: document.getElementById('book-date').value, phone: currentUser.phone || "0000000000" });
+            const orderRes = await fetchJSONP({ action:'createOrder', amount: finalAmount, venue: activeVenue.name, date: rawDate, phone: currentUser.phone || "0000000000" });
+            const fDate = rawDate.split("-").reverse().join("-");
 
             const options = {
-                "key": "rzp_live_XXXXXXXXXXXX",
-                "amount": orderRes.order.amount, "currency": "INR", "name": "SquadUp India", "description": `Deployment: ${activeVenue.name}`, "order_id": orderRes.order.id,
-                "prefill": { "contact": currentUser.phone || "" }, "theme": { "color": "#ccff00" },
+                "key": "rzp_live_XXXXXXXXXXXX", // REPLACE WITH YOUR LIVE RAZORPAY KEY
+                "amount": orderRes.order.amount,
+                "currency": "INR",
+                "name": "SquadUp",
+                "description": `Deployment: ${activeVenue.name}`,
+                "order_id": orderRes.order.id,
+                "prefill": { "contact": currentUser.phone || "", "name": currentUser.name || "Captain" },
+                "theme": { "color": "#ccff00" },
                 "handler": async (res) => {
                     btn.innerText = "VERIFYING CRYPTO...";
                     const verify = await fetchJSONP({
-                        action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature,
-                        venue: activeVenue.name, game: activeVenue.sport, slots: count, playDate: rawDate.split("-").reverse().join("-"), timeSlot: document.getElementById('book-time').value, totalAmount: orderRes.order.amount / 100, phone: currentUser.phone || "0000000000", name: currentUser.name
+                        action: 'verifyAndBook',
+                        rzp_payment_id: res.razorpay_payment_id,
+                        rzp_order_id: res.razorpay_order_id,
+                        rzp_signature: res.razorpay_signature,
+                        venue: activeVenue.name, game: activeVenue.sport, slots: count,
+                        playDate: fDate, timeSlot: document.getElementById('book-time').value,
+                        totalAmount: orderRes.order.amount / 100, phone: currentUser.phone || "0000000000", name: currentUser.name
                     });
-                    if(verify.status === "success") { alert("SQUAD DEPLOYED."); location.reload(); }
-                    else { alert(verify.msg); btn.innerText = "Initialize Run"; }
+                    
+                    if(verify.status === "success") {
+                        alert("SQUAD DEPLOYED. Crypto Signature Confirmed.");
+                        location.reload();
+                    } else {
+                        alert(verify.msg);
+                        btn.innerText = "Initialize Run";
+                    }
                 }
             };
-            new Razorpay(options).open();
+            
+            const rzp = new Razorpay(options);
+            rzp.on('payment.failed', function (response){ alert("Payment Failed."); btn.innerText = "Initialize Run"; });
+            rzp.open();
         }
 
-        function fetchJSONP(params) { return new Promise((resolve) => { const callbackName = 'jsonp_' + Date.now(); const script = document.createElement('script'); window[callbackName] = (data) => { resolve(data); document.body.removeChild(script); delete window[callbackName]; }; params.callback = callbackName; script.src = scriptURL + '?' + new URLSearchParams(params).toString(); document.body.appendChild(script); }); }
+        function fetchJSONP(params) { return new Promise((resolve) => { const callbackName = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000); const script = document.createElement('script'); window[callbackName] = (data) => { resolve(data); document.body.removeChild(script); delete window[callbackName]; }; params.callback = callbackName; script.src = scriptURL + '?' + new URLSearchParams(params).toString(); document.body.appendChild(script); }); }
         function toggleSidebar(show) { document.getElementById('sidebar').classList.toggle('sidebar-hidden', !show); document.getElementById('sidebar').classList.toggle('sidebar-visible', show); }
         function toggleAuth(type) { document.getElementById('login-box').classList.toggle('hidden', type !== 'login'); document.getElementById('register-box').classList.toggle('hidden', type !== 'register'); document.getElementById('admin-login-box').classList.add('hidden'); }
         function showForgot(show) { document.getElementById('login-box').classList.toggle('hidden', show); document.getElementById('forgot-box').classList.toggle('hidden', !show); }
