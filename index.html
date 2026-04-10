@@ -60,7 +60,15 @@
                 <select id="reg-blood" class="input-dark py-3 text-sm"><option value="">Blood Group*</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option><option value="A-">A-</option><option value="B-">B-</option><option value="O-">O-</option><option value="AB-">AB-</option></select>
             </div>
             <input type="password" id="reg-pass" placeholder="Create Password*" class="input-dark py-3">
-            <div class="grid grid-cols-2 gap-2"><select id="reg-sport" class="input-dark py-3"><option value="Football">Football</option><option value="Cricket">Cricket</option><option value="Chess">Chess</option></select><select id="reg-skill" class="input-dark py-3"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro</option></select></div>
+            <div class="grid grid-cols-2 gap-2">
+                <select id="reg-sport" class="input-dark py-3">
+                    <option value="Football">Football</option>
+                    <option value="Cricket">Cricket</option>
+                    <option value="Chess">Chess</option>
+                    <option value="Carrom">Carrom</option>
+                </select>
+                <select id="reg-skill" class="input-dark py-3"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro</option></select>
+            </div>
             <button onclick="handleRegister()" id="reg-btn" class="w-full py-4 btn-volt">Generate ID</button>
             <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-500 cursor-pointer font-bold uppercase mt-4">Return to Login</p>
         </div>
@@ -214,7 +222,7 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; 
+        const scriptURL = 'YOUR_NEW_DEPLOYMENT_URL_HERE'; 
         
         let currentUser = null; let activeBgIdx = 0; let activeVenue = null; window.venues = [];
         let tapCount = 0; let tapTimer;
@@ -239,7 +247,11 @@
                 tapCount = 0;
             }
         }
-        function hideAdminLogin() { document.getElementById('admin-login-box').classList.add('hidden'); document.getElementById('login-box').classList.remove('hidden'); }
+        
+        function hideAdminLogin() { 
+            document.getElementById('admin-login-box').classList.add('hidden'); 
+            document.getElementById('login-box').classList.remove('hidden'); 
+        }
 
         function initBackgrounds() {
             const engine = document.getElementById('bg-engine');
@@ -264,7 +276,6 @@
             dateInput.min = today.toISOString().split('T')[0]; dateInput.value = today.toISOString().split('T')[0];
         }
 
-        // ADDED: Geo-Location Core
         function getDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
@@ -276,7 +287,7 @@
                 navigator.geolocation.getCurrentPosition((pos) => {
                     window.venues.forEach(v => { if(v.lat && v.lon) v.distance = getDistance(pos.coords.latitude, pos.coords.longitude, v.lat, v.lon).toFixed(1); });
                     window.venues.sort((a, b) => (a.distance || 99) - (b.distance || 99));
-                    renderContent('outdoor'); renderContent('indoor'); // Re-render sorted
+                    renderContent('outdoor'); renderContent('indoor'); 
                 });
             }
         }
@@ -294,9 +305,9 @@
                 window.activeBookings = res.bookings || []; 
                 
                 const pendingVenues = [
-                    { sport: "Basketball", name: "Hoops Pro Arena", loc: "Pending Deployment", price: 250, type: "outdoor", cap: 10, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1544919982-b61976f0ba43?w=800", times: "" },
-                    { sport: "Tennis Elite", name: "Grand Slam Court", loc: "Pending Deployment", price: 300, type: "outdoor", cap: 4, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=800", times: "" },
-                    { sport: "Table Tennis", name: "TT Pro Arena", loc: "Pending Deployment", price: 100, type: "indoor", cap: 4, status: "Pending", map: "", img: "🏓", times: "" }
+                    { sport: "Basketball", name: "Hoops Pro Arena", loc: "Pending Deployment", price: 359, type: "outdoor", cap: 10, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1544919982-b61976f0ba43?w=800", times: "" },
+                    { sport: "Tennis Elite", name: "Grand Slam Court", loc: "Pending Deployment", price: 179, type: "outdoor", cap: 4, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=800", times: "" },
+                    { sport: "Table Tennis", name: "TT Pro Arena", loc: "Pending Deployment", price: 149, type: "indoor", cap: 4, status: "Pending", map: "", img: "🏓", times: "" }
                 ];
                 pendingVenues.forEach(p => { if(!window.venues.find(v => v.name === p.name)) window.venues.push(p); });
 
@@ -313,7 +324,7 @@
                 } else { document.getElementById('disc-modal').classList.remove('hidden'); }
                 
                 initBackgrounds(); initDatePicker(); renderRankings();
-                sortVenuesByProximity(); // ADDED: Trigger Location
+                sortVenuesByProximity(); 
             } else { alert(res.msg); btn.innerText = type === 'admin' ? "OVERRIDE PROTOCOL" : "LOGIN"; btn.classList.remove('logging-in'); }
         }
 
@@ -322,11 +333,13 @@
             window.venues.forEach(v => { select.innerHTML += `<option value="${v.name}">${v.sport} | ${v.name}</option>`; });
             loadAdminVenueData();
         }
+        
         function loadAdminVenueData() {
             const selected = document.getElementById('admin-venue-select').value;
             const v = window.venues.find(ven => ven.name === selected);
             if(v) { document.getElementById('admin-cap').value = v.cap; document.getElementById('admin-times').value = v.times || "06:00-08:00 AM,04:00-06:00 PM,06:00-08:00 PM,08:00-10:00 PM"; }
         }
+        
         async function updateVenue() {
             const btn = document.getElementById('admin-btn'); btn.innerText = "UPDATING SERVER...";
             const res = await fetchJSONP({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
@@ -353,6 +366,7 @@
             const data = { action: 'register', name: document.getElementById('reg-name').value, phone: phoneVal, email: document.getElementById('reg-email').value, password: document.getElementById('reg-pass').value, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value };
             fetchJSONP(data).then(res => { if(res.status === 'success') { alert("Profile Created! Proceed to Login."); toggleAuth('login'); } else { alert(res.msg); btn.innerText = "Generate ID"; btn.classList.remove('logging-in');} });
         }
+        
         async function handleForgot() { const res = await fetchJSONP({ action: 'forgot', email: document.getElementById('forgot-email').value, newPassword: document.getElementById('forgot-new-pass').value }); alert(res.msg); if(res.status === 'success') showForgot(false); }
 
         function switchView(v) { document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden')); document.getElementById('view-'+v).classList.remove('hidden'); if(v==='outdoor'||v==='indoor') renderContent(v); toggleSidebar(false); window.scrollTo(0, 0); }
@@ -363,7 +377,7 @@
                 const isP = v.status === "Pending";
                 const visual = v.type === 'outdoor' ? `<img src="${v.img}" class="w-full h-48 object-cover rounded-2xl mb-6 shadow-xl ${isP ? 'grayscale opacity-40' : ''}">` : `<div class="text-7xl text-center py-10 bg-[#1a1a1a] rounded-2xl mb-6 border border-[#333] ${isP ? 'opacity-40' : ''}">${v.img}</div>`;
                 const btn = isP ? `<button class="w-full py-4 bg-white/5 text-gray-500 rounded-xl text-[8px] font-black uppercase tracking-widest cursor-not-allowed border border-white/5">Proceeding: Pending Deployment</button>` : 
-                `<div class="flex space-x-2"><a href="http://googleusercontent.com/maps.google.com/search?q=${v.map}" target="_blank" class="p-4 glass rounded-2xl hover:bg-white/10 transition">📍</a><button onclick="openBooking('${v.name}')" class="px-8 py-4 btn-volt text-[10px] flex-grow shadow-lg">Deploy</button></div>`;
+                `<div class="flex space-x-2"><a href="http://googleusercontent.com/maps.google.com/search?q=${v.map}" target="_blank" class="p-4 glass rounded-2xl hover:bg-white/10 transition">📍</a><button onclick="openBooking('${v.name}')" class="px-8 py-4 btn-volt text-[10px] flex-grow shadow-lg font-black uppercase tracking-widest">Deploy</button></div>`;
                 
                 const rideOptions = isP ? '' : `
                 <div class="mt-4 pt-4 border-t border-white/5 grid grid-cols-3 gap-2">
@@ -372,7 +386,6 @@
                     <a href="https://indrive.com/" target="_blank" class="py-2 glass rounded-lg text-[8px] font-black text-gray-400 text-center uppercase tracking-widest hover:text-white transition">🚗 InDrive</a>
                 </div>`;
 
-                // ADDED: Distance Indicator
                 const distDisplay = v.distance ? `<span class="text-[#ccff00] ml-2 font-black">• ${v.distance}km</span>` : '';
 
                 cont.innerHTML += `<div class="glass p-8 rounded-[2rem] border border-white/5 relative hover:border-[#ccff00]/30 transition-all">
@@ -500,12 +513,22 @@
         
         function updatePrice() { 
             const count = parseInt(document.getElementById('book-count').value) || 0;
-            const total = count * activeVenue.price; 
+            const slotRate = activeVenue.price; 
+            const total = count * slotRate;
+            
             document.getElementById('total-price').innerText = `₹${total}`; 
             
-            let tokenText = "Token Protocol (20% Advance)";
-            if (count >= 3 && count <= 5) tokenText = "Token Protocol (50% Advance)";
+            const warning = document.getElementById('liquidation-warning');
+            warning.classList.remove('hidden');
             
+            if (activeVenue.tier === 'Premium') {
+                warning.innerHTML = `⭐ <span class="text-white">Elite Zone: ₹${slotRate}/Athlete</span>`;
+            } else if (activeVenue.tier === 'Budget') {
+                warning.innerHTML = `🏷️ <span class="text-[#ccff00]">Value Run: ₹${slotRate}/Athlete</span>`;
+            } else {
+                warning.innerHTML = `⚡ <span class="text-white">Slot Rate: ₹${slotRate}/Athlete</span>`;
+            }
+
             const paySelect = document.getElementById('book-pay');
             const remainingSlots = parseInt(document.getElementById('book-count').max);
 
@@ -514,12 +537,11 @@
             } else if (count >= 6) {
                 paySelect.innerHTML = `<option value="Razorpay">Full Digital Verification (100% Required for Bulk)</option><option value="Waitlist">Join Standby Waitlist (₹0)</option>`;
             } else {
+                let tokenText = count >= 3 ? "Token Protocol (50% Advance)" : "Token Protocol (20% Advance)";
                 paySelect.innerHTML = `<option value="Token">${tokenText}</option><option value="Razorpay">Full Digital Verification (100%)</option><option value="Waitlist">Join Standby Waitlist (₹0)</option>`;
             }
-            toggleWarning();
         }
         
-        // ADDED: Razorpay God Mode Integration (Replaces confirmUPI logic)
         async function processBooking() {
             const rawDate = document.getElementById('book-date').value; if(!rawDate) return alert("Select Launch Date.");
             const total = parseInt(document.getElementById('total-price').innerText.replace('₹', '')) || 0;
@@ -543,7 +565,6 @@
 
             if (count === 0) return alert("Please select at least 1 slot.");
 
-            // Calculate Amount (Token vs Full)
             let tokenPct = 0.20;
             if(count >= 3 && count <= 5) tokenPct = 0.50;
             if(count >= 6) tokenPct = 1.00; 
@@ -554,17 +575,17 @@
             }
 
             btn.innerText = "SECURING ROUTE...";
-            const orderRes = await fetchJSONP({ action:'createOrder', amount: finalAmount, venue: activeVenue.name, date: rawDate, phone: currentUser.phone || "0000000000" });
+            const orderRes = await fetchJSONP({ action:'createOrder', amount: finalAmount, venue: activeVenue.name, date: rawDate, phone: currentUser.phone || "+918777096107" });
             const fDate = rawDate.split("-").reverse().join("-");
 
             const options = {
-                "key": "rzp_live_XXXXXXXXXXXX", // REPLACE WITH YOUR LIVE RAZORPAY KEY
+                "key": "rzp_live_XXXXXXXXXXXX", 
                 "amount": orderRes.order.amount,
                 "currency": "INR",
                 "name": "SquadUp",
                 "description": `Deployment: ${activeVenue.name}`,
                 "order_id": orderRes.order.id,
-                "prefill": { "contact": currentUser.phone || "", "name": currentUser.name || "Captain" },
+                "prefill": { "contact": currentUser.phone || "+918777096107", "name": currentUser.name || "Captain" },
                 "theme": { "color": "#ccff00" },
                 "handler": async (res) => {
                     btn.innerText = "VERIFYING CRYPTO...";
@@ -575,7 +596,7 @@
                         rzp_signature: res.razorpay_signature,
                         venue: activeVenue.name, game: activeVenue.sport, slots: count,
                         playDate: fDate, timeSlot: document.getElementById('book-time').value,
-                        totalAmount: orderRes.order.amount / 100, phone: currentUser.phone || "0000000000", name: currentUser.name
+                        totalAmount: orderRes.order.amount / 100, phone: currentUser.phone || "+918777096107", name: currentUser.name
                     });
                     
                     if(verify.status === "success") {
