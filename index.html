@@ -1,233 +1,394 @@
-<!-- ========================= -->
-<!-- SQUADUP FINAL PRO STACK -->
-<!-- ========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SquadUp | Elite Sports Network</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
-
-<style>
-:root { --volt:#ccff00; --carbon:#0a0a0a; }
-body { font-family:'Plus Jakarta Sans',sans-serif; background:#0a0a0a; color:white; }
-.btn-volt{background:var(--volt);color:black;font-weight:900;border-radius:12px;}
-.input-dark{background:#141414;border:1px solid #333;padding:1rem;border-radius:12px;width:100%;}
-.glass{background:rgba(15,15,15,.95);backdrop-filter:blur(20px);}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SquadUp | Elite Sports Network</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --volt: #ccff00; --carbon: #0a0a0a; --glass: rgba(15, 15, 15, 0.95); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--carbon); color: white; overflow-x: hidden; }
+        .glass { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.08); }
+        .btn-volt { background: var(--volt); color: black; font-weight: 900; text-transform: uppercase; border-radius: 0.75rem; transition: 0.3s; cursor: pointer; }
+        .btn-volt:active { transform: scale(0.98); }
+        .input-dark { background: #141414; border: 1px solid #333; color: white; border-radius: 0.75rem; padding: 1rem; width: 100%; outline: none; transition: border-color 0.3s; }
+        .input-dark:focus { border-color: var(--volt); }
+        .bg-container { position: absolute; inset: 0; z-index: 0; overflow: hidden; border-radius: 2.5rem; }
+        .bg-layer { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 2.5s ease-in-out; }
+        .bg-active { opacity: 0.5; }
+        .bg-layer::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, #0a0a0a 30%, transparent 70%); }
+        .sidebar-hidden { transform: translateX(-105%); }
+        .sidebar-visible { transform: translateX(0); }
+        .modal-active #main-content { filter: blur(20px); transition: 0.4s; pointer-events: none; }
+        @keyframes pulse-login { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.98); } 100% { opacity: 1; transform: scale(1); } }
+        .logging-in { animation: pulse-login 1s infinite; pointer-events: none; }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+    </style>
 </head>
+<body class="min-h-screen">
 
-<body>
+    <div id="hover-zone" class="fixed inset-y-0 left-0 w-4 z-[60]" onmouseenter="toggleSidebar(true)"></div>
 
-<!-- ========================= -->
-<!-- CORE SCRIPT -->
-<!-- ========================= -->
-<script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbz1RT0wKuO4B8n9I5NgnNtGeivpKAOQfBtAb4YQn1gA3atw_TH3XwytvVEzd04Shc8/exec";
+    <div id="auth-overlay" class="fixed inset-0 bg-[#0a0a0a] z-[100] flex flex-col items-center justify-center p-6 overflow-y-auto">
+        <h1 onclick="ghostTrigger()" class="text-6xl font-black italic mb-10 tracking-tighter cursor-pointer select-none" style="text-shadow: 0 0 15px rgba(204,255,0,0.3);">SQUAD<span class="text-[#ccff00]">UP</span></h1>
+        
+        <div id="login-box" class="w-full max-w-sm space-y-4">
+            <input type="text" id="login-id" placeholder="Phone or Email" class="input-dark">
+            <input type="password" id="login-pass" placeholder="Password" class="input-dark">
+            <p onclick="showForgot(true)" class="text-[10px] text-gray-500 font-bold uppercase cursor-pointer hover:text-white text-right px-1">Forgot Password?</p>
+            <button onclick="handleLogin('player')" id="login-btn" class="w-full py-4 btn-volt text-lg shadow-lg">Login</button>
+            <p class="text-center text-sm text-gray-500 uppercase font-bold mt-4">New Athlete? <span onclick="toggleAuth('register')" class="text-[#ccff00] cursor-pointer hover:underline">Request Access</span></p>
+        </div>
 
-let activeVenue = null;
-let currentUser = null;
+        <div id="admin-login-box" class="hidden w-full max-w-sm space-y-4 p-6 border border-red-500/30 rounded-[2rem] bg-red-500/5">
+            <p class="text-xs text-red-500 font-black uppercase text-center tracking-widest mb-4">Classified Access</p>
+            <input type="text" id="admin-login-id" placeholder="Clearance Code" class="input-dark border-red-500/30 focus:border-red-500">
+            <input type="password" id="admin-login-pass" placeholder="Passkey" class="input-dark border-red-500/30 focus:border-red-500">
+            <button onclick="handleLogin('admin')" id="admin-btn-login" class="w-full py-4 bg-red-600 text-white font-black uppercase rounded-xl shadow-lg">Override Protocol</button>
+            <p onclick="hideAdminLogin()" class="text-center text-xs text-gray-500 cursor-pointer font-bold uppercase mt-2">Abort Override</p>
+        </div>
 
-/* ========================= */
-/* 🔒 TIME SLOT PROTECTION  */
-/* ========================= */
+        <div id="register-box" class="hidden w-full max-w-sm space-y-3">
+            <input type="text" id="reg-name" placeholder="Full Name*" class="input-dark py-3">
+            <div class="grid grid-cols-2 gap-2"><input type="tel" id="reg-phone" placeholder="Phone (10 Digits)*" class="input-dark py-3" maxlength="10"><input type="email" id="reg-email" placeholder="Email*" class="input-dark py-3"></div>
+            <div class="grid grid-cols-2 gap-2">
+                <div class="relative"><label class="absolute -top-2 left-3 bg-[#0a0a0a] px-1 text-[8px] text-[#ccff00] font-bold uppercase tracking-widest z-10">DOB*</label><input type="date" id="reg-dob" class="input-dark py-3 text-sm relative z-0"></div>
+                <select id="reg-blood" class="input-dark py-3 text-sm"><option value="">Blood Group*</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option><option value="A-">A-</option><option value="B-">B-</option><option value="O-">O-</option><option value="AB-">AB-</option></select>
+            </div>
+            <input type="password" id="reg-pass" placeholder="Create Password*" class="input-dark py-3">
+            <div class="grid grid-cols-2 gap-2"><select id="reg-sport" class="input-dark py-3"><option value="Football">Football</option><option value="Cricket">Cricket</option><option value="Chess">Chess</option></select><select id="reg-skill" class="input-dark py-3"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro</option></select></div>
+            <button onclick="handleRegister()" id="reg-btn" class="w-full py-4 btn-volt">Generate ID</button>
+            <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-500 cursor-pointer font-bold uppercase mt-4">Return to Login</p>
+        </div>
 
-function isSlotExpired(slot, selectedDate) {
-    const now = new Date();
-    const todayStr = now.toISOString().split("T")[0];
+        <div id="forgot-box" class="hidden w-full max-w-sm space-y-4">
+            <p class="text-xs text-[#ccff00] font-black uppercase text-center mb-2">Secure Reset Protocol</p>
+            <input type="email" id="forgot-email" placeholder="Registered Email" class="input-dark"><input type="password" id="forgot-new-pass" placeholder="Enter New Password" class="input-dark">
+            <button onclick="handleForgot()" id="forgot-btn" class="w-full py-4 btn-volt shadow-lg">Update Ledger</button>
+            <p onclick="showForgot(false)" class="text-xs text-gray-500 cursor-pointer uppercase font-bold mt-4 text-center">Back to Login</p>
+        </div>
+    </div>
 
-    // if future date → allow
-    if (selectedDate > todayStr) return false;
+    <nav id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-[#0f0f0f] border-r border-[#222] z-[70] sidebar-hidden transition-transform duration-300 shadow-2xl flex flex-col" onmouseleave="toggleSidebar(false)">
+        <div class="p-8 border-b border-[#222]"><h2 class="text-2xl font-black text-white italic">SQUAD<span class="text-[#ccff00]">NAV</span></h2></div>
+        <div class="flex-grow p-4 space-y-2">
+            <button onclick="switchView('home')" class="w-full text-left p-4 rounded-xl hover:bg-[#1a1a1a] transition font-bold">🏠 Dugout</button>
+            <button onclick="switchView('outdoor')" class="w-full text-left p-4 rounded-xl hover:bg-[#1a1a1a] transition font-bold">🌳 Outdoor Turfs</button>
+            <button onclick="switchView('indoor')" class="w-full text-left p-4 rounded-xl hover:bg-[#1a1a1a] transition font-bold">🏟️ Indoor Arenas</button>
+            <button onclick="switchView('rank')" class="w-full text-left p-4 rounded-xl hover:bg-[#1a1a1a] transition font-bold">🏅 Reputation</button>
+            <button id="nav-admin" onclick="switchView('admin')" class="hidden w-full text-left p-4 rounded-xl bg-[#ccff00]/10 text-[#ccff00] transition font-bold italic border border-[#ccff00]/20">🛡️ Admin Protocol</button>
+            <button onclick="showModal('about-modal')" class="w-full text-left p-4 rounded-xl hover:bg-[#1a1a1a] transition font-bold">ℹ️ About Us</button>
+        </div>
+    </nav>
 
-    // if past date → block
-    if (selectedDate < todayStr) return true;
+    <div id="main-content" class="hidden flex flex-col min-h-screen">
+        <header class="p-5 flex justify-between items-center border-b border-[#222] glass sticky top-0 z-50">
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleSidebar(true)" class="text-white hover:text-[#ccff00] transition"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+                <h1 onclick="switchView('home')" class="text-2xl font-black italic tracking-tighter cursor-pointer">SQUAD<span class="text-[#ccff00]">UP</span></h1>
+            </div>
+            <div class="relative">
+                <div onclick="document.getElementById('profile-dropdown').classList.toggle('hidden')" class="w-10 h-10 bg-[#141414] border border-[#333] rounded-full flex items-center justify-center text-[#ccff00] font-black cursor-pointer shadow-inner" id="avatar">P</div>
+                <div id="profile-dropdown" class="hidden absolute right-0 mt-3 w-48 glass rounded-xl py-2 z-50 shadow-2xl">
+                    <p id="dropdown-name" class="px-4 py-3 text-[10px] text-gray-500 uppercase font-bold tracking-widest border-b border-white/10">Player</p>
+                    <button onclick="switchView('rank')" class="w-full text-left px-4 py-3 text-sm hover:bg-white/5 font-bold text-white">🏆 My Reputation</button>
+                    <button onclick="logout()" class="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-500/5 font-bold">Logout</button>
+                </div>
+            </div>
+        </header>
 
-    // SAME DAY → check time
-    let slotStart = slot.split("-")[0].trim(); // "06:00 AM"
-    
-    let [time, modifier] = slotStart.split(" ");
-    let [hours, minutes] = time.split(":");
+        <main class="flex-grow p-6 flex flex-col items-center">
+            <div id="view-home" class="view-section w-full max-w-5xl min-h-[75vh] rounded-[2.5rem] overflow-hidden relative flex flex-col justify-end p-8 md:p-12 border border-[#333] shadow-2xl">
+                <div class="bg-container" id="bg-engine"></div>
+                <div class="relative z-20 space-y-6">
+                    <p class="text-[#ccff00] font-black text-xs uppercase tracking-widest">Protocol: <span id="user-name">Player</span></p>
+                    <h2 id="quote" class="text-4xl md:text-6xl font-black italic leading-tight text-white drop-shadow-2xl h-40 flex items-end">"I have to fight to reach my dream."</h2>
+                    <p id="author" class="text-sm text-gray-400 font-bold uppercase tracking-widest">— Lionel Messi</p>
+                    
+                    <div class="mt-6 p-5 rounded-2xl bg-red-500/10 border border-red-500/30 relative overflow-hidden backdrop-blur-md cursor-pointer hover:bg-red-500/20 transition-all shadow-[0_0_20px_rgba(220,38,38,0.15)] group" onclick="alert('PITCH DEMO MODE:\\n\\nClicking this instantly locks the ₹800 discounted rate and opens the secure checkout.')">
+                        <div class="absolute top-0 left-0 w-1.5 h-full bg-red-500 group-hover:bg-[#ccff00] transition-colors"></div>
+                        <div class="flex justify-between items-center pl-2">
+                            <div>
+                                <p class="text-[10px] text-red-500 font-black uppercase tracking-widest mb-1 flex items-center group-hover:text-[#ccff00] transition-colors">⚡ Flash Deployment <span class="ml-2 px-1.5 py-0.5 bg-red-500 text-black text-[7px] rounded animate-pulse group-hover:bg-[#ccff00]">LIVE</span></p>
+                                <h3 class="text-xl font-black italic text-white tracking-tight">Urban Sports Arena</h3>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Tonight • 08:00 PM Shift</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-500 line-through font-bold mb-0.5">₹1,200</p>
+                                <p class="text-2xl font-black text-[#ccff00]">₹800</p>
+                            </div>
+                        </div>
+                    </div>
 
-    hours = parseInt(hours);
-    minutes = parseInt(minutes);
+                    <div class="flex space-x-4 mt-6"><button onclick="switchView('outdoor')" class="px-8 py-4 btn-volt text-xs shadow-lg">Outdoor Turfs</button><button onclick="switchView('indoor')" class="px-8 py-4 border border-white/20 rounded-xl text-xs font-black uppercase hover:bg-white/5 transition">Indoor Arenas</button></div>
+                </div>
+            </div>
 
-    if (modifier === "PM" && hours !== 12) hours += 12;
-    if (modifier === "AM" && hours === 12) hours = 0;
+            <div id="view-outdoor" class="view-section hidden w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 py-10"></div>
+            <div id="view-indoor" class="view-section hidden w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 py-10"></div>
+            <div id="view-rank" class="view-section hidden w-full max-w-3xl py-10"><h2 class="text-3xl font-black italic text-center mb-10">GLOBAL REPUTATION</h2><div id="rank-list" class="space-y-4"></div></div>
+            <div id="view-admin" class="view-section hidden w-full max-w-2xl py-10">
+                <h2 class="text-3xl font-black italic text-center mb-4 text-[#ccff00]">ADMIN COMMAND CENTER</h2>
+                <div id="staff-panel" class="glass p-8 rounded-[2rem] border border-white/10 space-y-6">
+                    <h3 class="text-xl font-bold uppercase tracking-widest border-b border-white/5 pb-4">Manage Existing Venues</h3>
+                    <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-2 block">Select Target Arena</label><select id="admin-venue-select" class="input-dark py-3" onchange="loadAdminVenueData()"></select></div>
+                    <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-2 block">Max Slot Capacity</label><input type="number" id="admin-cap" class="input-dark py-3"></div>
+                    <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-2 block">Time Shifts</label><input type="text" id="admin-times" class="input-dark py-3 text-sm"></div>
+                    <button onclick="updateVenue()" id="admin-btn" class="w-full py-4 btn-volt shadow-lg">Push Update to Server</button>
+                </div>
+            </div>
+        </main>
+    </div>
 
-    let slotDate = new Date();
-    slotDate.setHours(hours, minutes, 0, 0);
+    <div id="disc-modal" class="hidden fixed inset-0 bg-black/98 z-[200] flex items-center justify-center p-6 backdrop-blur-xl">
+        <div class="glass p-10 rounded-[2.5rem] max-w-lg w-full text-center border-red-500/20 shadow-2xl">
+            <h2 class="text-4xl font-black mb-6 text-red-500 uppercase italic">Legal Disclaimer</h2>
+            <div class="text-gray-400 text-sm leading-relaxed mb-10 text-left space-y-5 overflow-y-auto max-h-72 pr-2">
+                <p><b>1. Assumption of Risk:</b> SquadUp is not liable for injuries.</p>
+                <p><b>2. Verification:</b> All bookings are cryptographically verified via Razorpay.</p>
+            </div>
+            <button onclick="closeModal('disc-modal')" class="w-full py-5 btn-volt text-xl shadow-lg">Acknowledge & Deploy</button>
+        </div>
+    </div>
 
-    return now >= slotDate;
-}
+    <div id="booking-modal" class="hidden fixed inset-0 bg-black/90 z-[150] flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="glass p-8 rounded-[2.5rem] max-w-sm w-full">
+            <h2 class="text-2xl font-black mb-1 uppercase italic text-[#ccff00]">Book Deployment</h2>
+            <p id="book-venue-name" class="text-[10px] text-gray-500 uppercase font-bold mb-6 tracking-widest"></p>
+            <div class="space-y-4">
+                <div class="bg-black/50 p-4 rounded-xl border border-white/5">
+                    <label class="text-[10px] font-bold text-[#ccff00] uppercase mb-2 block">Athletes (Max Slots)</label>
+                    <input type="number" id="book-count" min="1" max="10" value="1" class="input-dark py-2 text-center text-xl font-black" onchange="updatePrice()">
+                    <p class="text-right text-xs mt-2 text-gray-400">Total: <span id="total-price" class="text-white font-black">₹0</span></p>
+                </div>
+                <input type="date" id="book-date" class="input-dark text-sm" onchange="checkAvailability()">
+                <select id="book-time" class="input-dark text-sm" onchange="checkAvailability()"></select>
+                <p id="slot-status" class="text-[10px] text-[#ccff00] font-black uppercase tracking-widest text-center mt-2"></p>
+                <select id="book-pay" class="input-dark text-sm" onchange="toggleWarning()"></select>
+                <p id="liquidation-warning" class="text-[8px] text-red-500 font-bold uppercase tracking-widest mt-1 leading-relaxed hidden"></p>
+                <button id="main-deploy-btn" onclick="processBooking()" class="w-full py-4 btn-volt shadow-lg">Initialize Run</button>
+                <button onclick="closeModal('booking-modal')" class="w-full py-2 text-xs font-bold text-gray-500 uppercase hover:text-white">Cancel</button>
+            </div>
+        </div>
+    </div>
 
-/* ========================= */
-/* 🧠 AUTO SLOT FILTER      */
-/* ========================= */
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; 
+        let currentUser = null; let activeBgIdx = 0; let activeVenue = null; window.venues = [];
+        let tapCount = 0; let tapTimer;
 
-function populateTimeSlots() {
-    const select = document.getElementById("book-time");
-    select.innerHTML = "";
+        const legends = [
+            { img: 'https://plus.unsplash.com/premium_photo-1685231505281-c77644c5a195?q=80&w=1171', q: "I have to fight to reach my dream.", a: "Lionel Messi" },
+            { img: 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e', q: "Don't stop when you are tired. Stop when you are done.", a: "Sachin Tendulkar" },
+            { img: 'https://images.unsplash.com/photo-1544919982-b61976f0ba43', q: "I've failed over and over again, that is why I succeed.", a: "Michael Jordan" }
+        ];
 
-    const selectedDate = document.getElementById("book-date").value;
-
-    activeVenue.times.split(",").forEach(slot => {
-        if (!isSlotExpired(slot, selectedDate)) {
-            select.innerHTML += `<option value="${slot}">${slot}</option>`;
+        function ghostTrigger() {
+            tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(() => tapCount = 0, 1500);
+            if(tapCount === 5) {
+                document.getElementById('login-box').classList.add('hidden');
+                document.getElementById('admin-login-box').classList.remove('hidden');
+                tapCount = 0;
+            }
         }
-    });
+        function hideAdminLogin() { document.getElementById('admin-login-box').classList.add('hidden'); document.getElementById('login-box').classList.remove('hidden'); }
 
-    if (select.innerHTML === "") {
-        select.innerHTML = `<option>No Slots Available</option>`;
-    }
-}
+        function initBackgrounds() {
+            const engine = document.getElementById('bg-engine');
+            legends.forEach((s, i) => {
+                const layer = document.createElement('div');
+                layer.id = `bg-layer-${i}`; layer.className = `bg-layer ${i === 0 ? 'bg-active' : ''}`;
+                layer.style.backgroundImage = `url('${s.img}')`; engine.appendChild(layer);
+            });
+            setInterval(cycleBg, 6000);
+        }
+        
+        function cycleBg() {
+            document.getElementById(`bg-layer-${activeBgIdx}`).classList.remove('bg-active');
+            activeBgIdx = (activeBgIdx + 1) % legends.length;
+            document.getElementById(`bg-layer-${activeBgIdx}`).classList.add('bg-active');
+            document.getElementById('quote').innerText = `"${legends[activeBgIdx].q}"`;
+            document.getElementById('author').innerText = `— ${legends[activeBgIdx].a}`;
+        }
+        
+        function initDatePicker() {
+            const dateInput = document.getElementById('book-date'); const today = new Date(); 
+            dateInput.min = today.toISOString().split('T')[0]; dateInput.value = today.toISOString().split('T')[0];
+        }
 
-/* ========================= */
-/* 💰 ADVANCE ENFORCEMENT   */
-/* ========================= */
+        // GEOLOCATION ENGINE
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
 
-function calculateAdvance(total, players) {
-    if (players >= 6) return total; // full payment
-    if (players >= 3) return Math.ceil(total * 0.5);
-    return Math.ceil(total * 0.2);
-}
+        function sortVenuesByProximity() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    window.venues.forEach(v => { 
+                        if(v.lat && v.lon) v.distance = getDistance(pos.coords.latitude, pos.coords.longitude, v.lat, v.lon).toFixed(1); 
+                    });
+                    window.venues.sort((a, b) => (a.distance || 99) - (b.distance || 99));
+                    renderContent('outdoor'); renderContent('indoor');
+                });
+            }
+        }
 
-/* ========================= */
-/* 🚀 BOOKING FLOW          */
-/* ========================= */
+        async function handleLogin(type) {
+            const btn = type === 'admin' ? document.getElementById('admin-btn-login') : document.getElementById('login-btn');
+            const idField = type === 'admin' ? 'admin-login-id' : 'login-id';
+            const passField = type === 'admin' ? 'admin-login-pass' : 'login-pass';
+            
+            btn.innerText = "AUTHENTICATING..."; btn.classList.add('logging-in');
+            const res = await fetchJSONP({ action: 'login', loginId: document.getElementById(idField).value, password: document.getElementById(passField).value });
+            
+            if(res.status === 'success') {
+                currentUser = res.user; window.venues = res.venues || []; window.activeBookings = res.bookings || []; 
+                document.getElementById('auth-overlay').style.display = 'none'; document.getElementById('main-content').classList.remove('hidden');
+                document.getElementById('user-name').innerText = currentUser.name.split(' ')[0]; document.getElementById('dropdown-name').innerText = currentUser.name; document.getElementById('avatar').innerText = currentUser.name[0].toUpperCase();
+                if(currentUser.role === 'owner' || currentUser.role === 'staff') document.getElementById('nav-admin').classList.remove('hidden');
+                else document.getElementById('disc-modal').classList.remove('hidden');
+                initBackgrounds(); initDatePicker(); renderRankings(); sortVenuesByProximity();
+            } else { alert(res.msg); btn.innerText = type === 'admin' ? "OVERRIDE PROTOCOL" : "LOGIN"; btn.classList.remove('logging-in'); }
+        }
 
-function openBooking(name){
-    activeVenue = window.venues.find(v => v.name === name);
+        function switchView(v) { document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden')); document.getElementById('view-'+v).classList.remove('hidden'); if(v==='outdoor'||v==='indoor') renderContent(v); toggleSidebar(false); window.scrollTo(0, 0); }
 
-    document.getElementById("booking-modal").classList.remove("hidden");
+        function renderContent(type) {
+            const cont = document.getElementById('view-' + type); cont.innerHTML = '';
+            window.venues.filter(v => v.type === type).forEach(v => {
+                const isP = v.status === "Pending";
+                const visual = v.type === 'outdoor' ? `<img src="${v.img}" class="w-full h-48 object-cover rounded-2xl mb-6 shadow-xl ${isP ? 'grayscale opacity-40' : ''}">` : `<div class="text-7xl text-center py-10 bg-[#1a1a1a] rounded-2xl mb-6 border border-[#333] ${isP ? 'opacity-40' : ''}">${v.img}</div>`;
+                const btn = isP ? `<button class="w-full py-4 bg-white/5 text-gray-500 rounded-xl text-[8px] font-black uppercase tracking-widest cursor-not-allowed">Pending</button>` : 
+                `<div class="flex space-x-2"><a href="http://googleusercontent.com/maps.google.com/search?q=${v.map}" target="_blank" class="p-4 glass rounded-2xl hover:bg-white/10 transition">📍</a><button onclick="openBooking('${v.name}')" class="px-8 py-4 btn-volt text-[10px] flex-grow shadow-lg tracking-widest font-black">Deploy</button></div>`;
+                
+                const locDisplay = v.distance ? `${v.loc} • <span class="text-[#ccff00]">${v.distance}km away</span>` : v.loc;
 
-    populateTimeSlots();
-}
+                cont.innerHTML += `<div class="glass p-8 rounded-[2rem] border border-white/5 relative hover:border-[#ccff00]/30 transition-all">
+                    ${isP ? '' : `<div class="absolute top-6 right-6 text-[9px] font-black text-[#ccff00] uppercase tracking-widest px-2 py-1 border border-[#ccff00]/30 rounded bg-black/50 backdrop-blur-md">Active</div>`}
+                    ${visual}
+                    <p class="text-xs text-[#ccff00] font-black uppercase tracking-widest mb-1">${v.sport}</p>
+                    <h3 class="text-2xl font-black italic uppercase text-white tracking-tight">${v.name}</h3>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-2 mb-8">${locDisplay} <span class="text-white ml-1">&bull; ${v.cap} MAX</span></p>
+                    <div class="flex items-center justify-between mt-8 border-t border-white/5 pt-6">
+                        <p class="text-2xl font-black text-[#ccff00]">₹${v.price}</p>${btn}
+                    </div>
+                    </div>`;
+            });
+        }
 
-function updatePrice(){
-    let count = parseInt(document.getElementById("book-count").value) || 1;
-    let total = count * activeVenue.price;
+        function renderRankings() {
+            const list = document.getElementById('rank-list');
+            list.innerHTML = `<div class="glass p-6 rounded-3xl border-l-4 border-[#ccff00]/50 mt-4 opacity-80">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="font-black text-white text-lg flex items-center">${currentUser ? currentUser.name : 'Player'} <span class="ml-2 px-2 py-0.5 btn-volt text-[8px] font-black uppercase rounded shadow-[0_0_10px_var(--volt)]">Active Athlete</span></span>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-[8px] text-gray-500 font-bold mb-1 uppercase">Conduct</p><div class="text-[#ccff00] text-xs">★★★★★</div></div>
+                    <div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-[8px] text-gray-500 font-bold mb-1 uppercase">Tactical Skill</p><div class="text-[#ccff00] text-xs">★★★★★</div></div>
+                </div>
+            </div>`;
+        }
 
-    document.getElementById("total-price").innerText = "₹" + total;
+        function toggleWarning() {
+            const payType = document.getElementById('book-pay').value;
+            const warning = document.getElementById('liquidation-warning');
+            if(payType === 'Token') { warning.innerText = "⚠️ 2-Hour Check-in Rule Active."; warning.classList.remove('hidden'); }
+            else if (payType === 'Waitlist') { warning.innerText = "🕒 STANDBY MODE ACTIVE."; warning.classList.remove('hidden'); }
+            else warning.classList.add('hidden');
+        }
 
-    let advance = calculateAdvance(total, count);
+        function checkAvailability() {
+            if(!activeVenue) return;
+            const rawDate = document.getElementById('book-date').value; if(!rawDate) return;
+            const fDate = rawDate.split("-").reverse().join("-");
+            const selTime = document.getElementById('book-time').value;
+            const targetDetail = `${activeVenue.sport} | ${fDate} | ${selTime}`;
 
-    document.getElementById("advance-price").innerText = "₹" + advance;
-}
+            let bookedSlots = 0;
+            window.activeBookings.forEach(b => {
+                if(b.venue === activeVenue.name && b.details === targetDetail && b.method !== 'Standby Waitlist') {
+                    let slots = Math.round(parseInt(b.amount) / activeVenue.price);
+                    bookedSlots += (isNaN(slots) ? 0 : slots);
+                }
+            });
 
-/* ========================= */
-/* 💳 PAYMENT FLOW          */
-/* ========================= */
+            let remaining = activeVenue.cap - bookedSlots; if(remaining < 0) remaining = 0;
+            document.getElementById('slot-status').innerText = `${bookedSlots} BOOKED | ${remaining} OPEN`;
+            const countInput = document.getElementById('book-count'); countInput.max = remaining;
+            if(parseInt(countInput.value) > remaining) countInput.value = remaining;
+            const paySelect = document.getElementById('book-pay');
+            if(remaining === 0) { countInput.value = 0; paySelect.innerHTML = `<option value="Waitlist">Join Waitlist (₹0)</option>`; }
+            updatePrice();
+        }
 
-function processBooking(){
+        function openBooking(name) { 
+            activeVenue = window.venues.find(v => v.name === name); 
+            document.getElementById('book-venue-name').innerText = `${activeVenue.sport} | ${name}`; 
+            document.getElementById('book-count').max = activeVenue.cap; document.getElementById('book-count').value = 1;
+            const timeSelect = document.getElementById('book-time'); timeSelect.innerHTML = '';
+            if(activeVenue.times) activeVenue.times.split(',').forEach(t => { timeSelect.innerHTML += `<option value="${t}">⚽ ${t}</option>`; });
+            document.getElementById('booking-modal').classList.remove('hidden'); checkAvailability(); 
+        }
+        
+        function updatePrice() { 
+            const count = parseInt(document.getElementById('book-count').value) || 0;
+            const total = count * activeVenue.price; 
+            document.getElementById('total-price').innerText = `₹${total}`; 
+            const paySelect = document.getElementById('book-pay');
+            if (parseInt(document.getElementById('book-count').max) === 0) paySelect.innerHTML = `<option value="Waitlist">Waitlist (₹0)</option>`;
+            else paySelect.innerHTML = `<option value="Token">Token (Advance)</option><option value="Razorpay">Full Verified (100%)</option><option value="Waitlist">Waitlist (₹0)</option>`;
+            toggleWarning();
+        }
+        
+        // SECURE RAZORPAY DEPLOYMENT
+        async function processBooking() {
+            const rawDate = document.getElementById('book-date').value; if(!rawDate) return alert("Select Launch Date.");
+            const total = parseInt(document.getElementById('total-price').innerText.replace('₹', '')) || 0;
+            const payType = document.getElementById('book-pay').value;
+            const count = parseInt(document.getElementById('book-count').value) || 0;
+            const btn = document.getElementById('main-deploy-btn');
 
-    let total = parseInt(document.getElementById("total-price").innerText.replace("₹",""));
-    let count = parseInt(document.getElementById("book-count").value);
+            if (payType === 'Waitlist') {
+                btn.innerText = "WAITLISTING...";
+                const fDate = rawDate.split("-").reverse().join("-"); 
+                await fetchJSONP({ action: 'book', name: currentUser.name, phone: currentUser.phone || "", game: activeVenue.sport, playDate: fDate, timeSlot: document.getElementById('book-time').value, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0 });
+                alert("Waitlist Joined."); document.getElementById('booking-modal').classList.add('hidden'); switchView('home'); 
+                btn.innerText = "Initialize Run"; return;
+            }
 
-    let advance = calculateAdvance(total, count);
+            btn.innerText = "SECURING ROUTE...";
+            const orderRes = await fetchJSONP({ action:'createOrder', amount: payType === 'Token' ? Math.ceil(total * 0.20) : total, venue: activeVenue.name, date: document.getElementById('book-date').value, phone: currentUser.phone || "0000000000" });
 
-    document.getElementById("upi-price").innerText = "₹" + advance;
+            const options = {
+                "key": "rzp_live_XXXXXXXXXXXX",
+                "amount": orderRes.order.amount, "currency": "INR", "name": "SquadUp India", "description": `Deployment: ${activeVenue.name}`, "order_id": orderRes.order.id,
+                "prefill": { "contact": currentUser.phone || "" }, "theme": { "color": "#ccff00" },
+                "handler": async (res) => {
+                    btn.innerText = "VERIFYING CRYPTO...";
+                    const verify = await fetchJSONP({
+                        action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature,
+                        venue: activeVenue.name, game: activeVenue.sport, slots: count, playDate: rawDate.split("-").reverse().join("-"), timeSlot: document.getElementById('book-time').value, totalAmount: orderRes.order.amount / 100, phone: currentUser.phone || "0000000000", name: currentUser.name
+                    });
+                    if(verify.status === "success") { alert("SQUAD DEPLOYED."); location.reload(); }
+                    else { alert(verify.msg); btn.innerText = "Initialize Run"; }
+                }
+            };
+            new Razorpay(options).open();
+        }
 
-    let upiLink = `upi://pay?pa=8777096107@upi&pn=SquadUp&am=${advance}&cu=INR`;
-
-    document.getElementById("upi-qr-image").src =
-    `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}`;
-
-    document.getElementById("upi-modal").classList.remove("hidden");
-}
-
-/* ========================= */
-/* 🔁 JSONP BACKEND         */
-/* ========================= */
-
-function fetchJSONP(params){
-    return new Promise(resolve=>{
-        const cb="cb_"+Date.now();
-        window[cb]=(data)=>{ resolve(data); delete window[cb]; script.remove(); };
-        const script=document.createElement("script");
-        params.callback=cb;
-        script.src=scriptURL+"?"+new URLSearchParams(params);
-        document.body.appendChild(script);
-    });
-}
-
-/* ========================= */
-/* INIT                     */
-/* ========================= */
-
-window.onload = ()=>{
-    document.getElementById("book-date").min =
-        new Date().toISOString().split("T")[0];
-};
-</script>
-
-<!-- ========================= -->
-<!-- UI (UNCHANGED CORE)      -->
-<!-- ========================= -->
-
-<div class="p-6">
-
-<h1 class="text-3xl font-black mb-6">SQUADUP</h1>
-
-<button onclick="openBooking('Demo Arena')" class="btn-volt px-6 py-3">
-Book Now
-</button>
-
-</div>
-
-<!-- ========================= -->
-<!-- BOOKING MODAL            -->
-<!-- ========================= -->
-
-<div id="booking-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
-
-<div class="glass p-6 rounded-2xl w-80">
-
-<h2 class="text-xl font-black mb-4">Book Slot</h2>
-
-<input type="date" id="book-date" class="input-dark mb-3" onchange="populateTimeSlots()">
-
-<select id="book-time" class="input-dark mb-3"></select>
-
-<input type="number" id="book-count" value="1" min="1"
-class="input-dark mb-3"
-onchange="updatePrice()">
-
-<p>Total: <span id="total-price">₹0</span></p>
-<p>Advance: <span id="advance-price">₹0</span></p>
-
-<button onclick="processBooking()" class="btn-volt w-full mt-4 py-3">
-Proceed
-</button>
-
-</div>
-</div>
-
-<!-- ========================= -->
-<!-- UPI MODAL                -->
-<!-- ========================= -->
-
-<div id="upi-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center">
-
-<div class="glass p-6 rounded-2xl text-center">
-
-<h2 class="text-xl font-black mb-4">Pay Now</h2>
-
-<p id="upi-price" class="text-2xl font-black mb-4">₹0</p>
-
-<img id="upi-qr-image" class="mx-auto mb-4">
-
-<input type="text" placeholder="Enter UTR"
-class="input-dark mb-3">
-
-<button class="btn-volt w-full py-3">
-Confirm Payment
-</button>
-
-</div>
-</div>
-
+        function fetchJSONP(params) { return new Promise((resolve) => { const callbackName = 'jsonp_' + Date.now(); const script = document.createElement('script'); window[callbackName] = (data) => { resolve(data); document.body.removeChild(script); delete window[callbackName]; }; params.callback = callbackName; script.src = scriptURL + '?' + new URLSearchParams(params).toString(); document.body.appendChild(script); }); }
+        function toggleSidebar(show) { document.getElementById('sidebar').classList.toggle('sidebar-hidden', !show); document.getElementById('sidebar').classList.toggle('sidebar-visible', show); }
+        function toggleAuth(type) { document.getElementById('login-box').classList.toggle('hidden', type !== 'login'); document.getElementById('register-box').classList.toggle('hidden', type !== 'register'); document.getElementById('admin-login-box').classList.add('hidden'); }
+        function showForgot(show) { document.getElementById('login-box').classList.toggle('hidden', show); document.getElementById('forgot-box').classList.toggle('hidden', !show); }
+        function showModal(id) { document.getElementById(id).classList.remove('hidden'); toggleSidebar(false); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function logout() { localStorage.clear(); location.reload(); }
+    </script>
 </body>
 </html>
