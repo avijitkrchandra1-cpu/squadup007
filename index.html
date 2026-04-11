@@ -310,8 +310,8 @@
         <span class="absolute right-16 bg-white text-gray-900 text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg pointer-events-none">Chat with Admin</span>
     </a>
 
-    <div id="modal-backdrop" class="fixed inset-0 bg-black/60 z-[150] modal-overlay flex items-end md:items-center justify-center p-0 md:p-6" onclick="closeSheet()">
-        <div id="booking-sheet" class="w-full md:max-w-xl bg-slate-900 rounded-t-3xl md:rounded-3xl z-[160] bottom-sheet md:transform-none shadow-2xl flex flex-col border border-white/10" onclick="event.stopPropagation()">
+<div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[300] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeSheet()">
+        <div id="booking-sheet" class="w-full md:max-w-xl bg-slate-900 rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col border border-white/10 transform translate-y-full md:translate-y-0 md:scale-95 transition-transform duration-300 max-h-[90vh]" onclick="event.stopPropagation()">
             
             <div class="p-6 flex-shrink-0 border-b border-white/10 bg-slate-800/50 rounded-t-3xl md:rounded-t-3xl">
                 <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-4 md:hidden"></div>
@@ -324,7 +324,7 @@
                 </div>
             </div>
             
-            <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-6 max-h-[60vh]">
+            <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-6">
                 <div class="flex justify-between items-center bg-slate-800/30 p-4 rounded-2xl border border-white/5">
                     <div>
                         <label class="text-sm font-bold text-white block">Select Athletes</label>
