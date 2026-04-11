@@ -2,235 +2,271 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SquadUp | Elite Sports Network</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00b562; --primary-dark: #009650; --bg: #f8f9fa; --surface: #ffffff; --text: #111827; --text-muted: #6b7280; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); overflow-x: hidden; }
-        .btn-primary { background-color: var(--primary); color: white; font-weight: 700; border-radius: 0.75rem; transition: 0.2s; box-shadow: 0 4px 6px -1px rgba(0, 181, 98, 0.2); }
-        .btn-primary:active { transform: scale(0.98); background-color: var(--primary-dark); }
-        .input-light { background: #f3f4f6; border: 1px solid #e5e7eb; color: var(--text); border-radius: 0.75rem; padding: 0.875rem 1rem; width: 100%; outline: none; transition: 0.2s; }
-        .input-light:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 3px rgba(0, 181, 98, 0.1); }
-        .card { background: var(--surface); border-radius: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03); border: 1px solid #f3f4f6; overflow: hidden; }
-        .modal-active #main-content { filter: blur(8px); transition: 0.3s; pointer-events: none; }
-        .auth-bg { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?q=80&w=2000'); background-size: cover; background-position: center; }
-        ::-webkit-scrollbar { width: 0px; }
-        .tab-btn { color: var(--text-muted); font-weight: 700; padding: 0.75rem 1rem; border-bottom: 3px solid transparent; transition: 0.2s; white-space: nowrap; }
-        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+        :root { --app-green: #00D084; --app-dark: #0F172A; --app-bg: #F8FAFC; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--app-bg); color: var(--app-dark); -webkit-tap-highlight-color: transparent; }
+        
+        /* Premium Shadows & Transitions */
+        .shadow-soft { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); }
+        .shadow-glow { box-shadow: 0 8px 25px -5px rgba(0, 208, 132, 0.3); }
+        .transition-all { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* UI Components */
+        .btn-primary { background: var(--app-green); color: white; font-weight: 700; border-radius: 1rem; text-align: center; }
+        .btn-primary:active { transform: scale(0.97); }
+        .input-box { background: #FFFFFF; border: 1.5px solid #E2E8F0; color: #1E293B; border-radius: 1rem; padding: 1rem; width: 100%; font-weight: 500; outline: none; transition: 0.2s; }
+        .input-box:focus { border-color: var(--app-green); box-shadow: 0 0 0 4px rgba(0, 208, 132, 0.1); }
+        
+        /* Scrollbars */
+        ::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Bottom Sheet Modal */
+        .bottom-sheet { transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.32, 1.25, 0.32, 1); }
+        .bottom-sheet.open { transform: translateY(0); }
+        .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(4px); }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        
+        /* Filter Pills */
+        .filter-pill { padding: 0.5rem 1.25rem; border-radius: 2rem; border: 1.5px solid #E2E8F0; background: white; color: #64748B; font-weight: 600; font-size: 0.875rem; white-space: nowrap; cursor: pointer; transition: 0.2s; }
+        .filter-pill.active { background: var(--app-dark); border-color: var(--app-dark); color: white; }
+
+        /* Auth Background */
+        .auth-bg { background: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.9) 100%), url('https://images.unsplash.com/photo-1551280857-2b9bbe5260fc?q=80&w=1000') center/cover; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="antialiased pb-20 md:pb-0 md:bg-gray-100">
 
-    <div id="auth-overlay" class="fixed inset-0 auth-bg z-[100] flex flex-col items-center justify-center p-4">
-        <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 transform transition-all overflow-y-auto max-h-[90vh]">
-            <div class="text-center mb-8">
-                <h1 class="text-4xl font-black tracking-tight text-gray-900" onclick="ghostTrigger()">Squad<span class="text-[#00b562]">Up</span></h1>
-                <p class="text-sm text-gray-500 mt-1 font-medium">Book your game. Play your heart out.</p>
-            </div>
-            
-            <div id="login-box" class="space-y-4">
-                <input type="text" id="login-id" placeholder="Phone or Email" class="input-light">
-                <input type="password" id="login-pass" placeholder="Password" class="input-light">
-                <div class="flex justify-end"><p onclick="showForgot(true)" class="text-xs text-[#00b562] font-bold cursor-pointer hover:underline">Forgot Password?</p></div>
-                <button onclick="handleLogin('player')" id="login-btn" class="w-full py-3.5 btn-primary text-lg mt-2">Login Securely</button>
-                <div class="text-center mt-6">
-                    <p class="text-sm text-gray-500 font-medium">New to SquadUp? <span onclick="toggleAuth('register')" class="text-[#00b562] font-bold cursor-pointer hover:underline">Create Account</span></p>
+    <div class="md:max-w-md md:mx-auto md:bg-white md:min-h-screen md:shadow-2xl md:relative md:overflow-hidden">
+
+        <div id="auth-overlay" class="fixed md:absolute inset-0 auth-bg z-[100] flex flex-col justify-end p-6">
+            <div class="w-full bg-white rounded-[2rem] shadow-2xl p-8 transform transition-all mb-4 max-h-[85vh] overflow-y-auto hide-scroll">
+                <div class="text-center mb-8">
+                    <h1 class="text-4xl font-black tracking-tight text-gray-900" onclick="ghostTrigger()">Squad<span style="color: var(--app-green)">Up</span></h1>
+                    <p class="text-sm text-gray-500 mt-2 font-medium">Kolkata's Elite Sports Network.</p>
                 </div>
-            </div>
-
-            <div id="admin-login-box" class="hidden space-y-4 p-4 border border-red-100 rounded-2xl bg-red-50 mt-4">
-                <p class="text-xs text-red-600 font-black uppercase text-center tracking-widest mb-2">Partner Portal</p>
-                <input type="text" id="admin-login-id" placeholder="Partner ID" class="input-light bg-white focus:border-red-500">
-                <input type="password" id="admin-login-pass" placeholder="Passkey" class="input-light bg-white focus:border-red-500">
-                <button onclick="handleLogin('admin')" id="admin-btn-login" class="w-full py-3.5 bg-red-600 text-white font-bold rounded-xl shadow-md">Access Dashboard</button>
-                <p onclick="hideAdminLogin()" class="text-center text-xs text-gray-500 cursor-pointer font-bold mt-2">Return to Login</p>
-            </div>
-
-            <div id="register-box" class="hidden space-y-3">
-                <input type="text" id="reg-name" placeholder="Full Name*" class="input-light">
-                <div class="grid grid-cols-2 gap-3"><input type="tel" id="reg-phone" placeholder="Phone (10 Digits)*" class="input-light" maxlength="10"><input type="email" id="reg-email" placeholder="Email*" class="input-light"></div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="relative"><label class="absolute -top-2 left-3 bg-white px-1 text-[10px] text-gray-500 font-bold">DOB</label><input type="date" id="reg-dob" class="input-light text-sm"></div>
-                    <select id="reg-blood" class="input-light text-sm"><option value="">Blood Group</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option><option value="A-">A-</option><option value="B-">B-</option><option value="O-">O-</option><option value="AB-">AB-</option></select>
+                
+                <div id="login-box" class="space-y-4">
+                    <input type="text" id="login-id" placeholder="Phone or Email" class="input-box">
+                    <input type="password" id="login-pass" placeholder="Password" class="input-box">
+                    <div class="flex justify-end"><p onclick="showForgot(true)" class="text-xs text-[#00D084] font-bold cursor-pointer">Forgot Password?</p></div>
+                    <button onclick="handleLogin('player')" id="login-btn" class="w-full py-4 btn-primary text-lg mt-2 shadow-glow">Login</button>
+                    <p class="text-center text-sm text-gray-500 font-medium mt-6">New Athlete? <span onclick="toggleAuth('register')" class="text-[#00D084] font-bold cursor-pointer">Create Account</span></p>
                 </div>
-                <input type="password" id="reg-pass" placeholder="Create Password*" class="input-light">
-                <div class="grid grid-cols-2 gap-3">
-                    <select id="reg-sport" class="input-light text-sm">
-                        <option value="Football">Football</option>
-                        <option value="Cricket">Cricket</option>
-                        <option value="Chess">Chess</option>
-                        <option value="Carrom">Carrom</option>
-                    </select>
-                    <select id="reg-skill" class="input-light text-sm"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro</option></select>
-                </div>
-                <button onclick="handleRegister()" id="reg-btn" class="w-full py-3.5 btn-primary mt-2">Join Network</button>
-                <p onclick="toggleAuth('login')" class="text-center text-sm text-gray-500 font-medium mt-4 cursor-pointer hover:text-gray-900">Already have an account?</p>
-            </div>
 
-            <div id="forgot-box" class="hidden space-y-4">
-                <h3 class="text-lg font-bold text-gray-900 text-center mb-2">Reset Password</h3>
-                <input type="email" id="forgot-email" placeholder="Registered Email" class="input-light">
-                <input type="password" id="forgot-new-pass" placeholder="New Password" class="input-light">
-                <button onclick="handleForgot()" id="forgot-btn" class="w-full py-3.5 btn-primary">Update Password</button>
-                <p onclick="showForgot(false)" class="text-sm text-gray-500 font-medium cursor-pointer text-center mt-2 hover:text-gray-900">Back to Login</p>
+                <div id="admin-login-box" class="hidden space-y-4 p-5 border-2 border-red-100 rounded-2xl bg-red-50 mt-4">
+                    <p class="text-xs text-red-600 font-black uppercase text-center tracking-widest mb-2">Partner Portal</p>
+                    <input type="text" id="admin-login-id" placeholder="Partner ID" class="input-box bg-white">
+                    <input type="password" id="admin-login-pass" placeholder="Passkey" class="input-box bg-white">
+                    <button onclick="handleLogin('admin')" id="admin-btn-login" class="w-full py-4 bg-red-600 text-white font-bold rounded-xl shadow-lg">Access Ledger</button>
+                    <p onclick="hideAdminLogin()" class="text-center text-xs text-gray-500 cursor-pointer font-bold mt-2">Cancel</p>
+                </div>
+
+                <div id="register-box" class="hidden space-y-3">
+                    <input type="text" id="reg-name" placeholder="Full Name*" class="input-box py-3">
+                    <div class="grid grid-cols-2 gap-3"><input type="tel" id="reg-phone" placeholder="Phone (10)*" class="input-box py-3" maxlength="10"><input type="email" id="reg-email" placeholder="Email*" class="input-box py-3"></div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="relative"><label class="absolute -top-2 left-3 bg-white px-1 text-[10px] text-gray-500 font-bold">DOB</label><input type="date" id="reg-dob" class="input-box py-3 text-sm"></div>
+                        <select id="reg-blood" class="input-box py-3 text-sm"><option value="">Blood Group</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option></select>
+                    </div>
+                    <input type="password" id="reg-pass" placeholder="Create Password*" class="input-box py-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <select id="reg-sport" class="input-box py-3 text-sm"><option value="Football">Football</option><option value="Cricket">Cricket</option><option value="Chess">Chess</option><option value="Carrom">Carrom</option></select>
+                        <select id="reg-skill" class="input-box py-3 text-sm"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro</option></select>
+                    </div>
+                    <button onclick="handleRegister()" id="reg-btn" class="w-full py-4 btn-primary mt-2 shadow-glow">Join Network</button>
+                    <p onclick="toggleAuth('login')" class="text-center text-sm text-gray-500 font-medium mt-4 cursor-pointer">Already have an account?</p>
+                </div>
+
+                <div id="forgot-box" class="hidden space-y-4">
+                    <h3 class="text-lg font-bold text-gray-900 text-center mb-2">Reset Password</h3>
+                    <input type="email" id="forgot-email" placeholder="Registered Email" class="input-box">
+                    <input type="password" id="forgot-new-pass" placeholder="New Password" class="input-box">
+                    <button onclick="handleForgot()" id="forgot-btn" class="w-full py-4 btn-primary shadow-glow">Update Password</button>
+                    <p onclick="showForgot(false)" class="text-sm text-gray-500 font-medium cursor-pointer text-center mt-2">Back to Login</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="main-content" class="hidden flex-grow flex flex-col max-w-2xl mx-auto w-full bg-white min-h-screen shadow-sm">
-        
-        <header class="px-6 py-4 bg-white sticky top-0 z-40 border-b border-gray-100 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-green-50 text-[#00b562] flex items-center justify-center font-bold text-lg cursor-pointer" onclick="document.getElementById('sidebar-menu').classList.toggle('hidden')" id="avatar">P</div>
+        <div id="main-content" class="hidden flex flex-col min-h-screen">
+            
+            <header class="px-5 py-4 bg-white sticky top-0 z-40 flex justify-between items-center shadow-soft">
                 <div>
-                    <p class="text-xs text-gray-500 font-medium">Welcome back,</p>
-                    <h2 id="user-name" class="text-base font-bold text-gray-900 leading-tight">Player</h2>
-                </div>
-            </div>
-            <div class="flex gap-3">
-                <button onclick="switchView('rank')" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition shadow-sm">🏆</button>
-                <button onclick="logout()" class="w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-100 transition shadow-sm">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                </button>
-            </div>
-            
-            <div id="sidebar-menu" class="hidden absolute top-16 left-6 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
-                <button onclick="showModal('about-modal')" class="w-full text-left px-4 py-3 text-sm text-gray-700 font-bold hover:bg-gray-50">ℹ️ About SquadUp</button>
-                <button onclick="showModal('disc-modal')" class="w-full text-left px-4 py-3 text-sm text-gray-700 font-bold hover:bg-gray-50">📜 Legal Disclaimer</button>
-            </div>
-        </header>
-
-        <div class="flex overflow-x-auto px-4 py-2 border-b border-gray-100 bg-white sticky top-[73px] z-30" id="nav-tabs">
-            <button onclick="switchView('outdoor', this)" class="tab-btn active">🌳 Outdoor Turfs</button>
-            <button onclick="switchView('indoor', this)" class="tab-btn">🏟️ Indoor Arenas</button>
-            <button id="nav-admin" onclick="switchView('admin', this)" class="hidden tab-btn text-red-600">⚙️ Partner Panel</button>
-        </div>
-
-        <main class="flex-grow bg-gray-50 p-4 md:p-6 pb-24">
-            <div id="view-outdoor" class="view-section space-y-5"></div>
-            <div id="view-indoor" class="view-section hidden space-y-5"></div>
-            
-            <div id="view-rank" class="view-section hidden space-y-5">
-                <h2 class="text-2xl font-extrabold text-gray-900 mb-6">Player Reputation</h2>
-                <div id="rank-list" class="space-y-4"></div>
-            </div>
-
-            <div id="view-admin" class="view-section hidden space-y-6">
-                <div class="card p-6 border-l-4 border-red-500">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">Manage Ledger</h3>
-                    <div class="space-y-4">
-                        <div><label class="text-xs text-gray-500 font-bold uppercase mb-1 block">Target Arena</label><select id="admin-venue-select" class="input-light" onchange="loadAdminVenueData()"></select></div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-xs text-gray-500 font-bold uppercase mb-1 block">Cap</label><input type="number" id="admin-cap" class="input-light"></div>
-                            <div><label class="text-xs text-gray-500 font-bold uppercase mb-1 block">Times</label><input type="text" id="admin-times" class="input-light text-sm"></div>
-                        </div>
-                        <button onclick="updateVenue()" id="admin-btn" class="w-full py-3 btn-primary bg-red-600 hover:bg-red-700 shadow-none">Push Update</button>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5">Location</p>
+                    <div class="flex items-center gap-1 cursor-pointer" onclick="sortVenuesByProximity()">
+                        <svg class="w-4 h-4 text-[#00D084]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <h2 class="text-sm font-extrabold text-gray-900">Kolkata, WB <span class="text-xs font-normal text-gray-400">▼</span></h2>
                     </div>
                 </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="showModal('about-modal')" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-gray-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </button>
+                    <div class="w-10 h-10 rounded-full bg-[#00D084] text-white flex items-center justify-center font-bold text-lg shadow-glow" id="avatar">P</div>
+                </div>
+            </header>
 
-                <div id="owner-panel" class="hidden card p-6 bg-red-50 border-red-100">
-                    <h3 class="text-lg font-bold text-red-600 mb-2">Deploy New Arena</h3>
-                    <p class="text-xs text-gray-600 mb-4">Instantly push a new venue to the live network.</p>
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <input type="text" id="new-v-sport" placeholder="Sport" class="input-light text-sm bg-white">
-                        <input type="text" id="new-v-name" placeholder="Name" class="input-light text-sm bg-white">
-                        <input type="text" id="new-v-loc" placeholder="Location" class="input-light text-sm bg-white">
-                        <input type="number" id="new-v-price" placeholder="Price (₹)" class="input-light text-sm bg-white">
-                        <select id="new-v-type" class="input-light text-sm bg-white"><option value="outdoor">Outdoor</option><option value="indoor">Indoor</option></select>
-                        <select id="new-v-status" class="input-light text-sm bg-white"><option value="Active">Active</option><option value="Pending">Pending</option></select>
-                        <input type="text" id="new-v-img" placeholder="Image URL / Emoji" class="input-light text-sm bg-white col-span-2">
+            <div id="hero-banner" class="px-5 py-4">
+                <div class="bg-gray-900 rounded-2xl p-5 relative overflow-hidden text-white shadow-soft">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-[#00D084] rounded-full blur-3xl opacity-20"></div>
+                    <p class="text-[10px] font-bold text-[#00D084] uppercase tracking-widest mb-1">SquadUp Pro</p>
+                    <h2 class="text-xl font-black mb-1">Dominate the Pitch.</h2>
+                    <p class="text-xs text-gray-400 font-medium w-2/3">Book premium turfs across Kolkata instantly.</p>
+                </div>
+            </div>
+
+            <div class="flex overflow-x-auto px-5 py-2 gap-3 hide-scroll sticky top-[72px] bg-[var(--app-bg)] z-30" id="sport-filters">
+                <button onclick="filterVenues('All', this)" class="filter-pill active">All Venues</button>
+                <button onclick="filterVenues('Football', this)" class="filter-pill">⚽ Football</button>
+                <button onclick="filterVenues('Cricket', this)" class="filter-pill">🏏 Cricket</button>
+                <button onclick="filterVenues('Chess', this)" class="filter-pill">♟️ Chess</button>
+                <button onclick="filterVenues('Carrom', this)" class="filter-pill">🎯 Carrom</button>
+            </div>
+
+            <main class="flex-grow px-5 py-4">
+                <div id="view-feed" class="space-y-5 pb-8"></div>
+
+                <div id="view-rank" class="hidden space-y-5">
+                    <h2 class="text-2xl font-black text-gray-900">Leaderboard</h2>
+                    <div id="rank-list" class="space-y-4"></div>
+                </div>
+
+                <div id="view-admin" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-soft border border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Update Ledger</h3>
+                        <div class="space-y-4">
+                            <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-1 block">Target Arena</label><select id="admin-venue-select" class="input-box" onchange="loadAdminVenueData()"></select></div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-1 block">Slot Cap</label><input type="number" id="admin-cap" class="input-box py-2"></div>
+                                <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-1 block">Times</label><input type="text" id="admin-times" class="input-box py-2 text-sm"></div>
+                            </div>
+                            <button onclick="updateVenue()" id="admin-btn" class="w-full py-3 bg-gray-900 text-white font-bold rounded-xl">Push Sync</button>
+                        </div>
                     </div>
-                    <button onclick="deployNewVenue()" id="add-venue-btn" class="w-full py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition">Push Live</button>
+
+                    <div id="owner-panel" class="hidden bg-red-50 rounded-2xl p-6 border border-red-100">
+                        <h3 class="text-lg font-bold text-red-600 mb-4 flex items-center gap-2">🚀 Deploy New Arena</h3>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <input type="text" id="new-v-sport" placeholder="Sport" class="input-box py-2 text-sm bg-white">
+                            <input type="text" id="new-v-name" placeholder="Name" class="input-box py-2 text-sm bg-white">
+                            <input type="text" id="new-v-loc" placeholder="Location" class="input-box py-2 text-sm bg-white">
+                            <input type="number" id="new-v-price" placeholder="Price (₹)" class="input-box py-2 text-sm bg-white">
+                            <select id="new-v-type" class="input-box py-2 text-sm bg-white"><option value="outdoor">Outdoor</option><option value="indoor">Indoor</option></select>
+                            <select id="new-v-status" class="input-box py-2 text-sm bg-white"><option value="Active">Active</option><option value="Pending">Pending</option></select>
+                            <input type="text" id="new-v-img" placeholder="Image URL / Emoji" class="input-box py-2 text-sm bg-white col-span-2">
+                        </div>
+                        <button onclick="deployNewVenue()" id="add-venue-btn" class="w-full py-3 bg-red-600 text-white font-bold rounded-xl shadow-lg">Push Live</button>
+                    </div>
                 </div>
-            </div>
-        </main>
-    </div>
-
-    <div id="disc-modal" class="hidden fixed inset-0 bg-gray-900/80 z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white p-8 rounded-3xl max-w-sm w-full shadow-2xl relative">
-            <h2 class="text-2xl font-black mb-4 text-red-600 uppercase">Legal Disclaimer</h2>
-            <div class="text-gray-600 text-sm leading-relaxed mb-6 space-y-4 max-h-64 overflow-y-auto pr-2">
-                <p><b>1. Assumption of Risk:</b> Using facilities listed involves physical activities carrying inherent risks. SquadUp is not liable for injury.</p>
-                <p><b>2. Aggregator Scope:</b> SquadUp acts strictly as a booking interface. Quality of facilities is the responsibility of venue management.</p>
-                <p><b>3. Reputation Protocol:</b> Every session requires peer review. Toxic behavior results in bans.</p>
-                <p><b>4. ID Verification:</b> Carry a valid ID to the venue. Management may deny entry without refund if ID is missing.</p>
-            </div>
-            <button onclick="closeModal('disc-modal')" class="w-full py-3 btn-primary">Acknowledge</button>
+            </main>
         </div>
-    </div>
 
-    <div id="about-modal" class="hidden fixed inset-0 bg-gray-900/80 z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white p-8 rounded-3xl max-w-sm w-full text-center shadow-2xl relative">
-            <h2 class="text-2xl font-black mb-4 text-[#00b562]">About SquadUp</h2>
-            <p class="text-gray-600 text-sm leading-relaxed mb-6">Kolkata's premier digital sports network. We are building the infrastructure for the next generation of elite athletes, providing real-time access to the city's finest turfs.</p>
-            <button onclick="closeModal('about-modal')" class="w-full py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200">Close</button>
-        </div>
-    </div>
+        <nav id="bottom-nav" class="hidden fixed md:absolute bottom-0 w-full bg-white border-t border-gray-100 px-6 py-3 flex justify-between items-center z-40 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
+            <button onclick="switchTab('feed')" class="flex flex-col items-center gap-1 text-[#00D084]">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="text-[10px] font-bold">Home</span>
+            </button>
+            <button onclick="switchTab('rank')" class="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-900 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                <span class="text-[10px] font-bold">Rank</span>
+            </button>
+            <button id="nav-btn-admin" onclick="switchTab('admin')" class="hidden flex flex-col items-center gap-1 text-gray-400 hover:text-red-500 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                <span class="text-[10px] font-bold">Partner</span>
+            </button>
+            <button onclick="logout()" class="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-900 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                <span class="text-[10px] font-bold">Logout</span>
+            </button>
+        </nav>
 
-    <div id="booking-modal" class="hidden fixed inset-0 bg-gray-900/60 z-[150] flex flex-col justify-end backdrop-blur-sm">
-        <div class="bg-white rounded-t-3xl p-6 w-full max-w-2xl mx-auto shadow-2xl border-t border-gray-100 mt-20 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <h2 class="text-xl font-extrabold text-gray-900">Book Slot</h2>
-                    <p id="book-venue-name" class="text-sm text-gray-500 font-medium"></p>
+        <div id="modal-backdrop" class="fixed md:absolute inset-0 bg-gray-900/40 z-[150] modal-overlay" onclick="closeSheet()"></div>
+        <div id="booking-sheet" class="fixed md:absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl z-[160] bottom-sheet shadow-[0_-10px_40px_rgba(0,0,0,0.1)] max-h-[90vh] flex flex-col">
+            <div class="p-5 flex-shrink-0 border-b border-gray-100">
+                <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-4"></div>
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-black text-gray-900" id="book-venue-name">Arena Name</h2>
+                        <p id="book-venue-sport" class="text-xs text-[#00D084] font-bold uppercase tracking-widest mt-0.5">Sport</p>
+                    </div>
                 </div>
-                <button onclick="closeModal('booking-modal')" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200">✕</button>
             </div>
             
-            <div class="space-y-5">
-                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                    <div class="flex justify-between items-center">
-                        <label class="text-sm font-bold text-gray-700">Select Athletes</label>
-                        <div class="flex items-center gap-3">
-                            <button onclick="adjCount(-1)" class="w-8 h-8 rounded-full bg-white border border-gray-200 text-gray-600 font-bold">-</button>
-                            <input type="number" id="book-count" min="1" max="10" value="1" class="w-12 bg-transparent text-center text-xl font-black text-gray-900 outline-none" onchange="updatePrice()" readonly>
-                            <button onclick="adjCount(1)" class="w-8 h-8 rounded-full bg-white border border-gray-200 text-gray-600 font-bold">+</button>
-                        </div>
+            <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-5">
+                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 flex justify-between items-center">
+                    <label class="text-sm font-bold text-gray-700">Athlete Count</label>
+                    <div class="flex items-center gap-4">
+                        <button onclick="adjCount(-1)" class="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center font-bold text-gray-600">-</button>
+                        <input type="number" id="book-count" min="1" max="10" value="1" class="w-10 bg-transparent text-center text-xl font-black text-gray-900 outline-none" onchange="updatePrice()" readonly>
+                        <button onclick="adjCount(1)" class="w-8 h-8 rounded-full bg-white shadow flex items-center justify-center font-bold text-gray-600">+</button>
                     </div>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-xs text-gray-500 font-bold block mb-1">Date</label>
-                        <input type="date" id="book-date" class="input-light py-2 text-sm" onchange="checkAvailability()">
+                        <label class="text-[10px] text-gray-500 font-bold uppercase mb-1 block">Play Date</label>
+                        <input type="date" id="book-date" class="input-box py-3 text-sm" onchange="checkAvailability()">
                     </div>
                     <div>
-                        <label class="text-xs text-gray-500 font-bold block mb-1">Time</label>
-                        <select id="book-time" class="input-light py-2 text-sm font-medium" onchange="checkAvailability()"></select>
+                        <label class="text-[10px] text-gray-500 font-bold uppercase mb-1 block">Time Shift</label>
+                        <select id="book-time" class="input-box py-3 text-sm" onchange="checkAvailability()"></select>
                     </div>
                 </div>
                 
-                <div class="bg-green-50 p-3 rounded-xl border border-green-100 flex items-center justify-between">
-                    <span class="text-xs font-bold text-green-700 uppercase tracking-wide">Status</span>
-                    <span id="slot-status" class="text-sm font-black text-green-600">Checking...</span>
+                <div class="bg-[#00D084]/10 p-3 rounded-xl border border-[#00D084]/20 flex items-center justify-between">
+                    <span class="text-xs font-bold text-[#009650] uppercase tracking-wide">Availability</span>
+                    <span id="slot-status" class="text-sm font-black text-[#00D084]">Checking...</span>
                 </div>
                 
                 <div>
-                    <label class="text-xs text-gray-500 font-bold block mb-1">Payment Method</label>
-                    <select id="book-pay" class="input-light py-3 font-medium" onchange="toggleWarning()"></select>
+                    <label class="text-[10px] text-gray-500 font-bold uppercase mb-1 block">Payment Method</label>
+                    <select id="book-pay" class="input-box py-3 font-medium" onchange="toggleWarning()"></select>
                 </div>
                 
                 <div id="liquidation-warning" class="hidden bg-orange-50 text-orange-700 text-[10px] font-bold p-3 rounded-xl border border-orange-100"></div>
+            </div>
 
-                <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-gray-500 font-medium">Total Amount</p>
-                        <p id="total-price" class="text-2xl font-black text-[#00b562]">₹0</p>
-                    </div>
-                    <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-3.5 btn-primary shadow-lg text-lg w-1/2">Book Now</button>
+            <div class="p-5 border-t border-gray-100 bg-white flex-shrink-0 flex items-center justify-between pb-safe">
+                <div>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Total Due</p>
+                    <p id="total-price" class="text-2xl font-black text-[#00D084]">₹0</p>
                 </div>
+                <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-3.5 btn-primary shadow-glow text-base w-1/2">Book Slot</button>
             </div>
         </div>
-    </div>
 
-    <script>
+        <div id="about-modal" class="hidden fixed md:absolute inset-0 bg-gray-900/60 z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
+            <div class="bg-white p-8 rounded-3xl max-w-sm w-full text-center shadow-2xl relative">
+                <h2 class="text-2xl font-black mb-4 text-[#00D084]">SquadUp</h2>
+                <p class="text-gray-600 text-sm leading-relaxed mb-6">Kolkata's premier digital sports network. We are building the infrastructure for the next generation of elite athletes, providing real-time access to the city's finest turfs.</p>
+                <div class="flex gap-2 justify-center mt-4">
+                    <button onclick="showModal('disc-modal')" class="text-[10px] font-bold text-gray-500 underline uppercase">Disclaimer</button>
+                </div>
+                <button onclick="closeModal('about-modal')" class="w-full mt-6 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200">Close</button>
+            </div>
+        </div>
+        
+        <div id="disc-modal" class="hidden fixed md:absolute inset-0 bg-gray-900/80 z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
+            <div class="bg-white p-8 rounded-3xl max-w-sm w-full shadow-2xl relative">
+                <h2 class="text-xl font-black mb-4 text-red-600 uppercase">Legal Disclaimer</h2>
+                <div class="text-gray-600 text-xs leading-relaxed mb-6 space-y-4 max-h-64 overflow-y-auto pr-2 hide-scroll">
+                    <p><b>1. Risk:</b> Using facilities involves physical risks. SquadUp is not liable for injury.</p>
+                    <p><b>2. Aggregator Scope:</b> SquadUp acts strictly as a booking interface.</p>
+                    <p><b>3. Verification:</b> Carry a valid ID to the venue. Management may deny entry without refund if ID is missing.</p>
+                </div>
+                <button onclick="closeModal('disc-modal')" class="w-full py-3 btn-primary bg-gray-900 shadow-none">Acknowledge</button>
+            </div>
+        </div>
+    </div> <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; // PASTE /EXEC URL HERE
         
         let currentUser = null; let activeVenue = null; window.venues = [];
-        let tapCount = 0; let tapTimer;
+        let tapCount = 0; let tapTimer; let currentFilter = 'All';
 
         // AUTH & NAVIGATION
         function ghostTrigger() {
@@ -244,7 +280,7 @@
         function hideAdminLogin() { document.getElementById('admin-login-box').classList.add('hidden'); document.getElementById('login-box').classList.remove('hidden'); }
         function showForgot(show) { document.getElementById('login-box').classList.toggle('hidden', show); document.getElementById('forgot-box').classList.toggle('hidden', !show); }
         function toggleAuth(type) { document.getElementById('login-box').classList.toggle('hidden', type !== 'login'); document.getElementById('register-box').classList.toggle('hidden', type !== 'register'); document.getElementById('admin-login-box').classList.add('hidden'); }
-        function showModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById('sidebar-menu').classList.add('hidden'); }
+        function showModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById('about-modal').classList.add('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
         function logout() { localStorage.clear(); location.reload(); }
 
@@ -265,7 +301,7 @@
                 navigator.geolocation.getCurrentPosition((pos) => {
                     window.venues.forEach(v => { if(v.lat && v.lon) v.distance = getDistance(pos.coords.latitude, pos.coords.longitude, v.lat, v.lon).toFixed(1); });
                     window.venues.sort((a, b) => (a.distance || 99) - (b.distance || 99));
-                    renderContent('outdoor'); renderContent('indoor'); 
+                    filterVenues(currentFilter, null); 
                 });
             }
         }
@@ -303,22 +339,23 @@
                 
                 document.getElementById('auth-overlay').style.display = 'none'; 
                 document.getElementById('main-content').classList.remove('hidden');
+                document.getElementById('bottom-nav').classList.remove('hidden');
+                
                 document.getElementById('user-name').innerText = currentUser.name.split(' ')[0]; 
-                document.getElementById('dropdown-name').innerText = currentUser.name; 
                 document.getElementById('avatar').innerText = currentUser.name[0].toUpperCase();
                 
                 if(currentUser.role === 'owner' || currentUser.role === 'staff') {
-                    document.getElementById('nav-admin').classList.remove('hidden');
+                    document.getElementById('nav-btn-admin').classList.remove('hidden');
                     if(currentUser.role === 'owner') document.getElementById('owner-panel').classList.remove('hidden');
                     populateAdminSelect();
-                } else { document.getElementById('disc-modal').classList.remove('hidden'); }
+                }
                 
                 initDatePicker(); renderRankings();
-                switchView('outdoor', document.querySelector('.tab-btn')); 
+                filterVenues('All', document.querySelector('.filter-pill')); 
                 sortVenuesByProximity(); 
             } else { 
                 alert(res.msg); 
-                btn.innerText = type === 'admin' ? "Access Dashboard" : "Login Securely"; 
+                btn.innerText = type === 'admin' ? "Access Ledger" : "Login"; 
                 btn.classList.remove('opacity-70', 'cursor-wait'); 
             }
         }
@@ -333,61 +370,76 @@
         
         async function handleForgot() { const res = await fetchJSONP({ action: 'forgot', email: document.getElementById('forgot-email').value, newPassword: document.getElementById('forgot-new-pass').value }); alert(res.msg); if(res.status === 'success') showForgot(false); }
 
-        // RENDERING
-        function switchView(v, btnElement) { 
-            document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden')); 
-            document.getElementById('view-'+v).classList.remove('hidden'); 
+        // BOTTOM NAV SWITCHER
+        function switchTab(tabId) {
+            document.querySelectorAll('#bottom-nav button').forEach(b => { b.classList.remove('text-[#00D084]'); b.classList.add('text-gray-400'); });
+            event.currentTarget.classList.remove('text-gray-400'); event.currentTarget.classList.add('text-[#00D084]');
             
+            document.getElementById('view-feed').classList.add('hidden');
+            document.getElementById('view-rank').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('hero-banner').classList.add('hidden');
+            document.getElementById('sport-filters').classList.add('hidden');
+            
+            if(tabId === 'feed') {
+                document.getElementById('view-feed').classList.remove('hidden');
+                document.getElementById('hero-banner').classList.remove('hidden');
+                document.getElementById('sport-filters').classList.remove('hidden');
+            } else if (tabId === 'rank') { document.getElementById('view-rank').classList.remove('hidden');
+            } else if (tabId === 'admin') { document.getElementById('view-admin').classList.remove('hidden'); }
+            window.scrollTo(0, 0);
+        }
+
+        // FILTER & RENDER
+        function filterVenues(sport, btnElement) {
+            currentFilter = sport;
             if(btnElement) {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
                 btnElement.classList.add('active');
             }
             
-            if(v==='outdoor'||v==='indoor') renderContent(v); 
-            window.scrollTo(0, 0); 
-        }
+            const cont = document.getElementById('view-feed'); cont.innerHTML = '';
+            let filtered = window.venues;
+            if(sport !== 'All') filtered = window.venues.filter(v => v.sport === sport);
+            
+            if(filtered.length === 0) { cont.innerHTML = `<p class="text-center text-gray-500 py-10 font-medium">No arenas found for ${sport}.</p>`; return; }
 
-        function renderContent(type) {
-            const cont = document.getElementById('view-' + type); cont.innerHTML = '';
-            window.venues.filter(v => v.type === type).forEach(v => {
+            filtered.forEach(v => {
                 const isP = v.status === "Pending";
-                const distDisplay = v.distance ? `<span class="bg-green-100 text-green-800 text-[10px] px-2 py-0.5 rounded font-bold ml-2">${v.distance} km</span>` : '';
+                const distDisplay = v.distance ? `<span class="bg-gray-100 text-gray-700 text-[9px] px-2 py-0.5 rounded-md font-bold ml-2 flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>${v.distance} km</span>` : '';
                 
                 const visual = v.type === 'outdoor' 
-                    ? `<img src="${v.img}" class="w-full h-44 object-cover ${isP ? 'grayscale opacity-60' : ''}">` 
-                    : `<div class="text-6xl text-center py-10 bg-gray-50 border-b border-gray-100 ${isP ? 'opacity-40' : ''}">${v.img}</div>`;
+                    ? `<img src="${v.img}" class="w-full h-48 object-cover ${isP ? 'grayscale opacity-60' : ''}">` 
+                    : `<div class="text-6xl text-center py-12 bg-gray-50 border-b border-gray-100 ${isP ? 'opacity-40' : ''}">${v.img}</div>`;
                 
                 const btn = isP 
-                    ? `<button class="bg-gray-100 text-gray-400 px-6 py-2 rounded-xl text-sm font-bold cursor-not-allowed w-full">Coming Soon</button>` 
-                    : `<button onclick="openBooking('${v.name}')" class="btn-primary px-6 py-2 rounded-xl text-sm w-full shadow-sm">Book Now</button>`;
+                    ? `<button class="bg-gray-100 text-gray-400 px-6 py-3 rounded-xl text-sm font-bold cursor-not-allowed w-full">Deploying Soon</button>` 
+                    : `<button onclick="openSheet('${v.name}')" class="btn-primary px-6 py-3 rounded-xl text-sm w-full shadow-soft">Book Arena</button>`;
 
-                // RESTORED: RIDE HAILING BUTTONS
                 const rideOptions = isP ? '' : `
                 <div class="mt-4 pt-4 border-t border-gray-100 grid grid-cols-3 gap-2">
-                    <a href="https://m.uber.com/ul/?action=setPickup&dropoff[query]=${v.map}" target="_blank" class="py-2 bg-gray-50 rounded-lg text-[10px] font-bold text-gray-600 text-center uppercase tracking-wide hover:bg-gray-100 transition">🚕 Uber</a>
-                    <a href="https://www.rapido.bike/" target="_blank" class="py-2 bg-gray-50 rounded-lg text-[10px] font-bold text-gray-600 text-center uppercase tracking-wide hover:bg-gray-100 transition">🛵 Rapido</a>
-                    <a href="https://indrive.com/" target="_blank" class="py-2 bg-gray-50 rounded-lg text-[10px] font-bold text-gray-600 text-center uppercase tracking-wide hover:bg-gray-100 transition">🚗 InDrive</a>
+                    <a href="https://m.uber.com/ul/?action=setPickup&dropoff[query]=${v.map}" target="_blank" class="py-2.5 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-600 text-center uppercase tracking-wide hover:bg-gray-100 transition">🚕 Uber</a>
+                    <a href="https://www.rapido.bike/" target="_blank" class="py-2.5 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-600 text-center uppercase tracking-wide hover:bg-gray-100 transition">🛵 Rapido</a>
+                    <a href="https://indrive.com/" target="_blank" class="py-2.5 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-600 text-center uppercase tracking-wide hover:bg-gray-100 transition">🚗 InDrive</a>
                 </div>`;
 
                 cont.innerHTML += `
-                <div class="card relative hover:shadow-md transition duration-300">
-                    ${isP ? '<div class="absolute top-4 left-4 bg-gray-900 text-white text-[10px] px-2 py-1 rounded font-bold uppercase z-10 shadow">Pending</div>' : ''}
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-soft overflow-hidden relative transition-all">
+                    ${isP ? '<div class="absolute top-4 left-4 bg-gray-900 text-white text-[10px] px-2.5 py-1 rounded-md font-bold uppercase z-10">Pending</div>' : ''}
                     ${visual}
                     <div class="p-5">
                         <div class="flex justify-between items-start mb-2">
                             <div>
-                                <p class="text-[10px] text-[#00b562] font-extrabold uppercase mb-0.5">${v.sport}</p>
+                                <p class="text-[10px] text-[#00D084] font-black uppercase mb-1 tracking-wider">${v.sport}</p>
                                 <h3 class="font-extrabold text-gray-900 text-xl leading-tight">${v.name}</h3>
-                                <p class="text-xs text-gray-500 font-medium mt-1 flex items-center">📍 ${v.loc} ${distDisplay}</p>
+                                <p class="text-xs text-gray-500 font-medium mt-1.5 flex items-center">${v.loc} ${distDisplay}</p>
+                            </div>
+                            <div class="text-right bg-gray-50 p-2 rounded-xl border border-gray-100">
+                                <p class="text-[9px] text-gray-400 uppercase font-bold tracking-wider mb-0.5">Athlete</p>
+                                <p class="text-lg font-black text-gray-900 leading-none">₹${v.price}</p>
                             </div>
                         </div>
-                        <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between gap-4">
-                            <div>
-                                <p class="text-xl font-black text-gray-900">₹${v.price}</p>
-                                <p class="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Per Athlete</p>
-                            </div>
-                            <div class="flex-grow">${btn}</div>
-                        </div>
+                        <div class="mt-4">${btn}</div>
                         ${rideOptions}
                     </div>
                 </div>`;
@@ -399,51 +451,47 @@
             const uSkill = currentUser && currentUser.skill ? currentUser.skill : "Intermediate";
             const list = document.getElementById('rank-list');
             list.innerHTML = `
-                <div class="card p-5 border-l-4 border-[#00b562]">
-                    <div class="flex justify-between items-center mb-4">
+                <div class="bg-white rounded-2xl p-5 border-l-4 border-[#00D084] shadow-soft relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 w-24 h-24 bg-[#00D084] rounded-full blur-2xl opacity-10"></div>
+                    <div class="flex justify-between items-center mb-4 relative z-10">
                         <div>
-                            <span class="font-extrabold text-gray-900 text-lg block flex items-center gap-2">Rahul Das <span class="bg-yellow-100 text-yellow-800 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">Pro</span></span>
-                            <span class="text-[10px] text-gray-500 font-bold uppercase mt-1">Football</span>
+                            <span class="font-extrabold text-gray-900 text-lg flex items-center gap-2">Rahul Das <span class="bg-gray-900 text-white text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">#1 Pro</span></span>
+                            <span class="text-[10px] text-gray-500 font-bold uppercase mt-1 tracking-widest">Football</span>
                         </div>
                         <div class="text-right">
-                            <span class="font-black text-gray-900 block text-xl">42</span>
+                            <span class="font-black text-gray-900 block text-2xl">42</span>
                             <span class="text-[9px] text-gray-400 uppercase font-bold">Matches</span>
                         </div>
                     </div>
-                    <div class="bg-gray-50 p-3 rounded-xl flex justify-between items-center text-sm font-bold">
+                    <div class="bg-gray-50 p-3 rounded-xl flex justify-between items-center text-sm font-bold border border-gray-100 relative z-10">
                         <span class="text-gray-600">Conduct</span>
-                        <span class="text-[#00b562]">★★★★★</span>
+                        <span class="text-[#00D084]">★★★★★</span>
                     </div>
                 </div>
                 
-                <div class="card p-5 mt-4 opacity-90">
+                <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm mt-4 opacity-90">
                     <div class="flex justify-between items-center mb-4">
                         <div>
-                            <span class="font-extrabold text-gray-900 text-lg block flex items-center gap-2">${uName}</span>
-                            <span class="text-[10px] text-gray-500 font-bold uppercase mt-1">${uSkill}</span>
+                            <span class="font-extrabold text-gray-900 text-lg flex items-center gap-2">${uName}</span>
+                            <span class="text-[10px] text-gray-500 font-bold uppercase mt-1 tracking-widest">${uSkill}</span>
                         </div>
                         <div class="text-right">
                             <span class="font-black text-gray-900 block text-xl">12</span>
                             <span class="text-[9px] text-gray-400 uppercase font-bold">Matches</span>
                         </div>
                     </div>
-                    <div class="bg-gray-50 p-3 rounded-xl flex justify-between items-center text-sm font-bold">
+                    <div class="bg-gray-50 p-3 rounded-xl flex justify-between items-center text-sm font-bold border border-gray-100">
                         <span class="text-gray-600">Conduct</span>
-                        <span class="text-[#00b562]">★★★★☆</span>
+                        <span class="text-yellow-400">★★★★☆</span>
                     </div>
                 </div>`;
         }
 
-        // BOOKING ENGINE
-        function adjCount(change) {
-            const el = document.getElementById('book-count');
-            let val = parseInt(el.value) + change;
-            if(val >= 1 && val <= parseInt(el.max)) { el.value = val; updatePrice(); }
-        }
-
-        function openBooking(name) { 
+        // BOTTOM SHEET LOGIC
+        function openSheet(name) {
             activeVenue = window.venues.find(v => v.name === name); 
-            document.getElementById('book-venue-name').innerText = `📍 ${activeVenue.loc}`; 
+            document.getElementById('book-venue-name').innerText = activeVenue.name; 
+            document.getElementById('book-venue-sport').innerText = activeVenue.sport;
             
             const countInput = document.getElementById('book-count');
             countInput.max = activeVenue.cap;
@@ -456,9 +504,20 @@
                 });
             }
 
-            document.getElementById('booking-modal').classList.remove('hidden'); 
-            setTimeout(() => { document.querySelector('#booking-modal > div').style.transform = 'translateY(0)'; }, 10);
+            document.getElementById('modal-backdrop').classList.add('open');
+            document.getElementById('booking-sheet').classList.add('open');
             checkAvailability(); 
+        }
+
+        function closeSheet() {
+            document.getElementById('modal-backdrop').classList.remove('open');
+            document.getElementById('booking-sheet').classList.remove('open');
+        }
+
+        function adjCount(change) {
+            const el = document.getElementById('book-count');
+            let val = parseInt(el.value) + change;
+            if(val >= 1 && val <= parseInt(el.max)) { el.value = val; updatePrice(); }
         }
 
         function toggleWarning() {
@@ -466,11 +525,11 @@
             const warning = document.getElementById('liquidation-warning');
             
             if(payType === 'Token') {
-                warning.innerHTML = "⚠️ <span class=\"font-bold\">2-Hour Check-in required.</span> Balance due at venue.";
-                warning.className = "mt-3 bg-orange-50 text-orange-700 text-[10px] p-2.5 rounded-lg border border-orange-100 block";
+                warning.innerHTML = "⚠️ <span class=\"font-bold text-orange-800\">2-Hour Rule:</span> Digital check-in required. Balance due at venue.";
+                warning.className = "bg-orange-50 text-orange-600 text-[10px] p-3 rounded-xl border border-orange-100 block";
             } else if (payType === 'Waitlist') {
-                warning.innerHTML = "🕒 <span class=\"font-bold\">Standby Mode.</span> You will be notified if a slot opens.";
-                warning.className = "mt-3 bg-blue-50 text-blue-700 text-[10px] p-2.5 rounded-lg border border-blue-100 block";
+                warning.innerHTML = "🕒 <span class=\"font-bold text-blue-800\">Standby Mode:</span> No payment now. You will be notified if a squad cancels.";
+                warning.className = "bg-blue-50 text-blue-600 text-[10px] p-3 rounded-xl border border-blue-100 block";
             } else {
                 warning.classList.add('hidden');
             }
@@ -502,7 +561,7 @@
             } else if (remaining <= 2) {
                 statusEl.innerText = `ONLY ${remaining} LEFT`; statusEl.className = "text-sm font-black text-orange-600";
             } else {
-                statusEl.innerText = `${remaining} SLOTS AVAILABLE`; statusEl.className = "text-sm font-black text-green-600";
+                statusEl.innerText = `${remaining} AVAILABLE`; statusEl.className = "text-sm font-black text-[#00D084]";
             }
             
             const countInput = document.getElementById('book-count');
@@ -554,8 +613,8 @@
                 
                 await fetchJSONP(data);
                 alert("Waitlist Joined Successfully!");
-                closeModal('booking-modal'); switchView('outdoor'); 
-                btn.innerText = "Book Now"; return;
+                closeSheet(); 
+                btn.innerText = "Book Slot"; return;
             }
 
             if (count === 0) return alert("Select at least 1 slot.");
@@ -577,7 +636,7 @@
                 "description": `${activeVenue.name} Booking`,
                 "order_id": orderRes.order.id,
                 "prefill": { "contact": currentUser.phone || "", "name": currentUser.name },
-                "theme": { "color": "#00b562" },
+                "theme": { "color": "#00D084" },
                 "handler": async (res) => {
                     btn.innerText = "Verifying...";
                     const verify = await fetchJSONP({
@@ -588,12 +647,12 @@
                     });
                     
                     if(verify.status === "success") { alert("Booking Confirmed!"); location.reload(); } 
-                    else { alert(verify.msg); btn.innerText = "Book Now"; btn.classList.remove('opacity-70', 'cursor-wait'); }
+                    else { alert(verify.msg); btn.innerText = "Book Slot"; btn.classList.remove('opacity-70', 'cursor-wait'); }
                 }
             };
             
             const rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (response){ alert("Payment Failed."); btn.innerText = "Book Now"; btn.classList.remove('opacity-70', 'cursor-wait'); });
+            rzp.on('payment.failed', function (response){ alert("Payment Failed."); btn.innerText = "Book Slot"; btn.classList.remove('opacity-70', 'cursor-wait'); });
             rzp.open();
         }
 
@@ -610,7 +669,7 @@
         async function updateVenue() {
             const btn = document.getElementById('admin-btn'); btn.innerText = "Updating...";
             const res = await fetchJSONP({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
-            alert(res.msg); btn.innerText = "Push Update"; if(res.status==='success') { loadAdminVenueData(); }
+            alert(res.msg); btn.innerText = "Push Sync"; if(res.status==='success') { loadAdminVenueData(); }
         }
         async function deployNewVenue() {
             const btn = document.getElementById('add-venue-btn'); btn.innerText = "Pushing...";
