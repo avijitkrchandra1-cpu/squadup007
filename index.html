@@ -1,372 +1,426 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SquadUp | Elite Sports Network</title>
+    <title>SquadUp | Kolkata's Premium Sports Network</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --app-green: #00b562; --app-dark: #111827; --app-bg: #f8f9fa; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--app-bg); color: var(--app-dark); -webkit-tap-highlight-color: transparent; }
+        :root { --neon-cyan: #06b6d4; --neon-cyan-glow: rgba(6, 182, 212, 0.4); --midnight: #020617; --surface: #0f172a; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--midnight); color: #f8fafc; overflow-x: hidden; }
         
-        /* Premium Shadows & Transitions */
-        .shadow-soft { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); }
-        .shadow-glow { box-shadow: 0 8px 25px -5px rgba(0, 181, 98, 0.4); }
-        .transition-all { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* Preloader */
+        #preloader { position: fixed; inset: 0; background: var(--midnight); z-index: 9999; display: flex; justify-content: center; items-center; transition: opacity 0.6s ease; }
+        .loader-text { font-size: 3rem; font-weight: 900; background: linear-gradient(to right, #fff, var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulse 1.5s infinite; }
         
-        /* UI Components */
-        .btn-primary { background: var(--app-green); color: white; font-weight: 700; border-radius: 1rem; text-align: center; transition: 0.2s; }
-        .btn-primary:active { transform: scale(0.97); }
-        .btn-primary:hover { background: #009650; }
-        .input-box { background: #FFFFFF; border: 1.5px solid #E2E8F0; color: #1E293B; border-radius: 1rem; padding: 1rem; width: 100%; font-weight: 500; outline: none; transition: 0.2s; }
-        .input-box:focus { border-color: var(--app-green); box-shadow: 0 0 0 4px rgba(0, 181, 98, 0.1); }
-        
-        /* Scrollbars */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Bottom Sheet Modal */
-        .bottom-sheet { transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.32, 1.25, 0.32, 1); }
-        .bottom-sheet.open { transform: translateY(0); }
-        .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(4px); }
-        .modal-overlay.open { opacity: 1; pointer-events: auto; }
-        
-        /* Filter Pills */
-        .filter-pill { padding: 0.6rem 1.25rem; border-radius: 2rem; border: 1.5px solid #E2E8F0; background: white; color: #64748B; font-weight: 700; font-size: 0.875rem; white-space: nowrap; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .filter-pill.active { background: var(--app-dark); border-color: var(--app-dark); color: white; }
+        /* Custom Animations */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-left { opacity: 0; transform: translateX(-40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal-left.active { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal-right.active { opacity: 1; transform: translateX(0); }
 
-        /* Auth Background */
-        .auth-bg { background: linear-gradient(180deg, rgba(17, 24, 39, 0.4) 0%, rgba(17, 24, 39, 0.95) 100%), url('https://images.unsplash.com/photo-1551280857-2b9bbe5260fc?auto=format&fit=crop&w=1000&q=80') center/cover; }
+        /* Premium UI Elements */
+        .glass-nav { background: rgba(2, 6, 23, 0.7); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.3s; }
+        .glass-nav.scrolled { background: rgba(2, 6, 23, 0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.5); }
         
-        /* Video Hero Overlay */
-        .video-overlay { background: linear-gradient(to right, rgba(17,24,39,0.9) 0%, rgba(17,24,39,0.4) 100%); }
+        .btn-neon { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; font-weight: 800; border-radius: 0.75rem; transition: all 0.3s; box-shadow: 0 0 15px var(--neon-cyan-glow); }
+        .btn-neon:hover { transform: translateY(-2px); box-shadow: 0 0 25px var(--neon-cyan-glow); }
+        
+        .input-dark { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.75rem; padding: 1rem; width: 100%; outline: none; transition: 0.3s; }
+        .input-dark:focus { border-color: var(--neon-cyan); background: rgba(255,255,255,0.08); }
+        
+        .card-dark { background: var(--surface); border: 1px solid rgba(255,255,255,0.05); border-radius: 1.25rem; transition: all 0.4s; overflow: hidden; }
+        .card-dark:hover { transform: translateY(-5px); border-color: rgba(6, 182, 212, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        /* Phone Mockup CSS */
+        .mockup-frame { border: 12px solid #1e293b; border-radius: 2.5rem; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px var(--neon-cyan-glow); position: relative; }
+        .mockup-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40%; height: 25px; background: #1e293b; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; z-index: 20; }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--midnight); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+
+        /* Hero Video Overlay */
+        .hero-overlay { background: linear-gradient(110deg, var(--midnight) 20%, rgba(2,6,23,0.7) 60%, rgba(2,6,23,0.4) 100%); }
     </style>
 </head>
-<body class="antialiased pb-20 md:pb-0 text-gray-900">
+<body class="antialiased">
 
-    <div id="promo-banner" class="bg-gray-900 text-white text-[10px] md:text-xs font-bold py-2.5 text-center flex justify-center items-center gap-2 z-50 relative tracking-wide">
-        <span class="animate-pulse text-[#00b562] text-sm">⚡</span> FLASH SALE: Secure your slot today with just 20% advance via UPI!
-        <button onclick="document.getElementById('promo-banner').style.display='none'" class="absolute right-4 text-gray-400 hover:text-white">✕</button>
+    <div id="preloader" class="flex flex-col items-center justify-center">
+        <h1 class="loader-text">SQUADUP</h1>
+        <p class="text-cyan-400 font-bold tracking-[0.3em] uppercase text-xs mt-2">Loading Arenas...</p>
     </div>
 
-    <div id="auth-overlay" class="fixed inset-0 z-[100] bg-white flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
-        <div class="hidden md:flex md:w-1/2 lg:w-3/5 relative items-center justify-center bg-gray-900 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1574629810360-7efbb6b69711?auto=format&fit=crop&w=2000&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60" alt="Sports Background">
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
-            <div class="relative z-10 text-white text-center px-10">
-                <h2 class="text-5xl lg:text-7xl font-black mb-4 tracking-tighter drop-shadow-lg">Elevate Your Game.</h2>
-                <p class="text-lg lg:text-xl font-medium opacity-90 drop-shadow-md">Join Kolkata's fastest-growing sports network.</p>
+    <div id="auth-overlay" class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-xl flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="card-dark w-full max-w-md p-8 relative transform scale-95 transition-transform duration-300" id="auth-card">
+            <button onclick="closeAuth()" class="absolute top-4 right-4 text-gray-400 hover:text-white">✕</button>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-black tracking-tight text-white">Squad<span class="text-cyan-400">Up</span></h2>
+                <p class="text-gray-400 text-sm mt-1">Access the Elite Network.</p>
             </div>
-        </div>
-
-        <div class="w-full md:w-1/2 lg:w-2/5 min-h-screen flex items-center justify-center p-6 lg:p-12 bg-white auth-bg md:bg-none md:bg-white">
-            <div class="w-full max-w-md space-y-6 bg-white p-8 md:p-0 rounded-3xl md:rounded-none shadow-2xl md:shadow-none mt-12 md:mt-0">
-                <div class="text-center md:text-left mb-8">
-                    <h1 class="text-4xl font-black tracking-tight text-gray-900 cursor-pointer" onclick="ghostTrigger()">Squad<span class="text-[#00b562]">Up</span></h1>
-                    <p class="text-gray-500 mt-2 font-medium">Log in to book your next arena.</p>
-                </div>
-                
-                <div id="login-box" class="space-y-4">
-                    <div><label class="text-xs font-bold text-gray-500 uppercase mb-1 block">Phone / Email</label><input type="text" id="login-id" class="input-box"></div>
-                    <div>
-                        <div class="flex justify-between mb-1">
-                            <label class="text-xs font-bold text-gray-500 uppercase block">Password</label>
-                            <p onclick="showForgot(true)" class="text-xs text-[#00b562] font-bold cursor-pointer hover:underline">Forgot?</p>
-                        </div>
-                        <input type="password" id="login-pass" class="input-box">
-                    </div>
-                    <button onclick="handleLogin('player')" id="login-btn" class="w-full py-4 btn-primary text-lg mt-4 shadow-glow">Sign In</button>
-                    <p class="text-center text-sm text-gray-500 font-medium mt-6">New to SquadUp? <span onclick="toggleAuth('register')" class="text-[#00b562] font-bold cursor-pointer hover:underline">Create Account</span></p>
-                </div>
-
-                <div id="admin-login-box" class="hidden space-y-4 p-6 border border-red-100 rounded-2xl bg-red-50">
-                    <h3 class="text-lg font-black text-red-600 mb-4 flex items-center gap-2">⚙️ Partner Portal</h3>
-                    <input type="text" id="admin-login-id" placeholder="Partner ID" class="input-box bg-white">
-                    <input type="password" id="admin-login-pass" placeholder="Passkey" class="input-box bg-white">
-                    <button onclick="handleLogin('admin')" id="admin-btn-login" class="w-full py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition shadow-lg">Access Ledger</button>
-                    <p onclick="hideAdminLogin()" class="text-center text-xs text-gray-500 cursor-pointer font-bold mt-2 hover:underline">Return to Login</p>
-                </div>
-
-                <div id="register-box" class="hidden space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="md:col-span-2"><label class="text-[10px] font-bold text-gray-500 uppercase mb-1 block">Full Name</label><input type="text" id="reg-name" class="input-box py-3"></div>
-                        <div><label class="text-[10px] font-bold text-gray-500 uppercase mb-1 block">Phone (10)</label><input type="tel" id="reg-phone" class="input-box py-3" maxlength="10"></div>
-                        <div><label class="text-[10px] font-bold text-gray-500 uppercase mb-1 block">Email</label><input type="email" id="reg-email" class="input-box py-3"></div>
-                        <div><label class="text-[10px] font-bold text-gray-500 uppercase mb-1 block">DOB</label><input type="date" id="reg-dob" class="input-box py-3"></div>
-                        <div><label class="text-[10px] font-bold text-gray-500 uppercase mb-1 block">Blood Group</label><select id="reg-blood" class="input-box py-3"><option value="">Select</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option></select></div>
-                        <div>
-                            <label class="text-[10px] font-bold text-gray-500 uppercase mb-1 block">Primary Sport</label>
-                            <select id="reg-sport" class="input-box py-3"><option value="Football">Football</option><option value="Cricket">Cricket</option><option value="Chess">Chess</option><option value="Carrom">Carrom</option></select>
-                        </div>
-                        <div><label class="text-[10px] font-bold text-gray-500 uppercase mb-1 block">Skill Level</label><select id="reg-skill" class="input-box py-3"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro</option></select></div>
-                        <div class="md:col-span-2"><label class="text-[10px] font-bold text-gray-500 uppercase mb-1 block">Create Password</label><input type="password" id="reg-pass" class="input-box py-3"></div>
-                    </div>
-                    <button onclick="handleRegister()" id="reg-btn" class="w-full py-4 btn-primary mt-2 shadow-glow">Join the Network</button>
-                    <p onclick="toggleAuth('login')" class="text-center text-sm text-gray-500 font-medium cursor-pointer hover:underline">Already have an account?</p>
-                </div>
-
-                <div id="forgot-box" class="hidden space-y-4">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Reset Password</h3>
-                    <input type="email" id="forgot-email" placeholder="Registered Email" class="input-box">
-                    <input type="password" id="forgot-new-pass" placeholder="New Password" class="input-box">
-                    <button onclick="handleForgot()" id="forgot-btn" class="w-full py-4 btn-primary shadow-glow">Update Credentials</button>
-                    <p onclick="showForgot(false)" class="text-sm text-gray-500 font-medium cursor-pointer text-center hover:underline">Back to Login</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="main-content" class="hidden flex flex-col min-h-screen relative">
-        
-        <header class="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-16">
-                    <div class="flex items-center gap-8">
-                        <h1 class="text-2xl font-black tracking-tight text-gray-900 cursor-pointer" onclick="switchTab('feed')">Squad<span class="text-[#00b562]">Up</span></h1>
-                        <nav class="hidden md:flex gap-6">
-                            <button onclick="switchTab('feed')" class="text-sm font-bold text-gray-900 border-b-2 border-[#00b562] py-5">Find Venues</button>
-                            <button onclick="switchTab('rank')" class="text-sm font-bold text-gray-500 hover:text-gray-900 py-5 transition">Leaderboard</button>
-                            <button id="nav-btn-admin-desktop" onclick="switchTab('admin')" class="hidden text-sm font-bold text-red-500 hover:text-red-700 py-5 transition">Partner Dashboard</button>
-                        </nav>
-                    </div>
-
-                    <div class="flex items-center gap-4">
-                        <div class="hidden lg:flex items-center gap-1 cursor-pointer bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-100 transition" onclick="sortVenuesByProximity()">
-                            <span class="text-xs font-bold text-gray-600">📍 Near Me</span>
-                        </div>
-                        <div class="relative group">
-                            <div class="flex items-center gap-3 cursor-pointer">
-                                <div class="text-right hidden sm:block">
-                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Welcome,</p>
-                                    <p id="user-name" class="text-sm font-bold text-gray-900 leading-none">Player</p>
-                                </div>
-                                <div class="w-10 h-10 rounded-full bg-emerald-100 text-[#00b562] border border-emerald-200 flex items-center justify-center font-black text-lg shadow-soft" id="avatar">P</div>
-                            </div>
-                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2">
-                                <button onclick="showModal('about-modal')" class="w-full text-left px-4 py-2 text-sm text-gray-700 font-medium hover:bg-gray-50">About Us</button>
-                                <button onclick="showModal('disc-modal')" class="w-full text-left px-4 py-2 text-sm text-gray-700 font-medium hover:bg-gray-50">Legal Policy</button>
-                                <hr class="my-1 border-gray-100">
-                                <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-600 font-bold hover:bg-red-50">Sign Out</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <main class="flex-grow bg-gray-50 pb-24 md:pb-10">
             
-            <div id="view-feed" class="block">
-                
-                <div id="hero-banner" class="relative w-full h-[35vh] md:h-[45vh] lg:h-[55vh] flex items-center justify-start px-6 md:px-12 lg:px-24 overflow-hidden bg-gray-900">
-                    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-80" poster="https://images.unsplash.com/photo-1518605368461-1ee7e53a2a61?auto=format&fit=crop&w=2000&q=80">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-playing-football-on-a-dark-field-41154-large.mp4" type="video/mp4">
-                    </video>
-                    <div class="absolute inset-0 video-overlay z-10"></div>
-                    <div class="relative z-20 text-white max-w-2xl">
-                        <span class="px-3 py-1 bg-[#00b562] text-[10px] font-black uppercase tracking-widest rounded shadow-glow mb-4 inline-block">Your Nearest Community</span>
-                        <h2 class="text-4xl md:text-5xl lg:text-7xl font-black mb-4 leading-tight tracking-tighter">Is just a <br><span class="text-[#00b562]">tap away.</span></h2>
-                        <button onclick="document.getElementById('sport-filters').scrollIntoView({behavior: 'smooth'})" class="mt-2 bg-white text-gray-900 px-8 py-3.5 rounded-full font-bold text-sm shadow-xl hover:bg-gray-100 transition">Explore Arenas ↓</button>
-                    </div>
-                </div>
-
-                <div class="bg-white border-b border-gray-100 py-6 px-4">
-                    <div class="max-w-7xl mx-auto grid grid-cols-3 gap-4 text-center divide-x divide-gray-100">
-                        <div class="flex flex-col items-center">
-                            <span class="text-2xl mb-1">🗺️</span>
-                            <p class="text-[10px] md:text-xs font-bold text-gray-900 uppercase tracking-widest">160+ Arenas</p>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <span class="text-2xl mb-1">⚡</span>
-                            <p class="text-[10px] md:text-xs font-bold text-gray-900 uppercase tracking-widest">Instant UPI</p>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <span class="text-2xl mb-1">🛡️</span>
-                            <p class="text-[10px] md:text-xs font-bold text-gray-900 uppercase tracking-widest">Verified Quality</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
-                    
-                    <div id="trending-section" class="mb-12">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-2xl font-black text-gray-900 tracking-tight">Trending in Kolkata 🔥</h3>
-                        </div>
-                        <div id="trending-carousel" class="flex overflow-x-auto gap-5 pb-4 hide-scroll snap-x snap-mandatory">
-                            </div>
-                    </div>
-
-                    <div class="sticky top-[64px] bg-white/95 backdrop-blur-md z-30 py-4 -mx-4 px-4 sm:mx-0 sm:px-0 border-b border-gray-100 mb-8" id="sport-filters">
-                        <div class="flex overflow-x-auto gap-3 hide-scroll">
-                            <button onclick="filterVenues('All', this)" class="filter-pill active">All Venues</button>
-                            <button onclick="filterVenues('Football', this)" class="filter-pill">⚽ Football</button>
-                            <button onclick="filterVenues('Cricket', this)" class="filter-pill">🏏 Cricket</button>
-                            <button onclick="filterVenues('Chess', this)" class="filter-pill">♟️ Chess</button>
-                            <button onclick="filterVenues('Carrom', this)" class="filter-pill">🎯 Carrom</button>
-                        </div>
-                    </div>
-                    
-                    <div id="venue-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+            <div id="login-box" class="space-y-4">
+                <input type="text" id="login-id" placeholder="Phone or Email" class="input-dark">
+                <input type="password" id="login-pass" placeholder="Password" class="input-dark">
+                <button onclick="handleLogin('player')" id="login-btn" class="w-full py-4 btn-neon text-lg mt-2">Enter Arena</button>
+                <div class="flex justify-between items-center mt-4">
+                    <p onclick="toggleAuth('admin')" class="text-xs text-red-400 font-bold cursor-pointer">Partner Portal</p>
+                    <p onclick="toggleAuth('register')" class="text-xs text-cyan-400 font-bold cursor-pointer">New Athlete? Join</p>
                 </div>
             </div>
 
-            <div id="view-rank" class="hidden max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <h2 class="text-3xl font-black text-gray-900 mb-8">City Leaderboard</h2>
-                <div id="rank-list" class="space-y-4"></div>
+            <div id="admin-login-box" class="hidden space-y-4">
+                <h3 class="text-red-500 font-bold text-center mb-2">Partner Access</h3>
+                <input type="text" id="admin-login-id" placeholder="Partner ID" class="input-dark border-red-500/30">
+                <input type="password" id="admin-login-pass" placeholder="Passkey" class="input-dark border-red-500/30">
+                <button onclick="handleLogin('admin')" id="admin-btn-login" class="w-full py-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition shadow-[0_0_15px_rgba(220,38,38,0.4)]">Access Ledger</button>
+                <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-500 cursor-pointer mt-2">Return</p>
             </div>
 
-            <div id="view-admin" class="hidden max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-3xl font-black text-gray-900">Partner Dashboard</h2>
-                    <span class="px-3 py-1 bg-red-100 text-red-700 text-xs font-bold uppercase rounded-lg border border-red-200">Admin Mode</span>
+            <div id="register-box" class="hidden space-y-3">
+                <input type="text" id="reg-name" placeholder="Full Name*" class="input-dark py-3 text-sm">
+                <div class="grid grid-cols-2 gap-3"><input type="tel" id="reg-phone" placeholder="Phone*" class="input-dark py-3 text-sm" maxlength="10"><input type="email" id="reg-email" placeholder="Email*" class="input-dark py-3 text-sm"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="date" id="reg-dob" class="input-dark py-3 text-sm text-gray-400">
+                    <select id="reg-blood" class="input-dark py-3 text-sm text-gray-400"><option value="">Blood</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option></select>
                 </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-soft">
-                        <h3 class="text-lg font-bold text-gray-900 mb-4 border-b border-gray-100 pb-3">Update Existing Arena</h3>
-                        <div class="space-y-4">
-                            <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-1 block">Target Arena</label><select id="admin-venue-select" class="input-box" onchange="loadAdminVenueData()"></select></div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-1 block">Slot Cap</label><input type="number" id="admin-cap" class="input-box"></div>
-                                <div><label class="text-[10px] text-gray-500 font-bold uppercase mb-1 block">Times</label><input type="text" id="admin-times" class="input-box text-sm"></div>
-                            </div>
-                            <button onclick="updateVenue()" id="admin-btn" class="w-full py-3.5 bg-gray-900 hover:bg-black text-white font-bold rounded-xl transition">Sync to Cloud Database</button>
-                        </div>
-                    </div>
-
-                    <div id="owner-panel" class="hidden bg-green-50/50 rounded-3xl p-6 border border-green-100 shadow-soft">
-                        <h3 class="text-lg font-bold text-[#00b562] mb-4 border-b border-green-200/50 pb-3">Deploy New Arena</h3>
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div><label class="text-[10px] text-green-700 font-bold uppercase block mb-1">Sport</label><input type="text" id="new-v-sport" class="input-box bg-white text-sm"></div>
-                            <div><label class="text-[10px] text-green-700 font-bold uppercase block mb-1">Arena Name</label><input type="text" id="new-v-name" class="input-box bg-white text-sm"></div>
-                            <div><label class="text-[10px] text-green-700 font-bold uppercase block mb-1">Location</label><input type="text" id="new-v-loc" class="input-box bg-white text-sm"></div>
-                            <div><label class="text-[10px] text-green-700 font-bold uppercase block mb-1">Price/Slot (₹)</label><input type="number" id="new-v-price" class="input-box bg-white text-sm"></div>
-                            <div><label class="text-[10px] text-green-700 font-bold uppercase block mb-1">Type</label><select id="new-v-type" class="input-box bg-white text-sm"><option value="outdoor">Outdoor</option><option value="indoor">Indoor</option></select></div>
-                            <div><label class="text-[10px] text-green-700 font-bold uppercase block mb-1">Status</label><select id="new-v-status" class="input-box bg-white text-sm"><option value="Active">Active</option><option value="Pending">Pending</option></select></div>
-                            <div class="col-span-2"><label class="text-[10px] text-green-700 font-bold uppercase block mb-1">Image URL / Emoji</label><input type="text" id="new-v-img" class="input-box bg-white text-sm"></div>
-                        </div>
-                        <button onclick="deployNewVenue()" id="add-venue-btn" class="w-full py-3.5 btn-primary shadow-glow">Push Live to Network</button>
-                    </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <select id="reg-sport" class="input-dark py-3 text-sm text-gray-400"><option value="Football">Football</option><option value="Cricket">Cricket</option><option value="Chess">Chess</option><option value="Carrom">Carrom</option></select>
+                    <select id="reg-skill" class="input-dark py-3 text-sm text-gray-400"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro</option></select>
                 </div>
-            </div>
-        </main>
-
-        <a href="https://wa.me/918777096107?text=Hi%20SquadUp%20Support,%20I%20need%20help%20with%20a%20booking." target="_blank" class="fixed bottom-24 md:bottom-8 right-4 md:right-8 bg-[#25D366] text-white p-3.5 rounded-full shadow-glow z-50 hover:scale-110 transition-transform flex items-center justify-center">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 21.031c-1.638 0-3.237-.436-4.646-1.261l-.334-.197-3.45.905.92-3.364-.216-.345a8.956 8.956 0 01-1.378-4.768c0-4.945 4.026-8.971 8.971-8.971 2.398 0 4.639.934 6.334 2.63A8.932 8.932 0 0121.002 12c0 4.945-4.026 8.971-8.971 8.971zm0-16.143C7.942 4.888 4.622 8.208 4.622 12.29c0 1.309.34 2.587.986 3.714l.115.2-1.442 5.275 5.394-1.414.195.115c1.1.65 2.348.993 3.633.993 4.083 0 7.403-3.32 7.403-7.403 0-1.97-.768-3.824-2.161-5.217a7.355 7.355 0 00-5.228-2.161h-.485zM16.13 14.1c-.225-.113-1.332-.656-1.538-.731-.205-.075-.355-.113-.505.113-.15.225-.58 1.73-.711 2.081-.131.352-.262.39-.487.278-.225-.113-.951-.35-1.811-1.118-.669-.597-1.12-1.335-1.251-1.56-.131-.225-.014-.347.098-.46.1-.101.225-.262.337-.393.112-.131.15-.225.225-.375.075-.15.037-.281-.019-.394-.056-.113-.505-1.218-.692-1.668-.182-.439-.367-.379-.505-.386h-.431c-.15 0-.393.056-.599.281-.206.225-.787.768-.787 1.875s.805 2.174.918 2.324c.112.15 1.583 2.414 3.834 3.385.536.231.954.369 1.28.473.538.171 1.026.146 1.413.088.431-.064 1.332-.544 1.519-1.069.187-.525.187-.975.131-1.069-.056-.094-.206-.15-.431-.263z"/></svg>
-        </a>
-
-        <nav id="bottom-nav" class="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-100 px-6 py-3 flex justify-between items-center z-40 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
-            <button onclick="switchTab('feed')" class="flex flex-col items-center gap-1 text-[#00b562] nav-icon transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="text-[10px] font-bold">Explore</span>
-            </button>
-            <button onclick="switchTab('rank')" class="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-900 nav-icon transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
-                <span class="text-[10px] font-bold">Rank</span>
-            </button>
-            <button id="nav-btn-admin-mobile" onclick="switchTab('admin')" class="hidden flex flex-col items-center gap-1 text-gray-400 hover:text-red-600 nav-icon transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                <span class="text-[10px] font-bold">Partner</span>
-            </button>
-            <button onclick="showModal('about-modal')" class="flex flex-col items-center gap-1 text-gray-400 hover:text-gray-900 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span class="text-[10px] font-bold">Info</span>
-            </button>
-        </nav>
-
-        <div id="modal-backdrop" class="fixed inset-0 bg-gray-900/60 z-[150] modal-overlay md:flex md:items-center md:justify-center md:p-6" onclick="closeSheet()">
-            <div id="booking-sheet" class="fixed md:relative bottom-0 left-0 right-0 md:w-full md:max-w-xl bg-white rounded-t-3xl md:rounded-3xl z-[160] bottom-sheet md:transform-none shadow-2xl flex flex-col" onclick="event.stopPropagation()">
-                
-                <div class="p-6 flex-shrink-0 border-b border-gray-100 bg-gray-50 rounded-t-3xl md:rounded-t-3xl">
-                    <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 md:hidden"></div>
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h2 class="text-2xl font-black text-gray-900 tracking-tight" id="book-venue-name">Arena Name</h2>
-                            <p id="book-venue-sport" class="text-xs text-[#00b562] font-bold uppercase tracking-widest mt-1">Sport</p>
-                        </div>
-                        <button onclick="closeSheet()" class="w-8 h-8 bg-white rounded-full border border-gray-200 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-100 transition hidden md:flex">✕</button>
-                    </div>
-                </div>
-                
-                <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-6 max-h-[60vh] md:max-h-[50vh]">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <label class="text-sm font-bold text-gray-900 block">Select Athletes</label>
-                            <p class="text-[10px] text-gray-500 uppercase font-bold">Limits apply per arena</p>
-                        </div>
-                        <div class="flex items-center gap-3 bg-gray-50 p-1.5 rounded-full border border-gray-200">
-                            <button onclick="adjCount(-1)" class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-gray-600 hover:bg-gray-50">-</button>
-                            <input type="number" id="book-count" min="1" max="10" value="1" class="w-10 bg-transparent text-center text-lg font-black text-gray-900 outline-none" onchange="updatePrice()" readonly>
-                            <button onclick="adjCount(1)" class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center font-bold text-gray-600 hover:bg-gray-50">+</button>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block">Play Date</label>
-                            <input type="date" id="book-date" class="input-box py-2.5 text-sm" onchange="handleDateChange()">
-                        </div>
-                        <div>
-                            <label class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block">Time Shift</label>
-                            <select id="book-time" class="input-box py-2.5 text-sm" onchange="checkAvailability()"></select>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-[#00b562]/10 p-3.5 rounded-xl border border-[#00b562]/20 flex items-center justify-between">
-                        <span class="text-xs font-bold text-[#009650] uppercase tracking-wide">Availability</span>
-                        <span id="slot-status" class="text-sm font-black text-[#00b562]">Checking...</span>
-                    </div>
-                    
-                    <div>
-                        <label class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block">Payment Protocol</label>
-                        <select id="book-pay" class="input-box py-3 font-semibold text-gray-900" onchange="toggleWarning()"></select>
-                    </div>
-                    
-                    <div id="liquidation-warning" class="hidden bg-orange-50 text-orange-700 text-[11px] font-medium p-4 rounded-xl border border-orange-100"></div>
-                </div>
-
-                <div class="p-6 border-t border-gray-100 bg-white md:rounded-b-3xl flex items-center justify-between pb-safe">
-                    <div>
-                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Total Due Now</p>
-                        <p id="total-price" class="text-3xl font-black text-[#00b562]">₹0</p>
-                    </div>
-                    <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-4 btn-primary shadow-glow text-base w-1/2">Secure Slot</button>
-                </div>
+                <input type="password" id="reg-pass" placeholder="Create Password*" class="input-dark py-3 text-sm">
+                <button onclick="handleRegister()" id="reg-btn" class="w-full py-4 btn-neon mt-2">Generate ID</button>
+                <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-400 cursor-pointer mt-2 hover:text-white">Already registered?</p>
             </div>
         </div>
+    </div>
 
-        <div id="about-modal" class="hidden fixed inset-0 bg-gray-900/70 z-[200] flex items-center justify-center p-4 backdrop-blur-sm modal-overlay">
-            <div class="bg-white p-8 rounded-3xl max-w-sm w-full text-center shadow-2xl modal-content">
-                <h2 class="text-2xl font-black mb-4 text-[#00b562]">SquadUp</h2>
-                <p class="text-gray-600 text-sm leading-relaxed mb-6 font-medium">Kolkata's premier digital sports network. We are building the infrastructure for the next generation of elite athletes, providing real-time access to the city's finest turfs.</p>
-                <button onclick="closeModal('about-modal')" class="w-full py-3.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition">Close</button>
+    <header id="main-nav" class="fixed w-full top-0 z-50 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <h1 class="text-3xl font-black tracking-tight text-white">Squad<span class="text-cyan-400">Up</span></h1>
+                </div>
+                
+                <nav class="hidden md:flex gap-8 items-center">
+                    <a href="#venues-section" class="text-sm font-bold text-gray-300 hover:text-cyan-400 transition">Venues</a>
+                    <a href="#how-it-works" class="text-sm font-bold text-gray-300 hover:text-cyan-400 transition">How it Works</a>
+                    <button id="nav-btn-admin-desktop" onclick="switchView('admin')" class="hidden text-sm font-bold text-red-500 hover:text-red-400 transition">Partner Panel</button>
+                    
+                    <div id="auth-state-btn">
+                        <button onclick="openAuth()" class="bg-white/10 hover:bg-white/20 text-white px-6 py-2.5 rounded-full font-bold text-sm transition border border-white/10">Sign In</button>
+                    </div>
+                </nav>
+
+                <button class="md:hidden text-white" onclick="openAuth()" id="mobile-auth-btn">
+                    <span class="bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-full font-bold text-xs border border-cyan-500/30">LOGIN</span>
+                </button>
             </div>
         </div>
+    </header>
+
+    <div id="main-app" class="flex flex-col min-h-screen">
         
-        <div id="disc-modal" class="hidden fixed inset-0 bg-gray-900/70 z-[200] flex items-center justify-center p-4 backdrop-blur-sm modal-overlay">
-            <div class="bg-white p-8 rounded-3xl max-w-sm w-full shadow-2xl modal-content">
-                <h2 class="text-xl font-black mb-4 text-red-600 uppercase border-b border-red-100 pb-3">Legal Disclaimer</h2>
-                <div class="text-gray-600 text-xs leading-relaxed mb-6 space-y-3 max-h-64 overflow-y-auto pr-2 hide-scroll font-medium">
-                    <p><b>1. Risk:</b> Using facilities involves physical risks. SquadUp is not liable for injury.</p>
-                    <p><b>2. Aggregator Scope:</b> SquadUp acts strictly as a software interface.</p>
-                    <p><b>3. Verification:</b> Carry a valid ID to the venue. Management may deny entry without refund if ID is missing.</p>
+        <section class="relative w-full h-[90vh] flex items-center overflow-hidden">
+            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-playing-football-on-a-dark-field-41154-large.mp4" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 hero-overlay z-10"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="reveal-left">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                            <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest">Live in Kolkata</span>
+                        </div>
+                        <h1 class="text-5xl md:text-7xl font-black text-white leading-[1.1] tracking-tight mb-6">
+                            Find and Book Your <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Perfect Turf.</span>
+                        </h1>
+                        <p class="text-lg text-gray-400 font-medium mb-8 max-w-lg">
+                            India's most advanced sports network. Book premium arenas instantly with Razorpay crypto-verification. 
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="#venues-section" class="btn-neon px-8 py-4 text-sm md:text-base">Book Now</a>
+                            <button onclick="sortVenuesByProximity()" class="bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-xl font-bold text-sm md:text-base transition border border-white/10 flex items-center gap-2">
+                                📍 Near Me
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="hidden lg:flex justify-center relative reveal-right">
+                        <div class="absolute inset-0 bg-cyan-500/20 blur-[100px] rounded-full"></div>
+                        <div class="mockup-frame w-[300px] h-[600px] bg-slate-900 transform rotate-[-5deg] hover:rotate-0 transition-transform duration-500">
+                            <div class="mockup-notch"></div>
+                            <div class="p-4 pt-12 h-full flex flex-col">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="font-black text-xl">SquadUp</h3>
+                                    <div class="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-black text-xs border border-cyan-500/30">P</div>
+                                </div>
+                                <div class="bg-slate-800 rounded-xl p-4 mb-4 border border-slate-700">
+                                    <p class="text-[10px] text-cyan-400 font-bold uppercase mb-1">Upcoming Match</p>
+                                    <p class="font-bold text-white mb-2">Sector V Sportsplex</p>
+                                    <div class="flex justify-between text-xs text-gray-400"><span>Today, 8:00 PM</span><span>₹359 / Slot</span></div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3 mb-4">
+                                    <div class="bg-slate-800 h-24 rounded-xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-2xl mb-1">⚽</span><span class="text-[10px] font-bold text-gray-400">Football</span></div>
+                                    <div class="bg-slate-800 h-24 rounded-xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-2xl mb-1">🏏</span><span class="text-[10px] font-bold text-gray-400">Cricket</span></div>
+                                </div>
+                                <div class="mt-auto bg-gradient-to-r from-cyan-500 to-blue-600 p-4 rounded-xl text-center shadow-glow">
+                                    <p class="font-bold text-white text-sm">Secure Slot via UPI</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button onclick="closeModal('disc-modal')" class="w-full py-3.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition">I Acknowledge</button>
+            </div>
+        </section>
+
+        <section class="border-y border-white/5 bg-slate-900/50 backdrop-blur">
+            <div class="max-w-7xl mx-auto px-4 py-8 reveal">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-white/5">
+                    <div><h3 class="text-3xl font-black text-white mb-1">160+</h3><p class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Active Arenas</p></div>
+                    <div><h3 class="text-3xl font-black text-white mb-1">10k+</h3><p class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Athletes</p></div>
+                    <div><h3 class="text-3xl font-black text-cyan-400 mb-1">100%</h3><p class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Secure UPI</p></div>
+                    <div><h3 class="text-3xl font-black text-white mb-1">24/7</h3><p class="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Support</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="py-24 bg-var(--midnight) relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 blur-[100px] rounded-full"></div>
+            <div class="max-w-7xl mx-auto px-4 relative z-10">
+                <div class="text-center mb-16 reveal">
+                    <p class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-2">Process</p>
+                    <h2 class="text-3xl md:text-4xl font-black text-white">Streamline. Manage. Play.</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card-dark p-8 text-center reveal">
+                        <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-slate-700 shadow-inner text-2xl">🔍</div>
+                        <h3 class="text-xl font-bold text-white mb-3">Search</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Explore the largest network of premium sports facilities across Kolkata using our live-inventory matrix.</p>
+                    </div>
+                    <div class="card-dark p-8 text-center reveal" style="transition-delay: 100ms;">
+                        <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-slate-700 shadow-inner text-2xl">⚡</div>
+                        <h3 class="text-xl font-bold text-white mb-3">Book</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Lock your slot instantly. Pay just a 20% token advance via Razorpay to confirm your squad's turf.</p>
+                    </div>
+                    <div class="card-dark p-8 text-center reveal" style="transition-delay: 200ms;">
+                        <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-slate-700 shadow-inner text-2xl">🏆</div>
+                        <h3 class="text-xl font-bold text-white mb-3">Play</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">You’re the hero. Arrive at the venue, verify your ID, and step onto the pitch. The scene is set.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="venues-section" class="py-16 bg-slate-900/30 border-t border-white/5 min-h-[50vh]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 reveal">
+                    <h2 class="text-3xl font-black text-white mb-4 md:mb-0">Explore Arenas</h2>
+                    <div class="flex overflow-x-auto gap-3 hide-scroll pb-2" id="sport-filters">
+                        <button onclick="filterVenues('All', this)" class="filter-pill active">All</button>
+                        <button onclick="filterVenues('Football', this)" class="filter-pill bg-transparent border-white/10 text-gray-400 hover:text-white">⚽ Football</button>
+                        <button onclick="filterVenues('Cricket', this)" class="filter-pill bg-transparent border-white/10 text-gray-400 hover:text-white">🏏 Cricket</button>
+                        <button onclick="filterVenues('Chess', this)" class="filter-pill bg-transparent border-white/10 text-gray-400 hover:text-white">♟️ Chess</button>
+                        <button onclick="filterVenues('Carrom', this)" class="filter-pill bg-transparent border-white/10 text-gray-400 hover:text-white">🎯 Carrom</button>
+                    </div>
+                </div>
+                
+                <div id="venue-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 reveal">
+                    <div class="col-span-full text-center py-20 text-gray-500 font-bold">Please <span class="text-cyan-400 cursor-pointer underline" onclick="openAuth()">Sign In</span> to view live arena inventory.</div>
+                </div>
+
+                <div id="view-admin" class="hidden reveal">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="card-dark p-8">
+                            <h3 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">Update Ledger</h3>
+                            <div class="space-y-4">
+                                <div><label class="text-[10px] text-gray-400 font-bold uppercase mb-1 block">Target Arena</label><select id="admin-venue-select" class="input-dark" onchange="loadAdminVenueData()"></select></div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div><label class="text-[10px] text-gray-400 font-bold uppercase mb-1 block">Slot Cap</label><input type="number" id="admin-cap" class="input-dark"></div>
+                                    <div><label class="text-[10px] text-gray-400 font-bold uppercase mb-1 block">Times</label><input type="text" id="admin-times" class="input-dark text-sm"></div>
+                                </div>
+                                <button onclick="updateVenue()" id="admin-btn" class="w-full py-4 bg-white text-black hover:bg-gray-200 font-bold rounded-xl transition">Sync to Cloud</button>
+                            </div>
+                        </div>
+
+                        <div id="owner-panel" class="hidden card-dark p-8 border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.1)]">
+                            <h3 class="text-xl font-bold text-cyan-400 mb-6 border-b border-white/10 pb-4">Deploy New Arena</h3>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1">Sport</label><input type="text" id="new-v-sport" class="input-dark text-sm"></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1">Arena Name</label><input type="text" id="new-v-name" class="input-dark text-sm"></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1">Location</label><input type="text" id="new-v-loc" class="input-dark text-sm"></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1">Price/Slot (₹)</label><input type="number" id="new-v-price" class="input-dark text-sm"></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1">Type</label><select id="new-v-type" class="input-dark text-sm"><option value="outdoor">Outdoor</option><option value="indoor">Indoor</option></select></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1">Status</label><select id="new-v-status" class="input-dark text-sm"><option value="Active">Active</option><option value="Pending">Pending</option></select></div>
+                                <div class="col-span-2"><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1">Image URL / Emoji</label><input type="text" id="new-v-img" class="input-dark text-sm"></div>
+                            </div>
+                            <button onclick="deployNewVenue()" id="add-venue-btn" class="w-full py-4 btn-neon">Push Live to Network</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <footer class="bg-slate-950 border-t border-white/10 pt-16 pb-8 mt-auto relative z-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                    <div class="md:col-span-2">
+                        <h2 class="text-3xl font-black text-white tracking-tight mb-4">Squad<span class="text-cyan-400">Up</span></h2>
+                        <p class="text-gray-400 text-sm leading-relaxed max-w-sm mb-6">India's leading sports venue booking and hosting platform. Football, cricket, board games, and premium sports grounds online.</p>
+                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Operated by Easycommune Online Services Pvt Ltd</p>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-4">Network</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="#" onclick="showDisclaimer()" class="hover:text-cyan-400 transition">Legal Disclaimer</a></li>
+                            <li><a href="#" class="hover:text-cyan-400 transition">Refund Policy</a></li>
+                            <li><a href="#" class="hover:text-cyan-400 transition">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold mb-4">Connect</h4>
+                        <p class="text-sm text-gray-400 mb-4">support@squadup.in</p>
+                        <div class="flex gap-4">
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-cyan-500 hover:text-white transition text-gray-400">IG</a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-blue-600 hover:text-white transition text-gray-400">FB</a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-red-600 hover:text-white transition text-gray-400">YT</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-xs text-gray-600 font-medium">© 2026 SquadUp Network. All rights reserved.</p>
+                    <div class="text-xs text-gray-600 font-medium">Built for Kolkata.</div>
+                </div>
+            </div>
+        </footer>
+
+    </div> <a href="https://wa.me/918777096107?text=Hi%20SquadUp%20Support,%20I%20need%20help%20with%20a%20booking." target="_blank" class="fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.4)] z-50 hover:scale-110 transition-transform duration-300 flex items-center justify-center group reveal-right">
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 21.031c-1.638 0-3.237-.436-4.646-1.261l-.334-.197-3.45.905.92-3.364-.216-.345a8.956 8.956 0 01-1.378-4.768c0-4.945 4.026-8.971 8.971-8.971 2.398 0 4.639.934 6.334 2.63A8.932 8.932 0 0121.002 12c0 4.945-4.026 8.971-8.971 8.971zm0-16.143C7.942 4.888 4.622 8.208 4.622 12.29c0 1.309.34 2.587.986 3.714l.115.2-1.442 5.275 5.394-1.414.195.115c1.1.65 2.348.993 3.633.993 4.083 0 7.403-3.32 7.403-7.403 0-1.97-.768-3.824-2.161-5.217a7.355 7.355 0 00-5.228-2.161h-.485zM16.13 14.1c-.225-.113-1.332-.656-1.538-.731-.205-.075-.355-.113-.505.113-.15.225-.58 1.73-.711 2.081-.131.352-.262.39-.487.278-.225-.113-.951-.35-1.811-1.118-.669-.597-1.12-1.335-1.251-1.56-.131-.225-.014-.347.098-.46.1-.101.225-.262.337-.393.112-.131.15-.225.225-.375.075-.15.037-.281-.019-.394-.056-.113-.505-1.218-.692-1.668-.182-.439-.367-.379-.505-.386h-.431c-.15 0-.393.056-.599.281-.206.225-.787.768-.787 1.875s.805 2.174.918 2.324c.112.15 1.583 2.414 3.834 3.385.536.231.954.369 1.28.473.538.171 1.026.146 1.413.088.431-.064 1.332-.544 1.519-1.069.187-.525.187-.975.131-1.069-.056-.094-.206-.15-.431-.263z"/></svg>
+        <span class="absolute right-16 bg-white text-gray-900 text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg pointer-events-none">Chat with Admin</span>
+    </a>
+
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/60 z-[150] modal-overlay flex items-end md:items-center justify-center p-0 md:p-6" onclick="closeSheet()">
+        <div id="booking-sheet" class="w-full md:max-w-xl bg-slate-900 rounded-t-3xl md:rounded-3xl z-[160] bottom-sheet md:transform-none shadow-2xl flex flex-col border border-white/10" onclick="event.stopPropagation()">
+            
+            <div class="p-6 flex-shrink-0 border-b border-white/10 bg-slate-800/50 rounded-t-3xl md:rounded-t-3xl">
+                <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-4 md:hidden"></div>
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-black text-white tracking-tight" id="book-venue-name">Arena Name</h2>
+                        <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1">Sport</p>
+                    </div>
+                    <button onclick="closeSheet()" class="w-8 h-8 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 transition hidden md:flex">✕</button>
+                </div>
+            </div>
+            
+            <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-6 max-h-[60vh]">
+                <div class="flex justify-between items-center bg-slate-800/30 p-4 rounded-2xl border border-white/5">
+                    <div>
+                        <label class="text-sm font-bold text-white block">Select Athletes</label>
+                        <p class="text-[10px] text-gray-500 uppercase font-bold">Limits apply per arena</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-900 p-1.5 rounded-full border border-white/10">
+                        <button onclick="adjCount(-1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition">-</button>
+                        <input type="number" id="book-count" min="1" max="10" value="1" class="w-8 bg-transparent text-center text-lg font-black text-white outline-none" onchange="updatePrice()" readonly>
+                        <button onclick="adjCount(1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition">+</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block">Play Date</label>
+                        <input type="date" id="book-date" class="input-dark py-3 text-sm" onchange="handleDateChange()">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block">Time Shift</label>
+                        <select id="book-time" class="input-dark py-3 text-sm" onchange="checkAvailability()"></select>
+                    </div>
+                </div>
+                
+                <div class="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-center justify-between">
+                    <span class="text-xs font-bold text-cyan-500 uppercase tracking-wide">Availability</span>
+                    <span id="slot-status" class="text-sm font-black text-white">Checking...</span>
+                </div>
+                
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block">Payment Protocol</label>
+                    <select id="book-pay" class="input-dark py-4 font-semibold text-white" onchange="toggleWarning()"></select>
+                </div>
+                
+                <div id="liquidation-warning" class="hidden bg-orange-500/10 text-orange-400 text-[11px] font-medium p-4 rounded-xl border border-orange-500/20"></div>
+            </div>
+
+            <div class="p-6 border-t border-white/10 bg-slate-800/50 md:rounded-b-3xl flex items-center justify-between pb-safe">
+                <div>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5">Total Due Now</p>
+                    <p id="total-price" class="text-3xl font-black text-white">₹0</p>
+                </div>
+                <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-4 btn-neon text-base w-1/2">Secure Slot</button>
             </div>
         </div>
-    </div> <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; // PASTE /EXEC URL HERE
+    </div>
+
+    <div id="disc-modal" class="hidden fixed inset-0 bg-black/80 z-[300] flex items-center justify-center p-4 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="card-dark p-8 max-w-sm w-full shadow-2xl relative transform scale-95 transition-transform duration-300" id="disc-card">
+            <h2 class="text-2xl font-black mb-4 text-red-500 uppercase border-b border-white/10 pb-3">Legal Policy</h2>
+            <div class="text-gray-400 text-xs leading-relaxed mb-6 space-y-4 max-h-64 overflow-y-auto pr-2 hide-scroll font-medium">
+                <p><b>1. Risk:</b> Using facilities involves physical risks. SquadUp is not liable for injury.</p>
+                <p><b>2. Aggregator Scope:</b> SquadUp acts strictly as a software interface.</p>
+                <p><b>3. Verification:</b> Carry a valid ID to the venue. Management may deny entry without refund if ID is missing.</p>
+            </div>
+            <button onclick="closeDisclaimer()" class="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition">I Acknowledge</button>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; // <--- PASTE YOUR /EXEC URL HERE
         
         let currentUser = null; let activeVenue = null; window.venues = [];
         let tapCount = 0; let tapTimer; let currentFilter = 'All';
 
-        // AUTH & NAVIGATION
+        // --- PRELOADER & SCROLL ANIMATIONS ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                setTimeout(() => { preloader.style.display = 'none'; }, 600);
+            }, 800); // Slight delay for theatrical effect
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Sticky Nav logic
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+
+        // --- AUTH LOGIC ---
         function ghostTrigger() {
             tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(() => tapCount = 0, 1500);
             if(tapCount === 5) {
@@ -376,22 +430,51 @@
             }
         }
         function hideAdminLogin() { document.getElementById('admin-login-box').classList.add('hidden'); document.getElementById('login-box').classList.remove('hidden'); }
-        function showForgot(show) { document.getElementById('login-box').classList.toggle('hidden', show); document.getElementById('forgot-box').classList.toggle('hidden', !show); }
-        function toggleAuth(type) { document.getElementById('login-box').classList.toggle('hidden', type !== 'login'); document.getElementById('register-box').classList.toggle('hidden', type !== 'register'); document.getElementById('admin-login-box').classList.add('hidden'); }
-        
-        function showModal(id) { 
-            document.getElementById(id).classList.remove('hidden'); 
-            setTimeout(() => { document.getElementById(id).classList.add('open'); }, 10);
+        function toggleAuth(type) { 
+            document.getElementById('login-box').classList.add('hidden');
+            document.getElementById('register-box').classList.add('hidden');
+            document.getElementById('admin-login-box').classList.add('hidden');
+            
+            if(type === 'login') document.getElementById('login-box').classList.remove('hidden');
+            if(type === 'register') document.getElementById('register-box').classList.remove('hidden');
+            if(type === 'admin') document.getElementById('admin-login-box').classList.remove('hidden');
         }
-        function closeModal(id) { 
-            let modal = document.getElementById(id);
-            modal.classList.remove('open');
-            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+
+        function openAuth() {
+            const overlay = document.getElementById('auth-overlay');
+            const card = document.getElementById('auth-card');
+            overlay.classList.remove('opacity-0', 'pointer-events-none');
+            card.classList.remove('scale-95');
+            card.classList.add('scale-100');
+        }
+
+        function closeAuth() {
+            const overlay = document.getElementById('auth-overlay');
+            const card = document.getElementById('auth-card');
+            card.classList.remove('scale-100');
+            card.classList.add('scale-95');
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function showDisclaimer() {
+            const overlay = document.getElementById('disc-modal');
+            const card = document.getElementById('disc-card');
+            overlay.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => { card.classList.remove('scale-95'); card.classList.add('scale-100'); }, 10);
+        }
+
+        function closeDisclaimer() {
+            const overlay = document.getElementById('disc-modal');
+            const card = document.getElementById('disc-card');
+            card.classList.remove('scale-100');
+            card.classList.add('scale-95');
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => { overlay.classList.add('hidden'); }, 300);
         }
         
         function logout() { localStorage.clear(); location.reload(); }
 
-        // TIMEZONE & PAST DATE/TIME LOGIC
+        // --- TIMEZONE & DATE LOGIC ---
         function getLocalISODate() {
             const now = new Date();
             const offset = now.getTimezoneOffset() * 60000;
@@ -456,7 +539,7 @@
             }
         }
 
-        // GEOLOCATION
+        // --- GEOLOCATION ---
         function getDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
@@ -465,15 +548,24 @@
 
         function sortVenuesByProximity() {
             if (navigator.geolocation) {
+                const btn = event.currentTarget;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = `📍 Locating...`;
+                
                 navigator.geolocation.getCurrentPosition((pos) => {
                     window.venues.forEach(v => { if(v.lat && v.lon) v.distance = getDistance(pos.coords.latitude, pos.coords.longitude, v.lat, v.lon).toFixed(1); });
                     window.venues.sort((a, b) => (a.distance || 99) - (b.distance || 99));
                     filterVenues(currentFilter, null); 
+                    btn.innerHTML = `📍 Sorted by Distance`;
+                    setTimeout(() => { btn.innerHTML = originalText; }, 3000);
+                }, () => {
+                    btn.innerHTML = `❌ Location Denied`;
+                    setTimeout(() => { btn.innerHTML = originalText; }, 3000);
                 });
             }
         }
 
-        // BACKEND CALLS
+        // --- BACKEND API CALLS ---
         function fetchJSONP(params) { 
             return new Promise((resolve) => { 
                 const callbackName = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000); 
@@ -490,13 +582,14 @@
             const idField = type === 'admin' ? 'admin-login-id' : 'login-id';
             const passField = type === 'admin' ? 'admin-login-pass' : 'login-pass';
             
-            btn.innerText = "Authenticating..."; btn.classList.add('opacity-70', 'cursor-wait');
+            const originalText = btn.innerText;
+            btn.innerText = "Authenticating..."; btn.classList.add('opacity-50', 'cursor-wait');
             const res = await fetchJSONP({ action: 'login', loginId: document.getElementById(idField).value, password: document.getElementById(passField).value });
             
             if(res.status === 'success') {
-                currentUser = res.user; window.venues = res.venues || []; 
-                window.activeBookings = res.bookings || []; 
+                currentUser = res.user; window.venues = res.venues || []; window.activeBookings = res.bookings || []; 
                 
+                // Inject Pending Roster (As per original logic)
                 const pendingVenues = [
                     { sport: "Football", name: "Sector V Sportsplex", loc: "Pending Deployment", price: 359, type: "outdoor", cap: 10, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1574629810360-7efbb6b69711?auto=format&fit=crop&w=800&q=80", times: "" },
                     { sport: "Cricket", name: "Kasba Turf Edge", loc: "Pending Deployment", price: 179, type: "outdoor", cap: 14, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80", times: "" },
@@ -505,146 +598,120 @@
                 ];
                 pendingVenues.forEach(p => { if(!window.venues.find(v => v.name === p.name)) window.venues.push(p); });
                 
-                document.getElementById('auth-overlay').style.display = 'none'; 
-                document.getElementById('main-content').classList.remove('hidden');
-                document.getElementById('bottom-nav').classList.remove('hidden');
+                closeAuth();
                 
-                document.getElementById('user-name').innerText = currentUser.name.split(' ')[0]; 
-                document.getElementById('avatar').innerText = currentUser.name[0].toUpperCase();
+                // Update Desktop Nav State
+                document.getElementById('auth-state-btn').innerHTML = `
+                    <div class="relative group cursor-pointer flex items-center gap-3">
+                        <div class="text-right">
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none mb-1">Athlete</p>
+                            <p class="text-sm font-bold text-white leading-none">${currentUser.name.split(' ')[0]}</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-cyan-500/20 border border-cyan-500/50 flex items-center justify-center text-cyan-400 font-black text-lg shadow-glow">${currentUser.name[0].toUpperCase()}</div>
+                        <div class="absolute right-0 top-12 mt-2 w-48 bg-slate-800 rounded-xl shadow-2xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2">
+                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-400 font-bold hover:bg-white/5 transition">Sign Out</button>
+                        </div>
+                    </div>`;
+                
+                // Hide Mobile Login Btn
+                document.getElementById('mobile-auth-btn').style.display = 'none';
                 
                 if(currentUser.role === 'owner' || currentUser.role === 'staff') {
-                    document.getElementById('nav-btn-admin-mobile').classList.remove('hidden');
                     document.getElementById('nav-btn-admin-desktop').classList.remove('hidden');
+                    if(currentUser.role === 'owner') document.getElementById('owner-panel').classList.remove('hidden');
                     populateAdminSelect();
                 }
                 
                 renderRankings();
                 filterVenues('All', document.querySelector('.filter-pill')); 
-                sortVenuesByProximity(); 
+                
+                // Auto-scroll to venues after login
+                setTimeout(() => { document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'}); }, 500);
+
             } else { 
                 alert(res.msg); 
-                btn.innerText = type === 'admin' ? "Access Ledger" : "Sign In"; 
-                btn.classList.remove('opacity-70', 'cursor-wait'); 
+                btn.innerText = originalText; 
+                btn.classList.remove('opacity-50', 'cursor-wait'); 
             }
         }
 
         async function handleRegister() {
-            const btn = document.getElementById('reg-btn'); btn.innerText = "Creating..."; btn.classList.add('opacity-70');
+            const btn = document.getElementById('reg-btn'); btn.innerText = "Creating..."; btn.classList.add('opacity-50');
             const phoneVal = document.getElementById('reg-phone').value;
-            if(phoneVal.length !== 10 || isNaN(phoneVal)) { alert("Phone number must be exactly 10 digits."); btn.innerText = "Join the Network"; btn.classList.remove('opacity-70'); return; }
+            if(phoneVal.length !== 10 || isNaN(phoneVal)) { alert("Phone number must be exactly 10 digits."); btn.innerText = "Join the Network"; btn.classList.remove('opacity-50'); return; }
             const data = { action: 'register', name: document.getElementById('reg-name').value, phone: phoneVal, email: document.getElementById('reg-email').value, password: document.getElementById('reg-pass').value, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value };
-            fetchJSONP(data).then(res => { if(res.status === 'success') { alert("Account Created! Please Login."); toggleAuth('login'); } else { alert(res.msg); } btn.innerText = "Join the Network"; btn.classList.remove('opacity-70'); });
-        }
-        
-        async function handleForgot() { const res = await fetchJSONP({ action: 'forgot', email: document.getElementById('forgot-email').value, newPassword: document.getElementById('forgot-new-pass').value }); alert(res.msg); if(res.status === 'success') showForgot(false); }
-
-        // NAVIGATION & RENDERING
-        function switchTab(tabId) {
-            document.querySelectorAll('.nav-icon').forEach(b => { b.classList.remove('text-[#00b562]'); b.classList.add('text-gray-400'); });
-            if(event && event.currentTarget.classList.contains('nav-icon')) {
-                event.currentTarget.classList.remove('text-gray-400'); event.currentTarget.classList.add('text-[#00b562]');
-            }
-            
-            document.querySelectorAll('header nav button').forEach(b => {
-                b.classList.remove('text-gray-900', 'border-[#00b562]');
-                b.classList.add('text-gray-500', 'border-transparent');
-            });
-            if(event && event.currentTarget.tagName === 'BUTTON' && !event.currentTarget.classList.contains('nav-icon')) {
-                event.currentTarget.classList.remove('text-gray-500', 'border-transparent');
-                event.currentTarget.classList.add('text-gray-900', 'border-[#00b562]');
-            }
-            
-            document.getElementById('view-feed').classList.add('hidden');
-            document.getElementById('view-rank').classList.add('hidden');
-            document.getElementById('view-admin').classList.add('hidden');
-            
-            if(tabId === 'feed') { document.getElementById('view-feed').classList.remove('hidden'); } 
-            else if (tabId === 'rank') { document.getElementById('view-rank').classList.remove('hidden'); } 
-            else if (tabId === 'admin') { document.getElementById('view-admin').classList.remove('hidden'); }
-            window.scrollTo(0, 0);
+            fetchJSONP(data).then(res => { if(res.status === 'success') { alert("Account Created! Please Login."); toggleAuth('login'); } else { alert(res.msg); } btn.innerText = "Join the Network"; btn.classList.remove('opacity-50'); });
         }
 
-        // RENDER TRENDING (Top 4)
-        function renderTrending(filteredVenues) {
-            const trendCont = document.getElementById('trending-carousel');
-            trendCont.innerHTML = '';
-            
-            const topVenues = filteredVenues.filter(v => v.status !== 'Pending').slice(0, 4);
-            if(topVenues.length === 0) { document.getElementById('trending-section').classList.add('hidden'); return; }
-            document.getElementById('trending-section').classList.remove('hidden');
-
-            topVenues.forEach(v => {
-                const visual = v.type === 'outdoor' 
-                    ? `<img src="${v.img}" class="w-full h-40 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500">` 
-                    : `<div class="w-full h-40 bg-gray-50 flex items-center justify-center text-6xl rounded-2xl border border-gray-100 group-hover:scale-105 transition-transform duration-500">${v.img}</div>`;
-
-                trendCont.innerHTML += `
-                <div class="min-w-[280px] max-w-[280px] flex-shrink-0 snap-center cursor-pointer group" onclick="openBooking('${v.name}')">
-                    <div class="relative overflow-hidden rounded-2xl shadow-sm border border-gray-100">
-                        <div class="absolute top-3 right-3 z-10 bg-white/90 backdrop-blur px-2 py-1 rounded-md text-[10px] font-black text-gray-900 shadow-sm">₹${v.price} <span class="text-gray-400">/ SLOT</span></div>
-                        ${visual}
-                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-gray-900 to-transparent p-4 pt-12">
-                            <h4 class="text-white font-black text-lg leading-tight truncate">${v.name}</h4>
-                            <p class="text-[#00b562] text-xs font-bold mt-1 uppercase tracking-widest">${v.sport}</p>
-                        </div>
-                    </div>
-                </div>`;
-            });
+        // --- GRID RENDERING ---
+        function switchView(viewId) {
+            if(viewId === 'admin') {
+                document.getElementById('venue-grid').classList.add('hidden');
+                document.getElementById('sport-filters').classList.add('hidden');
+                document.getElementById('view-admin').classList.remove('hidden');
+            }
         }
 
         function filterVenues(sport, btnElement) {
             currentFilter = sport;
             if(btnElement) {
                 document.querySelectorAll('.filter-pill').forEach(b => {
-                    b.classList.remove('bg-gray-900', 'text-white', 'border-gray-900');
-                    b.classList.add('bg-white', 'text-gray-600', 'border-gray-200');
+                    b.classList.remove('bg-white', 'text-slate-900', 'border-white');
+                    b.classList.add('bg-transparent', 'text-gray-400', 'border-white/10');
                 });
-                btnElement.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
-                btnElement.classList.add('bg-gray-900', 'text-white', 'border-gray-900');
+                btnElement.classList.remove('bg-transparent', 'text-gray-400', 'border-white/10');
+                btnElement.classList.add('bg-white', 'text-slate-900', 'border-white');
             }
             
             const cont = document.getElementById('venue-grid'); cont.innerHTML = '';
+            
+            // If not logged in, show lock message
+            if(!currentUser) {
+                cont.innerHTML = `<div class="col-span-full text-center py-20 bg-slate-800/50 rounded-2xl border border-white/5"><p class="text-gray-400 font-medium mb-4">Please sign in to access live inventory.</p><button onclick="openAuth()" class="btn-neon px-8 py-3 text-sm">Secure Access</button></div>`;
+                return;
+            }
+
             let filtered = window.venues;
             if(sport !== 'All') filtered = window.venues.filter(v => v.sport === sport);
             
-            if(sport === 'All') renderTrending(filtered);
-            else document.getElementById('trending-section').classList.add('hidden');
-            
             if(filtered.length === 0) { cont.innerHTML = `<div class="col-span-full text-center py-12"><p class="text-gray-500 font-medium">No arenas found for ${sport}.</p></div>`; return; }
 
-            filtered.forEach(v => {
+            filtered.forEach((v, index) => {
                 const isP = v.status === "Pending";
-                const distDisplay = v.distance ? `<span class="bg-emerald-50 text-emerald-700 text-[10px] px-2 py-0.5 rounded-md font-bold ml-2 whitespace-nowrap">${v.distance} km</span>` : '';
+                const distDisplay = v.distance ? `<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] px-2 py-0.5 rounded font-bold ml-2 whitespace-nowrap tracking-wider">${v.distance} km</span>` : '';
                 
                 const visual = v.type === 'outdoor' 
-                    ? `<img src="${v.img}" class="w-full h-48 lg:h-52 object-cover ${isP ? 'grayscale opacity-60' : ''}">` 
-                    : `<div class="h-48 lg:h-52 flex items-center justify-center text-7xl bg-gray-50 border-b border-gray-100 ${isP ? 'opacity-40' : ''}">${v.img}</div>`;
+                    ? `<img src="${v.img}" class="w-full h-48 lg:h-52 object-cover transition-transform duration-700 hover:scale-105 ${isP ? 'grayscale opacity-40' : ''}">` 
+                    : `<div class="h-48 lg:h-52 flex items-center justify-center text-7xl bg-slate-800 border-b border-white/5 transition-transform duration-700 hover:scale-105 ${isP ? 'opacity-40' : ''}">${v.img}</div>`;
                 
                 const btn = isP 
-                    ? `<button class="bg-gray-100 text-gray-400 px-6 py-2.5 rounded-xl text-sm font-bold cursor-not-allowed w-full border border-gray-200">Deploying Soon</button>` 
-                    : `<button onclick="openBooking('${v.name}')" class="btn-primary px-6 py-2.5 rounded-xl text-sm w-full shadow-soft hover:-translate-y-0.5 transition-transform">Book Slot</button>`;
+                    ? `<button class="bg-white/5 text-gray-500 px-6 py-3 rounded-xl text-sm font-bold cursor-not-allowed w-full border border-white/5">Deploying Soon</button>` 
+                    : `<button onclick="openBooking('${v.name}')" class="btn-neon px-6 py-3 rounded-xl text-sm w-full">Book Slot</button>`;
 
                 const rideOptions = isP ? '' : `
-                <div class="mt-5 pt-4 border-t border-gray-100 grid grid-cols-3 gap-2">
-                    <a href="https://m.uber.com/ul/?action=setPickup&dropoff[query]=${v.map}" target="_blank" class="py-2.5 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-500 text-center hover:bg-gray-100 hover:text-gray-900 transition">Uber</a>
-                    <a href="https://www.rapido.bike/" target="_blank" class="py-2.5 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-500 text-center hover:bg-gray-100 hover:text-gray-900 transition">Rapido</a>
-                    <a href="https://indrive.com/" target="_blank" class="py-2.5 bg-gray-50 rounded-xl text-[10px] font-bold text-gray-500 text-center hover:bg-gray-100 hover:text-gray-900 transition">InDrive</a>
+                <div class="mt-4 pt-4 border-t border-white/5 grid grid-cols-3 gap-2">
+                    <a href="https://m.uber.com/ul/?action=setPickup&dropoff[query]=${v.map}" target="_blank" class="py-2.5 bg-white/5 rounded-xl text-[9px] font-bold text-gray-400 text-center uppercase tracking-widest hover:bg-white/10 hover:text-white transition border border-white/5">Uber</a>
+                    <a href="https://www.rapido.bike/" target="_blank" class="py-2.5 bg-white/5 rounded-xl text-[9px] font-bold text-gray-400 text-center uppercase tracking-widest hover:bg-white/10 hover:text-white transition border border-white/5">Rapido</a>
+                    <a href="https://indrive.com/" target="_blank" class="py-2.5 bg-white/5 rounded-xl text-[9px] font-bold text-gray-400 text-center uppercase tracking-widest hover:bg-white/10 hover:text-white transition border border-white/5">InDrive</a>
                 </div>`;
 
+                // Add staggered animation delay
+                const delay = index * 100;
+
                 cont.innerHTML += `
-                <div class="venue-card relative flex flex-col h-full">
-                    ${isP ? '<div class="absolute top-4 left-4 bg-gray-900/90 backdrop-blur-sm text-white text-[10px] px-2.5 py-1 rounded shadow-sm font-bold uppercase z-10 tracking-widest">Pending</div>' : ''}
-                    <div class="overflow-hidden rounded-t-2xl">${visual}</div>
-                    <div class="p-5 flex flex-col flex-grow">
-                        <div class="flex justify-between items-start mb-3 flex-grow">
-                            <div class="pr-2">
-                                <p class="text-[10px] text-[#00b562] font-black uppercase mb-1 tracking-wider">${v.sport}</p>
-                                <h3 class="font-extrabold text-gray-900 text-lg leading-tight line-clamp-1">${v.name}</h3>
-                                <p class="text-xs text-gray-500 font-medium mt-1.5 flex items-center line-clamp-1">${v.loc} ${distDisplay}</p>
+                <div class="card-dark relative flex flex-col h-full reveal" style="transition-delay: ${delay}ms">
+                    ${isP ? '<div class="absolute top-4 left-4 bg-red-500 text-white text-[9px] px-2.5 py-1 rounded shadow-[0_0_10px_rgba(239,68,68,0.5)] font-bold uppercase z-10 tracking-widest">Locked</div>' : ''}
+                    <div class="overflow-hidden">${visual}</div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-4 flex-grow">
+                            <div class="pr-3">
+                                <p class="text-[10px] text-cyan-400 font-black uppercase mb-1.5 tracking-widest">${v.sport}</p>
+                                <h3 class="font-extrabold text-white text-lg leading-tight line-clamp-1 mb-1">${v.name}</h3>
+                                <p class="text-xs text-gray-400 font-medium flex items-center line-clamp-1">${v.loc} ${distDisplay}</p>
                             </div>
-                            <div class="text-right bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100 flex-shrink-0">
-                                <p class="text-[9px] text-emerald-600 uppercase font-bold tracking-widest mb-0.5">Athlete</p>
-                                <p class="text-lg font-black text-gray-900 leading-none">₹${v.price}</p>
+                            <div class="text-right bg-slate-800 px-3 py-2 rounded-xl border border-slate-700 flex-shrink-0">
+                                <p class="text-[8px] text-gray-400 uppercase font-bold tracking-widest mb-0.5">Price / Head</p>
+                                <p class="text-xl font-black text-white leading-none">₹${v.price}</p>
                             </div>
                         </div>
                         <div class="mt-auto">
@@ -654,49 +721,12 @@
                     </div>
                 </div>`;
             });
+            
+            // Re-trigger observer for new elements
+            document.querySelectorAll('#venue-grid .reveal').forEach(el => observer.observe(el));
         }
 
-        function renderRankings() {
-            const uName = currentUser ? currentUser.name : "Player";
-            const uSkill = currentUser && currentUser.skill ? currentUser.skill : "Intermediate";
-            const list = document.getElementById('rank-list');
-            list.innerHTML = `
-                <div class="bg-white rounded-2xl p-6 border-l-4 border-[#00b562] shadow-sm border-t border-r border-b border-gray-100">
-                    <div class="flex justify-between items-center mb-5">
-                        <div>
-                            <span class="font-black text-gray-900 text-xl flex items-center gap-2">Rahul Das <span class="bg-gray-900 text-white text-[10px] px-2 py-0.5 rounded-md font-bold uppercase tracking-widest shadow">#1 Pro</span></span>
-                            <span class="text-xs text-gray-500 font-bold uppercase mt-1 tracking-widest">Football</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="font-black text-[#00b562] block text-3xl">42</span>
-                            <span class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Matches</span>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-xl flex justify-between items-center text-sm font-bold border border-gray-100">
-                        <span class="text-gray-600">Conduct Rating</span>
-                        <span class="text-[#00b562] text-lg tracking-widest">★★★★★</span>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-2xl p-6 border border-gray-200 mt-4 opacity-90">
-                    <div class="flex justify-between items-center mb-5">
-                        <div>
-                            <span class="font-black text-gray-900 text-xl flex items-center gap-2">${uName}</span>
-                            <span class="text-xs text-gray-500 font-bold uppercase mt-1 tracking-widest">${uSkill}</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="font-black text-gray-900 block text-3xl">12</span>
-                            <span class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Matches</span>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-xl flex justify-between items-center text-sm font-bold border border-gray-100">
-                        <span class="text-gray-600">Conduct Rating</span>
-                        <span class="text-yellow-400 text-lg tracking-widest">★★★★☆</span>
-                    </div>
-                </div>`;
-        }
-
-        // BOOKING ENGINE
+        // --- BOOKING LOGIC (Bottom Sheet) ---
         function openBooking(name) {
             activeVenue = window.venues.find(v => v.name === name); 
             document.getElementById('book-venue-name').innerText = activeVenue.name; 
@@ -730,11 +760,12 @@
             const warning = document.getElementById('liquidation-warning');
             
             if(payType === 'Token') {
-                warning.innerHTML = "⚠️ <span class=\"font-bold text-orange-800\">2-Hour Rule:</span> Digital check-in required. Balance due at venue.";
-                warning.className = "bg-orange-50 text-orange-700 text-[11px] p-3.5 rounded-xl border border-orange-100 block font-medium";
+                warning.innerHTML = "⚠️ <span class=\"font-bold text-orange-500\">2-Hour Rule:</span> Digital check-in required. Balance due at venue.";
+                warning.classList.remove('hidden');
             } else if (payType === 'Waitlist') {
-                warning.innerHTML = "🕒 <span class=\"font-bold text-blue-800\">Standby Mode:</span> No payment now. You will be notified if a squad cancels.";
-                warning.className = "bg-blue-50 text-blue-700 text-[11px] p-3.5 rounded-xl border border-blue-100 block font-medium";
+                warning.innerHTML = "🕒 <span class=\"font-bold text-cyan-400\">Standby Mode:</span> No payment now. You will be notified if a squad cancels.";
+                warning.classList.remove('hidden');
+                warning.className = "bg-cyan-500/10 text-cyan-400 text-[11px] font-medium p-4 rounded-xl border border-cyan-500/20 mt-4";
             } else {
                 warning.classList.add('hidden');
             }
@@ -749,7 +780,7 @@
 
             if(!rawDate || !timeSelect.value) {
                 statusEl.innerText = "NO SLOTS LEFT";
-                statusEl.className = "text-sm font-black text-red-600";
+                statusEl.className = "text-sm font-black text-red-500";
                 btn.disabled = true;
                 btn.classList.add('opacity-50', 'cursor-not-allowed');
                 document.getElementById('total-price').innerText = `₹0`;
@@ -775,11 +806,11 @@
             if(remaining < 0) remaining = 0;
 
             if(remaining === 0) {
-                statusEl.innerText = "SOLD OUT"; statusEl.className = "text-sm font-black text-red-600";
+                statusEl.innerText = "SOLD OUT"; statusEl.className = "text-sm font-black text-red-500";
             } else if (remaining <= 2) {
-                statusEl.innerText = `ONLY ${remaining} LEFT`; statusEl.className = "text-sm font-black text-orange-600";
+                statusEl.innerText = `ONLY ${remaining} LEFT`; statusEl.className = "text-sm font-black text-orange-400";
             } else {
-                statusEl.innerText = `${remaining} AVAILABLE`; statusEl.className = "text-sm font-black text-[#00b562]";
+                statusEl.innerText = `${remaining} AVAILABLE`; statusEl.className = "text-sm font-black text-cyan-400";
             }
             
             const countInput = document.getElementById('book-count');
@@ -842,7 +873,7 @@
             if(count >= 6) tokenPct = 1.00; 
             let finalAmount = payType === 'Token' && tokenPct < 1.00 ? Math.ceil(total * tokenPct) : total;
 
-            btn.innerText = "Securing..."; btn.classList.add('opacity-70', 'cursor-wait');
+            btn.innerText = "Securing..."; btn.classList.add('opacity-50', 'cursor-wait');
             const orderRes = await fetchJSONP({ action:'createOrder', amount: finalAmount });
             const fDate = rawDate.split("-").reverse().join("-");
 
@@ -854,7 +885,7 @@
                 "description": `${activeVenue.name} Booking`,
                 "order_id": orderRes.order.id,
                 "prefill": { "contact": currentUser.phone || "", "name": currentUser.name },
-                "theme": { "color": "#00b562" },
+                "theme": { "color": "#06b6d4" }, // Neon Cyan
                 "handler": async (res) => {
                     btn.innerText = "Verifying...";
                     const verify = await fetchJSONP({
@@ -865,16 +896,16 @@
                     });
                     
                     if(verify.status === "success") { alert("Booking Confirmed!"); location.reload(); } 
-                    else { alert(verify.msg); btn.innerText = "Secure Slot"; btn.classList.remove('opacity-70', 'cursor-wait'); }
+                    else { alert(verify.msg); btn.innerText = "Secure Slot"; btn.classList.remove('opacity-50', 'cursor-wait'); }
                 }
             };
             
             const rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (response){ alert("Payment Failed."); btn.innerText = "Secure Slot"; btn.classList.remove('opacity-70', 'cursor-wait'); });
+            rzp.on('payment.failed', function (response){ alert("Payment Failed."); btn.innerText = "Secure Slot"; btn.classList.remove('opacity-50', 'cursor-wait'); });
             rzp.open();
         }
 
-        // ADMIN TOOLS
+        // --- ADMIN TOOLS ---
         function populateAdminSelect() {
             const select = document.getElementById('admin-venue-select'); select.innerHTML = '';
             window.venues.forEach(v => { select.innerHTML += `<option value="${v.name}">${v.sport} - ${v.name}</option>`; });
@@ -887,7 +918,7 @@
         async function updateVenue() {
             const btn = document.getElementById('admin-btn'); btn.innerText = "Updating...";
             const res = await fetchJSONP({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
-            alert(res.msg); btn.innerText = "Sync to Cloud Database"; if(res.status==='success') { loadAdminVenueData(); }
+            alert(res.msg); btn.innerText = "Sync to Cloud"; if(res.status==='success') { loadAdminVenueData(); }
         }
         async function deployNewVenue() {
             const btn = document.getElementById('add-venue-btn'); btn.innerText = "Pushing...";
