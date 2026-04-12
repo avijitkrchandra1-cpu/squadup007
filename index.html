@@ -18,11 +18,19 @@
         }
         body { font-family: 'Outfit', sans-serif; background-color: var(--onyx); color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
-        /* Preloader */
-        #preloader { position: fixed; inset: 0; background: var(--onyx); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1); }
-        .loader-text { font-size: 3rem; font-weight: 900; letter-spacing: -0.05em; background: linear-gradient(135deg, #fff, var(--neon-cyan), var(--electric-indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: loaderGlow 2s infinite; }
-        @keyframes loaderGlow { 0% { filter: drop-shadow(0 0 5px var(--neon-cyan-glow)); } 50% { filter: drop-shadow(0 0 15px var(--neon-cyan-glow)); } 100% { filter: drop-shadow(0 0 5px var(--neon-cyan-glow)); } }
+        /* Theatrical Preloader */
+        #preloader { position: fixed; inset: 0; background: var(--onyx); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.6s ease; }
+        .seq-word { opacity: 0; transform: translateY(20px); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.05em; animation: popUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @media (min-width: 768px) { .seq-word { font-size: 4.5rem; } }
+        @media (min-width: 1024px) { .seq-word { font-size: 6rem; } }
         
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.6s; }
+        .delay-3 { animation-delay: 1.0s; }
+        .delay-4 { animation-delay: 1.4s; }
+        
+        @keyframes popUp { to { opacity: 1; transform: translateY(0); } }
+
         /* Custom Animations */
         .reveal { opacity: 0; transform: translateY(60px) scale(0.98); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
@@ -44,13 +52,12 @@
         .input-luxe { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); color: white; border-radius: 0.75rem; padding: 1rem; width: 100%; outline: none; transition: 0.3s; }
         .input-luxe:focus { border-color: var(--neon-cyan); background: rgba(255,255,255,0.05); box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.1); }
         
-        /* THE INVISIBLE SHIELD FIX: pointer-events: none added to ::after */
         .card-luxe { background: var(--surface-glass); border: 1px solid rgba(255,255,255,0.04); border-radius: 1.5rem; transition: all 0.5s cubic-bezier(0.5, 0, 0, 1); position: relative; overflow: hidden; background-image: var(--glass-pattern); }
         .card-luxe::after { content:''; position: absolute; inset:0; box-shadow: inset 0 0 0px var(--neon-cyan-glow); transition: all 0.5s; pointer-events: none; }
         .card-luxe:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(6, 182, 212, 0.2); box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
         .card-luxe:hover::after { box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.1); }
 
-        /* Phone Mockup (Luxe Edition) */
+        /* Phone Mockup */
         .mockup-frame { border: 14px solid #1e293b; border-radius: 3rem; overflow: hidden; box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 50px var(--neon-cyan-glow); position: relative; transition: transform 0.1s ease-out; }
         .mockup-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 45%; height: 28px; background: #1e293b; border-bottom-left-radius: 1.2rem; border-bottom-right-radius: 1.2rem; z-index: 20; }
         .mockup-inner { background-image: var(--glass-pattern); background-color: #0f172a; height: 100%; display: flex; flex-direction: column; padding: 1rem; padding-top: 3.5rem; }
@@ -64,27 +71,45 @@
 
         /* Overlays & Sheets */
         .hero-overlay { background: linear-gradient(110deg, var(--onyx) 15%, rgba(2,6,23,0.7) 60%, rgba(2,6,23,0.2) 100%); pointer-events: none; }
+        .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(20px); }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
         
         /* Pills & Badges */
         .filter-pill { padding: 0.6rem 1.5rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.01); color: #94a3b8; font-weight: 700; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: 0.3s; letter-spacing: 0.05em; }
         .filter-pill.active { background: white; color: var(--onyx); border-color: white; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
         
-        /* Premium Text Styles */
         .tracking-premium { letter-spacing: -0.05em; }
         .tracking-wide { letter-spacing: 0.1em; }
         .luxe-shadow { filter: drop-shadow(0 0 10px var(--neon-cyan-glow)); }
 
-        /* NEW MAP SECTION */
-        #kolkata-silhouette { stroke: #334155; stroke-width: 0.5; fill: none; filter: drop-shadow(0 0 5px rgba(255,255,255,0.1)); opacity: 0.6; }
-        .kolkata-node { animation: nodePulse 3s infinite; }
-        @keyframes nodePulse { 0% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 5px var(--neon-cyan-glow)); } 50% { transform: scale(1.3); opacity: 0.7; filter: drop-shadow(0 0 15px var(--neon-cyan-glow)); } 100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 5px var(--neon-cyan-glow)); } }
+        /* MAP ANIMATION CSS */
+        .pulse-line {
+            stroke: var(--neon-cyan);
+            stroke-width: 3;
+            fill: none;
+            stroke-dasharray: 10, 15;
+            animation: dataFlow 1.5s linear infinite;
+            opacity: 0.7;
+        }
+        .pulse-line-indigo { stroke: var(--electric-indigo); animation-direction: reverse; }
+        @keyframes dataFlow { to { stroke-dashoffset: -25; } }
+        
+        .core-node { animation: corePulse 2s infinite; transform-origin: center; transform-box: fill-box; }
+        @keyframes corePulse { 0% { transform: scale(1); filter: drop-shadow(0 0 10px var(--neon-cyan)); } 50% { transform: scale(1.3); filter: drop-shadow(0 0 25px var(--neon-cyan)); } 100% { transform: scale(1); filter: drop-shadow(0 0 10px var(--neon-cyan)); } }
+        
+        .ping-ring { animation: pingRing 2s cubic-bezier(0, 0, 0.2, 1) infinite; fill: none; stroke: var(--neon-cyan); stroke-width: 2; transform-origin: center; transform-box: fill-box;}
+        @keyframes pingRing { 75%, 100% { transform: scale(3); opacity: 0; } }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased selection:bg-cyan-500 selection:text-white">
 
     <div id="preloader">
-        <h1 class="loader-text">SQUADUP</h1>
-        <p class="text-slate-500 font-bold tracking-wide uppercase text-xs mt-3">Accessing Inventory...</p>
+        <div class="flex space-x-3 md:space-x-5 items-center">
+            <span class="seq-word delay-1 text-white">Enter</span>
+            <span class="seq-word delay-2 text-cyan-400 luxe-shadow">The</span>
+            <span class="seq-word delay-3 text-white">Elite</span>
+            <span class="seq-word delay-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">Arena</span>
+        </div>
     </div>
 
     <div id="auth-overlay" class="hidden fixed inset-0 z-[200] bg-black/80 flex items-center justify-center p-4 backdrop-blur-3xl opacity-0 pointer-events-none transition-opacity duration-400" onclick="closeAuth()">
@@ -115,14 +140,14 @@
 
             <div id="register-box" class="hidden space-y-4">
                 <input type="text" id="reg-name" placeholder="Full Name*" class="input-luxe py-3.5 text-sm">
-                <div class="grid grid-cols-2 gap-4"><input type="tel" id="reg-phone" placeholder="Phone*" class="input-luxe py-3.5 text-sm" maxlength="10"><input type="email" id="reg-email" placeholder="Email*" class="input-luxe py-3.5 text-sm"></div>
+                <div class="grid grid-cols-2 gap-4"><input type="tel" id="reg-phone" placeholder="Phone (10 Digits)" class="input-luxe py-3.5 text-sm" maxlength="10"><input type="email" id="reg-email" placeholder="Email*" class="input-luxe py-3.5 text-sm"></div>
                 <div class="grid grid-cols-2 gap-4">
                     <input type="date" id="reg-dob" class="input-luxe py-3.5 text-sm text-gray-500">
                     <select id="reg-blood" class="input-luxe py-3.5 text-sm text-gray-500"><option value="">Blood</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option></select>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <select id="reg-sport" class="input-luxe py-3.5 text-sm text-gray-500"><option value="Football">Football</option><option value="Cricket">Cricket</option><option value="Chess">Chess</option><option value="Carrom">Carrom</option></select>
-                    <select id="reg-skill" class="input-luxe py-3.5 text-sm text-gray-500"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro</option></select>
+                    <select id="reg-skill" class="input-luxe py-3.5 text-sm text-gray-500"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro Player</option></select>
                 </div>
                 <input type="password" id="reg-pass" placeholder="Create Password*" class="input-luxe py-3.5 text-sm">
                 <button onclick="handleRegister()" id="reg-btn" class="w-full py-4.5 btn-luxe mt-3 relative z-10">Sign Up</button>
@@ -258,32 +283,79 @@
                 </div>
             </section>
 
-            <section class="py-32 bg-slate-950/40 border-y border-white/5 relative overflow-hidden">
-                <div class="absolute inset-0 opacity-[0.01]" style="background-image: var(--glass-pattern)"></div>
+            <section class="py-32 relative overflow-hidden bg-slate-900 border-t border-white/5">
+                <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: var(--glass-pattern)"></div>
+                
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                        <div class="relative flex justify-center items-center reveal-left order-2 lg:order-1 h-[500px]">
+                        
+                        <div class="relative w-full h-[400px] md:h-[600px] flex items-center justify-center reveal-left order-2 lg:order-1 bg-slate-950/50 rounded-[3rem] border border-white/5 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
                             <div class="absolute w-[300px] h-[300px] bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none"></div>
                             
-                            <svg viewBox="0 0 100 100" class="w-full max-w-lg" id="map-viz">
-                                <path id="kolkata-silhouette" d="M30 10 L40 12 L45 15 L50 20 L53 28 L52 35 L55 40 L58 45 L56 50 L58 55 L56 60 L58 65 L60 70 L65 72 L70 70 L75 73 L80 72 L85 75 L90 73 L92 78 L95 82 L90 85 L85 88 L80 87 L75 89 L70 87 L65 90 L60 88 L55 91 L50 89 L45 92 L40 90 L35 93 L30 91 L25 94 L20 92 L15 95 L10 93 L8 88 L5 83 L8 78 L5 73 L8 68 L5 63 L8 58 L5 53 L8 48 L5 43 L8 38 L5 33 L8 28 L5 23 L8 18 L10 13 Z"></path>
-                                
-                                <circle cx="50" cy="50" r="2" fill="var(--neon-cyan)" class="kolkata-node"></circle>
-                                <text x="50" y="50" font-family="'Outfit', sans-serif" font-weight="900" font-size="1.5" text-anchor="middle" dy="0.3em" fill="white" filter="drop-shadow(0 0 5px var(--neon-cyan-glow))" pointer-events="none">LIVE Kolkata</text>
-                                
-                                <path d="M10 10 L90 10 L90 90 L10 90 Z" fill="none" stroke="slate-800" stroke-width="0.1" opacity="0.3"></path>
+                            <svg viewBox="0 0 800 800" class="w-full h-full absolute pointer-events-none">
+                                <path d="M280,150 Q320,80 380,120 Q450,180 500,250 Q600,280 700,350 Q750,450 680,500 Q650,550 580,650 Q520,750 480,820 Q440,750 380,650 Q320,550 250,480 Q150,420 180,320 Q220,220 280,150 Z" stroke="#1e293b" stroke-width="2" fill="none" stroke-dasharray="10,10" opacity="0.5"/>
+                                <path d="M280,150 Q320,80 380,120 Q450,180 500,250 Q600,280 700,350 Q750,450 680,500 Q650,550 580,650 Q520,750 480,820 Q440,750 380,650 Q320,550 250,480 Q150,420 180,320 Q220,220 280,150 Z" stroke="#334155" stroke-width="0.5" fill="rgba(30, 41, 59, 0.2)" opacity="0.3" transform="scale(0.95) translate(20, 20)"/>
+                            </svg>
+                            
+                            <svg viewBox="0 0 800 800" class="w-full h-full absolute z-10 pointer-events-none">
+                                <defs>
+                                    <linearGradient id="cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#06b6d4" stop-opacity="0" />
+                                        <stop offset="100%" stop-color="#06b6d4" stop-opacity="1" />
+                                    </linearGradient>
+                                    <linearGradient id="indigo-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#6366f1" stop-opacity="0" />
+                                        <stop offset="100%" stop-color="#6366f1" stop-opacity="1" />
+                                    </linearGradient>
+                                </defs>
+
+                                <line x1="600" y1="450" x2="320" y2="250" class="pulse-line" />
+                                <line x1="600" y1="450" x2="200" y2="500" class="pulse-line pulse-line-indigo" />
+                                <line x1="600" y1="450" x2="400" y2="680" class="pulse-line" />
+                                <line x1="600" y1="450" x2="320" y2="620" class="pulse-line pulse-line-indigo" />
+                                <line x1="600" y1="450" x2="720" y2="320" class="pulse-line" />
+
+                                <circle cx="600" cy="450" r="30" class="ping-ring" />
+                                <circle cx="600" cy="450" r="15" fill="var(--neon-cyan)" class="core-node" />
+                                <text x="600" y="495" fill="white" font-weight="900" font-family="Outfit" font-size="22" text-anchor="middle" filter="drop-shadow(0 0 10px rgba(6,182,212,1))">KOLKATA</text>
+                                <text x="600" y="520" fill="var(--neon-cyan)" font-weight="bold" font-family="Outfit" font-size="12" text-anchor="middle" letter-spacing="3">LIVE HUB</text>
+
+                                <circle cx="320" cy="250" r="8" fill="white" opacity="0.8" />
+                                <text x="320" y="230" fill="gray" font-family="Outfit" font-size="14" text-anchor="middle" font-weight="bold">DELHI</text>
+
+                                <circle cx="200" cy="500" r="8" fill="white" opacity="0.8" />
+                                <text x="180" y="490" fill="gray" font-family="Outfit" font-size="14" text-anchor="end" font-weight="bold">MUMBAI</text>
+
+                                <circle cx="320" cy="620" r="8" fill="white" opacity="0.8" />
+                                <text x="300" y="625" fill="gray" font-family="Outfit" font-size="14" text-anchor="end" font-weight="bold">BENGALURU</text>
+
+                                <circle cx="400" cy="680" r="8" fill="white" opacity="0.8" />
+                                <text x="420" y="685" fill="gray" font-family="Outfit" font-size="14" text-anchor="start" font-weight="bold">CHENNAI</text>
                             </svg>
                         </div>
-                        
+
                         <div class="reveal-right order-1 lg:order-2">
-                            <div class="bg-gradient-to-r from-slate-950 via-[#0a0a0a] to-cyan-950/20 p-10 rounded-3xl border border-white/5 relative z-10">
-                                <p class="font-black text-white text-xs uppercase tracking-widest text-slate-500 mb-2 font-display luxe-shadow">SquadUp Network Scale</p>
-                                <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium leading-tight mb-6 font-display">THE KOLKATA POWER-HUB: OPERATING AT SCALE.</h2>
-                                <h3 class="text-3xl md:text-4xl font-black text-cyan-400 tracking-premium mb-8 font-display luxe-shadow">OUR VISION FOR INDIA.</h3>
-                                <p class="text-slate-400 font-medium text-sm md:text-base leading-relaxed max-w-lg font-display">Kolkata is our premiere pitch. We are building the city's premiere sports inventory engine, with intermediate plans to network Kolkata's scale to all-India availability.</p>
-                                <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mt-10 pointer-events-none">Start playing. Build the future of sport.</p>
+                            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-6 pointer-events-none">
+                                <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                                <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Network Expansion</span>
                             </div>
+                            <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium mb-6 leading-tight">
+                                THE KOLKATA POWER-HUB:<br><span class="text-cyan-400 luxe-shadow">OPERATING AT SCALE.</span>
+                            </h2>
+                            <p class="text-slate-400 text-base leading-relaxed mb-8">
+                                Kolkata is our genesis point. We have built the city's most robust and technologically advanced sports booking ledger, handling thousands of authentications with zero latency.
+                            </p>
+                            
+                            <h3 class="text-2xl font-bold text-white mb-3">Our Vision For India</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-8 border-l-2 border-indigo-500/50 pl-4 py-1">
+                                We are actively engineering the infrastructure to scale Kolkata's network capability to achieving all-India availability. The next generation of athletic routing is imminent.
+                            </p>
+
+                            <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="text-white font-bold text-sm border-b border-cyan-400 pb-1 hover:text-cyan-400 transition-colors uppercase tracking-widest">
+                                View Live Network
+                            </button>
                         </div>
+
                     </div>
                 </div>
             </section>
@@ -386,61 +458,61 @@
     </div> <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[300] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeSheet()">
         <div id="booking-sheet" class="w-full md:max-w-xl bg-[#0a0a0a] rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col border border-white/10 transform translate-y-full md:translate-y-0 md:scale-95 transition-transform duration-300 max-h-[90vh]" onclick="event.stopPropagation()">
             
-            <div class="p-8 flex-shrink-0 border-b border-white/5 bg-[#121212] rounded-t-3xl md:rounded-t-3xl relative overflow-hidden">
+            <div class="p-8 flex-shrink-0 border-b border-white/10 bg-[#121212] rounded-t-3xl md:rounded-t-3xl relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50 pointer-events-none"></div>
-                <div class="w-12 h-1.5 bg-gray-800 rounded-full mx-auto mb-6 md:hidden"></div>
+                <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-4 md:hidden"></div>
                 <div class="flex justify-between items-center pr-2">
                     <div>
-                        <h2 class="text-3xl font-black text-white tracking-premium pointer-events-none" id="book-venue-name">Arena Name</h2>
-                        <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-2 pointer-events-none">Sport</p>
+                        <h2 class="text-2xl font-black text-white tracking-tight pointer-events-none" id="book-venue-name">Arena Name</h2>
+                        <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1 pointer-events-none">Sport</p>
                     </div>
-                    <button onclick="closeSheet()" class="w-10 h-10 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 hover:text-white transition hidden md:flex text-lg relative z-10">✕</button>
+                    <button onclick="closeSheet()" class="w-8 h-8 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 transition hidden md:flex relative z-10">✕</button>
                 </div>
             </div>
             
-            <div class="p-8 overflow-y-auto hide-scroll flex-grow space-y-7 relative z-10">
-                <div class="flex justify-between items-center bg-[#121212] p-5 rounded-2xl border border-white/5">
+            <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-6 relative z-10">
+                <div class="flex justify-between items-center bg-[#121212] p-4 rounded-2xl border border-white/5">
                     <div>
                         <label class="text-sm font-bold text-white block pointer-events-none">Number of Players</label>
                         <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mt-1 font-display pointer-events-none">Limits apply per arena</p>
                     </div>
-                    <div class="flex items-center gap-3.5 bg-[#050505] p-2 rounded-full border border-white/10 relative z-10">
-                        <button onclick="adjCount(-1)" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition text-lg relative z-10">-</button>
-                        <input type="number" id="book-count" min="1" max="10" value="1" class="w-10 bg-transparent text-center text-2xl font-black text-white outline-none relative z-10" onchange="updatePrice()" readonly>
-                        <button onclick="adjCount(1)" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition text-lg relative z-10">+</button>
+                    <div class="flex items-center gap-3 bg-[#050505] p-1.5 rounded-full border border-white/10 relative z-10">
+                        <button onclick="adjCount(-1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition relative z-10">-</button>
+                        <input type="number" id="book-count" min="1" max="10" value="1" class="w-8 bg-transparent text-center text-lg font-black text-white outline-none relative z-10" onchange="updatePrice()" readonly>
+                        <button onclick="adjCount(1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition relative z-10">+</button>
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-5 relative z-10">
+                <div class="grid grid-cols-2 gap-4 relative z-10">
                     <div>
-                        <label class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Date</label>
-                        <input type="date" id="book-date" class="input-luxe py-3.5 text-sm relative z-10" onchange="handleDateChange()">
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Date</label>
+                        <input type="date" id="book-date" class="input-luxe py-3 text-sm relative z-10" onchange="handleDateChange()">
                     </div>
                     <div>
-                        <label class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Time</label>
-                        <select id="book-time" class="input-luxe py-3.5 text-sm relative z-10" onchange="checkAvailability()"></select>
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Time</label>
+                        <select id="book-time" class="input-luxe py-3 text-sm relative z-10" onchange="checkAvailability()"></select>
                     </div>
                 </div>
                 
-                <div class="bg-cyan-500/10 p-5 rounded-2xl border border-cyan-500/20 flex items-center justify-between pointer-events-none">
+                <div class="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-center justify-between pointer-events-none">
                     <span class="text-xs font-bold text-cyan-500 uppercase tracking-wide luxe-shadow">Availability</span>
-                    <span id="slot-status" class="text-base font-black text-white">Checking...</span>
+                    <span id="slot-status" class="text-sm font-black text-white">Checking...</span>
                 </div>
                 
                 <div class="relative z-10">
-                    <label class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Payment Method</label>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Payment Method</label>
                     <select id="book-pay" class="input-luxe py-4 font-semibold text-white relative z-10" onchange="toggleWarning()"></select>
                 </div>
                 
-                <div id="liquidation-warning" class="hidden bg-orange-500/10 text-orange-400 text-[11px] font-medium p-5 rounded-2xl border border-orange-500/20 leading-relaxed pointer-events-none"></div>
+                <div id="liquidation-warning" class="hidden bg-orange-500/10 text-orange-400 text-[11px] font-medium p-4 rounded-xl border border-orange-500/20 leading-relaxed pointer-events-none"></div>
             </div>
 
-            <div class="p-8 border-t border-white/5 bg-[#121212] md:rounded-b-3xl flex items-center justify-between pb-safe relative z-10">
+            <div class="p-6 border-t border-white/10 bg-[#121212] md:rounded-b-3xl flex items-center justify-between pb-safe relative z-10">
                 <div>
-                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 pointer-events-none">Total Amount</p>
-                    <p id="total-price" class="text-4xl font-black text-white luxe-shadow pointer-events-none">₹0</p>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5 pointer-events-none">Total Amount</p>
+                    <p id="total-price" class="text-3xl font-black text-white luxe-shadow pointer-events-none">₹0</p>
                 </div>
-                <button onclick="processBooking()" id="main-deploy-btn" class="px-10 py-5 btn-luxe text-base w-1/2 relative z-10">Confirm Booking</button>
+                <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-4 btn-luxe text-base w-1/2 relative z-10">Confirm Booking</button>
             </div>
         </div>
     </div>
@@ -474,7 +546,7 @@
         let currentUser = null; let activeVenue = null; window.venues = [];
         let tapCount = 0; let tapTimer; let currentFilter = 'All';
 
-        // --- SESSION MEMORY & PRELOADER ---
+        // --- SESSION MEMORY & THEATRICAL PRELOADER ---
         document.addEventListener('DOMContentLoaded', async () => {
             const preloader = document.getElementById('preloader');
             
@@ -504,9 +576,11 @@
             }
 
             if(preloader) {
-                preloader.style.pointerEvents = 'none';
-                preloader.style.opacity = '0';
-                setTimeout(() => { preloader.style.display = 'none'; }, 800);
+                setTimeout(() => {
+                    preloader.style.pointerEvents = 'none';
+                    preloader.style.opacity = '0';
+                    setTimeout(() => { preloader.style.display = 'none'; }, 600);
+                }, 2000);
             }
         });
 
@@ -635,7 +709,6 @@
             filterVenues('All', document.querySelector('.filter-pill')); 
         }
 
-        // --- TABS & ROUTING ---
         function switchTab(tabId) {
             const marketing = document.getElementById('marketing-sections');
             const feed = document.getElementById('venues-section');
@@ -723,7 +796,7 @@
 
         // --- SPATIAL ENGINE ---
         function getDistance(lat1, lon1, lat2, lon2) {
-            const R = 6331; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
+            const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
             return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         }
