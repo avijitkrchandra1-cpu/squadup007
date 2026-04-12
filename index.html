@@ -79,15 +79,16 @@
         .tracking-wide { letter-spacing: 0.1em; }
         .luxe-shadow { filter: drop-shadow(0 0 10px var(--neon-cyan-glow)); }
 
-        /* TRUE MAP ANIMATION CSS */
-        .map-layer { position: absolute; inset: 0; transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1); display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+        /* PERFECT SVG MAP ANIMATION STYLES */
+        /* Fixed display:block to prevent iframe shrinking in flex layouts */
+        .map-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1); display: block; overflow: hidden; }
         
         /* Pulse Lines for India Expansion */
-        .pulse-line { stroke: var(--neon-cyan); stroke-width: 0.8; fill: none; stroke-dasharray: 4, 6; animation: dataFlow 1.5s linear infinite; opacity: 0.8; }
-        .pulse-line-indigo { stroke: var(--electric-indigo); animation-direction: reverse; }
-        @keyframes dataFlow { to { stroke-dashoffset: -20; } }
+        .pulse-line { stroke: var(--neon-cyan); stroke-width: 0.6; fill: none; stroke-dasharray: 2, 3; animation: dataFlow 1.5s linear infinite; opacity: 0.9; filter: drop-shadow(0 0 2px var(--neon-cyan)); }
+        .pulse-line-indigo { stroke: var(--electric-indigo); animation-direction: reverse; filter: drop-shadow(0 0 2px var(--electric-indigo)); }
+        @keyframes dataFlow { to { stroke-dashoffset: -10; } }
         
-        /* India Nodes */
+        /* Nodes */
         .core-node { animation: corePulse 2s infinite; transform-origin: center; transform-box: fill-box; }
         @keyframes corePulse { 0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--neon-cyan)); } 50% { transform: scale(1.4); filter: drop-shadow(0 0 15px var(--neon-cyan)); } 100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--neon-cyan)); } }
         
@@ -95,9 +96,9 @@
         @keyframes pingRing { 75%, 100% { transform: scale(3); opacity: 0; } }
 
         /* Kolkata Specific Turfs */
-        .turf-node-k { position: absolute; background: var(--neon-cyan); border-radius: 50%; box-shadow: 0 0 15px var(--neon-cyan); animation: pulseBlink 1.5s infinite alternate; }
+        .turf-node-k { position: absolute; background: var(--neon-cyan); border-radius: 50%; box-shadow: 0 0 15px var(--neon-cyan); animation: pulseBlink 1.5s infinite alternate; transform: translate(-50%, -50%); }
         .turf-node-k::after { content: ''; position: absolute; inset: -8px; border: 2px solid var(--neon-cyan); border-radius: 50%; animation: pingRing 2s infinite; }
-        @keyframes pulseBlink { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
+        @keyframes pulseBlink { 0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); } }
     </style>
 </head>
 <body class="antialiased selection:bg-cyan-500 selection:text-white">
@@ -288,11 +289,11 @@
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         
-                        <div class="relative w-full h-[450px] md:h-[550px] flex items-center justify-center reveal-left order-2 lg:order-1 bg-slate-950 rounded-[3rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.6)] overflow-hidden">
-                            <div class="absolute w-[250px] h-[250px] bg-cyan-500/20 blur-[100px] rounded-full pointer-events-none"></div>
+                        <div class="relative w-full h-[450px] md:h-[550px] reveal-left order-2 lg:order-1 bg-slate-950 rounded-[3rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.6)] overflow-hidden">
+                            <div class="absolute w-[250px] h-[250px] bg-cyan-500/20 blur-[100px] rounded-full pointer-events-none top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0"></div>
                             
                             <div id="kolkata-view" class="map-layer opacity-100 scale-100 z-10">
-                                <iframe width="100%" height="100%" src="https://www.openstreetmap.org/export/embed.html?bbox=88.25,22.45,88.48,22.65&layer=mapnik" class="absolute inset-0 pointer-events-none" style="border:0; filter: invert(1) hue-rotate(180deg) brightness(0.7) contrast(1.5) grayscale(0.5);"></iframe>
+                                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=88.25,22.45,88.48,22.65&layer=mapnik" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; filter: invert(1) hue-rotate(180deg) brightness(0.7) contrast(1.5) grayscale(0.5); pointer-events: none;"></iframe>
                                 
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent pointer-events-none"></div>
                                 
@@ -304,7 +305,7 @@
                                     <div class="absolute text-slate-300 font-medium text-xs tracking-wide drop-shadow-[0_0_5px_black] transform -translate-y-1/2" style="top: 80.0%; left: 30%;">Behala</div>
                                     
                                     <div class="turf-node-k w-2 h-2" style="top: 30.0%; left: 95.6%; animation-delay: 0.6s"></div>
-                                    <div class="absolute text-slate-300 font-medium text-xs tracking-wide drop-shadow-[0_0_5px_black] transform -translate-x-full -translate-y-1/2 pr-3" style="top: 30.0%; left: 95.6%;">New Town</div>
+                                    <div class="absolute text-slate-300 font-medium text-xs tracking-wide drop-shadow-[0_0_5px_black] transform -translate-x-full -translate-y-1/2 pr-3" style="top: 30.0%; left: 93.0%;">New Town</div>
                                     
                                     <div class="turf-node-k w-2 h-2" style="top: 15.0%; left: 69.5%; animation-delay: 0.9s"></div>
                                     <div class="absolute text-slate-300 font-medium text-xs tracking-wide drop-shadow-[0_0_5px_black] transform -translate-y-1/2" style="top: 15.0%; left: 73%;">Dum Dum</div>
@@ -315,33 +316,29 @@
                             </div>
 
                             <div id="india-view" class="map-layer opacity-0 scale-90 pointer-events-none z-20">
-                                <svg viewBox="0 0 100 100" class="w-full h-full absolute inset-0 z-10 pointer-events-none" preserveAspectRatio="xMidYMid meet">
-                                    <image href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/India_map_en.svg/800px-India_map_en.svg.png" x="5" y="0" width="90" height="100" style="opacity: 0.85; filter: drop-shadow(0 0 5px rgba(99,102,241,0.3));" />
-                                    
-                                    <line x1="70" y1="48" x2="45" y2="28" class="pulse-line" />
-                                    <line x1="70" y1="48" x2="27" y2="58" class="pulse-line pulse-line-indigo" />
-                                    <line x1="70" y1="48" x2="42" y2="75" class="pulse-line pulse-line-indigo" />
-                                    <line x1="70" y1="48" x2="50" y2="72" class="pulse-line" />
-                                    <line x1="70" y1="48" x2="85" y2="38" class="pulse-line" />
+                                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=68.0,6.0,97.0,37.0&layer=mapnik" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; filter: invert(1) hue-rotate(180deg) brightness(0.7) contrast(1.5) grayscale(0.5); pointer-events: none;"></iframe>
+                                
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent pointer-events-none"></div>
 
-                                    <circle cx="70" cy="48" r="1.5" fill="var(--neon-cyan)" class="core-node" />
-                                    <circle cx="70" cy="48" r="4" class="ping-ring" />
-                                    <text x="70" y="44" fill="white" font-size="2.5" font-family="Outfit" font-weight="900" text-anchor="middle" filter="drop-shadow(0 0 2px rgba(0,0,0,1))">KOLKATA</text>
+                                <svg viewBox="0 0 100 100" class="w-full h-full absolute inset-0 pointer-events-none" preserveAspectRatio="none">
+                                    <line x1="70.2" y1="46.5" x2="31.7" y2="27.1" class="pulse-line" /> <line x1="70.2" y1="46.5" x2="16.8" y2="57.9" class="pulse-line pulse-line-indigo" /> <line x1="70.2" y1="46.5" x2="33.0" y2="77.5" class="pulse-line pulse-line-indigo" /> <line x1="70.2" y1="46.5" x2="42.3" y2="77.2" class="pulse-line" /> <line x1="70.2" y1="46.5" x2="81.8" y2="35.1" class="pulse-line" /> <circle cx="70.2" cy="46.5" r="1.5" fill="var(--neon-cyan)" class="core-node" />
+                                    <circle cx="70.2" cy="46.5" r="4" class="ping-ring" stroke-width="0.5"/>
+                                    <text x="70.2" y="44.5" fill="white" font-size="2" font-family="Outfit" font-weight="900" text-anchor="middle" filter="drop-shadow(0 0 2px rgba(6,182,212,1))">KOLKATA</text>
 
-                                    <circle cx="45" cy="28" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 1px black)"/>
-                                    <text x="45" y="26" fill="white" font-size="1.8" font-weight="bold" text-anchor="middle" filter="drop-shadow(0 0 1px black)">DELHI</text>
+                                    <circle cx="31.7" cy="27.1" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 2px black)"/>
+                                    <text x="31.7" y="25.5" fill="white" font-size="1.5" font-weight="bold" text-anchor="middle" filter="drop-shadow(0 0 2px black)">DELHI</text>
 
-                                    <circle cx="27" cy="58" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 1px black)"/>
-                                    <text x="25" y="57" fill="white" font-size="1.8" font-weight="bold" text-anchor="end" filter="drop-shadow(0 0 1px black)">MUMBAI</text>
+                                    <circle cx="16.8" cy="57.9" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 2px black)"/>
+                                    <text x="14.8" y="58.5" fill="white" font-size="1.5" font-weight="bold" text-anchor="end" filter="drop-shadow(0 0 2px black)">MUMBAI</text>
 
-                                    <circle cx="42" cy="75" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 1px black)"/>
-                                    <text x="40" y="76" fill="white" font-size="1.8" font-weight="bold" text-anchor="end" filter="drop-shadow(0 0 1px black)">BENGALURU</text>
+                                    <circle cx="33.0" cy="77.5" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 2px black)"/>
+                                    <text x="31.0" y="78.5" fill="white" font-size="1.5" font-weight="bold" text-anchor="end" filter="drop-shadow(0 0 2px black)">BENGALURU</text>
 
-                                    <circle cx="50" cy="72" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 1px black)"/>
-                                    <text x="52" y="73" fill="white" font-size="1.8" font-weight="bold" text-anchor="start" filter="drop-shadow(0 0 1px black)">CHENNAI</text>
+                                    <circle cx="42.3" cy="77.2" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 2px black)"/>
+                                    <text x="44.3" y="78.2" fill="white" font-size="1.5" font-weight="bold" text-anchor="start" filter="drop-shadow(0 0 2px black)">CHENNAI</text>
 
-                                    <circle cx="85" cy="38" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 1px black)"/>
-                                    <text x="85" y="36" fill="white" font-size="1.8" font-weight="bold" text-anchor="middle" filter="drop-shadow(0 0 1px black)">GUWAHATI</text>
+                                    <circle cx="81.8" cy="35.1" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 2px black)"/>
+                                    <text x="81.8" y="33.5" fill="white" font-size="1.5" font-weight="bold" text-anchor="middle" filter="drop-shadow(0 0 2px black)">GUWAHATI</text>
                                 </svg>
                             </div>
 
