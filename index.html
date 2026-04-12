@@ -174,6 +174,37 @@
                 </div>
             </section>
 
+            <section class="py-32 relative overflow-hidden bg-[#050505] z-10 border-t border-white/5">
+                <div class="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
+                    <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 reveal">
+                        <div class="mb-6 md:mb-0">
+                            <p class="text-[var(--volt)] font-bold tracking-widest text-xs uppercase mb-2 font-display">Protocol</p>
+                            <h2 class="text-4xl md:text-5xl font-black text-white tracking-tighter font-display">Kolkata's Elite Process.</h2>
+                        </div>
+                        <p class="text-gray-500 font-medium max-w-md text-sm md:text-base leading-relaxed">Streamlined management of arena inventory. Search, book, and compete in Kolkata's finest sports environments.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-auto md:h-[450px]">
+                        <div class="bg-[#0a0a0a] border border-white/5 rounded-3xl p-10 md:col-span-3 flex flex-col reveal transition-transform hover:scale-[1.02] duration-500">
+                            <div class="w-20 h-20 bg-[#121212] rounded-3xl flex items-center justify-center border border-white/10 text-3xl mb-8">🔍</div>
+                            <h3 class="text-2xl font-bold text-white mb-4 font-display tracking-tight">Network Search</h3>
+                            <p class="text-gray-400 text-base leading-relaxed max-w-md">Access Kolkata's live athletic matrix. Real-time availability for premium turfs, courts, and centers across ⚽ Football, 🏏 Cricket, ♟️ Chess, and 🎯 Carrom.</p>
+                        </div>
+                        <div class="bg-[#0a0a0a] border border-white/5 rounded-3xl p-10 md:col-span-2 reveal transition-transform hover:scale-[1.02] duration-500" style="transition-delay: 150ms;">
+                            <div class="w-16 h-16 bg-[#121212] rounded-2xl flex items-center justify-center border border-white/10 text-2xl mb-6">⚡</div>
+                            <h3 class="text-xl font-bold text-white mb-3 font-display tracking-tight">Instant Booking</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">Zero latency scheduling. Secure slots instantly via Razorpay. Choose 20%, 50%, or 100% upfront.</p>
+                        </div>
+                        <div class="bg-[#0a0a0a] border border-white/5 rounded-3xl px-10 py-8 md:col-span-5 flex flex-col md:flex-row md:items-center md:justify-between reveal transition-transform hover:scale-[1.02] duration-500" style="transition-delay: 300ms;">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-1 font-display tracking-tight">Step Onto the Pitch</h3>
+                                <p class="text-gray-400 text-sm max-w-lg">Arrive at the verified arena. Digital ID clearance. Compete in Kolkata's premier sports environment.</p>
+                            </div>
+                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl text-black mt-5 md:mt-0 shadow-[0_0_20px_rgba(255,255,255,0.3)]">🏆</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div> <section id="venues-section" class="py-24 bg-[#050505] min-h-screen relative z-20">
             <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
                 
@@ -364,7 +395,7 @@
         // ==========================================
         // 🔗 CONNECTION STRING 
         // ==========================================
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; // <--- PASTE YOUR /EXEC URL HERE
+        const scriptURL = 'YOUR_NEW_DEPLOYMENT_URL_HERE'; // <--- PASTE YOUR /EXEC URL HERE
         
         let currentUser = null; let activeVenue = null; window.venues = [];
         let tapCount = 0; let tapTimer; let currentFilter = 'All';
