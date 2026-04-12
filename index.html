@@ -79,15 +79,15 @@
         .tracking-wide { letter-spacing: 0.1em; }
         .luxe-shadow { filter: drop-shadow(0 0 10px var(--neon-cyan-glow)); }
 
-        /* TRUE NATIVE MAP ANIMATION CSS */
+        /* TRUE MAP ANIMATION CSS */
         .map-layer { position: absolute; inset: 0; transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1); display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
         
         /* Pulse Lines for India Expansion */
-        .pulse-line { stroke: var(--neon-cyan); stroke-width: 0.6; fill: none; stroke-dasharray: 2, 4; animation: dataFlow 1.5s linear infinite; opacity: 0.8; }
+        .pulse-line { stroke: var(--neon-cyan); stroke-width: 0.8; fill: none; stroke-dasharray: 4, 6; animation: dataFlow 1.5s linear infinite; opacity: 0.8; }
         .pulse-line-indigo { stroke: var(--electric-indigo); animation-direction: reverse; }
         @keyframes dataFlow { to { stroke-dashoffset: -20; } }
         
-        /* Nodes */
+        /* India Nodes */
         .core-node { animation: corePulse 2s infinite; transform-origin: center; transform-box: fill-box; }
         @keyframes corePulse { 0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--neon-cyan)); } 50% { transform: scale(1.4); filter: drop-shadow(0 0 15px var(--neon-cyan)); } 100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--neon-cyan)); } }
         
@@ -95,8 +95,9 @@
         @keyframes pingRing { 75%, 100% { transform: scale(3); opacity: 0; } }
 
         /* Kolkata Specific Turfs */
-        .turf-node-k { animation: pulseBlink 1.5s infinite alternate; transform-origin: center; transform-box: fill-box; }
-        @keyframes pulseBlink { 0% { opacity: 0.5; filter: drop-shadow(0 0 2px var(--neon-cyan)); } 100% { opacity: 1; filter: drop-shadow(0 0 10px var(--neon-cyan)); } }
+        .turf-node-k { position: absolute; background: var(--neon-cyan); border-radius: 50%; box-shadow: 0 0 15px var(--neon-cyan); animation: pulseBlink 1.5s infinite alternate; }
+        .turf-node-k::after { content: ''; position: absolute; inset: -8px; border: 2px solid var(--neon-cyan); border-radius: 50%; animation: pingRing 2s infinite; }
+        @keyframes pulseBlink { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
     </style>
 </head>
 <body class="antialiased selection:bg-cyan-500 selection:text-white">
@@ -214,20 +215,20 @@
                                 <div class="mockup-notch"></div>
                                 <div class="mockup-inner">
                                     <div class="flex justify-between items-center mb-8">
-                                        <h3 class="font-black text-2xl tracking-premium text-white font-display">SquadUp</h3>
+                                        <h3 class="font-black text-2xl tracking-premium">SquadUp</h3>
                                         <div class="w-9 h-9 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-black text-sm border border-cyan-500/40 shadow-glow">A</div>
                                     </div>
                                     <div class="bg-slate-800/60 rounded-xl p-5 mb-5 border border-slate-700/50 backdrop-blur">
-                                        <p class="text-[10px] text-cyan-400 font-bold uppercase mb-1 tracking-wide font-display">Confirmed Booking</p>
-                                        <p class="font-bold text-white text-lg mb-2 font-display">Salt Lake Sportsplex</p>
+                                        <p class="text-[10px] text-cyan-400 font-bold uppercase mb-1 tracking-wide">Confirmed Booking</p>
+                                        <p class="font-bold text-white text-lg mb-2">Salt Lake Sportsplex</p>
                                         <div class="flex justify-between text-xs text-gray-400"><span>Today, 8:00 PM</span><span class="font-bold text-white">₹359 / Head</span></div>
                                     </div>
                                     <div class="grid grid-cols-2 gap-4 mb-5">
-                                        <div class="bg-slate-800 h-28 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1.5">⚽</span><span class="text-xs font-bold text-gray-400 tracking-wide uppercase font-display">Football</span></div>
-                                        <div class="bg-slate-800 h-28 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1.5">🏏</span><span class="text-xs font-bold text-gray-400 tracking-wide uppercase font-display">Cricket</span></div>
+                                        <div class="bg-slate-800 h-28 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1.5">⚽</span><span class="text-xs font-bold text-gray-400 tracking-wide uppercase">Football</span></div>
+                                        <div class="bg-slate-800 h-28 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1.5">🏏</span><span class="text-xs font-bold text-gray-400 tracking-wide uppercase">Cricket</span></div>
                                     </div>
                                     <div class="mt-auto bg-gradient-to-r from-cyan-500 to-indigo-600 p-5 rounded-xl text-center shadow-glow">
-                                        <p class="font-bold text-white text-sm uppercase tracking-wide font-display">Secured via UPI</p>
+                                        <p class="font-bold text-white text-sm uppercase tracking-wide">Secured via UPI</p>
                                     </div>
                                 </div>
                             </div>
@@ -240,10 +241,10 @@
                 <div class="absolute inset-0 opacity-[0.02]" style="background-image: var(--glass-pattern)"></div>
                 <div class="max-w-[90rem] mx-auto px-6 lg:px-12 py-10 reveal relative z-10">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-10 text-center divide-x divide-white/5">
-                        <div class="pl-0 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium font-display">160+</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide font-display">Premium Arenas</p></div>
-                        <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium font-display">12k+</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide font-display">Active Players</p></div>
-                        <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-cyan-400 mb-1 tracking-premium luxe-shadow font-display">100%</h3><p class="text-[10px] uppercase font-bold text-cyan-500 tracking-wide font-display">Secure Payments</p></div>
-                        <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium font-display">50%</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide font-display">Advance Option</p></div>
+                        <div class="pl-0 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium">160+</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide">Premium Arenas</p></div>
+                        <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium">12k+</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide">Active Players</p></div>
+                        <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-cyan-400 mb-1 tracking-premium luxe-shadow">100%</h3><p class="text-[10px] uppercase font-bold text-cyan-500 tracking-wide">Secure Payments</p></div>
+                        <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium">50%</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide">Advance Option</p></div>
                     </div>
                 </div>
             </section>
@@ -253,8 +254,8 @@
                 <div class="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
                     <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 reveal pointer-events-none">
                         <div class="mb-6 md:mb-0">
-                            <p class="text-cyan-400 font-bold tracking-wide text-xs uppercase mb-2 font-display">How It Works</p>
-                            <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium font-display">Simple. Fast. Elite.</h2>
+                            <p class="text-cyan-400 font-bold tracking-wide text-xs uppercase mb-2">How It Works</p>
+                            <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium">Simple. Fast. Elite.</h2>
                         </div>
                         <p class="text-slate-400 font-medium max-w-md text-sm md:text-base leading-relaxed">Search, book, and play in Kolkata's finest sports environments without the hassle.</p>
                     </div>
@@ -262,17 +263,17 @@
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-auto md:h-[450px]">
                         <div class="card-luxe p-10 md:col-span-3 flex flex-col reveal pointer-events-none">
                             <div class="w-20 h-20 bg-slate-800 rounded-3xl flex items-center justify-center border border-slate-700 shadow-inner text-3xl mb-8">🔍</div>
-                            <h3 class="text-2xl font-bold text-white mb-4 font-display">Find Your Arena</h3>
+                            <h3 class="text-2xl font-bold text-white mb-4">Find Your Arena</h3>
                             <p class="text-slate-300 text-base leading-relaxed max-w-md">Browse real-time availability for premium turfs, courts, and centers across Football, Cricket, Chess, and Carrom.</p>
                         </div>
                         <div class="card-luxe p-10 md:col-span-2 reveal pointer-events-none" style="transition-delay: 150ms;">
                             <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center border border-slate-700 shadow-inner text-2xl mb-6">⚡</div>
-                            <h3 class="text-xl font-bold text-white mb-3 font-display">Instant Booking</h3>
+                            <h3 class="text-xl font-bold text-white mb-3">Instant Booking</h3>
                             <p class="text-slate-400 text-sm leading-relaxed">Lock your slot instantly via Razorpay. Choose to pay 20%, 50%, or 100% upfront.</p>
                         </div>
                         <div class="card-luxe px-10 py-8 md:col-span-5 flex flex-col md:flex-row md:items-center md:justify-between reveal pointer-events-none" style="transition-delay: 300ms;">
                             <div>
-                                <h3 class="text-xl font-bold text-white mb-1 font-display">Step Onto the Pitch</h3>
+                                <h3 class="text-xl font-bold text-white mb-1">Step Onto the Pitch</h3>
                                 <p class="text-slate-400 text-sm max-w-lg">Arrive at the verified arena, check in digitally, and focus on the game.</p>
                             </div>
                             <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center border border-white text-2xl text-onyx mt-5 md:mt-0 luxe-shadow">🏆</div>
@@ -291,62 +292,50 @@
                             <div class="absolute w-[250px] h-[250px] bg-cyan-500/20 blur-[100px] rounded-full pointer-events-none"></div>
                             
                             <div id="kolkata-view" class="map-layer opacity-100 scale-100">
-                                <svg viewBox="0 0 100 100" class="w-full h-full max-w-[85%] pointer-events-none">
-                                    <defs>
-                                        <pattern id="grid" width="5" height="5" patternUnits="userSpaceOnUse">
-                                            <path d="M 5 0 L 0 0 0 5" fill="none" stroke="#1e293b" stroke-width="0.2" opacity="0.5"/>
-                                        </pattern>
-                                    </defs>
-                                    <rect width="100" height="100" fill="url(#grid)" />
-
-                                    <path d="M 40 -10 C 45 20, 30 50, 20 80 C 15 95, 10 110, 10 110" fill="none" stroke="#0891b2" stroke-width="4" opacity="0.4" filter="drop-shadow(0 0 4px #0891b2)"/>
-                                    <path d="M 40 -10 C 45 20, 30 50, 20 80 C 15 95, 10 110, 10 110" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.8"/>
-
-                                    <path d="M 42 10 L 60 20 L 70 45 L 65 85" fill="none" stroke="#334155" stroke-width="0.6"/>
-                                    <path d="M 60 20 L 85 35" fill="none" stroke="#334155" stroke-width="0.6"/>
-                                    <path d="M 70 45 L 85 45" fill="none" stroke="#334155" stroke-width="0.6"/>
-                                    <path d="M 35 50 L 45 70 L 65 85" fill="none" stroke="#334155" stroke-width="0.6"/>
-
-                                    <circle cx="70" cy="45" r="1.5" fill="var(--neon-cyan)" class="turf-node-k" />
-                                    <circle cx="70" cy="45" r="4" fill="none" stroke="var(--neon-cyan)" stroke-width="0.5" class="animate-ping" />
-                                    <text x="70" y="41" fill="white" font-family="Outfit" font-size="2.5" font-weight="bold" text-anchor="middle" filter="drop-shadow(0 0 2px black)">Salt Lake Hub</text>
-
-                                    <circle cx="40" cy="70" r="1" fill="var(--neon-cyan)" class="turf-node-k" style="animation-delay: 0.3s"/>
-                                    <text x="40" y="73" fill="#cbd5e1" font-family="Outfit" font-size="2" text-anchor="middle">Behala</text>
-
-                                    <circle cx="85" cy="35" r="1" fill="var(--neon-cyan)" class="turf-node-k" style="animation-delay: 0.6s"/>
-                                    <text x="85" y="33" fill="#cbd5e1" font-family="Outfit" font-size="2" text-anchor="middle">New Town</text>
-
-                                    <circle cx="55" cy="20" r="1" fill="var(--neon-cyan)" class="turf-node-k" style="animation-delay: 0.9s"/>
-                                    <text x="55" y="18" fill="#cbd5e1" font-family="Outfit" font-size="2" text-anchor="middle">Dum Dum</text>
-
-                                    <circle cx="65" cy="85" r="1" fill="var(--neon-cyan)" class="turf-node-k" style="animation-delay: 1.2s"/>
-                                    <text x="65" y="89" fill="#cbd5e1" font-family="Outfit" font-size="2" text-anchor="middle">Garia</text>
-                                </svg>
+                                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=88.25,22.45,88.48,22.65&layer=mapnik" class="w-full h-full object-cover border-0 absolute inset-0 pointer-events-none" style="filter: brightness(0.7) contrast(1.2) grayscale(0.5); pointer-events: none;"></iframe>
+                                
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent pointer-events-none"></div>
+                                
+                                <div class="absolute inset-0 z-10 pointer-events-none">
+                                    <div class="turf-node-k w-3 h-3" style="top: 35%; left: 68%;"></div>
+                                    <div class="absolute text-white font-bold text-sm tracking-wide drop-shadow-[0_0_5px_black]" style="top: 35%; left: 73%;">Salt Lake Hub</div>
+                                    
+                                    <div class="turf-node-k w-2 h-2" style="top: 75%; left: 30%; animation-delay: 0.3s"></div>
+                                    <div class="absolute text-slate-300 font-medium text-xs tracking-wide drop-shadow-[0_0_5px_black]" style="top: 75%; left: 34%;">Behala</div>
+                                    
+                                    <div class="turf-node-k w-2 h-2" style="top: 25%; left: 82%; animation-delay: 0.6s"></div>
+                                    <div class="absolute text-slate-300 font-medium text-xs tracking-wide drop-shadow-[0_0_5px_black]" style="top: 25%; left: 86%;">New Town</div>
+                                    
+                                    <div class="turf-node-k w-2 h-2" style="top: 15%; left: 55%; animation-delay: 0.9s"></div>
+                                    <div class="absolute text-slate-300 font-medium text-xs tracking-wide drop-shadow-[0_0_5px_black]" style="top: 15%; left: 59%;">Dum Dum</div>
+                                    
+                                    <div class="turf-node-k w-2 h-2" style="top: 85%; left: 60%; animation-delay: 1.2s"></div>
+                                    <div class="absolute text-slate-300 font-medium text-xs tracking-wide drop-shadow-[0_0_5px_black]" style="top: 85%; left: 64%;">Garia</div>
+                                </div>
                             </div>
 
                             <div id="india-view" class="map-layer opacity-0 scale-90">
-                                <svg viewBox="0 0 100 100" class="w-full h-full max-w-[85%] pointer-events-none">
-                                    <image href="https://raw.githubusercontent.com/djaiss/mapsicon/master/all/in/vector.svg" x="0" y="0" width="100" height="100" style="filter: invert(1) opacity(0.3) drop-shadow(0 0 5px rgba(99,102,241,0.5));" preserveAspectRatio="xMidYMid meet"/>
+                                <img src="https://raw.githubusercontent.com/djaiss/mapsicon/master/all/in/vector.svg" class="w-full h-full object-contain p-4 pointer-events-none" style="filter: invert(1) sepia(1) saturate(5) hue-rotate(175deg) opacity(0.6) drop-shadow(0 0 15px rgba(6,182,212,0.8));" alt="India Matrix Map">
+                                
+                                <svg viewBox="0 0 100 100" class="w-full h-full absolute inset-0 z-10 pointer-events-none">
+                                    <line x1="72" y1="52" x2="38" y2="35" class="pulse-line" stroke-width="0.4" /> <line x1="72" y1="52" x2="26" y2="62" class="pulse-line pulse-line-indigo" stroke-width="0.4" /> <line x1="72" y1="52" x2="36" y2="78" class="pulse-line pulse-line-indigo" stroke-width="0.4" /> <line x1="72" y1="52" x2="44" y2="80" class="pulse-line" stroke-width="0.4" /> <line x1="72" y1="52" x2="85" y2="40" class="pulse-line" stroke-width="0.4" /> <circle cx="72" cy="52" r="1.5" fill="var(--neon-cyan)" class="core-node" />
+                                    <circle cx="72" cy="52" r="4" class="ping-ring" stroke-width="0.5"/>
+                                    <text x="72" y="48" fill="white" font-size="2.5" font-family="Outfit" font-weight="900" text-anchor="middle" filter="drop-shadow(0 0 5px rgba(0,0,0,1))">KOLKATA</text>
+
+                                    <circle cx="38" cy="35" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 2px black)"/>
+                                    <text x="38" y="33" fill="white" font-size="2" font-weight="bold" text-anchor="middle" filter="drop-shadow(0 0 2px black)">DELHI</text>
+
+                                    <circle cx="26" cy="62" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 2px black)"/>
+                                    <text x="24" y="61" fill="white" font-size="2" font-weight="bold" text-anchor="end" filter="drop-shadow(0 0 2px black)">MUMBAI</text>
+
+                                    <circle cx="36" cy="78" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 2px black)"/>
+                                    <text x="34" y="79" fill="white" font-size="2" font-weight="bold" text-anchor="end" filter="drop-shadow(0 0 2px black)">BENGALURU</text>
+
+                                    <circle cx="44" cy="80" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 2px black)"/>
+                                    <text x="46" y="81" fill="white" font-size="2" font-weight="bold" text-anchor="start" filter="drop-shadow(0 0 2px black)">CHENNAI</text>
                                     
-                                    <line x1="72" y1="52" x2="30" y2="33" class="pulse-line" /> <line x1="72" y1="52" x2="22" y2="58" class="pulse-line pulse-line-indigo" /> <line x1="72" y1="52" x2="35" y2="73" class="pulse-line pulse-line-indigo" /> <line x1="72" y1="52" x2="43" y2="73" class="pulse-line" /> <line x1="72" y1="52" x2="85" y2="38" class="pulse-line" /> <circle cx="72" cy="52" r="1.5" fill="var(--neon-cyan)" class="core-node" />
-                                    <circle cx="72" cy="52" r="4" class="ping-ring" />
-                                    <text x="72" y="48" fill="white" font-size="2.5" font-family="Outfit" font-weight="900" text-anchor="middle" filter="drop-shadow(0 0 2px black)">KOLKATA</text>
-
-                                    <circle cx="30" cy="33" r="0.8" fill="white" opacity="0.8" />
-                                    <text x="30" y="31" fill="#cbd5e1" font-size="2" font-family="Outfit" text-anchor="middle">DELHI</text>
-
-                                    <circle cx="22" cy="58" r="0.8" fill="white" opacity="0.8" />
-                                    <text x="20" y="57" fill="#cbd5e1" font-size="2" font-family="Outfit" text-anchor="end">MUMBAI</text>
-
-                                    <circle cx="35" cy="73" r="0.8" fill="white" opacity="0.8" />
-                                    <text x="33" y="74" fill="#cbd5e1" font-size="2" font-family="Outfit" text-anchor="end">BENGALURU</text>
-
-                                    <circle cx="43" cy="73" r="0.8" fill="white" opacity="0.8" />
-                                    <text x="45" y="74" fill="#cbd5e1" font-size="2" font-family="Outfit" text-anchor="start">CHENNAI</text>
-
-                                    <circle cx="85" cy="38" r="0.8" fill="white" opacity="0.8" />
-                                    <text x="85" y="36" fill="#cbd5e1" font-size="2" font-family="Outfit" text-anchor="middle">GUWAHATI</text>
+                                    <circle cx="85" cy="40" r="0.8" fill="white" opacity="0.9" filter="drop-shadow(0 0 2px black)"/>
+                                    <text x="85" y="38" fill="white" font-size="2" font-weight="bold" text-anchor="middle" filter="drop-shadow(0 0 2px black)">GUWAHATI</text>
                                 </svg>
                             </div>
 
@@ -356,18 +345,18 @@
                             <div class="bg-gradient-to-br from-slate-950 to-slate-900 p-8 md:p-10 rounded-3xl border border-white/5 relative z-10 shadow-xl">
                                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 mb-6 pointer-events-none">
                                     <span class="w-2 h-2 rounded-full bg-cyan-400" id="pulse-indicator"></span>
-                                    <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest font-display" id="scale-badge">Network Scale</span>
+                                    <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest" id="scale-badge">Network Scale</span>
                                 </div>
                                 
-                                <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium leading-tight mb-6 transition-all duration-700 font-display" id="scale-title">
+                                <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium leading-tight mb-6 transition-all duration-700" id="scale-title">
                                     THE KOLKATA POWER-HUB:<br><span class="text-cyan-400 luxe-shadow">OPERATING AT SCALE.</span>
                                 </h2>
                                 
-                                <p class="text-slate-400 text-base md:text-lg leading-relaxed mb-8 transition-all duration-700 font-display" id="scale-desc">
-                                    Kolkata is our genesis point. We have built the city's most robust sports booking ledger, successfully authenticating thousands of players with zero latency.
+                                <p class="text-slate-400 text-base md:text-lg leading-relaxed mb-8 transition-all duration-700" id="scale-desc">
+                                    Kolkata is our genesis point. We have built the city's most robust sports booking ledger, successfully authenticating thousands of players with zero wait times.
                                 </p>
                                 
-                                <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-8 py-4 text-sm w-full md:w-auto text-center font-display uppercase tracking-widest">
+                                <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-8 py-4 text-sm w-full md:w-auto text-center">
                                     View Arenas
                                 </button>
                             </div>
@@ -385,7 +374,7 @@
                 <div id="view-feed" class="block">
                     <div class="flex flex-col xl:flex-row xl:items-center justify-between mb-12 reveal">
                         <div class="mb-6 xl:mb-0 pr-10">
-                            <h2 class="text-4xl font-black text-white tracking-premium font-display">Available Arenas</h2>
+                            <h2 class="text-4xl font-black text-white tracking-premium">Available Arenas</h2>
                             <p class="text-slate-400 mt-1 font-medium text-sm">Real-time availability for verified venues.</p>
                         </div>
                         <div class="flex overflow-x-auto gap-3.5 hide-scroll pb-2.5 xl:pb-0" id="sport-filters">
@@ -406,38 +395,38 @@
 
                 <div id="view-rank" class="hidden reveal">
                     <div class="max-w-4xl mx-auto py-12">
-                        <h2 class="text-4xl font-black text-white tracking-premium mb-8 border-b border-white/10 pb-5 font-display">City Rankings</h2>
+                        <h2 class="text-4xl font-black text-white tracking-premium mb-8 border-b border-white/10 pb-5">City Rankings</h2>
                         <div id="rank-list" class="space-y-5"></div>
                     </div>
                 </div>
 
                 <div id="view-admin" class="hidden reveal">
-                    <h2 class="text-4xl font-black text-white tracking-premium mb-10 border-b border-white/10 pb-5 font-display">Admin Dashboard</h2>
+                    <h2 class="text-4xl font-black text-white tracking-premium mb-10 border-b border-white/10 pb-5">Admin Dashboard</h2>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                         <div class="card-luxe p-10">
-                            <h3 class="text-xl font-bold text-white mb-8 border-b border-white/5 pb-4 tracking-wide uppercase relative z-10 font-display">Update Venue</h3>
+                            <h3 class="text-xl font-bold text-white mb-8 border-b border-white/5 pb-4 tracking-wide uppercase relative z-10">Update Venue</h3>
                             <div class="space-y-5 relative z-10">
-                                <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide font-display">Select Venue</label><select id="admin-venue-select" class="input-luxe" onchange="loadAdminVenueData()"></select></div>
+                                <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Select Venue</label><select id="admin-venue-select" class="input-luxe" onchange="loadAdminVenueData()"></select></div>
                                 <div class="grid grid-cols-2 gap-5">
-                                    <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide font-display">Max Players</label><input type="number" id="admin-cap" class="input-luxe"></div>
-                                    <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide font-display">Available Times</label><input type="text" id="admin-times" class="input-luxe text-sm"></div>
+                                    <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Max Players</label><input type="number" id="admin-cap" class="input-luxe"></div>
+                                    <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Available Times</label><input type="text" id="admin-times" class="input-luxe text-sm"></div>
                                 </div>
-                                <button onclick="updateVenue()" id="admin-btn" class="w-full py-4.5 bg-white text-onyx hover:bg-slate-200 font-bold rounded-xl transition mt-4 tracking-wide uppercase text-sm font-display">Save Changes</button>
+                                <button onclick="updateVenue()" id="admin-btn" class="w-full py-4.5 bg-white text-onyx hover:bg-slate-200 font-bold rounded-xl transition mt-4 tracking-wide uppercase text-sm">Save Changes</button>
                             </div>
                         </div>
 
                         <div id="owner-panel" class="hidden card-luxe p-10 border-cyan-500/20 shadow-[0_0_40px_rgba(6,182,212,0.15)]">
-                            <h3 class="text-xl font-bold text-cyan-400 luxe-shadow mb-8 border-b border-white/5 pb-4 tracking-wide uppercase relative z-10 font-display">Add New Arena</h3>
+                            <h3 class="text-xl font-bold text-cyan-400 luxe-shadow mb-8 border-b border-white/5 pb-4 tracking-wide uppercase relative z-10">Add New Arena</h3>
                             <div class="grid grid-cols-2 gap-5 mb-6 relative z-10">
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide font-display">Sport</label><input type="text" id="new-v-sport" class="input-luxe text-sm"></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide font-display">Venue Name</label><input type="text" id="new-v-name" class="input-luxe text-sm"></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide font-display">Location</label><input type="text" id="new-v-loc" class="input-luxe text-sm"></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide font-display">Price/Head (₹)</label><input type="number" id="new-v-price" class="input-luxe text-sm"></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide font-display">Type</label><select id="new-v-type" class="input-luxe text-sm"><option value="outdoor">Outdoor</option><option value="indoor">Indoor</option></select></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide font-display">Status</label><select id="new-v-status" class="input-luxe text-sm"><option value="Active">Active</option><option value="Pending">Coming Soon</option></select></div>
-                                <div class="col-span-2"><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide font-display">Image URL</label><input type="text" id="new-v-img" class="input-luxe text-sm"></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Sport</label><input type="text" id="new-v-sport" class="input-luxe text-sm"></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Venue Name</label><input type="text" id="new-v-name" class="input-luxe text-sm"></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Location</label><input type="text" id="new-v-loc" class="input-luxe text-sm"></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Price/Head (₹)</label><input type="number" id="new-v-price" class="input-luxe text-sm"></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Type</label><select id="new-v-type" class="input-luxe text-sm"><option value="outdoor">Outdoor</option><option value="indoor">Indoor</option></select></div>
+                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Status</label><select id="new-v-status" class="input-luxe text-sm"><option value="Active">Active</option><option value="Pending">Coming Soon</option></select></div>
+                                <div class="col-span-2"><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Image URL</label><input type="text" id="new-v-img" class="input-luxe text-sm"></div>
                             </div>
-                            <button onclick="deployNewVenue()" id="add-venue-btn" class="w-full py-4.5 btn-luxe text-sm tracking-wide uppercase relative z-10 font-display">Publish Arena</button>
+                            <button onclick="deployNewVenue()" id="add-venue-btn" class="w-full py-4.5 btn-luxe text-sm tracking-wide uppercase relative z-10">Publish Arena</button>
                         </div>
                     </div>
                 </div>
@@ -450,19 +439,19 @@
             <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
                     <div class="md:col-span-2 pr-10">
-                        <h2 class="text-4xl font-black text-white tracking-premium mb-5 pointer-events-none font-display">Squad<span class="text-cyan-400 luxe-shadow">Up</span></h2>
+                        <h2 class="text-4xl font-black text-white tracking-premium mb-5 pointer-events-none">Squad<span class="text-cyan-400 luxe-shadow">Up</span></h2>
                         <p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-7 pointer-events-none">Kolkata's definitive sports venue network. Secure payments, instant bookings.</p>
-                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wide pointer-events-none font-display">Operated by Easycommune Online Services Pvt Ltd</p>
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wide pointer-events-none">Operated by Easycommune Online Services Pvt Ltd</p>
                     </div>
                     <div>
-                        <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm pointer-events-none font-display">Policies</h4>
+                        <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm pointer-events-none">Policies</h4>
                         <ul class="space-y-3 text-sm text-slate-400 font-medium">
                             <li><span onclick="showModal('disc-modal')" class="hover:text-cyan-400 cursor-pointer transition">Terms & Conditions</span></li>
                             <li><span onclick="showModal('about-modal')" class="hover:text-cyan-400 cursor-pointer transition">About Us</span></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm pointer-events-none font-display">Contact Us</h4>
+                        <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm pointer-events-none">Contact Us</h4>
                         <p class="text-sm text-slate-400 mb-6 font-medium pointer-events-none">support@squadup.in</p>
                     </div>
                 </div>
@@ -480,8 +469,8 @@
                 <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-4 md:hidden"></div>
                 <div class="flex justify-between items-center pr-2">
                     <div>
-                        <h2 class="text-2xl font-black text-white tracking-tight pointer-events-none font-display" id="book-venue-name">Arena Name</h2>
-                        <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1 pointer-events-none font-display">Sport</p>
+                        <h2 class="text-2xl font-black text-white tracking-tight pointer-events-none" id="book-venue-name">Arena Name</h2>
+                        <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1 pointer-events-none">Sport</p>
                     </div>
                     <button onclick="closeSheet()" class="w-8 h-8 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 transition hidden md:flex text-lg relative z-10">✕</button>
                 </div>
@@ -490,34 +479,34 @@
             <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-6 relative z-10">
                 <div class="flex justify-between items-center bg-[#121212] p-4 rounded-2xl border border-white/5">
                     <div>
-                        <label class="text-sm font-bold text-white block pointer-events-none font-display">Number of Players</label>
+                        <label class="text-sm font-bold text-white block pointer-events-none">Number of Players</label>
                         <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mt-1 font-display pointer-events-none">Limits apply per arena</p>
                     </div>
                     <div class="flex items-center gap-3 bg-[#050505] p-1.5 rounded-full border border-white/10 relative z-10">
                         <button onclick="adjCount(-1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition relative z-10">-</button>
-                        <input type="number" id="book-count" min="1" max="10" value="1" class="w-8 bg-transparent text-center text-lg font-black text-white outline-none font-display relative z-10" onchange="updatePrice()" readonly>
+                        <input type="number" id="book-count" min="1" max="10" value="1" class="w-8 bg-transparent text-center text-lg font-black text-white outline-none relative z-10" onchange="updatePrice()" readonly>
                         <button onclick="adjCount(1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition relative z-10">+</button>
                     </div>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-4 relative z-10">
                     <div>
-                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none font-display">Select Date</label>
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Date</label>
                         <input type="date" id="book-date" class="input-luxe py-3 text-sm relative z-10" onchange="handleDateChange()">
                     </div>
                     <div>
-                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none font-display">Select Time</label>
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Time</label>
                         <select id="book-time" class="input-luxe py-3 text-sm relative z-10" onchange="checkAvailability()"></select>
                     </div>
                 </div>
                 
                 <div class="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-center justify-between pointer-events-none">
-                    <span class="text-xs font-bold text-cyan-500 uppercase tracking-wide luxe-shadow font-display">Availability</span>
-                    <span id="slot-status" class="text-sm font-black text-white font-display">Checking...</span>
+                    <span class="text-xs font-bold text-cyan-500 uppercase tracking-wide luxe-shadow">Availability</span>
+                    <span id="slot-status" class="text-sm font-black text-white">Checking...</span>
                 </div>
                 
                 <div class="relative z-10">
-                    <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none font-display">Payment Method</label>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Payment Method</label>
                     <select id="book-pay" class="input-luxe py-4 font-semibold text-white relative z-10" onchange="toggleWarning()"></select>
                 </div>
                 
@@ -526,31 +515,31 @@
 
             <div class="p-6 border-t border-white/10 bg-[#121212] md:rounded-b-3xl flex items-center justify-between pb-safe relative z-10">
                 <div>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5 pointer-events-none font-display">Total Amount</p>
-                    <p id="total-price" class="text-3xl font-black text-white luxe-shadow pointer-events-none font-display">₹0</p>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5 pointer-events-none">Total Amount</p>
+                    <p id="total-price" class="text-3xl font-black text-white luxe-shadow pointer-events-none">₹0</p>
                 </div>
-                <button onclick="processBooking()" id="main-deploy-btn" class="btn-luxe px-8 py-4 text-base w-1/2 relative z-10 font-display uppercase tracking-widest">Confirm Booking</button>
+                <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-4 btn-luxe text-base w-1/2 relative z-10">Confirm Booking</button>
             </div>
         </div>
     </div>
 
     <div id="about-modal" class="hidden fixed inset-0 bg-black/80 z-[300] flex items-center justify-center p-4 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-400" onclick="closeModal('about-modal')">
         <div class="card-luxe p-10 max-w-sm w-full shadow-2xl relative transform scale-95 transition-transform duration-400" onclick="event.stopPropagation()">
-            <h2 class="text-3xl font-black mb-5 text-cyan-400 luxe-shadow uppercase border-b border-white/5 pb-4 tracking-premium pointer-events-none font-display">About Us</h2>
+            <h2 class="text-3xl font-black mb-5 text-cyan-400 luxe-shadow uppercase border-b border-white/5 pb-4 tracking-premium pointer-events-none">About Us</h2>
             <p class="text-gray-400 text-sm leading-relaxed mb-8 font-medium pointer-events-none">SquadUp is Kolkata's premier sports network. We make it simple to find, book, and play at the best turfs and arenas in the city. Real-time availability, secure payments, zero hassle.</p>
-            <button onclick="closeModal('about-modal')" class="w-full py-4.5 bg-white text-onyx font-bold rounded-xl hover:bg-slate-200 transition tracking-wide uppercase text-xs relative z-10 font-display">Close</button>
+            <button onclick="closeModal('about-modal')" class="w-full py-4.5 bg-white text-onyx font-bold rounded-xl hover:bg-slate-200 transition tracking-wide uppercase text-xs relative z-10">Close</button>
         </div>
     </div>
 
     <div id="disc-modal" class="hidden fixed inset-0 bg-black/80 z-[300] flex items-center justify-center p-4 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-400" onclick="closeModal('disc-modal')">
         <div class="card-luxe p-10 max-w-sm w-full shadow-2xl relative transform scale-95 transition-transform duration-400" onclick="event.stopPropagation()">
-            <h2 class="text-3xl font-black mb-5 text-red-500 uppercase border-b border-white/5 pb-4 tracking-premium pointer-events-none font-display">Terms & Conditions</h2>
+            <h2 class="text-3xl font-black mb-5 text-red-500 uppercase border-b border-white/5 pb-4 tracking-premium pointer-events-none">Terms & Conditions</h2>
             <div class="text-gray-500 text-xs leading-relaxed mb-8 space-y-4 max-h-64 overflow-y-auto pr-2 hide-scroll font-medium border-l-2 border-white/5 pl-4 relative z-10">
                 <p><b>1. Liability:</b> Engaging in sports involves physical risks. SquadUp is a booking platform and is not liable for any injuries sustained at the venue.</p>
                 <p><b>2. Booking Policy:</b> SquadUp acts solely as an interface between the player and the venue management.</p>
                 <p><b>3. Venue Rules:</b> Players must carry valid ID. Venue management reserves the right to deny entry without refund if venue rules are violated.</p>
             </div>
-            <button onclick="closeModal('disc-modal')" class="w-full py-4.5 bg-white text-onyx font-bold rounded-xl hover:bg-slate-200 transition tracking-wide uppercase text-xs relative z-10 font-display">I Agree</button>
+            <button onclick="closeModal('disc-modal')" class="w-full py-4.5 bg-white text-onyx font-bold rounded-xl hover:bg-slate-200 transition tracking-wide uppercase text-xs relative z-10">I Agree</button>
         </div>
     </div>
 
