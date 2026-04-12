@@ -18,11 +18,21 @@
         }
         body { font-family: 'Outfit', sans-serif; background-color: var(--onyx); color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
-        /* Preloader */
-        #preloader { position: fixed; inset: 0; background: var(--onyx); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1); }
-        .loader-text { font-size: 3rem; font-weight: 900; letter-spacing: -0.05em; background: linear-gradient(135deg, #fff, var(--neon-cyan), var(--electric-indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: loaderGlow 2s infinite; }
-        @keyframes loaderGlow { 0% { filter: drop-shadow(0 0 5px var(--neon-cyan-glow)); } 50% { filter: drop-shadow(0 0 15px var(--neon-cyan-glow)); } 100% { filter: drop-shadow(0 0 5px var(--neon-cyan-glow)); } }
+        /* Theatrical Preloader (Playspots Style) */
+        #preloader { position: fixed; inset: 0; background: var(--onyx); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.6s ease; }
+        .seq-word { opacity: 0; transform: translateY(20px); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.05em; animation: popUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @media (min-width: 768px) { .seq-word { font-size: 4.5rem; } }
+        @media (min-width: 1024px) { .seq-word { font-size: 6rem; } }
         
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.6s; }
+        .delay-3 { animation-delay: 1.0s; }
+        .delay-4 { animation-delay: 1.4s; }
+        
+        @keyframes popUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Custom Animations */
         .reveal { opacity: 0; transform: translateY(60px) scale(0.98); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
@@ -44,13 +54,12 @@
         .input-luxe { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); color: white; border-radius: 0.75rem; padding: 1rem; width: 100%; outline: none; transition: 0.3s; }
         .input-luxe:focus { border-color: var(--neon-cyan); background: rgba(255,255,255,0.05); box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.1); }
         
-        /* THE INVISIBLE SHIELD FIX: pointer-events: none added to ::after */
         .card-luxe { background: var(--surface-glass); border: 1px solid rgba(255,255,255,0.04); border-radius: 1.5rem; transition: all 0.5s cubic-bezier(0.5, 0, 0, 1); position: relative; overflow: hidden; background-image: var(--glass-pattern); }
         .card-luxe::after { content:''; position: absolute; inset:0; box-shadow: inset 0 0 0px var(--neon-cyan-glow); transition: all 0.5s; pointer-events: none; }
         .card-luxe:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(6, 182, 212, 0.2); box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
         .card-luxe:hover::after { box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.1); }
 
-        /* Phone Mockup (Luxe Edition) */
+        /* Phone Mockup */
         .mockup-frame { border: 14px solid #1e293b; border-radius: 3rem; overflow: hidden; box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 50px var(--neon-cyan-glow); position: relative; transition: transform 0.1s ease-out; }
         .mockup-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 45%; height: 28px; background: #1e293b; border-bottom-left-radius: 1.2rem; border-bottom-right-radius: 1.2rem; z-index: 20; }
         .mockup-inner { background-image: var(--glass-pattern); background-color: #0f172a; height: 100%; display: flex; flex-direction: column; padding: 1rem; padding-top: 3.5rem; }
@@ -64,22 +73,27 @@
 
         /* Overlays & Sheets */
         .hero-overlay { background: linear-gradient(110deg, var(--onyx) 15%, rgba(2,6,23,0.7) 60%, rgba(2,6,23,0.2) 100%); pointer-events: none; }
+        .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(20px); }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
         
         /* Pills & Badges */
         .filter-pill { padding: 0.6rem 1.5rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.01); color: #94a3b8; font-weight: 700; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: 0.3s; letter-spacing: 0.05em; }
         .filter-pill.active { background: white; color: var(--onyx); border-color: white; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
         
-        /* Premium Text Styles */
         .tracking-premium { letter-spacing: -0.05em; }
         .tracking-wide { letter-spacing: 0.1em; }
         .luxe-shadow { filter: drop-shadow(0 0 10px var(--neon-cyan-glow)); }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased selection:bg-cyan-500 selection:text-white">
 
     <div id="preloader">
-        <h1 class="loader-text">SQUADUP</h1>
-        <p class="text-slate-500 font-bold tracking-wide uppercase text-xs mt-3">Accessing Inventory...</p>
+        <div class="flex space-x-3 md:space-x-5 items-center">
+            <span class="seq-word delay-1 text-white">Enter</span>
+            <span class="seq-word delay-2 text-cyan-400 luxe-shadow">The</span>
+            <span class="seq-word delay-3 text-white">Elite</span>
+            <span class="seq-word delay-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">Arena</span>
+        </div>
     </div>
 
     <div id="auth-overlay" class="hidden fixed inset-0 z-[200] bg-black/80 flex items-center justify-center p-4 backdrop-blur-3xl opacity-0 pointer-events-none transition-opacity duration-400" onclick="closeAuth()">
@@ -109,19 +123,19 @@
             </div>
 
             <div id="register-box" class="hidden space-y-4">
-                <input type="text" id="reg-name" placeholder="Full Name*" class="input-luxe py-3.5 text-sm">
-                <div class="grid grid-cols-2 gap-4"><input type="tel" id="reg-phone" placeholder="Phone*" class="input-luxe py-3.5 text-sm" maxlength="10"><input type="email" id="reg-email" placeholder="Email*" class="input-luxe py-3.5 text-sm"></div>
+                <input type="text" id="reg-name" placeholder="Full Name" class="input-luxe py-3.5 text-sm">
+                <div class="grid grid-cols-2 gap-4"><input type="tel" id="reg-phone" placeholder="Phone (10 Digits)" class="input-luxe py-3.5 text-sm" maxlength="10"><input type="email" id="reg-email" placeholder="Email" class="input-luxe py-3.5 text-sm"></div>
                 <div class="grid grid-cols-2 gap-4">
                     <input type="date" id="reg-dob" class="input-luxe py-3.5 text-sm text-gray-500">
-                    <select id="reg-blood" class="input-luxe py-3.5 text-sm text-gray-500"><option value="">Blood</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option></select>
+                    <select id="reg-blood" class="input-luxe py-3.5 text-sm text-gray-500"><option value="">Blood Group</option><option value="A+">A+</option><option value="B+">B+</option><option value="O+">O+</option><option value="AB+">AB+</option></select>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <select id="reg-sport" class="input-luxe py-3.5 text-sm text-gray-500"><option value="Football">Football</option><option value="Cricket">Cricket</option><option value="Chess">Chess</option><option value="Carrom">Carrom</option></select>
-                    <select id="reg-skill" class="input-luxe py-3.5 text-sm text-gray-500"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro</option></select>
+                    <select id="reg-skill" class="input-luxe py-3.5 text-sm text-gray-500"><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro Player</option></select>
                 </div>
-                <input type="password" id="reg-pass" placeholder="Create Password*" class="input-luxe py-3.5 text-sm">
+                <input type="password" id="reg-pass" placeholder="Create Password" class="input-luxe py-3.5 text-sm">
                 <button onclick="handleRegister()" id="reg-btn" class="w-full py-4.5 btn-luxe mt-3 relative z-10">Sign Up</button>
-                <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-500 cursor-pointer mt-3 hover:text-white transition relative z-10">Already registered?</p>
+                <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-500 cursor-pointer mt-3 hover:text-white transition relative z-10">Already have an account?</p>
             </div>
         </div>
     </div>
@@ -349,63 +363,62 @@
         </footer>
 
     </div> <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[300] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeSheet()">
-        <div id="booking-sheet" class="w-full md:max-w-xl bg-[#0a0a0a] rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col border border-white/10 transform translate-y-full md:translate-y-0 md:scale-95 transition-transform duration-300 max-h-[90vh]" onclick="event.stopPropagation()">
+        <div id="booking-sheet" class="w-full md:max-w-xl bg-slate-900 rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col border border-white/10 transform translate-y-full md:translate-y-0 md:scale-95 transition-transform duration-300 max-h-[90vh]" onclick="event.stopPropagation()">
             
-            <div class="p-8 flex-shrink-0 border-b border-white/5 bg-[#121212] rounded-t-3xl md:rounded-t-3xl relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50 pointer-events-none"></div>
-                <div class="w-12 h-1.5 bg-gray-800 rounded-full mx-auto mb-6 md:hidden"></div>
-                <div class="flex justify-between items-center pr-2">
+            <div class="p-8 flex-shrink-0 border-b border-white/10 bg-slate-800/50 rounded-t-3xl md:rounded-t-3xl">
+                <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-4 md:hidden"></div>
+                <div class="flex justify-between items-center">
                     <div>
-                        <h2 class="text-3xl font-black text-white tracking-premium pointer-events-none" id="book-venue-name">Arena Name</h2>
-                        <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-2 pointer-events-none">Sport</p>
+                        <h2 class="text-2xl font-black text-white tracking-tight" id="book-venue-name">Arena Name</h2>
+                        <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1">Sport</p>
                     </div>
-                    <button onclick="closeSheet()" class="w-10 h-10 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 hover:text-white transition hidden md:flex text-lg relative z-10">✕</button>
+                    <button onclick="closeSheet()" class="w-8 h-8 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 transition hidden md:flex">✕</button>
                 </div>
             </div>
             
-            <div class="p-8 overflow-y-auto hide-scroll flex-grow space-y-7 relative z-10">
-                <div class="flex justify-between items-center bg-[#121212] p-5 rounded-2xl border border-white/5">
+            <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-6">
+                <div class="flex justify-between items-center bg-slate-800/30 p-4 rounded-2xl border border-white/5">
                     <div>
                         <label class="text-sm font-bold text-white block pointer-events-none">Number of Players</label>
                         <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mt-1 font-display pointer-events-none">Limits apply per arena</p>
                     </div>
-                    <div class="flex items-center gap-3.5 bg-[#050505] p-2 rounded-full border border-white/10 relative z-10">
-                        <button onclick="adjCount(-1)" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition text-lg relative z-10">-</button>
-                        <input type="number" id="book-count" min="1" max="10" value="1" class="w-10 bg-transparent text-center text-2xl font-black text-white outline-none relative z-10" onchange="updatePrice()" readonly>
-                        <button onclick="adjCount(1)" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition text-lg relative z-10">+</button>
+                    <div class="flex items-center gap-3 bg-slate-900 p-1.5 rounded-full border border-white/10">
+                        <button onclick="adjCount(-1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition">-</button>
+                        <input type="number" id="book-count" min="1" max="10" value="1" class="w-8 bg-transparent text-center text-lg font-black text-white outline-none" onchange="updatePrice()" readonly>
+                        <button onclick="adjCount(1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition">+</button>
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-5 relative z-10">
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Date</label>
-                        <input type="date" id="book-date" class="input-luxe py-3.5 text-sm relative z-10" onchange="handleDateChange()">
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Date</label>
+                        <input type="date" id="book-date" class="input-luxe py-3 text-sm relative z-10" onchange="handleDateChange()">
                     </div>
                     <div>
-                        <label class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Time</label>
-                        <select id="book-time" class="input-luxe py-3.5 text-sm relative z-10" onchange="checkAvailability()"></select>
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Time</label>
+                        <select id="book-time" class="input-luxe py-3 text-sm relative z-10" onchange="checkAvailability()"></select>
                     </div>
                 </div>
                 
-                <div class="bg-cyan-500/10 p-5 rounded-2xl border border-cyan-500/20 flex items-center justify-between pointer-events-none">
+                <div class="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-center justify-between pointer-events-none">
                     <span class="text-xs font-bold text-cyan-500 uppercase tracking-wide luxe-shadow">Availability</span>
-                    <span id="slot-status" class="text-base font-black text-white">Checking...</span>
+                    <span id="slot-status" class="text-sm font-black text-white">Checking...</span>
                 </div>
                 
                 <div class="relative z-10">
-                    <label class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Payment Method</label>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Payment Method</label>
                     <select id="book-pay" class="input-luxe py-4 font-semibold text-white relative z-10" onchange="toggleWarning()"></select>
                 </div>
                 
-                <div id="liquidation-warning" class="hidden bg-orange-500/10 text-orange-400 text-[11px] font-medium p-5 rounded-2xl border border-orange-500/20 leading-relaxed pointer-events-none"></div>
+                <div id="liquidation-warning" class="hidden bg-orange-500/10 text-orange-400 text-[11px] font-medium p-4 rounded-xl border border-orange-500/20 leading-relaxed pointer-events-none"></div>
             </div>
 
-            <div class="p-8 border-t border-white/5 bg-[#121212] md:rounded-b-3xl flex items-center justify-between pb-safe relative z-10">
+            <div class="p-6 border-t border-white/10 bg-slate-800/50 md:rounded-b-3xl flex items-center justify-between pb-safe relative z-10">
                 <div>
-                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 pointer-events-none">Total Amount</p>
-                    <p id="total-price" class="text-4xl font-black text-white luxe-shadow pointer-events-none">₹0</p>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5 pointer-events-none">Total Amount</p>
+                    <p id="total-price" class="text-3xl font-black text-white luxe-shadow pointer-events-none">₹0</p>
                 </div>
-                <button onclick="processBooking()" id="main-deploy-btn" class="px-10 py-5 btn-luxe text-base w-1/2 relative z-10">Confirm Booking</button>
+                <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-4 btn-luxe text-base w-1/2 relative z-10">Confirm Booking</button>
             </div>
         </div>
     </div>
@@ -439,7 +452,7 @@
         let currentUser = null; let activeVenue = null; window.venues = [];
         let tapCount = 0; let tapTimer; let currentFilter = 'All';
 
-        // --- SESSION MEMORY & PRELOADER ---
+        // --- SESSION MEMORY & THEATRICAL PRELOADER ---
         document.addEventListener('DOMContentLoaded', async () => {
             const preloader = document.getElementById('preloader');
             
@@ -468,10 +481,13 @@
                 filterVenues('All', document.querySelector('.filter-pill'));
             }
 
+            // Theatrical Sequence Timeout (1.6s for animation + 0.4s buffer)
             if(preloader) {
-                preloader.style.pointerEvents = 'none';
-                preloader.style.opacity = '0';
-                setTimeout(() => { preloader.style.display = 'none'; }, 800);
+                setTimeout(() => {
+                    preloader.style.pointerEvents = 'none';
+                    preloader.style.opacity = '0';
+                    setTimeout(() => { preloader.style.display = 'none'; }, 600);
+                }, 2000);
             }
         });
 
@@ -600,7 +616,6 @@
             filterVenues('All', document.querySelector('.filter-pill')); 
         }
 
-        // --- TABS & ROUTING ---
         function switchTab(tabId) {
             const marketing = document.getElementById('marketing-sections');
             const feed = document.getElementById('venues-section');
@@ -820,7 +835,7 @@
                 
                 const btn = isP 
                     ? `<button class="bg-white/5 text-gray-500 px-6 py-4 rounded-xl text-xs font-bold cursor-not-allowed w-full font-display uppercase tracking-widest relative z-10">Coming Soon</button>` 
-                    : `<button onclick="openBooking('${safeName}')" class="btn-luxe px-6 py-4 rounded-xl text-xs font-black w-full font-display uppercase tracking-widest transition relative z-10">Book Arena</button>`;
+                    : `<button onclick="openBooking('${safeName}')" class="btn-luxe px-6 py-4 rounded-xl text-xs font-black w-full font-display uppercase tracking-widest hover:bg-gray-200 transition relative z-10">Book Arena</button>`;
 
                 const delay = index * 50;
 
@@ -911,9 +926,8 @@
             
             overlay.classList.remove('hidden');
             setTimeout(() => { 
-                overlay.classList.remove('opacity-0', 'pointer-events-none');
-                sheet.classList.remove('translate-y-full', 'md:scale-95');
-                sheet.classList.add('md:scale-100');
+                overlay.classList.add('open');
+                sheet.classList.add('open');
             }, 10);
             
             checkAvailability(); 
@@ -923,9 +937,8 @@
             const overlay = document.getElementById('modal-backdrop');
             const sheet = document.getElementById('booking-sheet');
             
-            overlay.classList.add('opacity-0', 'pointer-events-none');
-            sheet.classList.remove('md:scale-100');
-            sheet.classList.add('translate-y-full', 'md:scale-95');
+            overlay.classList.remove('open');
+            sheet.classList.remove('open');
             
             setTimeout(() => { overlay.classList.add('hidden'); }, 500);
         }
