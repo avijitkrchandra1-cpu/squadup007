@@ -8,13 +8,13 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Space+Grotesk:wght@500;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --volt: #ccff00; --volt-glow: rgba(204, 255, 0, 0.3); --obsidian: #050505; --carbon: #121212; }
+        :root { --neon-cyan: #06b6d4; --electric-indigo: #6366f1; --neon-glow: rgba(6, 182, 212, 0.4); --obsidian: #050505; --carbon: #121212; }
         body { font-family: 'Outfit', sans-serif; background-color: var(--obsidian); color: #ffffff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         h1, h2, h3, h4, .font-display { font-family: 'Space Grotesk', sans-serif; }
         
         /* Preloader */
         #preloader { position: fixed; inset: 0; background: var(--obsidian); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease; }
-        .loader-text { font-family: 'Space Grotesk', sans-serif; font-size: 4rem; font-weight: 900; letter-spacing: -0.05em; color: white; animation: pulse 2s infinite; }
+        .loader-text { font-family: 'Space Grotesk', sans-serif; font-size: 4rem; font-weight: 900; letter-spacing: -0.05em; background: linear-gradient(135deg, #fff, var(--neon-cyan), var(--electric-indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulse 2s infinite; }
         
         /* Premium Floating Nav */
         .island-nav { background: rgba(18, 18, 18, 0.4); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.05); border-radius: 100px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -22,12 +22,13 @@
 
         /* Form Inputs */
         .input-obsidian { background: var(--carbon); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 0.75rem; padding: 1.25rem; width: 100%; outline: none; transition: all 0.3s ease; font-family: 'Space Grotesk', sans-serif; }
-        .input-obsidian:focus { border-color: var(--volt); box-shadow: 0 0 0 1px var(--volt); background: #000; }
+        .input-obsidian:focus { border-color: var(--neon-cyan); box-shadow: 0 0 0 1px var(--neon-cyan); background: #000; }
         
-        /* Buttons */
-        .btn-volt { background: var(--volt); color: black; font-family: 'Space Grotesk', sans-serif; font-weight: 800; border-radius: 0.75rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-transform: uppercase; letter-spacing: 0.05em; }
-        .btn-volt:hover { transform: translateY(-2px); box-shadow: 0 10px 25px var(--volt-glow); background: #d4ff33; }
-        .btn-volt:active { transform: translateY(1px); }
+        /* Neon Buttons */
+        .btn-neon { background: linear-gradient(135deg, var(--neon-cyan), var(--electric-indigo)); color: white; font-family: 'Space Grotesk', sans-serif; font-weight: 800; border-radius: 0.75rem; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); text-transform: uppercase; letter-spacing: 0.05em; position: relative; overflow: hidden; box-shadow: 0 0 20px var(--neon-glow); }
+        .btn-neon::before { content:''; position: absolute; top:-50%; left:-50%; width:200%; height:200%; background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%); transform: scale(0); transition: transform 0.6s ease-out; opacity:0; }
+        .btn-neon:hover::before { transform: scale(1); opacity:1; }
+        .btn-neon:hover { transform: translateY(-3px); box-shadow: 0 0 35px var(--neon-glow); }
 
         /* Cinematic Venue Cards */
         .venue-card { position: relative; border-radius: 1.5rem; overflow: hidden; background: var(--carbon); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(255,255,255,0.03); aspect-ratio: 4/5; }
@@ -36,18 +37,27 @@
         .venue-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.4) 50%, rgba(5,5,5,0.1) 100%); z-index: 10; transition: opacity 0.5s; }
         .venue-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem; z-index: 20; transform: translateY(10px); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         
-        .venue-card:hover { border-color: rgba(204,255,0,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.8); z-index: 30; }
+        .venue-card:hover { border-color: rgba(6, 182, 212, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(6, 182, 212, 0.1); z-index: 30; }
         .venue-card:hover .venue-img { transform: scale(1.08); }
         .venue-card:hover .venue-content { transform: translateY(0); }
+
+        /* Phone Mockup */
+        .mockup-frame { border: 14px solid #1e293b; border-radius: 3rem; overflow: hidden; box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 50px var(--neon-glow); position: relative; transition: transform 0.1s ease-out; }
+        .mockup-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 45%; height: 28px; background: #1e293b; border-bottom-left-radius: 1.2rem; border-bottom-right-radius: 1.2rem; z-index: 20; }
+        .mockup-inner { background-color: var(--carbon); height: 100%; display: flex; flex-direction: column; padding: 1.25rem; padding-top: 3.5rem; }
 
         /* Reveal Animations */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-left { opacity: 0; transform: translateX(-60px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal-left.active { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(60px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal-right.active { opacity: 1; transform: translateX(0); }
 
         /* Filter Pills */
         .filter-pill { padding: 0.75rem 1.5rem; border-radius: 100px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #a1a1aa; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.875rem; white-space: nowrap; cursor: pointer; transition: all 0.3s ease; }
         .filter-pill:hover { border-color: rgba(255,255,255,0.3); color: white; }
-        .filter-pill.active { background: white; color: black; border-color: white; }
+        .filter-pill.active { background: white; color: black; border-color: white; box-shadow: 0 0 15px rgba(255,255,255,0.2); }
 
         /* Modals & Overlays */
         .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); background: rgba(5,5,5,0.85); }
@@ -62,28 +72,28 @@
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="antialiased selection:bg-white selection:text-black">
+<body class="antialiased selection:bg-cyan-500 selection:text-white">
 
     <div id="preloader">
         <h1 class="loader-text">SQUADUP</h1>
-        <p class="text-gray-500 font-bold tracking-[0.2em] uppercase text-xs mt-4 font-display">Initializing Matrix...</p>
+        <p class="text-cyan-400 font-bold tracking-[0.2em] uppercase text-xs mt-4 font-display drop-shadow-[0_0_10px_rgba(6,182,212,0.8)]">Initializing Matrix...</p>
     </div>
 
     <div id="auth-overlay" class="hidden fixed inset-0 z-[200] modal-overlay flex items-center justify-center p-4" onclick="closeAuth()">
-        <div class="modal-card bg-[#0a0a0a] w-full max-w-md p-10 rounded-[2rem] relative shadow-2xl" id="auth-card" onclick="event.stopPropagation()">
+        <div class="modal-card bg-[#0a0a0a] w-full max-w-md p-10 rounded-[2rem] relative shadow-[0_0_50px_rgba(0,0,0,0.8)]" id="auth-card" onclick="event.stopPropagation()">
             <button onclick="closeAuth()" class="absolute top-6 right-6 text-gray-600 hover:text-white font-bold text-xl transition-colors">✕</button>
             <div class="text-center mb-10">
-                <h2 class="text-4xl font-black tracking-tighter text-white font-display cursor-pointer" onclick="ghostTrigger()">Squad<span class="text-[var(--volt)]">Up</span></h2>
+                <h2 class="text-4xl font-black tracking-tighter text-white font-display cursor-pointer" onclick="ghostTrigger()">Squad<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">Up</span></h2>
                 <p class="text-gray-500 text-sm mt-2">Clearance Required for Entry.</p>
             </div>
             
             <div id="login-box" class="space-y-4">
                 <input type="text" id="login-id" placeholder="Athlete ID / Email" class="input-obsidian">
                 <input type="password" id="login-pass" placeholder="Passkey" class="input-obsidian">
-                <button onclick="handleLogin('player')" id="login-btn" class="w-full py-4 btn-volt text-lg mt-4">Initialize Session</button>
+                <button onclick="handleLogin('player')" id="login-btn" class="w-full py-4 btn-neon text-lg mt-4">Initialize Session</button>
                 <div class="flex justify-between items-center pt-6 mt-6 border-t border-white/5">
                     <p onclick="toggleAuth('admin')" class="text-xs text-red-500 hover:text-red-400 font-bold cursor-pointer transition-colors uppercase tracking-wider font-display">Partner Console</p>
-                    <p onclick="toggleAuth('register')" class="text-xs text-white hover:text-[var(--volt)] font-bold cursor-pointer transition-colors uppercase tracking-wider font-display">New Athlete?</p>
+                    <p onclick="toggleAuth('register')" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold cursor-pointer transition-colors uppercase tracking-wider font-display">New Athlete?</p>
                 </div>
             </div>
 
@@ -109,7 +119,7 @@
                     <select id="reg-skill" class="input-obsidian py-3 text-sm text-gray-400"><option value="Beginner">Amateur</option><option value="Intermediate">Intermediate</option><option value="Pro">Galáctico</option></select>
                 </div>
                 <input type="password" id="reg-pass" placeholder="Set Authorization Key" class="input-obsidian py-3 text-sm">
-                <button onclick="handleRegister()" id="reg-btn" class="w-full py-4 btn-volt mt-4 text-sm">Deploy Identity</button>
+                <button onclick="handleRegister()" id="reg-btn" class="w-full py-4 btn-neon mt-4 text-sm">Deploy Identity</button>
                 <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-500 cursor-pointer mt-4 hover:text-white transition uppercase tracking-widest font-display">Already Registered?</p>
             </div>
         </div>
@@ -118,11 +128,11 @@
     <div class="fixed w-full top-6 z-50 px-4 sm:px-6 flex justify-center pointer-events-none">
         <header id="main-nav" class="island-nav w-full max-w-5xl px-6 py-4 flex justify-between items-center pointer-events-auto">
             <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-                <h1 class="text-2xl font-black tracking-tighter text-white font-display">Squad<span class="text-[var(--volt)]">Up</span></h1>
+                <h1 class="text-2xl font-black tracking-tighter text-white font-display">Squad<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">Up</span></h1>
             </div>
             
             <nav class="hidden md:flex gap-8 items-center">
-                <button onclick="switchTab('feed')" class="text-xs font-bold text-white hover:text-[var(--volt)] transition tracking-widest uppercase font-display">Inventory</button>
+                <button onclick="switchTab('feed')" class="text-xs font-bold text-white hover:text-cyan-400 transition tracking-widest uppercase font-display">Inventory</button>
                 <button onclick="switchTab('rank')" class="text-xs font-bold text-gray-400 hover:text-white transition tracking-widest uppercase font-display">Standings</button>
                 <button id="nav-btn-admin-desktop" onclick="switchTab('admin')" class="hidden text-xs font-bold text-red-500 hover:text-red-400 transition tracking-widest uppercase font-display">Console</button>
             </nav>
@@ -142,76 +152,105 @@
         
         <div id="marketing-sections">
             
-            <section class="relative w-full h-[100svh] flex items-center justify-center overflow-hidden">
+            <section class="relative w-full h-[100svh] flex items-center overflow-hidden bg-[#050505]">
                 <div class="absolute inset-0 z-0">
-                    <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-50 mix-blend-screen" poster="https://images.unsplash.com/photo-1518605368461-1ee7e53a2a61?auto=format&fit=crop&w=2000&q=80">
+                    <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-40 mix-blend-screen" poster="https://images.unsplash.com/photo-1518605368461-1ee7e53a2a61?auto=format&fit=crop&w=2000&q=80">
                         <source src="https://assets.mixkit.co/videos/preview/mixkit-playing-football-on-a-dark-field-41154-large.mp4" type="video/mp4">
                     </video>
-                    <div class="absolute inset-0 bg-gradient-to-b from-[#050505]/40 via-transparent to-[#050505]"></div>
-                    <div class="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505]"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/80 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]"></div>
                 </div>
                 
-                <div class="max-w-5xl mx-auto px-6 relative z-20 w-full text-center mt-10">
-                    <div class="reveal">
-                        <h1 class="text-6xl md:text-8xl lg:text-[9rem] font-black text-white leading-[0.9] tracking-tighter mb-6 font-display">
-                            OWN THE<br><span class="text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-gray-600">PITCH.</span>
-                        </h1>
-                        <p class="text-lg md:text-xl text-gray-400 font-medium mb-10 max-w-2xl mx-auto">
-                            Masterclass precision. Instant reservations. Zero latency.<br>Welcome to Kolkata’s uncompromising sports booking protocol.
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                            <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-volt px-10 py-5 text-sm md:text-base w-full sm:w-auto">Access Matrix</button>
-                            <button onclick="sortVenuesByProximity(this)" class="group bg-[#121212] hover:bg-white text-white hover:text-black px-8 py-5 rounded-xl font-bold text-sm md:text-base transition-all border border-white/10 flex items-center justify-center gap-3 font-display uppercase tracking-widest w-full sm:w-auto">
-                                <svg class="w-5 h-5 text-gray-500 group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                Locate Nearby
-                            </button>
+                <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-20 w-full mt-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                        <div class="reveal-left">
+                            <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-8">
+                                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_rgba(6,182,212,0.8)]"></span>
+                                <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest font-display">Premium Kolkata Network Active</span>
+                            </div>
+                            <h1 class="text-6xl md:text-8xl lg:text-[7.5rem] font-black text-white leading-[0.9] tracking-tighter mb-8 font-display">
+                                OWN THE<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">PITCH.</span>
+                            </h1>
+                            <p class="text-xl text-gray-400 font-medium mb-12 max-w-xl leading-relaxed">
+                                Masterclass precision. Instant reservations. Zero latency.<br>Welcome to Kolkata’s uncompromising sports booking protocol.
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-5">
+                                <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-neon px-10 py-5 text-base w-full sm:w-auto text-center">Access Matrix</button>
+                                <button onclick="sortVenuesByProximity(this)" class="group bg-[#121212] hover:bg-white text-white hover:text-black px-10 py-5 rounded-xl font-bold text-base transition-all border border-white/10 flex items-center justify-center gap-3 font-display uppercase tracking-widest w-full sm:w-auto">
+                                    <svg class="w-5 h-5 text-gray-500 group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    Locate Nearby
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="hidden lg:flex justify-center relative reveal-right" id="hero-mockup-container">
+                            <div class="absolute inset-0 bg-cyan-500/15 blur-[120px] rounded-full pointer-events-none"></div>
+                            <div class="mockup-frame w-[310px] h-[620px] bg-slate-900 transform rotate-[-3deg]">
+                                <div class="mockup-notch"></div>
+                                <div class="mockup-inner">
+                                    <div class="flex justify-between items-center mb-8">
+                                        <h3 class="font-black text-2xl tracking-tighter font-display text-white">SquadUp</h3>
+                                        <div class="w-9 h-9 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-black text-sm border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.3)]">A</div>
+                                    </div>
+                                    <div class="bg-[#1a1a1a] rounded-xl p-5 mb-5 border border-white/5 backdrop-blur">
+                                        <p class="text-[10px] text-cyan-400 font-bold uppercase mb-1 tracking-widest font-display">Confirmed Match</p>
+                                        <p class="font-bold text-white text-lg mb-2 font-display tracking-tight">Salt Lake Sportsplex</p>
+                                        <div class="flex justify-between text-xs text-gray-500"><span>Today, 8:00 PM</span><span class="font-bold text-white">₹359 / Head</span></div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4 mb-5">
+                                        <div class="bg-[#1a1a1a] h-28 rounded-2xl border border-white/5 flex flex-col items-center justify-center"><span class="text-3xl mb-1.5">⚽</span><span class="text-xs font-bold text-gray-500 tracking-widest uppercase font-display">Football</span></div>
+                                        <div class="bg-[#1a1a1a] h-28 rounded-2xl border border-white/5 flex flex-col items-center justify-center"><span class="text-3xl mb-1.5">🏏</span><span class="text-xs font-bold text-gray-500 tracking-widest uppercase font-display">Cricket</span></div>
+                                    </div>
+                                    <div class="mt-auto bg-gradient-to-r from-cyan-500 to-indigo-600 p-5 rounded-xl text-center shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+                                        <p class="font-bold text-white text-sm uppercase tracking-widest font-display">Secure via UPI</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-gray-600 animate-bounce">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                 </div>
             </section>
 
             <section class="py-32 relative overflow-hidden bg-[#050505] z-10 border-t border-white/5">
+                <div class="absolute -bottom-48 -left-48 w-[500px] h-[500px] bg-indigo-600/10 blur-[130px] rounded-full"></div>
                 <div class="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
                     <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 reveal">
                         <div class="mb-6 md:mb-0">
-                            <p class="text-[var(--volt)] font-bold tracking-widest text-xs uppercase mb-2 font-display">Protocol</p>
+                            <p class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-3 font-display">Protocol</p>
                             <h2 class="text-4xl md:text-5xl font-black text-white tracking-tighter font-display">Kolkata's Elite Process.</h2>
                         </div>
                         <p class="text-gray-500 font-medium max-w-md text-sm md:text-base leading-relaxed">Streamlined management of arena inventory. Search, book, and compete in Kolkata's finest sports environments.</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-auto md:h-[450px]">
-                        <div class="bg-[#0a0a0a] border border-white/5 rounded-3xl p-10 md:col-span-3 flex flex-col reveal transition-transform hover:scale-[1.02] duration-500">
-                            <div class="w-20 h-20 bg-[#121212] rounded-3xl flex items-center justify-center border border-white/10 text-3xl mb-8">🔍</div>
+                        <div class="bg-[#0a0a0a] p-10 md:col-span-3 flex flex-col reveal border border-white/5 rounded-3xl hover:border-cyan-500/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.8)] transition-all duration-500 group">
+                            <div class="w-20 h-20 bg-[#121212] rounded-3xl flex items-center justify-center border border-white/10 shadow-inner text-3xl mb-8 group-hover:scale-105 transition-transform duration-500">🔍</div>
                             <h3 class="text-2xl font-bold text-white mb-4 font-display tracking-tight">Network Search</h3>
                             <p class="text-gray-400 text-base leading-relaxed max-w-md">Access Kolkata's live athletic matrix. Real-time availability for premium turfs, courts, and centers across ⚽ Football, 🏏 Cricket, ♟️ Chess, and 🎯 Carrom.</p>
                         </div>
-                        <div class="bg-[#0a0a0a] border border-white/5 rounded-3xl p-10 md:col-span-2 reveal transition-transform hover:scale-[1.02] duration-500" style="transition-delay: 150ms;">
-                            <div class="w-16 h-16 bg-[#121212] rounded-2xl flex items-center justify-center border border-white/10 text-2xl mb-6">⚡</div>
+                        <div class="bg-[#0a0a0a] p-10 md:col-span-2 reveal border border-white/5 rounded-3xl hover:border-indigo-500/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.8)] transition-all duration-500 group" style="transition-delay: 150ms;">
+                            <div class="w-16 h-16 bg-[#121212] rounded-2xl flex items-center justify-center border border-white/10 shadow-inner text-2xl mb-6 group-hover:scale-105 transition-transform duration-500">⚡</div>
                             <h3 class="text-xl font-bold text-white mb-3 font-display tracking-tight">Instant Booking</h3>
                             <p class="text-gray-400 text-sm leading-relaxed">Zero latency scheduling. Secure slots instantly via Razorpay. Choose 20%, 50%, or 100% upfront.</p>
                         </div>
-                        <div class="bg-[#0a0a0a] border border-white/5 rounded-3xl px-10 py-8 md:col-span-5 flex flex-col md:flex-row md:items-center md:justify-between reveal transition-transform hover:scale-[1.02] duration-500" style="transition-delay: 300ms;">
+                        <div class="bg-gradient-to-r from-[#0a0a0a] to-[#121212] px-10 py-8 md:col-span-5 flex flex-col md:flex-row md:items-center md:justify-between reveal border border-white/5 rounded-3xl hover:border-cyan-400/20 transition-all duration-500" style="transition-delay: 300ms;">
                             <div>
-                                <h3 class="text-xl font-bold text-white mb-1 font-display tracking-tight">Step Onto the Pitch</h3>
+                                <h3 class="text-xl font-bold text-white mb-2 font-display tracking-tight">Step Onto the Pitch</h3>
                                 <p class="text-gray-400 text-sm max-w-lg">Arrive at the verified arena. Digital ID clearance. Compete in Kolkata's premier sports environment.</p>
                             </div>
-                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl text-black mt-5 md:mt-0 shadow-[0_0_20px_rgba(255,255,255,0.3)]">🏆</div>
+                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl text-black mt-5 md:mt-0 shadow-[0_0_20px_rgba(255,255,255,0.2)]">🏆</div>
                         </div>
                     </div>
                 </div>
             </section>
+
         </div> <section id="venues-section" class="py-24 bg-[#050505] min-h-screen relative z-20">
             <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
                 
                 <div id="view-feed" class="block">
                     <div class="flex flex-col xl:flex-row xl:items-end justify-between mb-16 reveal">
                         <div class="mb-8 xl:mb-0">
-                            <p class="text-[var(--volt)] font-bold tracking-widest text-xs uppercase mb-3 font-display">Live Data</p>
+                            <p class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-3 font-display">Live Data</p>
                             <h2 class="text-5xl font-black text-white tracking-tighter font-display">Active Arenas.</h2>
                         </div>
                         
@@ -229,14 +268,14 @@
                             <svg class="w-16 h-16 text-gray-800 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             <h3 class="text-2xl font-black text-white font-display tracking-tight mb-2">Restricted Matrix</h3>
                             <p class="text-gray-500 font-medium mb-8 max-w-md text-center">Athlete authorization is required to access live inventory and secure slots.</p>
-                            <button onclick="openAuth()" class="btn-volt px-10 py-4 text-sm">Initiate Login</button>
+                            <button onclick="openAuth()" class="btn-neon px-10 py-4 text-sm">Initiate Login</button>
                         </div>
                     </div>
                 </div>
 
                 <div id="view-rank" class="hidden reveal py-10">
                     <div class="max-w-4xl mx-auto">
-                        <p class="text-[var(--volt)] font-bold tracking-widest text-xs uppercase mb-3 font-display">Global Standing</p>
+                        <p class="text-cyan-400 font-bold tracking-widest text-xs uppercase mb-3 font-display">Global Standing</p>
                         <h2 class="text-5xl font-black text-white tracking-tighter mb-12 font-display border-b border-white/5 pb-6">Leaderboard.</h2>
                         <div id="rank-list" class="space-y-6"></div>
                     </div>
@@ -279,19 +318,18 @@
             </div>
         </section>
 
-        <footer class="bg-[#050505] border-t border-white/5 pt-24 pb-12 mt-auto">
+        <footer class="bg-[#050505] border-t border-white/5 pt-24 pb-12 mt-auto relative z-30">
             <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
                     <div class="md:col-span-2">
-                        <h2 class="text-4xl font-black text-white tracking-tighter mb-6 font-display">Squad<span class="text-[var(--volt)]">Up</span></h2>
+                        <h2 class="text-4xl font-black text-white tracking-tighter mb-6 font-display">Squad<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">Up</span></h2>
                         <p class="text-gray-500 text-sm leading-relaxed max-w-sm mb-8">The uncompromising standard for elite sports reservations in Kolkata. Cryptographically secure, zero latency.</p>
                         <p class="text-[10px] font-bold text-gray-600 uppercase tracking-widest font-display">Engineered by Easycommune Online Services Pvt Ltd</p>
                     </div>
                     <div>
                         <h4 class="text-white font-black mb-6 tracking-widest uppercase text-xs font-display">Protocol</h4>
                         <ul class="space-y-4 text-sm text-gray-400 font-medium">
-                            <li><span onclick="showModal('disc-modal')" class="hover:text-white cursor-pointer transition">Legal Mandate</span></li>
-                            <li><span onclick="showModal('about-modal')" class="hover:text-white cursor-pointer transition">System Architecture</span></li>
+                            <li><span onclick="showModal('disc-modal')" class="hover:text-cyan-400 cursor-pointer transition">Legal Mandate</span></li>
                         </ul>
                     </div>
                     <div>
@@ -301,8 +339,8 @@
                 </div>
                 <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p class="text-[10px] text-gray-600 font-bold uppercase tracking-widest font-display">© 2026 SQUADUP. ALL CLEARANCES SECURED.</p>
-                    <div class="text-[10px] text-[var(--volt)] font-bold uppercase tracking-widest font-display flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[var(--volt)] animate-pulse"></span>
+                    <div class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest font-display flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_rgba(6,182,212,0.8)]"></span>
                         Servers Operational
                     </div>
                 </div>
@@ -313,12 +351,12 @@
         <div id="booking-sheet" class="w-full md:max-w-xl bg-[#0a0a0a] rounded-t-3xl md:rounded-3xl shadow-[0_0_50px_rgba(0,0,0,1)] flex flex-col border border-white/10 bottom-sheet max-h-[90vh]" onclick="event.stopPropagation()">
             
             <div class="p-8 flex-shrink-0 border-b border-white/5 bg-[#121212] rounded-t-3xl md:rounded-t-3xl relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--volt)] to-transparent opacity-50"></div>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
                 <div class="w-12 h-1.5 bg-gray-800 rounded-full mx-auto mb-6 md:hidden"></div>
                 <div class="flex justify-between items-center">
                     <div>
                         <h2 class="text-3xl font-black text-white tracking-tighter font-display" id="book-venue-name">Arena Name</h2>
-                        <p id="book-venue-sport" class="text-xs text-[var(--volt)] font-bold uppercase tracking-widest mt-2">Sport Sector</p>
+                        <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-2">Sport Sector</p>
                     </div>
                     <button onclick="closeSheet()" class="w-10 h-10 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 hover:text-white transition hidden md:flex text-lg">✕</button>
                 </div>
@@ -348,8 +386,8 @@
                     </div>
                 </div>
                 
-                <div class="bg-[var(--volt-glow)] p-5 rounded-2xl border border-[var(--volt)]/20 flex items-center justify-between">
-                    <span class="text-xs font-bold text-[var(--volt)] uppercase tracking-widest font-display">Matrix Status</span>
+                <div class="bg-cyan-500/10 p-5 rounded-2xl border border-cyan-500/20 flex items-center justify-between">
+                    <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest font-display">Matrix Status</span>
                     <span id="slot-status" class="text-base font-black text-white font-display">Verifying...</span>
                 </div>
                 
@@ -366,16 +404,8 @@
                     <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 font-display">Total Ledger Due</p>
                     <p id="total-price" class="text-4xl font-black text-white font-display">₹0</p>
                 </div>
-                <button onclick="processBooking()" id="main-deploy-btn" class="px-10 py-5 btn-volt text-base w-1/2">Lock Slot</button>
+                <button onclick="processBooking()" id="main-deploy-btn" class="px-10 py-5 btn-neon text-base w-1/2">Lock Slot</button>
             </div>
-        </div>
-    </div>
-
-    <div id="about-modal" class="hidden fixed inset-0 bg-black/90 z-[300] flex items-center justify-center p-4 backdrop-blur-2xl modal-overlay" onclick="closeModal('about-modal')">
-        <div class="modal-card bg-[#0a0a0a] p-10 max-w-sm w-full shadow-2xl relative border border-white/10 rounded-[2rem]" onclick="event.stopPropagation()">
-            <h2 class="text-3xl font-black mb-5 text-white uppercase border-b border-white/5 pb-4 tracking-tighter font-display">Architecture</h2>
-            <p class="text-gray-400 text-sm leading-relaxed mb-8 font-medium">Kolkata's uncompromising digital sports infrastructure. Designed for high-performance athletes requiring instant, zero-latency venue authorizations.</p>
-            <button onclick="closeModal('about-modal')" class="w-full py-4 bg-white text-black font-black uppercase tracking-widest font-display rounded-xl hover:bg-gray-200 transition text-xs">Acknowledge</button>
         </div>
     </div>
 
@@ -431,6 +461,21 @@
             }
         });
 
+        // Luxe Mockup Parallax Interactivity
+        const mockup = document.getElementById('hero-mockup-container');
+        if(mockup) {
+            mockup.addEventListener('mousemove', (e) => {
+                const frame = mockup.querySelector('.mockup-frame');
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
+                frame.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg) rotateZ(-3deg)`;
+            });
+            mockup.addEventListener('mouseleave', () => {
+                const frame = mockup.querySelector('.mockup-frame');
+                frame.style.transform = 'rotateY(0deg) rotateX(0deg) rotateZ(-3deg)';
+            });
+        }
+
         // --- AUTH PORTAL LOGIC ---
         function ghostTrigger() {
             tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(() => tapCount = 0, 1500);
@@ -453,25 +498,39 @@
 
         function openAuth() {
             const overlay = document.getElementById('auth-overlay');
+            const card = document.getElementById('auth-card');
             overlay.classList.remove('hidden');
-            setTimeout(() => { overlay.classList.add('open'); }, 10);
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                card.classList.remove('scale-95');
+                card.classList.add('scale-100');
+            }, 10);
         }
 
         function closeAuth() {
             const overlay = document.getElementById('auth-overlay');
-            overlay.classList.remove('open');
+            const card = document.getElementById('auth-card');
+            card.classList.remove('scale-100');
+            card.classList.add('scale-95');
+            overlay.classList.add('opacity-0', 'pointer-events-none');
             setTimeout(() => { overlay.classList.add('hidden'); }, 400);
         }
 
         function showModal(id) {
             const overlay = document.getElementById(id);
+            const card = overlay.querySelector('.modal-card');
             overlay.classList.remove('hidden');
-            setTimeout(() => { overlay.classList.add('open'); }, 10);
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                if(card) { card.classList.remove('scale-95'); card.classList.add('scale-100'); }
+            }, 10);
         }
 
         function closeModal(id) {
             const overlay = document.getElementById(id);
-            overlay.classList.remove('open');
+            const card = overlay.querySelector('.modal-card');
+            if(card) { card.classList.remove('scale-100'); card.classList.add('scale-95'); }
+            overlay.classList.add('opacity-0', 'pointer-events-none');
             setTimeout(() => { overlay.classList.add('hidden'); }, 400);
         }
         
@@ -627,10 +686,10 @@
                 document.getElementById('auth-state-btn').innerHTML = `
                     <div class="relative group cursor-pointer flex items-center gap-3">
                         <div class="text-right">
-                            <p class="text-[10px] text-[var(--volt)] font-bold uppercase tracking-widest leading-none mb-1 font-display">Active Protocol</p>
+                            <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest leading-none mb-1 font-display">Active Protocol</p>
                             <p class="text-sm font-bold text-white leading-none">${currentUser.name.split(' ')[0]}</p>
                         </div>
-                        <div class="w-10 h-10 rounded-full bg-[var(--volt)] text-black flex items-center justify-center font-black text-lg shadow-[0_0_15px_var(--volt-glow)] font-display">${currentUser.name[0].toUpperCase()}</div>
+                        <div class="w-10 h-10 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 flex items-center justify-center font-black text-lg shadow-[0_0_15px_rgba(6,182,212,0.3)] font-display">${currentUser.name[0].toUpperCase()}</div>
                         <div class="absolute right-0 top-12 mt-2 w-48 bg-[#121212] rounded-2xl shadow-2xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-3 px-2">
                             <button onclick="logout()" class="w-full text-center py-2 text-xs text-red-500 font-bold hover:bg-white/5 rounded-lg transition uppercase tracking-widest font-display">Terminate</button>
                         </div>
@@ -692,7 +751,7 @@
                         <svg class="w-16 h-16 text-gray-800 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                         <h3 class="text-2xl font-black text-white font-display tracking-tight mb-2">Restricted Matrix</h3>
                         <p class="text-gray-500 font-medium mb-8 max-w-md text-center">Athlete authorization is required to access live inventory and secure slots.</p>
-                        <button onclick="openAuth()" class="btn-volt px-10 py-4 text-sm">Initiate Login</button>
+                        <button onclick="openAuth()" class="btn-neon px-10 py-4 text-sm">Initiate Login</button>
                     </div>`;
                 document.querySelectorAll('#venue-grid .reveal').forEach(el => observer.observe(el));
                 return;
@@ -705,7 +764,7 @@
 
             filtered.forEach((v, index) => {
                 const isP = v.status === "Pending";
-                const distDisplay = v.distance ? `<span class="bg-[var(--volt)]/10 text-[var(--volt)] border border-[var(--volt)]/20 text-[9px] px-2 py-0.5 rounded font-bold ml-2 whitespace-nowrap tracking-wide font-display">${v.distance} km</span>` : '';
+                const distDisplay = v.distance ? `<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] px-2 py-0.5 rounded font-bold ml-2 whitespace-nowrap tracking-wide font-display">${v.distance} km</span>` : '';
                 
                 const visual = v.type === 'outdoor' 
                     ? `<img src="${v.img}" class="venue-img ${isP ? 'grayscale opacity-30' : ''}">` 
@@ -723,7 +782,7 @@
                     <div class="venue-img-wrapper">${visual}</div>
                     <div class="venue-overlay"></div>
                     <div class="venue-content">
-                        <p class="text-[10px] text-[var(--volt)] font-black uppercase mb-2 tracking-widest font-display">${v.sport} Sector</p>
+                        <p class="text-[10px] text-cyan-400 font-black uppercase mb-2 tracking-widest font-display">${v.sport} Sector</p>
                         <h3 class="font-extrabold text-white text-2xl leading-tight line-clamp-1 mb-2 font-display">${v.name}</h3>
                         <p class="text-xs text-gray-400 font-medium flex items-center line-clamp-1 mb-6">${v.loc} ${distDisplay}</p>
                         
@@ -747,21 +806,21 @@
             if(!list) return;
 
             list.innerHTML = `
-                <div class="bg-[#121212] p-8 border-l-4 border-[var(--volt)] rounded-3xl relative overflow-hidden group border-y border-r border-white/5">
-                    <div class="absolute inset-0 bg-gradient-to-r from-[var(--volt)]/5 to-transparent opacity-40"></div>
+                <div class="bg-[#121212] p-8 border-l-4 border-cyan-400 rounded-3xl relative overflow-hidden group border-y border-r border-white/5">
+                    <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-indigo-600/10 opacity-40"></div>
                     <div class="flex justify-between items-center mb-6 relative z-10 gap-4">
                         <div>
-                            <span class="font-black text-white text-2xl flex items-center gap-3 tracking-tighter font-display">Rahul Das <span class="bg-[var(--volt)]/10 text-[var(--volt)] border border-[var(--volt)]/30 text-[10px] px-3 py-1 rounded font-bold uppercase tracking-widest shadow-[0_0_10px_var(--volt-glow)]">#1 ALPHA PRO</span></span>
+                            <span class="font-black text-white text-2xl flex items-center gap-3 tracking-tighter font-display">Rahul Das <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-[10px] px-3 py-1 rounded font-bold uppercase tracking-widest shadow-[0_0_10px_rgba(6,182,212,0.3)]">#1 ALPHA PRO</span></span>
                             <span class="text-sm text-gray-500 font-bold uppercase mt-1.5 tracking-widest flex items-center gap-2 font-display">⚽ Salt Lake Core</span>
                         </div>
                         <div class="text-right flex-shrink-0">
-                            <span class="font-black text-[var(--volt)] block text-5xl tracking-tighter font-display">42</span>
+                            <span class="font-black text-cyan-400 block text-5xl tracking-tighter font-display">42</span>
                             <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest font-display">Ops Cleared</span>
                         </div>
                     </div>
                     <div class="bg-[#050505] p-5 rounded-2xl flex justify-between items-center border border-white/5 relative z-10">
                         <span class="text-xs text-gray-500 font-bold uppercase tracking-widest font-display">Tactical Rating</span>
-                        <span class="text-[var(--volt)] text-xl tracking-widest">★★★★★</span>
+                        <span class="text-cyan-400 text-xl tracking-widest">★★★★★</span>
                     </div>
                 </div>
                 
@@ -879,7 +938,7 @@
             } else if (remaining <= 2) {
                 statusEl.innerText = `${remaining} SHIFTS REMAIN`; statusEl.className = "text-base font-black text-orange-400 font-display";
             } else {
-                statusEl.innerText = `${remaining} SHIFTS CLEAR`; statusEl.className = "text-base font-black text-white font-display";
+                statusEl.innerText = `${remaining} SHIFTS CLEAR`; statusEl.className = "text-base font-black text-cyan-400 font-display";
             }
             
             const countInput = document.getElementById('book-count');
@@ -956,7 +1015,7 @@
                 "description": `Clearance: ${activeVenue.name}`,
                 "order_id": orderRes.order.id,
                 "prefill": { "contact": currentUser.phone || "", "name": currentUser.name },
-                "theme": { "color": "#050505" }, 
+                "theme": { "color": "#06b6d4" }, 
                 "handler": async (res) => {
                     btn.innerText = "Verifying Ledger...";
                     const verify = await fetchJSONP({
