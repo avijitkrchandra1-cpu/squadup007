@@ -78,24 +78,18 @@
         .tracking-wide { letter-spacing: 0.1em; }
         .luxe-shadow { filter: drop-shadow(0 0 10px var(--neon-cyan-glow)); }
 
-        /* MAP STATE MACHINE - FULL OPACITY CROSSFADE */
-        .map-layer { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity 0.8s ease; }
-        
+        /* UNBREAKABLE MAP STATE CSS */
         .state-kolkata #kolkata-view { opacity: 1; z-index: 20; pointer-events: auto; }
         .state-kolkata #india-view { opacity: 0; z-index: 10; pointer-events: none; }
         
         .state-india #kolkata-view { opacity: 0; z-index: 10; pointer-events: none; }
         .state-india #india-view { opacity: 1; z-index: 20; pointer-events: auto; }
 
-        /* Kolkata Pings */
-        .ping-ring { animation: pingRing 2s cubic-bezier(0, 0, 0.2, 1) infinite; fill: none; stroke: var(--neon-cyan); stroke-width: 0.5; transform-origin: center; transform-box: fill-box;}
-        @keyframes pingRing { 75%, 100% { transform: scale(3); opacity: 0; } }
-        .turf-node-k { position: absolute; background: var(--neon-cyan); border-radius: 50%; box-shadow: 0 0 15px var(--neon-cyan); animation: pulseBlink 1.5s infinite alternate; transform: translate(-50%, -50%); border: 1.5px solid #0f172a; }
+        /* Kolkata Pings - Matched to your Light Theme Image */
+        @keyframes pingRing { 75%, 100% { transform: scale(2.5); opacity: 0; } }
+        .turf-node-k { position: absolute; background: var(--neon-cyan); border-radius: 50%; box-shadow: 0 0 10px var(--neon-cyan); animation: pulseBlink 1.5s infinite alternate; transform: translate(-50%, -50%); border: 2px solid white; }
         .turf-node-k::after { content: ''; position: absolute; inset: -8px; border: 2px solid var(--neon-cyan); border-radius: 50%; animation: pingRing 2s infinite; }
-        @keyframes pulseBlink { 0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); } }
-        
-        /* Location Labels */
-        .loc-label { position: absolute; background: rgba(15, 23, 42, 0.8); color: #06b6d4; padding: 4px 8px; border-radius: 6px; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transform: translate(-50%, -150%); white-space: nowrap; pointer-events: none; border: 1px solid rgba(6, 182, 212, 0.3);}
+        @keyframes pulseBlink { 0% { opacity: 0.8; transform: translate(-50%, -50%) scale(0.9); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } }
     </style>
 </head>
 <body class="antialiased selection:bg-cyan-500 selection:text-white">
@@ -286,33 +280,31 @@
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         
-                        <div id="map-matrix-container" class="state-kolkata relative w-full h-[450px] lg:h-[600px] reveal-left order-2 lg:order-1 bg-[#0f172a] rounded-[3rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.6)] overflow-hidden">
+                        <div id="map-matrix-container" class="state-kolkata relative w-full h-[450px] min-h-[450px] lg:h-[650px] lg:min-h-[650px] reveal-left order-2 lg:order-1 bg-white rounded-[3rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.6)] overflow-hidden block">
                             
-                            <div id="kolkata-view" class="map-layer">
-                                <iframe src="https://maps.google.com/maps?q=Kolkata&t=&z=11&ie=UTF8&iwloc=&output=embed" class="absolute inset-0 w-full h-full border-0 pointer-events-none opacity-50" style="filter: grayscale(100%) invert(100%) contrast(120%);"></iframe>
-                                
-                                <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent pointer-events-none"></div>
+                            <div id="kolkata-view" class="absolute inset-0 w-full h-full transition-opacity duration-700 bg-slate-100">
+                                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=88.25,22.45,88.48,22.65&layer=mapnik" class="absolute inset-0 w-full h-full border-0 pointer-events-none" style="filter: none;"></iframe>
                                 
                                 <div class="absolute inset-0 z-10 pointer-events-none">
-                                    <div class="turf-node-k w-3 h-3 md:w-4 md:h-4" style="top: 40%; left: 60%;"></div>
-                                    <div class="loc-label" style="top: 40%; left: 60%;">Salt Lake Hub</div>
+                                    <div class="turf-node-k w-3 h-3 md:w-4 md:h-4" style="top: 35%; left: 68%;"></div>
+                                    <div class="absolute text-slate-900 font-bold text-xs tracking-wide bg-white/90 px-2 py-0.5 rounded shadow-sm transform -translate-y-1/2 ml-4" style="top: 35%; left: 68%;">Salt Lake Hub</div>
                                     
-                                    <div class="turf-node-k w-2 h-2 md:w-3 md:h-3" style="top: 65%; left: 45%; animation-delay: 0.3s"></div>
-                                    <div class="loc-label" style="top: 65%; left: 45%;">Behala</div>
+                                    <div class="turf-node-k w-2 h-2 md:w-3 md:h-3" style="top: 75%; left: 30%; animation-delay: 0.3s"></div>
+                                    <div class="absolute text-slate-900 font-bold text-xs tracking-wide bg-white/90 px-2 py-0.5 rounded shadow-sm transform -translate-y-1/2 ml-4" style="top: 75%; left: 30%;">Behala</div>
                                     
-                                    <div class="turf-node-k w-2 h-2 md:w-3 md:h-3" style="top: 30%; left: 70%; animation-delay: 0.6s"></div>
-                                    <div class="loc-label" style="top: 30%; left: 70%;">New Town</div>
+                                    <div class="turf-node-k w-2 h-2 md:w-3 md:h-3" style="top: 25%; left: 82%; animation-delay: 0.6s"></div>
+                                    <div class="absolute text-slate-900 font-bold text-xs tracking-wide bg-white/90 px-2 py-0.5 rounded shadow-sm transform -translate-y-1/2 ml-4" style="top: 25%; left: 82%;">New Town</div>
                                     
-                                    <div class="turf-node-k w-2 h-2 md:w-3 md:h-3" style="top: 25%; left: 55%; animation-delay: 0.9s"></div>
-                                    <div class="loc-label" style="top: 25%; left: 55%;">Dum Dum</div>
+                                    <div class="turf-node-k w-2 h-2 md:w-3 md:h-3" style="top: 15%; left: 55%; animation-delay: 0.9s"></div>
+                                    <div class="absolute text-slate-900 font-bold text-xs tracking-wide bg-white/90 px-2 py-0.5 rounded shadow-sm transform -translate-y-1/2 ml-4" style="top: 15%; left: 55%;">Dum Dum</div>
                                     
-                                    <div class="turf-node-k w-2 h-2 md:w-3 md:h-3" style="top: 75%; left: 55%; animation-delay: 1.2s"></div>
-                                    <div class="loc-label" style="top: 75%; left: 55%;">Garia</div>
+                                    <div class="turf-node-k w-2 h-2 md:w-3 md:h-3" style="top: 85%; left: 60%; animation-delay: 1.2s"></div>
+                                    <div class="absolute text-slate-900 font-bold text-xs tracking-wide bg-white/90 px-2 py-0.5 rounded shadow-sm transform -translate-y-1/2 ml-4" style="top: 85%; left: 60%;">Garia</div>
                                 </div>
                             </div>
 
-                            <div id="india-view" class="map-layer bg-[#0f172a] p-4 lg:p-8">
-                                <img src="Gemini_Generated_Image_h60oreh60oreh60o.jpg" class="w-full h-full object-contain pointer-events-none rounded-2xl drop-shadow-2xl" alt="India Expansion Network">
+                            <div id="india-view" class="absolute inset-0 w-full h-full transition-opacity duration-700 bg-white flex items-center justify-center p-4 lg:p-8">
+                                <img src="Gemini_Generated_Image_h60oreh60oreh60o.jpg" class="w-full h-full object-contain pointer-events-none rounded-2xl" alt="India Expansion Network">
                             </div>
 
                         </div>
