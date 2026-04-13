@@ -80,7 +80,7 @@
         .luxe-shadow { filter: drop-shadow(0 0 10px var(--neon-cyan-glow)); }
 
         /* MAP STATE MACHINE */
-        .map-layer { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity 0.8s ease; display: flex; align-items: center; justify-content: center; }
+        .map-layer { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity 0.8s ease; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 3rem; }
         
         .state-kolkata #kolkata-view { opacity: 1; z-index: 20; pointer-events: auto; }
         .state-kolkata #india-view { opacity: 0; z-index: 10; pointer-events: none; }
@@ -94,39 +94,6 @@
         .turf-node-k { position: absolute; background: var(--neon-cyan); border-radius: 50%; box-shadow: 0 0 15px var(--neon-cyan); animation: pulseBlink 1.5s infinite alternate; transform: translate(-50%, -50%); border: 1.5px solid #0f172a; }
         .turf-node-k::after { content: ''; position: absolute; inset: -8px; border: 2px solid var(--neon-cyan); border-radius: 50%; animation: pingRing 2s infinite; }
         @keyframes pulseBlink { 0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); } }
-        
-        /* Pins for India Map */
-        .india-pin {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transform: translate(-50%, -100%);
-            z-index: 10;
-        }
-        .india-pin svg { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); transition: color 0.3s; }
-        .india-pin span {
-            background: rgba(255, 255, 255, 0.95);
-            color: #0f172a;
-            font-weight: 800;
-            padding: 2px 6px;
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            white-space: nowrap;
-            margin-top: 2px;
-            letter-spacing: 0.05em;
-        }
-        .pin-hub { z-index: 20; }
-        .pin-hub svg { color: var(--neon-cyan); animation: bounce 2s infinite; }
-        .pin-hub span { font-size: 11px; }
-        
-        .pin-city svg { color: var(--electric-indigo); }
-        .pin-city span { font-size: 9px; }
-        
-        @media (min-width: 768px) {
-            .pin-hub span { font-size: 13px; }
-            .pin-city span { font-size: 10px; }
-        }
     </style>
 </head>
 <body class="antialiased selection:bg-cyan-500 selection:text-white">
@@ -317,7 +284,7 @@
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         
-                        <div id="map-matrix-container" class="state-kolkata relative w-full h-[450px] md:h-[600px] reveal-left order-2 lg:order-1 bg-slate-100 rounded-[3rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.6)] overflow-hidden">
+                        <div id="map-matrix-container" class="state-kolkata relative w-full h-[450px] lg:h-[600px] min-h-[450px] lg:min-h-[600px] reveal-left order-2 lg:order-1 bg-slate-100 rounded-[3rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.6)] overflow-hidden">
                             
                             <div id="kolkata-view" class="map-layer">
                                 <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=88.25,22.45,88.48,22.65&layer=mapnik" class="w-full h-full object-cover border-0 absolute inset-0 pointer-events-none" style="pointer-events: none;"></iframe>
@@ -342,57 +309,8 @@
                                 </div>
                             </div>
 
-                            <div id="india-view" class="map-layer bg-white overflow-hidden p-2 md:p-6">
-                                
-                                <div class="relative w-full max-w-md mx-auto leading-none flex items-center justify-center">
-                                    <img src="WhatsApp Image 2026-04-13 at 4.28.00 PM.jpeg" class="w-full h-auto block rounded-2xl drop-shadow-lg border border-slate-200 pointer-events-none" alt="India Expansion">
-                                    
-                                    <div class="india-pin pin-hub" style="top: 53%; left: 73%;">
-                                        <svg class="w-7 h-9 md:w-10 md:h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                        <span>Kolkata</span>
-                                    </div>
-
-                                    <div class="india-pin pin-city" style="top: 26%; left: 36%;">
-                                        <svg class="w-5 h-7 md:w-7 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                        <span>Delhi</span>
-                                    </div>
-
-                                    <div class="india-pin pin-city" style="top: 62%; left: 20%;">
-                                        <svg class="w-5 h-7 md:w-7 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                        <span>Mumbai</span>
-                                    </div>
-
-                                    <div class="india-pin pin-city" style="top: 65%; left: 24%;">
-                                        <svg class="w-4 h-6 md:w-5 md:h-7 text-slate-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                        <span class="text-slate-600 bg-white/80">Pune</span>
-                                    </div>
-
-                                    <div class="india-pin pin-city" style="top: 82%; left: 37%;">
-                                        <svg class="w-5 h-7 md:w-7 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                        <span>Bengaluru</span>
-                                    </div>
-
-                                    <div class="india-pin pin-city" style="top: 80%; left: 47%;">
-                                        <svg class="w-5 h-7 md:w-7 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                        <span>Chennai</span>
-                                    </div>
-
-                                    <div class="india-pin pin-city" style="top: 65%; left: 42%;">
-                                        <svg class="w-5 h-7 md:w-7 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                        <span>Hyderabad</span>
-                                    </div>
-
-                                    <div class="india-pin pin-city" style="top: 48%; left: 17%;">
-                                        <svg class="w-5 h-7 md:w-7 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                        <span>Ahmedabad</span>
-                                    </div>
-
-                                    <div class="india-pin pin-city" style="top: 41%; left: 85%;">
-                                        <svg class="w-5 h-7 md:w-7 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                                        <span>Guwahati</span>
-                                    </div>
-
-                                </div>
+                            <div id="india-view" class="map-layer bg-white">
+                                <img src="Gemini_Generated_Image_h60oreh60oreh60o.jpg" class="w-full h-full object-contain pointer-events-none" alt="India Expansion Network">
                             </div>
 
                         </div>
