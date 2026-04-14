@@ -74,6 +74,7 @@
         .filter-pill { padding: 0.6rem 1.5rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.01); color: #94a3b8; font-weight: 700; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: 0.3s; letter-spacing: 0.05em; }
         .filter-pill.active { background: white; color: var(--onyx); border-color: white; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
         
+        /* Premium Text Styles */
         .tracking-premium { letter-spacing: -0.05em; }
         .tracking-wide { letter-spacing: 0.1em; }
         .luxe-shadow { filter: drop-shadow(0 0 10px var(--neon-cyan-glow)); }
@@ -283,7 +284,7 @@
             <section class="py-24 border-y border-white/5 bg-gradient-to-r from-slate-900 to-slate-950 relative overflow-hidden">
                 <div class="absolute inset-0 opacity-[0.02]" style="background-image: var(--glass-pattern)"></div>
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         <div class="reveal-left">
                             <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium mb-6 uppercase leading-tight">
                                 Meet Your Pals<br><span class="text-cyan-400 luxe-shadow">Over A Game.</span>
@@ -304,12 +305,24 @@
                                 Find a Match
                             </button>
                         </div>
-                        <div class="reveal-right hidden md:block">
-                            <div class="relative w-full aspect-[4/3] rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(6,182,212,0.2)] group">
-                                <div class="absolute inset-0 bg-cyan-500/20 group-hover:bg-transparent transition duration-500 z-10"></div>
-                                <img src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=800&q=80" alt="Players" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
+                        
+                        <div class="reveal-right hidden lg:block">
+                            <div class="grid grid-cols-2 gap-4 h-[500px]">
+                                <div class="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative group col-span-1 row-span-2">
+                                    <div class="absolute inset-0 bg-cyan-500/20 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
+                                    <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=600&q=80" alt="Adults playing Cricket" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
+                                </div>
+                                <div class="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative group col-span-1 row-span-1">
+                                    <div class="absolute inset-0 bg-cyan-500/20 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
+                                    <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=600&q=80" alt="Adults playing Football" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
+                                </div>
+                                <div class="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative group col-span-1 row-span-1">
+                                    <div class="absolute inset-0 bg-cyan-500/20 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
+                                    <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=600&q=80" alt="People playing Chess" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </section>
@@ -403,7 +416,7 @@
                                     <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Max Players</label><input type="number" id="admin-cap" class="input-luxe"></div>
                                     <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Available Times</label><input type="text" id="admin-times" class="input-luxe text-sm"></div>
                                 </div>
-                                <button onclick="updateVenue()" id="admin-btn" class="w-full py-4.5 bg-white text-onyx hover:bg-slate-200 font-bold rounded-xl transition mt-4 tracking-wide uppercase text-sm relative z-10">Save Changes</button>
+                                <button onclick="updateVenue()" id="admin-btn" class="w-full py-4.5 bg-white text-onyx hover:bg-slate-200 font-bold rounded-xl transition mt-4 tracking-wide uppercase text-sm">Save Changes</button>
                             </div>
                         </div>
 
@@ -1211,52 +1224,4 @@
                 "currency": "INR",
                 "name": "SquadUp",
                 "description": `Booking: ${activeVenue.name}`,
-                "order_id": orderRes.order.id,
-                "prefill": { "contact": currentUser.phone || "", "name": currentUser.name },
-                "theme": { "color": "#06b6d4" }, 
-                "handler": async (res) => {
-                    btn.innerText = "Verifying Payment...";
-                    const verify = await fetchJSONP({
-                        action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature,
-                        venue: activeVenue.name, game: activeVenue.sport, slots: count,
-                        playDate: fDate, timeSlot: timeSlot,
-                        totalAmount: orderRes.order.amount / 100, phone: currentUser.phone || "", name: currentUser.name
-                    });
-                    
-                    if(verify.status === "success") { alert("Booking Confirmed!"); location.reload(); } 
-                    else { alert(verify.msg); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); }
-                }
-            };
-            
-            const rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (response){ alert("Payment Failed."); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); });
-            rzp.open();
-        }
-
-        function populateAdminSelect() {
-            const select = document.getElementById('admin-venue-select'); select.innerHTML = '';
-            window.venues.forEach(v => { select.innerHTML += `<option value="${v.name}">${v.sport} - ${v.name}</option>`; });
-            loadAdminVenueData();
-        }
-        function loadAdminVenueData() {
-            const v = window.venues.find(ven => ven.name === document.getElementById('admin-venue-select').value);
-            if(v) { document.getElementById('admin-cap').value = v.cap; document.getElementById('admin-times').value = v.times; }
-        }
-        async function updateVenue() {
-            const btn = document.getElementById('admin-btn'); btn.innerText = "Saving...";
-            const res = await fetchJSONP({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
-            alert(res.msg); btn.innerText = "Save Changes"; if(res.status==='success') { loadAdminVenueData(); }
-        }
-        async function deployNewVenue() {
-            const btn = document.getElementById('add-venue-btn'); btn.innerText = "Publishing...";
-            const data = {
-                action: 'addVenue', vSport: document.getElementById('new-v-sport').value, vName: document.getElementById('new-v-name').value,
-                vLoc: document.getElementById('new-v-loc').value, vPrice: document.getElementById('new-v-price').value,
-                vType: document.getElementById('new-v-type').value, vStatus: document.getElementById('new-v-status').value, vImg: document.getElementById('new-v-img').value
-            };
-            const res = await fetchJSONP(data);
-            alert(res.msg); btn.innerText = "Publish Arena";
-        }
-    </script>
-</body>
-</html>
+                "order_id": order
