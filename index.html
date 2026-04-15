@@ -89,16 +89,6 @@
         .state-india #kolkata-view { opacity: 0; z-index: 10; pointer-events: none; }
         .state-india #india-view { opacity: 1; z-index: 20; pointer-events: auto; }
 
-        /* Kolkata Pings */
-        .ping-ring { animation: pingRing 2s cubic-bezier(0, 0, 0.2, 1) infinite; fill: none; stroke: var(--neon-cyan); stroke-width: 0.5; transform-origin: center; transform-box: fill-box;}
-        @keyframes pingRing { 75%, 100% { transform: scale(3); opacity: 0; } }
-        .turf-node-k { position: absolute; background: var(--neon-cyan); border-radius: 50%; box-shadow: 0 0 15px var(--neon-cyan); animation: pulseBlink 1.5s infinite alternate; transform: translate(-50%, -50%); border: 1.5px solid #0f172a; }
-        .turf-node-k::after { content: ''; position: absolute; inset: -8px; border: 2px solid var(--neon-cyan); border-radius: 50%; animation: pingRing 2s infinite; }
-        @keyframes pulseBlink { 0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); } }
-        
-        /* Location Labels */
-        .loc-label { position: absolute; background: rgba(255,255,255,0.9); color: #0f172a; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transform: translate(-50%, -150%); white-space: nowrap; pointer-events: none;}
-
         /* BLOG TYPOGRAPHY */
         .blog-content p { color: #94a3b8; font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem; font-weight: 400; }
         .blog-content h2 { color: #f8fafc; font-size: 2.25rem; font-weight: 900; margin-top: 3.5rem; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
@@ -810,7 +800,7 @@
             document.getElementById('side-menu').classList.add('translate-x-full');
         }
 
-        // --- NEW TAB SWITCHER LOGIC ---
+        // TAB SWITCHER LOGIC
         function switchTab(tabId) {
             const marketing = document.getElementById('view-home');
             const feed = document.getElementById('venues-section');
@@ -886,8 +876,39 @@
             }, 6000); 
         }
 
+        // PHONE HOVER EFFECT
+        document.addEventListener('DOMContentLoaded', () => {
+            const mockup = document.getElementById('hero-mockup-container');
+            if(mockup) {
+                mockup.addEventListener('mousemove', (e) => {
+                    const frame = mockup.querySelector('.mockup-frame');
+                    const rect = mockup.getBoundingClientRect();
+                    const x = e.clientX - rect.left - (rect.width / 2);
+                    const y = e.clientY - rect.top - (rect.height / 2);
+                    const xAxis = -(y / 20); 
+                    const yAxis = (x / 20);  
+                    frame.style.transform = `rotateY(${yAxis}deg) rotateX(${xAxis}deg) rotateZ(-3deg)`;
+                });
+                mockup.addEventListener('mouseleave', () => {
+                    const frame = mockup.querySelector('.mockup-frame');
+                    frame.style.transform = 'rotateY(0deg) rotateX(0deg) rotateZ(-3deg)';
+                });
+            }
+            
+            runExpansionMatrix();
+        });
+
         // SESSION MEMORY & INTERCEPTORS
         document.addEventListener('DOMContentLoaded', async () => {
+            
+            const preloader = document.getElementById('preloader');
+            if(preloader) {
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.style.visibility = 'hidden';
+                    setTimeout(() => preloader.remove(), 500); 
+                }, 2200);
+            }
             
             const savedUser = localStorage.getItem('squadupUser');
             if (savedUser) { currentUser = JSON.parse(savedUser); }
@@ -997,6 +1018,43 @@
             location.reload(); 
         }
 
+        function updateUILoggedIn() {
+            
+            const uName = currentUser?.name || 'Player';
+            const initial = uName.charAt(0).toUpperCase();
+            
+            const menuAuthSection = document.getElementById('menu-auth-section');
+            if(menuAuthSection) {
+                menuAuthSection.innerHTML = `
+                    <div class="flex items-center gap-4 bg-slate-900/50 p-4 rounded-2xl border border-white/5 relative z-20">
+                        <div class="w-12 h-12 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 flex items-center justify-center font-black text-xl shadow-[0_0_15px_rgba(6,182,212,0.3)]">${initial}</div>
+                        <div>
+                            <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest leading-none mb-1.5">Logged In</p>
+                            <p class="text-sm font-bold text-white leading-none">${uName}</p>
+                        </div>
+                    </div>
+                    <button onclick="logout()" class="w-full text-left mt-4 text-xs text-red-500 font-bold uppercase tracking-widest hover:text-red-400 transition flex items-center gap-2 pl-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg> Logout
+                    </button>
+                `;
+            }
+            
+            if(currentUser?.role === 'owner' || currentUser?.role === 'staff') {
+                const navAdminDesk = document.getElementById('nav-btn-admin-desktop');
+                if(navAdminDesk) navAdminDesk.classList.remove('hidden');
+                
+                const menuAdmin = document.getElementById('menu-btn-admin');
+                if(menuAdmin) menuAdmin.classList.remove('hidden');
+                
+                const ownerPanel = document.getElementById('owner-panel');
+                if(currentUser?.role === 'owner' && ownerPanel) ownerPanel.classList.remove('hidden');
+                populateAdminSelect();
+            }
+            
+            renderRankings();
+            filterVenues('All', document.querySelector('.filter-pill')); 
+        }
+
         function getLocalISODate() {
             const now = new Date();
             const offset = now.getTimezoneOffset() * 60000;
@@ -1082,18 +1140,27 @@
             }
         }
 
+        // FORTIFIED JSONP WITH TIMEOUT
         function fetchJSONP(params) { 
-            return new Promise((resolve) => { 
+            return new Promise((resolve, reject) => { 
                 const callbackName = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000); 
                 const script = document.createElement('script'); 
                 
-                script.onerror = () => {
+                const timeout = setTimeout(() => {
                     document.body.removeChild(script);
                     delete window[callbackName];
-                    resolve({status: 'error', msg: 'Database link not configured.'});
+                    reject(new Error("Request timed out. Please check your deployment URL."));
+                }, 8000);
+                
+                script.onerror = () => {
+                    clearTimeout(timeout);
+                    document.body.removeChild(script);
+                    delete window[callbackName];
+                    reject(new Error("Database link failed. Is YOUR_NEW_DEPLOYMENT_URL_HERE replaced?"));
                 };
 
                 window[callbackName] = (data) => { 
+                    clearTimeout(timeout);
                     resolve(data); 
                     document.body.removeChild(script); 
                     delete window[callbackName]; 
@@ -1116,7 +1183,7 @@
             try {
                 const res = await fetchJSONP({ action: 'login', loginId: document.getElementById(idField).value, password: document.getElementById(passField).value });
                 
-                if(res.status === 'success') {
+                if(res && res.status === 'success') {
                     currentUser = res.user; window.venues = res.venues || []; window.activeBookings = res.bookings || []; 
                     
                     const pendingVenues = [
@@ -1138,12 +1205,13 @@
                     }, 500);
 
                 } else { 
-                    alert(res.msg); 
+                    alert(res?.msg || "Login Failed."); 
                     btn.innerText = originalText; 
                     btn.classList.remove('opacity-50', 'cursor-wait'); 
                 }
             } catch (e) {
-                alert("Network error.");
+                console.error("Login Error:", e);
+                alert(e.message || "An unexpected error occurred.");
                 btn.innerText = originalText; 
                 btn.classList.remove('opacity-50', 'cursor-wait');
             }
@@ -1153,11 +1221,25 @@
             const btn = document.getElementById('reg-btn'); btn.innerText = "Creating Account..."; btn.classList.add('opacity-50');
             const phoneVal = document.getElementById('reg-phone').value;
             if(phoneVal.length !== 10 || isNaN(phoneVal)) { alert("Phone number must be exactly 10 digits."); btn.innerText = "Sign Up"; btn.classList.remove('opacity-50'); return; }
+            
             const data = { action: 'register', name: document.getElementById('reg-name').value, phone: phoneVal, email: document.getElementById('reg-email').value, password: document.getElementById('reg-pass').value, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value };
-            fetchJSONP(data).then(res => { if(res.status === 'success') { alert("Account Created! Please Login."); toggleAuth('login'); } else { alert(res.msg); } btn.innerText = "Sign Up"; btn.classList.remove('opacity-50'); });
+            
+            try {
+                const res = await fetchJSONP(data);
+                if(res && res.status === 'success') { 
+                    alert("Account Created! Please Login."); 
+                    toggleAuth('login'); 
+                } else { 
+                    alert(res?.msg || "Registration Failed"); 
+                }
+            } catch(e) {
+                console.error("Register Error:", e);
+                alert("Error: " + e.message);
+            } finally {
+                btn.innerText = "Sign Up"; btn.classList.remove('opacity-50');
+            }
         }
 
-        // IMAGE SANITIZER: Overrides bad DB links with guaranteed correct ones
         function filterVenues(sport, btnElement) {
             currentFilter = sport;
             if(btnElement) {
@@ -1201,7 +1283,7 @@
                     if(v.sport.toLowerCase() === 'football') safeImg = 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80';
                     else if(v.sport.toLowerCase() === 'cricket') safeImg = 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80';
                     else if(v.sport.toLowerCase() === 'chess') safeImg = 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80';
-                    else safeImg = 'https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80'; 
+                    else safeImg = 'https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80';
                 }
 
                 let visual = '';
@@ -1253,7 +1335,7 @@
         }
 
         function renderRankings() {
-            const uName = currentUser ? currentUser.name : "Player";
+            const uName = currentUser ? (currentUser.name || 'Player') : "Player";
             const uSkill = currentUser && currentUser.skill ? currentUser.skill : "Intermediate";
             const list = document.getElementById('rank-list');
             if(!list) return;
@@ -1442,12 +1524,18 @@
             if (payType === 'Waitlist') {
                 btn.innerText = "Please wait..."; btn.classList.add('opacity-50');
                 const fDate = rawDate.split("-").reverse().join("-"); 
-                const data = { action: 'book', name: currentUser.name, phone: currentUser.phone || "", skill: currentUser.skill || "", game: activeVenue.sport, playDate: fDate, timeSlot: timeSlot, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0, slots: 0 };
+                const data = { action: 'book', name: currentUser?.name || "Player", phone: currentUser?.phone || "", skill: currentUser?.skill || "", game: activeVenue.sport, playDate: fDate, timeSlot: timeSlot, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0, slots: 0 };
                 
-                await fetchJSONP(data);
-                alert("You have joined the standby queue! We will notify you if a slot opens.");
-                closeSheet(); 
-                btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50'); return;
+                try {
+                    await fetchJSONP(data);
+                    alert("You have joined the standby queue! We will notify you if a slot opens.");
+                    closeSheet(); 
+                } catch(e) {
+                    alert("Queue Error: " + e.message);
+                } finally {
+                    btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50'); 
+                }
+                return;
             }
 
             let tokenPct = 0.20;
@@ -1455,36 +1543,46 @@
             if(count >= 6) tokenPct = 1.00; 
             let finalAmount = payType === 'Token' && tokenPct < 1.00 ? Math.ceil(total * tokenPct) : total;
 
-            btn.innerText = "Processing Payment..."; btn.classList.add('opacity-50', 'cursor-wait');
-            const orderRes = await fetchJSONP({ action:'createOrder', amount: finalAmount });
-            const fDate = rawDate.split("-").reverse().join("-");
+            try {
+                btn.innerText = "Processing Payment..."; btn.classList.add('opacity-50', 'cursor-wait');
+                const orderRes = await fetchJSONP({ action:'createOrder', amount: finalAmount });
+                const fDate = rawDate.split("-").reverse().join("-");
 
-            const options = {
-                "key": "rzp_live_XXXXXXXXXXXX", // REPLACE WITH YOUR LIVE RAZORPAY KEY
-                "amount": orderRes.order.amount,
-                "currency": "INR",
-                "name": "SquadUp",
-                "description": `Booking: ${activeVenue.name}`,
-                "order_id": orderRes.order.id,
-                "prefill": { "contact": currentUser.phone || "", "name": currentUser.name },
-                "theme": { "color": "#06b6d4" }, 
-                "handler": async (res) => {
-                    btn.innerText = "Verifying Payment...";
-                    const verify = await fetchJSONP({
-                        action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature,
-                        venue: activeVenue.name, game: activeVenue.sport, slots: count,
-                        playDate: fDate, timeSlot: timeSlot,
-                        totalAmount: orderRes.order.amount / 100, phone: currentUser.phone || "", name: currentUser.name
-                    });
-                    
-                    if(verify.status === "success") { alert("Booking Confirmed!"); location.reload(); } 
-                    else { alert(verify.msg); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); }
-                }
-            };
-            
-            const rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (response){ alert("Payment Failed."); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); });
-            rzp.open();
+                const options = {
+                    "key": "rzp_live_XXXXXXXXXXXX", // REPLACE WITH YOUR LIVE RAZORPAY KEY
+                    "amount": orderRes.order.amount,
+                    "currency": "INR",
+                    "name": "SquadUp",
+                    "description": `Booking: ${activeVenue.name}`,
+                    "order_id": orderRes.order.id,
+                    "prefill": { "contact": currentUser?.phone || "", "name": currentUser?.name || "" },
+                    "theme": { "color": "#06b6d4" }, 
+                    "handler": async (res) => {
+                        btn.innerText = "Verifying Payment...";
+                        try {
+                            const verify = await fetchJSONP({
+                                action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature,
+                                venue: activeVenue.name, game: activeVenue.sport, slots: count,
+                                playDate: fDate, timeSlot: timeSlot,
+                                totalAmount: orderRes.order.amount / 100, phone: currentUser?.phone || "", name: currentUser?.name || ""
+                            });
+                            
+                            if(verify && verify.status === "success") { alert("Booking Confirmed!"); location.reload(); } 
+                            else { alert(verify?.msg || "Booking Verification Failed"); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); }
+                        } catch(e) {
+                            alert("Verification Error: " + e.message);
+                            btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait');
+                        }
+                    }
+                };
+                
+                const rzp = new Razorpay(options);
+                rzp.on('payment.failed', function (response){ alert("Payment Failed."); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); });
+                rzp.open();
+            } catch(e) {
+                alert("Checkout Error: " + e.message);
+                btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait');
+            }
         }
 
         function populateAdminSelect() {
@@ -1498,8 +1596,15 @@
         }
         async function updateVenue() {
             const btn = document.getElementById('admin-btn'); btn.innerText = "Saving...";
-            const res = await fetchJSONP({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
-            alert(res.msg); btn.innerText = "Save Changes"; if(res.status==='success') { loadAdminVenueData(); }
+            try {
+                const res = await fetchJSONP({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
+                alert(res?.msg || "Venue Updated"); 
+                if(res && res.status==='success') { loadAdminVenueData(); }
+            } catch(e) {
+                alert("Error: " + e.message);
+            } finally {
+                btn.innerText = "Save Changes";
+            }
         }
         async function deployNewVenue() {
             const btn = document.getElementById('add-venue-btn'); btn.innerText = "Publishing...";
@@ -1508,8 +1613,14 @@
                 vLoc: document.getElementById('new-v-loc').value, vPrice: document.getElementById('new-v-price').value,
                 vType: document.getElementById('new-v-type').value, vStatus: document.getElementById('new-v-status').value, vImg: document.getElementById('new-v-img').value
             };
-            const res = await fetchJSONP(data);
-            alert(res.msg); btn.innerText = "Publish Arena";
+            try {
+                const res = await fetchJSONP(data);
+                alert(res?.msg || "Venue Added"); 
+            } catch(e) {
+                alert("Error: " + e.message);
+            } finally {
+                btn.innerText = "Publish Arena";
+            }
         }
     </script>
 </body>
