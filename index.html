@@ -6,6 +6,7 @@
     <title>SquadUp | Kolkata's Premium Sports Network</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -97,6 +98,17 @@
         
         /* Location Labels */
         .loc-label { position: absolute; background: rgba(255,255,255,0.9); color: #0f172a; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transform: translate(-50%, -150%); white-space: nowrap; pointer-events: none;}
+
+        /* BLOG TYPOGRAPHY */
+        .blog-content p { color: #94a3b8; font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem; font-weight: 400; }
+        .blog-content h2 { color: #f8fafc; font-size: 2.25rem; font-weight: 900; margin-top: 3.5rem; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+        .blog-content h3 { color: #e2e8f0; font-size: 1.5rem; font-weight: 800; margin-top: 2.5rem; margin-bottom: 1rem; }
+        .blog-content ul { color: #94a3b8; font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem; list-style-type: disc; padding-left: 1.5rem; }
+        .blog-content li { margin-bottom: 0.5rem; }
+        .blog-content blockquote { border-left: 4px solid var(--neon-cyan); padding-left: 1.5rem; margin: 2rem 0; font-style: italic; color: #f8fafc; font-size: 1.25rem; font-weight: 500; background: linear-gradient(90deg, rgba(6,182,212,0.1) 0%, transparent 100%); padding-top: 1.5rem; padding-bottom: 1.5rem; border-radius: 0 1rem 1rem 0; }
+        .blog-content a { color: var(--neon-cyan); text-decoration: none; border-bottom: 1px solid rgba(6,182,212,0.3); transition: all 0.3s; }
+        .blog-content a:hover { color: #fff; border-bottom-color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan-glow); }
+        .blog-content img { border-radius: 1.5rem; margin: 3rem 0; width: 100%; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body class="antialiased selection:bg-cyan-500 selection:text-white">
@@ -147,7 +159,8 @@
                 <a href="#" onclick="closeMenu(); switchTab('feed'); document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Book Now</a>
                 <a href="#" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">News and Events</a>
                 <a href="#" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Careers</a>
-                <a href="#" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Blogs</a>
+                
+                <a href="#" onclick="closeMenu(); switchTab('blog-hub'); window.scrollTo(0,0);" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Blogs</a>
                 
                 <a href="#" id="menu-btn-admin" onclick="closeMenu(); switchTab('admin');" class="hidden text-red-500 text-lg font-medium hover:text-red-400 transition tracking-wide mt-2">Admin Dashboard</a>
             </div>
@@ -216,7 +229,7 @@
                 <div class="flex items-center gap-6 md:gap-10">
                     <nav class="hidden md:flex gap-10 items-center">
                         <button onclick="switchTab('feed')" class="text-sm font-bold text-gray-300 hover:text-cyan-400 transition tracking-wide uppercase">Arenas</button>
-                        <button onclick="switchTab('rank')" class="text-sm font-bold text-gray-300 hover:text-cyan-400 transition tracking-wide uppercase">Rankings</button>
+                        <button onclick="switchTab('blog-hub')" class="text-sm font-bold text-gray-300 hover:text-cyan-400 transition tracking-wide uppercase">Blog</button>
                         <button id="nav-btn-admin-desktop" onclick="switchTab('admin')" class="hidden text-sm font-bold text-red-500 hover:text-red-400 transition tracking-wide uppercase">Admin Panel</button>
                     </nav>
 
@@ -233,294 +246,475 @@
 
     <div id="main-app" class="flex flex-col min-h-screen pt-24">
         
-        <div id="marketing-sections">
-            <section class="relative w-full h-[85vh] flex items-center overflow-hidden">
-                <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-80 pointer-events-none">
-                    <source src="https://assets.mixkit.co/videos/preview/mixkit-playing-football-on-a-dark-field-41154-large.mp4" type="video/mp4">
-                </video>
-                <div class="absolute inset-0 hero-overlay z-10 pointer-events-none"></div>
+        <div id="view-home" class="block">
+            
+            <div id="marketing-sections">
+                <section class="relative w-full h-[85vh] flex items-center overflow-hidden">
+                    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-80 pointer-events-none">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-playing-football-on-a-dark-field-41154-large.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 hero-overlay z-10 pointer-events-none"></div>
+                    
+                    <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-20 w-full">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                            <div class="reveal-left">
+                                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-8 pointer-events-none">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse luxe-shadow"></span>
+                                    <span class="text-xs font-bold text-cyan-400 uppercase tracking-wide">Kolkata's Premium Network</span>
+                                </div>
+                                <h1 class="text-6xl md:text-8xl font-black text-white leading-[0.95] tracking-premium mb-8 pointer-events-none">
+                                    OWN THE<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-indigo-500">PITCH.</span>
+                                </h1>
+                                <p class="text-xl text-slate-300 font-medium mb-12 max-w-xl leading-relaxed pointer-events-none">
+                                    Access the highest standard of sports venues instantly. Zero waiting, secure payments, and premium arenas.
+                                </p>
+                                <div class="flex flex-wrap gap-5">
+                                    <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-10 py-5 text-base">View Arenas</button>
+                                    <button onclick="sortVenuesByProximity(this)" class="bg-white/5 hover:bg-white/10 text-white px-10 py-5 rounded-xl font-bold text-base transition border border-white/5 flex items-center gap-2.5 tracking-wide">
+                                        📍 Find Near Me
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="hidden lg:flex justify-center relative reveal-right" id="hero-mockup-container" style="perspective: 1000px;">
+                                <div class="absolute inset-0 bg-cyan-500/15 blur-[120px] rounded-full pointer-events-none"></div>
+                                <div class="mockup-frame w-[310px] h-[620px] bg-slate-900 transform rotate-[-3deg] cursor-pointer">
+                                    <div class="mockup-notch"></div>
+                                    <div class="mockup-inner pointer-events-none">
+                                        <div class="flex justify-between items-center mb-8">
+                                            <h3 class="font-black text-2xl tracking-premium">SquadUp</h3>
+                                            <div class="w-9 h-9 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-black text-sm border border-cyan-500/40 shadow-glow">A</div>
+                                        </div>
+                                        <div class="bg-slate-800/60 rounded-xl p-5 mb-5 border border-slate-700/50 backdrop-blur">
+                                            <p class="text-[10px] text-cyan-400 font-bold uppercase mb-1 tracking-wide">Confirmed Booking</p>
+                                            <p class="font-bold text-white text-lg mb-2">Salt Lake Sportsplex</p>
+                                            <div class="flex justify-between text-xs text-gray-400"><span>Today, 8:00 PM</span><span class="font-bold text-white">₹359 / Head</span></div>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-4 mb-5">
+                                            <div class="bg-slate-800 h-28 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1.5">⚽</span><span class="text-xs font-bold text-gray-400 tracking-wide uppercase">Football</span></div>
+                                            <div class="bg-slate-800 h-28 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1.5">🏏</span><span class="text-xs font-bold text-gray-400 tracking-wide uppercase">Cricket</span></div>
+                                        </div>
+                                        <div class="mt-auto bg-gradient-to-r from-cyan-500 to-indigo-600 p-5 rounded-xl text-center shadow-glow">
+                                            <p class="font-bold text-white text-sm uppercase tracking-wide">Secured via UPI</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="border-y border-white/5 bg-slate-950/50 backdrop-blur relative overflow-hidden pointer-events-none">
+                    <div class="absolute inset-0 opacity-[0.02]" style="background-image: var(--glass-pattern)"></div>
+                    <div class="max-w-[90rem] mx-auto px-6 lg:px-12 py-10 reveal relative z-10">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-10 text-center divide-x divide-white/5">
+                            <div class="pl-0 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium">160+</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide">Premium Arenas</p></div>
+                            <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium">12k+</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide">Active Players</p></div>
+                            <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-cyan-400 mb-1 tracking-premium luxe-shadow">100%</h3><p class="text-[10px] uppercase font-bold text-cyan-500 tracking-wide">Secure Payments</p></div>
+                            <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium">50%</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide">Advance Option</p></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="py-32 relative overflow-hidden">
+                    <div class="absolute -bottom-48 -left-48 w-[500px] h-[500px] bg-indigo-600/10 blur-[130px] rounded-full pointer-events-none"></div>
+                    <div class="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
+                        <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 reveal pointer-events-none">
+                            <div class="mb-6 md:mb-0">
+                                <p class="text-cyan-400 font-bold tracking-wide text-xs uppercase mb-2">How It Works</p>
+                                <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium">Simple. Fast. Elite.</h2>
+                            </div>
+                            <p class="text-slate-400 font-medium max-w-md text-sm md:text-base leading-relaxed">Search, book, and play in Kolkata's finest sports environments without the hassle.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-auto md:h-[450px]">
+                            <div class="card-luxe p-10 md:col-span-3 flex flex-col reveal pointer-events-none">
+                                <div class="w-20 h-20 bg-slate-800 rounded-3xl flex items-center justify-center border border-slate-700 shadow-inner text-3xl mb-8">🔍</div>
+                                <h3 class="text-2xl font-bold text-white mb-4">Find Your Arena</h3>
+                                <p class="text-slate-300 text-base leading-relaxed max-w-md">Browse real-time availability for premium turfs, courts, and centers across Football, Cricket, Chess, and Carrom.</p>
+                            </div>
+                            <div class="card-luxe p-10 md:col-span-2 reveal pointer-events-none" style="transition-delay: 150ms;">
+                                <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center border border-slate-700 shadow-inner text-2xl mb-6">⚡</div>
+                                <h3 class="text-xl font-bold text-white mb-3">Instant Booking</h3>
+                                <p class="text-slate-400 text-sm leading-relaxed">Lock your slot instantly via Razorpay. Choose to pay 20%, 50%, or 100% upfront.</p>
+                            </div>
+                            <div class="card-luxe px-10 py-8 md:col-span-5 flex flex-col md:flex-row md:items-center md:justify-between reveal pointer-events-none" style="transition-delay: 300ms;">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white mb-1">Step Onto the Pitch</h3>
+                                    <p class="text-slate-400 text-sm max-w-lg">Arrive at the verified arena, check in digitally, and focus on the game.</p>
+                                </div>
+                                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center border border-white text-2xl text-onyx mt-5 md:mt-0 luxe-shadow">🏆</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="py-24 border-y border-white/5 bg-gradient-to-r from-slate-900 to-slate-950 relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-[0.02]" style="background-image: var(--glass-pattern)"></div>
+                    <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                            <div class="reveal-left">
+                                <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium mb-6 uppercase leading-tight">
+                                    Meet Your Pals<br><span class="text-cyan-400 luxe-shadow">Over A Game.</span>
+                                </h2>
+                                <p class="text-slate-400 text-base md:text-lg leading-relaxed mb-6">
+                                    Want to play a game but can't find a team? In this busy world, you don't have to wait for your friends to be free. 
+                                </p>
+                                <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-xl flex-shrink-0 luxe-shadow">🤝</div>
+                                        <div>
+                                            <h4 class="text-white font-bold mb-2">Pay Per Slot, Not Per Turf</h4>
+                                            <p class="text-sm text-slate-400 leading-relaxed">Join like-minded players in pre-scheduled matches. You only pay for your individual slot—costing you no more than a plate of Kolkata biryani or momos.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-8 py-4 text-sm w-full md:w-auto text-center relative z-10">
+                                    Find a Match
+                                </button>
+                            </div>
+                            
+                            <div class="reveal-right hidden lg:block">
+                                <div class="grid grid-cols-2 gap-4 h-[500px]">
+                                    <div class="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative group col-span-1 row-span-2">
+                                        <div class="absolute inset-0 bg-cyan-500/20 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
+                                        <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=600&q=80" alt="Adults playing Cricket" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
+                                    </div>
+                                    <div class="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative group col-span-1 row-span-1">
+                                        <div class="absolute inset-0 bg-cyan-500/20 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
+                                        <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80" alt="Adults playing Football" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
+                                    </div>
+                                    <div class="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative group col-span-1 row-span-1">
+                                        <div class="absolute inset-0 bg-cyan-500/20 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
+                                        <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=600&q=80" alt="People playing Chess" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <section class="py-32 bg-slate-900 border-y border-white/5 relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-[0.03]" style="background-image: var(--glass-pattern)"></div>
+                    
+                    <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                            
+                            <div id="map-matrix-container" class="state-kolkata relative w-full h-[450px] min-h-[450px] lg:h-[650px] lg:min-h-[650px] order-2 lg:order-1 bg-white rounded-[3rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.6)] overflow-hidden block">
+                                <div id="kolkata-view" class="absolute inset-0 w-full h-full transition-opacity duration-700 z-20">
+                                    <iframe src="https://maps.google.com/maps?q=Salt+Lake,Kolkata&t=&z=12&ie=UTF8&iwloc=&output=embed" class="w-full h-full border-0" style="pointer-events: none;" allowfullscreen="" loading="lazy"></iframe>
+                                    <div class="absolute inset-0 pointer-events-none shadow-[inset_0_0_30px_rgba(0,0,0,0.1)]"></div>
+                                </div>
+                                <div id="india-view" class="absolute inset-0 w-full h-full transition-opacity duration-700 bg-white p-4 flex items-center justify-center z-10 opacity-0">
+                                    <img src="Gemini_Generated_Image_h60oreh60oreh60o.jpg" class="w-full h-full object-contain pointer-events-none rounded-2xl drop-shadow-lg" alt="India Expansion Network">
+                                </div>
+                            </div>
+
+                            <div class="reveal-right order-1 lg:order-2">
+                                <div class="bg-gradient-to-br from-slate-950 to-slate-900 p-8 md:p-10 rounded-3xl border border-white/5 relative z-10 shadow-xl">
+                                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 mb-6 pointer-events-none">
+                                        <span class="w-2 h-2 rounded-full bg-cyan-400" id="pulse-indicator"></span>
+                                        <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest" id="scale-badge">Network Scale</span>
+                                    </div>
+                                    <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium leading-tight mb-6 transition-all duration-700" id="scale-title">
+                                        THE KOLKATA POWER-HUB:<br><span class="text-cyan-400 luxe-shadow">OPERATING AT SCALE.</span>
+                                    </h2>
+                                    <p class="text-slate-400 text-base md:text-lg leading-relaxed mb-8 transition-all duration-700" id="scale-desc">
+                                        Kolkata is our genesis point. We have built the city's most robust sports booking ledger, successfully authenticating thousands of players with zero wait times.
+                                    </p>
+                                    <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-8 py-4 text-sm w-full md:w-auto text-center relative z-10">
+                                        View Arenas
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <section id="venues-section" class="py-20 bg-slate-950/40 border-t border-white/5 min-h-screen">
+                <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
+                    <div id="view-feed" class="block">
+                        <div class="flex flex-col xl:flex-row xl:items-center justify-between mb-12 reveal">
+                            <div class="mb-6 xl:mb-0 pr-10">
+                                <h2 class="text-4xl font-black text-white tracking-premium">Available Arenas</h2>
+                                <p class="text-slate-400 mt-1 font-medium text-sm">Real-time availability for verified venues.</p>
+                            </div>
+                            <div class="flex overflow-x-auto gap-3.5 hide-scroll pb-2.5 xl:pb-0" id="sport-filters">
+                                <button onclick="filterVenues('All', this)" class="filter-pill active">All Arenas</button>
+                                <button onclick="filterVenues('Football', this)" class="filter-pill">Football</button>
+                                <button onclick="filterVenues('Cricket', this)" class="filter-pill">Cricket</button>
+                                <button onclick="filterVenues('Chess', this)" class="filter-pill">Chess</button>
+                                <button onclick="filterVenues('Carrom', this)" class="filter-pill">Carrom</button>
+                            </div>
+                        </div>
+                        
+                        <div id="venue-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 reveal">
+                            <div class="col-span-full text-center py-24 text-slate-500 font-bold border-2 border-dashed border-white/10 rounded-3xl bg-slate-900/30">
+                                Please <span class="text-cyan-400 cursor-pointer underline hover:text-cyan-300 transition luxe-shadow relative z-10" onclick="openAuth()">Login</span> to access live arena availability.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="view-blog-hub" class="hidden">
+            
+            <section class="relative w-full h-[60vh] min-h-[500px] flex items-end pb-16 overflow-hidden border-b border-white/5">
+                <div class="absolute inset-0 bg-slate-900 z-0">
+                    <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1920&q=80" alt="Night Cricket" class="w-full h-full object-cover opacity-60">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent z-10 pointer-events-none"></div>
                 
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-20 w-full">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                        <div class="reveal-left">
-                            <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-8 pointer-events-none">
-                                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse luxe-shadow"></span>
-                                <span class="text-xs font-bold text-cyan-400 uppercase tracking-wide">Kolkata's Premium Network</span>
-                            </div>
-                            <h1 class="text-6xl md:text-8xl font-black text-white leading-[0.95] tracking-premium mb-8 pointer-events-none">
-                                OWN THE<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-indigo-500">PITCH.</span>
-                            </h1>
-                            <p class="text-xl text-slate-300 font-medium mb-12 max-w-xl leading-relaxed pointer-events-none">
-                                Access the highest standard of sports venues instantly. Zero waiting, secure payments, and premium arenas.
-                            </p>
-                            <div class="flex flex-wrap gap-5">
-                                <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-10 py-5 text-base">View Arenas</button>
-                                <button onclick="sortVenuesByProximity(this)" class="bg-white/5 hover:bg-white/10 text-white px-10 py-5 rounded-xl font-bold text-base transition border border-white/5 flex items-center gap-2.5 tracking-wide">
-                                    📍 Find Near Me
-                                </button>
+                    <div class="max-w-3xl reveal">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/20 border border-cyan-500/30 mb-6 backdrop-blur-md">
+                            <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-widest luxe-shadow">Featured Story</span>
+                        </div>
+                        <h1 class="text-5xl md:text-7xl font-black text-white tracking-premium leading-[1.1] mb-6">
+                            The Rise of Night Cricket in Salt Lake: A Cultural Shift
+                        </h1>
+                        <p class="text-lg text-slate-300 mb-8 max-w-xl font-medium">How illuminated turfs are changing the way Kolkata's working professionals unwind after office hours.</p>
+                        <button onclick="switchTab('blog-detail'); window.scrollTo(0,0);" class="btn-luxe px-8 py-4 text-sm flex items-center gap-3 w-max">
+                            Read Article <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-20 max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-12 reveal">
+                    <h2 class="text-3xl font-black text-white tracking-premium mb-6 md:mb-0">Latest Transmissions</h2>
+                    <div class="flex overflow-x-auto gap-3 hide-scroll pb-2 md:pb-0">
+                        <button class="filter-pill active">All Posts</button>
+                        <button class="filter-pill">Tactics</button>
+                        <button class="filter-pill">Venues</button>
+                        <button class="filter-pill">App Updates</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card-luxe group cursor-pointer reveal flex flex-col h-full" onclick="switchTab('blog-detail'); window.scrollTo(0,0);">
+                        <div class="relative h-64 overflow-hidden rounded-t-2xl border-b border-white/5 flex-shrink-0">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-80 z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80" alt="Football" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                            <div class="absolute bottom-4 left-4 z-20">
+                                <span class="bg-cyan-500 text-slate-950 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded shadow-lg">Tactics</span>
                             </div>
                         </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-3">12 April 2026 • 4 Min Read</p>
+                            <h3 class="text-2xl font-black text-white leading-tight mb-4 group-hover:text-cyan-400 transition duration-300">Top 5 Turf Football Strategies for 5v5 Matches</h3>
+                            <p class="text-sm text-slate-400 leading-relaxed mb-6 flex-grow">Dominate the small-sided game with these professional positioning and passing techniques designed for Kolkata's fast-paced turfs.</p>
+                            <div class="flex items-center gap-3 mt-auto pt-5 border-t border-white/5">
+                                <div class="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs">RD</div>
+                                <span class="text-xs font-bold text-slate-300">Rahul Das</span>
+                            </div>
+                        </div>
+                    </div>
 
-                        <div class="hidden lg:flex justify-center relative reveal-right" id="hero-mockup-container" style="perspective: 1000px;">
-                            <div class="absolute inset-0 bg-cyan-500/15 blur-[120px] rounded-full pointer-events-none"></div>
-                            <div class="mockup-frame w-[310px] h-[620px] bg-slate-900 transform rotate-[-3deg] cursor-pointer">
-                                <div class="mockup-notch"></div>
-                                <div class="mockup-inner pointer-events-none">
-                                    <div class="flex justify-between items-center mb-8">
-                                        <h3 class="font-black text-2xl tracking-premium">SquadUp</h3>
-                                        <div class="w-9 h-9 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-black text-sm border border-cyan-500/40 shadow-glow">A</div>
-                                    </div>
-                                    <div class="bg-slate-800/60 rounded-xl p-5 mb-5 border border-slate-700/50 backdrop-blur">
-                                        <p class="text-[10px] text-cyan-400 font-bold uppercase mb-1 tracking-wide">Confirmed Booking</p>
-                                        <p class="font-bold text-white text-lg mb-2">Salt Lake Sportsplex</p>
-                                        <div class="flex justify-between text-xs text-gray-400"><span>Today, 8:00 PM</span><span class="font-bold text-white">₹359 / Head</span></div>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-4 mb-5">
-                                        <div class="bg-slate-800 h-28 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1.5">⚽</span><span class="text-xs font-bold text-gray-400 tracking-wide uppercase">Football</span></div>
-                                        <div class="bg-slate-800 h-28 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1.5">🏏</span><span class="text-xs font-bold text-gray-400 tracking-wide uppercase">Cricket</span></div>
-                                    </div>
-                                    <div class="mt-auto bg-gradient-to-r from-cyan-500 to-indigo-600 p-5 rounded-xl text-center shadow-glow">
-                                        <p class="font-bold text-white text-sm uppercase tracking-wide">Secured via UPI</p>
-                                    </div>
-                                </div>
+                    <div class="card-luxe group cursor-pointer reveal flex flex-col h-full" style="transition-delay: 100ms;" onclick="switchTab('blog-detail'); window.scrollTo(0,0);">
+                        <div class="relative h-64 overflow-hidden rounded-t-2xl border-b border-white/5 flex-shrink-0">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-80 z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1511886929837-354d827a43f7?auto=format&fit=crop&w=600&q=80" alt="Indoor Sports" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                            <div class="absolute bottom-4 left-4 z-20">
+                                <span class="bg-indigo-500 text-white text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded shadow-lg">Venues</span>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-3">08 April 2026 • 3 Min Read</p>
+                            <h3 class="text-2xl font-black text-white leading-tight mb-4 group-hover:text-cyan-400 transition duration-300">The Underground Carrom Circuit of Behala</h3>
+                            <p class="text-sm text-slate-400 leading-relaxed mb-6 flex-grow">Discover the hidden, high-stakes indoor arenas where the city's sharpest strikers spend their weekends.</p>
+                            <div class="flex items-center gap-3 mt-auto pt-5 border-t border-white/5">
+                                <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">SK</div>
+                                <span class="text-xs font-bold text-slate-300">Sneha Kapoor</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-luxe group cursor-pointer reveal flex flex-col h-full" style="transition-delay: 200ms;" onclick="switchTab('blog-detail'); window.scrollTo(0,0);">
+                        <div class="relative h-64 overflow-hidden rounded-t-2xl border-b border-white/5 flex-shrink-0">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-80 z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=600&q=80" alt="Team" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                            <div class="absolute bottom-4 left-4 z-20">
+                                <span class="bg-red-500 text-white text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded shadow-lg">Updates</span>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-3">02 April 2026 • 2 Min Read</p>
+                            <h3 class="text-2xl font-black text-white leading-tight mb-4 group-hover:text-cyan-400 transition duration-300">SquadUp V2.0: The 'Meet Your Pals' Feature is Live</h3>
+                            <p class="text-sm text-slate-400 leading-relaxed mb-6 flex-grow">No team? No problem. Learn how to use our new single-slot booking system to join existing matches and make new friends.</p>
+                            <div class="flex items-center gap-3 mt-auto pt-5 border-t border-white/5">
+                                <div class="w-8 h-8 rounded-full bg-white/10 text-white flex items-center justify-center font-bold text-xs">HQ</div>
+                                <span class="text-xs font-bold text-slate-300">SquadUp Team</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section class="border-y border-white/5 bg-slate-950/50 backdrop-blur relative overflow-hidden pointer-events-none">
-                <div class="absolute inset-0 opacity-[0.02]" style="background-image: var(--glass-pattern)"></div>
-                <div class="max-w-[90rem] mx-auto px-6 lg:px-12 py-10 reveal relative z-10">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-10 text-center divide-x divide-white/5">
-                        <div class="pl-0 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium">160+</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide">Premium Arenas</p></div>
-                        <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium">12k+</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide">Active Players</p></div>
-                        <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-cyan-400 mb-1 tracking-premium luxe-shadow">100%</h3><p class="text-[10px] uppercase font-bold text-cyan-500 tracking-wide">Secure Payments</p></div>
-                        <div class="pl-10 md:pl-0"><h3 class="text-4xl font-black text-white mb-1 tracking-premium">50%</h3><p class="text-[10px] uppercase font-bold text-slate-500 tracking-wide">Advance Option</p></div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-32 relative overflow-hidden">
-                <div class="absolute -bottom-48 -left-48 w-[500px] h-[500px] bg-indigo-600/10 blur-[130px] rounded-full pointer-events-none"></div>
-                <div class="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
-                    <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 reveal pointer-events-none">
-                        <div class="mb-6 md:mb-0">
-                            <p class="text-cyan-400 font-bold tracking-wide text-xs uppercase mb-2">How It Works</p>
-                            <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium">Simple. Fast. Elite.</h2>
-                        </div>
-                        <p class="text-slate-400 font-medium max-w-md text-sm md:text-base leading-relaxed">Search, book, and play in Kolkata's finest sports environments without the hassle.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-auto md:h-[450px]">
-                        <div class="card-luxe p-10 md:col-span-3 flex flex-col reveal pointer-events-none">
-                            <div class="w-20 h-20 bg-slate-800 rounded-3xl flex items-center justify-center border border-slate-700 shadow-inner text-3xl mb-8">🔍</div>
-                            <h3 class="text-2xl font-bold text-white mb-4">Find Your Arena</h3>
-                            <p class="text-slate-300 text-base leading-relaxed max-w-md">Browse real-time availability for premium turfs, courts, and centers across Football, Cricket, Chess, and Carrom.</p>
-                        </div>
-                        <div class="card-luxe p-10 md:col-span-2 reveal pointer-events-none" style="transition-delay: 150ms;">
-                            <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center border border-slate-700 shadow-inner text-2xl mb-6">⚡</div>
-                            <h3 class="text-xl font-bold text-white mb-3">Instant Booking</h3>
-                            <p class="text-slate-400 text-sm leading-relaxed">Lock your slot instantly via Razorpay. Choose to pay 20%, 50%, or 100% upfront.</p>
-                        </div>
-                        <div class="card-luxe px-10 py-8 md:col-span-5 flex flex-col md:flex-row md:items-center md:justify-between reveal pointer-events-none" style="transition-delay: 300ms;">
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-1">Step Onto the Pitch</h3>
-                                <p class="text-slate-400 text-sm max-w-lg">Arrive at the verified arena, check in digitally, and focus on the game.</p>
-                            </div>
-                            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center border border-white text-2xl text-onyx mt-5 md:mt-0 luxe-shadow">🏆</div>
+            <section class="py-10 max-w-[70rem] mx-auto px-6 sm:px-8 mb-20 reveal">
+                <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-white/10 rounded-[2.5rem] p-10 md:p-16 text-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+                    <div class="relative z-10 max-w-2xl mx-auto">
+                        <span class="text-3xl mb-4 block">📬</span>
+                        <h2 class="text-3xl md:text-4xl font-black text-white tracking-premium mb-4">Join the SquadUp Insider</h2>
+                        <p class="text-slate-400 font-medium mb-8">Get exclusive tactical guides, unlisted arena drops, and tournament invites delivered straight to your inbox.</p>
+                        <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                            <input type="email" placeholder="Enter your email address" class="input-luxe py-4 flex-grow text-center sm:text-left">
+                            <button class="btn-luxe px-8 py-4 text-sm font-bold shadow-[0_0_20px_rgba(6,182,212,0.4)] flex-shrink-0">Subscribe</button>
                         </div>
                     </div>
                 </div>
             </section>
+        </div>
 
-            <section class="py-24 border-y border-white/5 bg-gradient-to-r from-slate-900 to-slate-950 relative overflow-hidden">
-                <div class="absolute inset-0 opacity-[0.02]" style="background-image: var(--glass-pattern)"></div>
-                <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                        <div class="reveal-left">
-                            <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium mb-6 uppercase leading-tight">
-                                Meet Your Pals<br><span class="text-cyan-400 luxe-shadow">Over A Game.</span>
-                            </h2>
-                            <p class="text-slate-400 text-base md:text-lg leading-relaxed mb-6">
-                                Want to play a game but can't find a team? In this busy world, you don't have to wait for your friends to be free. 
-                            </p>
-                            <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
-                                <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-xl flex-shrink-0 luxe-shadow">🤝</div>
-                                    <div>
-                                        <h4 class="text-white font-bold mb-2">Pay Per Slot, Not Per Turf</h4>
-                                        <p class="text-sm text-slate-400 leading-relaxed">Join like-minded players in pre-scheduled matches. You only pay for your individual slot—costing you no more than a plate of Kolkata biryani or momos.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-8 py-4 text-sm w-full md:w-auto text-center relative z-10">
-                                Find a Match
-                            </button>
-                        </div>
-                        
-                        <div class="reveal-right hidden lg:block">
-                            <div class="grid grid-cols-2 gap-4 h-[500px]">
-                                <div class="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative group col-span-1 row-span-2">
-                                    <div class="absolute inset-0 bg-cyan-500/20 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
-                                    <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=600&q=80" alt="Adults playing Cricket" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
-                                </div>
-                                <div class="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative group col-span-1 row-span-1">
-                                    <div class="absolute inset-0 bg-cyan-500/20 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
-                                    <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80" alt="Adults playing Football" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
-                                </div>
-                                <div class="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative group col-span-1 row-span-1">
-                                    <div class="absolute inset-0 bg-cyan-500/20 group-hover:bg-transparent transition duration-500 z-10 pointer-events-none"></div>
-                                    <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=600&q=80" alt="People playing Chess" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+        <div id="view-blog-detail" class="hidden">
+            
+            <div class="max-w-[50rem] mx-auto px-6 pt-32 pb-12 reveal">
+                <div class="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-8">
+                    <span onclick="switchTab('blog-hub')" class="hover:text-cyan-400 cursor-pointer transition">Blog</span>
+                    <span>/</span>
+                    <span class="text-cyan-400">Featured Story</span>
                 </div>
-            </section>
-
-            <section class="py-32 bg-slate-900 border-y border-white/5 relative overflow-hidden">
-                <div class="absolute inset-0 opacity-[0.03]" style="background-image: var(--glass-pattern)"></div>
                 
-                <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                        
-                        <div id="map-matrix-container" class="state-kolkata relative w-full h-[450px] min-h-[450px] lg:h-[650px] lg:min-h-[650px] order-2 lg:order-1 bg-white rounded-[3rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.6)] overflow-hidden block">
-                            
-                            <div id="kolkata-view" class="absolute inset-0 w-full h-full transition-opacity duration-700 z-20">
-                                <iframe src="https://maps.google.com/maps?q=Salt+Lake,Kolkata&t=&z=12&ie=UTF8&iwloc=&output=embed" class="w-full h-full border-0" style="pointer-events: none;" allowfullscreen="" loading="lazy"></iframe>
-                                <div class="absolute inset-0 pointer-events-none shadow-[inset_0_0_30px_rgba(0,0,0,0.1)]"></div>
-                            </div>
-
-                            <div id="india-view" class="absolute inset-0 w-full h-full transition-opacity duration-700 bg-white p-4 flex items-center justify-center z-10 opacity-0">
-                                <img src="Gemini_Generated_Image_h60oreh60oreh60o.jpg" class="w-full h-full object-contain pointer-events-none rounded-2xl drop-shadow-lg" alt="India Expansion Network">
-                            </div>
-
+                <h1 class="text-4xl md:text-6xl font-black text-white tracking-premium leading-[1.1] mb-8">
+                    The Rise of Night Cricket in Salt Lake: A Cultural Shift
+                </h1>
+                
+                <div class="flex items-center justify-between border-y border-white/10 py-6 mb-12">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-black text-lg border border-cyan-500/40">RD</div>
+                        <div>
+                            <p class="text-white font-bold text-sm">Rahul Das</p>
+                            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">12 April 2026 • 4 Min Read</p>
                         </div>
-
-                        <div class="reveal-right order-1 lg:order-2">
-                            <div class="bg-gradient-to-br from-slate-950 to-slate-900 p-8 md:p-10 rounded-3xl border border-white/5 relative z-10 shadow-xl">
-                                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 mb-6 pointer-events-none">
-                                    <span class="w-2 h-2 rounded-full bg-cyan-400" id="pulse-indicator"></span>
-                                    <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest" id="scale-badge">Network Scale</span>
-                                </div>
-                                
-                                <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium leading-tight mb-6 transition-all duration-700" id="scale-title">
-                                    THE KOLKATA POWER-HUB:<br><span class="text-cyan-400 luxe-shadow">OPERATING AT SCALE.</span>
-                                </h2>
-                                
-                                <p class="text-slate-400 text-base md:text-lg leading-relaxed mb-8 transition-all duration-700" id="scale-desc">
-                                    Kolkata is our genesis point. We have built the city's most robust sports booking ledger, successfully authenticating thousands of players with zero wait times.
-                                </p>
-                                
-                                <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-8 py-4 text-sm w-full md:w-auto text-center relative z-10">
-                                    View Arenas
-                                </button>
-                            </div>
-                        </div>
-
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition"><i class="fa-brands fa-twitter"></i></button>
+                        <button class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition"><i class="fa-brands fa-facebook-f"></i></button>
+                        <button class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition"><i class="fas fa-link"></i></button>
                     </div>
                 </div>
-            </section>
+                
+                <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80" alt="Night Cricket" class="w-full rounded-3xl mb-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                
+                <div class="blog-content">
+                    <p class="text-xl text-slate-300 font-medium leading-relaxed mb-10">
+                        For decades, cricket in Kolkata was a daytime affair. The maidan was crowded by 6 AM, and the stumps were pulled up before the sunset. But a quiet revolution has taken over the artificial turfs of Salt Lake, Sector V, and New Town. 
+                    </p>
+                    
+                    <p>
+                        With the rise of IT parks and extended corporate working hours, the traditional 9-to-5 is a myth for many young professionals. By the time they log off, the sun is long gone. Enter the era of the illuminated box turf.
+                    </p>
+
+                    <h2>The 10 PM League</h2>
+                    
+                    <p>
+                        "We used to struggle to get 11 guys together on a Sunday morning," says Arindam, a software developer whose team now plays exclusively at 10 PM on Wednesdays. "Now, we just book a 6v6 slot after dinner. It's cooler, there's no traffic, and the LED lights make it feel like an IPL match."
+                    </p>
+
+                    <blockquote>
+                        "The turf isn't just about sports anymore. It's the new corporate watercooler. It's where deals are made and stress is burned off."
+                    </blockquote>
+
+                    <p>
+                        The data on SquadUp backs this up. Over 65% of our cricket bookings in the Salt Lake hub happen between 8 PM and midnight. Venue owners have caught on, upgrading their facilities with high-lumen floodlights, better shock-absorbent grass, and even late-night refreshment stands serving hot tea and momos.
+                    </p>
+
+                    <h3>What You Need for Night Turf Cricket:</h3>
+                    <ul>
+                        <li><strong>High-Visibility Gear:</strong> Dark clothes blend into the netting. Wear neon or white.</li>
+                        <li><strong>Turf Shoes:</strong> Leave the metal spikes at home. Rubber studs provide the best grip on artificial grass and prevent injuries.</li>
+                        <li><strong>The Right Ball:</strong> Standard hard tennis balls can skid unpredictably under the dew. Opt for a medium-weight rubber ball or a turf-specific synthetic ball.</li>
+                    </ul>
+
+                    <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1200&q=80" alt="Cricket Gear">
+
+                    <p>
+                        If you haven't experienced the rush of a night match yet, it's time to gather your squad. And if you don't have a team? Use SquadUp's new <a href="#" onclick="switchTab('feed'); return false;">"Meet Your Pals" feature</a> to book a single slot in an existing match tonight.
+                    </p>
+                </div>
+                
+                <div class="flex flex-wrap gap-3 mt-12 pt-8 border-t border-white/10">
+                    <span class="bg-white/5 text-gray-400 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded border border-white/10 hover:text-white cursor-pointer transition">#KolkataSports</span>
+                    <span class="bg-white/5 text-gray-400 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded border border-white/10 hover:text-white cursor-pointer transition">#Cricket</span>
+                    <span class="bg-white/5 text-gray-400 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded border border-white/10 hover:text-white cursor-pointer transition">#SaltLake</span>
+                </div>
+            </div>
 
         </div>
 
-        <section id="venues-section" class="py-20 bg-slate-950/40 border-t border-white/5 min-h-screen">
-            <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
-                
-                <div id="view-feed" class="block">
-                    <div class="flex flex-col xl:flex-row xl:items-center justify-between mb-12 reveal">
-                        <div class="mb-6 xl:mb-0 pr-10">
-                            <h2 class="text-4xl font-black text-white tracking-premium">Available Arenas</h2>
-                            <p class="text-slate-400 mt-1 font-medium text-sm">Real-time availability for verified venues.</p>
-                        </div>
-                        <div class="flex overflow-x-auto gap-3.5 hide-scroll pb-2.5 xl:pb-0" id="sport-filters">
-                            <button onclick="filterVenues('All', this)" class="filter-pill active">All Arenas</button>
-                            <button onclick="filterVenues('Football', this)" class="filter-pill">Football</button>
-                            <button onclick="filterVenues('Cricket', this)" class="filter-pill">Cricket</button>
-                            <button onclick="filterVenues('Chess', this)" class="filter-pill">Chess</button>
-                            <button onclick="filterVenues('Carrom', this)" class="filter-pill">Carrom</button>
-                        </div>
-                    </div>
-                    
-                    <div id="venue-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 reveal">
-                        <div class="col-span-full text-center py-24 text-slate-500 font-bold border-2 border-dashed border-white/10 rounded-3xl bg-slate-900/30">
-                            Please <span class="text-cyan-400 cursor-pointer underline hover:text-cyan-300 transition luxe-shadow relative z-10" onclick="openAuth()">Login</span> to access live arena availability.
-                        </div>
-                    </div>
-                </div>
-
-                <div id="view-rank" class="hidden reveal">
-                    <div class="max-w-4xl mx-auto py-12">
-                        <h2 class="text-4xl font-black text-white tracking-premium mb-8 border-b border-white/10 pb-5">City Rankings</h2>
-                        <div id="rank-list" class="space-y-5"></div>
-                    </div>
-                </div>
-
-                <div id="view-admin" class="hidden reveal">
-                    <h2 class="text-4xl font-black text-white tracking-premium mb-10 border-b border-white/10 pb-5">Admin Dashboard</h2>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                        <div class="card-luxe p-10">
-                            <h3 class="text-xl font-bold text-white mb-8 border-b border-white/5 pb-4 tracking-wide uppercase relative z-10">Update Venue</h3>
-                            <div class="space-y-5 relative z-10">
-                                <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Select Venue</label><select id="admin-venue-select" class="input-luxe" onchange="loadAdminVenueData()"></select></div>
-                                <div class="grid grid-cols-2 gap-5">
-                                    <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Max Players</label><input type="number" id="admin-cap" class="input-luxe"></div>
-                                    <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Available Times</label><input type="text" id="admin-times" class="input-luxe text-sm"></div>
-                                </div>
-                                <button onclick="updateVenue()" id="admin-btn" class="w-full py-4.5 bg-white text-onyx hover:bg-slate-200 font-bold rounded-xl transition mt-4 tracking-wide uppercase text-sm relative z-10">Save Changes</button>
-                            </div>
-                        </div>
-
-                        <div id="owner-panel" class="hidden card-luxe p-10 border-cyan-500/20 shadow-[0_0_40px_rgba(6,182,212,0.15)]">
-                            <h3 class="text-xl font-bold text-cyan-400 luxe-shadow mb-8 border-b border-white/5 pb-4 tracking-wide uppercase relative z-10">Add New Arena</h3>
-                            <div class="grid grid-cols-2 gap-5 mb-6 relative z-10">
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Sport</label><input type="text" id="new-v-sport" class="input-luxe text-sm"></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Venue Name</label><input type="text" id="new-v-name" class="input-luxe text-sm"></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Location</label><input type="text" id="new-v-loc" class="input-luxe text-sm"></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Price/Head (₹)</label><input type="number" id="new-v-price" class="input-luxe text-sm"></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Type</label><select id="new-v-type" class="input-luxe text-sm"><option value="outdoor">Outdoor</option><option value="indoor">Indoor</option></select></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Status</label><select id="new-v-status" class="input-luxe text-sm"><option value="Active">Active</option><option value="Pending">Coming Soon</option></select></div>
-                                <div class="col-span-2"><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Image URL</label><input type="text" id="new-v-img" class="input-luxe text-sm"></div>
-                            </div>
-                            <button onclick="deployNewVenue()" id="add-venue-btn" class="w-full py-4.5 btn-luxe text-sm tracking-wide uppercase relative z-10">Publish Arena</button>
-                        </div>
-                    </div>
-                </div>
-
+        <div id="view-rank" class="hidden reveal max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-10">
+            <div class="max-w-4xl mx-auto py-12">
+                <h2 class="text-4xl font-black text-white tracking-premium mb-8 border-b border-white/10 pb-5">City Rankings</h2>
+                <div id="rank-list" class="space-y-5"></div>
             </div>
-        </section>
+        </div>
 
-        <footer class="bg-slate-950/80 border-t border-white/5 pt-20 pb-10 mt-auto relative z-20">
-            <div class="absolute inset-0 opacity-[0.01] pointer-events-none" style="background-image: var(--glass-pattern)"></div>
-            <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
-                    <div class="md:col-span-2 pr-10">
-                        <h2 class="text-4xl font-black text-white tracking-premium mb-5 pointer-events-none">Squad<span class="text-cyan-400 luxe-shadow">Up</span></h2>
-                        <p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-7 pointer-events-none">Kolkata's definitive sports venue network. Secure payments, instant bookings.</p>
-                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wide pointer-events-none">Operated by Easycommune Online Services Pvt Ltd</p>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm pointer-events-none">Policies</h4>
-                        <ul class="space-y-3 text-sm text-slate-400 font-medium">
-                            <li><span onclick="showModal('disc-modal')" class="hover:text-cyan-400 cursor-pointer transition relative z-10">Terms & Conditions</span></li>
-                            <li><span onclick="showModal('about-modal')" class="hover:text-cyan-400 cursor-pointer transition relative z-10">About Us</span></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm pointer-events-none">Contact Us</h4>
-                        <p class="text-sm text-slate-400 mb-6 font-medium pointer-events-none">support@squadup.in</p>
+        <div id="view-admin" class="hidden reveal max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-10">
+            <h2 class="text-4xl font-black text-white tracking-premium mb-10 border-b border-white/10 pb-5">Admin Dashboard</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div class="card-luxe p-10">
+                    <h3 class="text-xl font-bold text-white mb-8 border-b border-white/5 pb-4 tracking-wide uppercase relative z-10">Update Venue</h3>
+                    <div class="space-y-5 relative z-10">
+                        <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Select Venue</label><select id="admin-venue-select" class="input-luxe" onchange="loadAdminVenueData()"></select></div>
+                        <div class="grid grid-cols-2 gap-5">
+                            <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Max Players</label><input type="number" id="admin-cap" class="input-luxe"></div>
+                            <div><label class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Available Times</label><input type="text" id="admin-times" class="input-luxe text-sm"></div>
+                        </div>
+                        <button onclick="updateVenue()" id="admin-btn" class="w-full py-4.5 bg-white text-onyx hover:bg-slate-200 font-bold rounded-xl transition mt-4 tracking-wide uppercase text-sm relative z-10">Save Changes</button>
                     </div>
                 </div>
-                <div class="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-5 pointer-events-none">
-                    <p class="text-xs text-slate-600 font-medium">© 2026 SquadUp. All rights reserved.</p>
-                    <div class="text-xs text-slate-600 font-medium">Built for Kolkata.</div>
+
+                <div id="owner-panel" class="hidden card-luxe p-10 border-cyan-500/20 shadow-[0_0_40px_rgba(6,182,212,0.15)]">
+                    <h3 class="text-xl font-bold text-cyan-400 luxe-shadow mb-8 border-b border-white/5 pb-4 tracking-wide uppercase relative z-10">Add New Arena</h3>
+                    <div class="grid grid-cols-2 gap-5 mb-6 relative z-10">
+                        <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Sport</label><input type="text" id="new-v-sport" class="input-luxe text-sm"></div>
+                        <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Venue Name</label><input type="text" id="new-v-name" class="input-luxe text-sm"></div>
+                        <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Location</label><input type="text" id="new-v-loc" class="input-luxe text-sm"></div>
+                        <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Price/Head (₹)</label><input type="number" id="new-v-price" class="input-luxe text-sm"></div>
+                        <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Type</label><select id="new-v-type" class="input-luxe text-sm"><option value="outdoor">Outdoor</option><option value="indoor">Indoor</option></select></div>
+                        <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Status</label><select id="new-v-status" class="input-luxe text-sm"><option value="Active">Active</option><option value="Pending">Coming Soon</option></select></div>
+                        <div class="col-span-2"><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Image URL</label><input type="text" id="new-v-img" class="input-luxe text-sm"></div>
+                    </div>
+                    <button onclick="deployNewVenue()" id="add-venue-btn" class="w-full py-4.5 btn-luxe text-sm tracking-wide uppercase relative z-10">Publish Arena</button>
                 </div>
             </div>
-        </footer>
+        </div>
 
-    </div> <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[300] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeSheet()">
+    </div> <footer class="bg-slate-950/80 border-t border-white/5 pt-20 pb-10 mt-auto relative z-20">
+        <div class="absolute inset-0 opacity-[0.01] pointer-events-none" style="background-image: var(--glass-pattern)"></div>
+        <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
+                <div class="md:col-span-2 pr-10">
+                    <h2 class="text-4xl font-black text-white tracking-premium mb-5 pointer-events-none">Squad<span class="text-cyan-400 luxe-shadow">Up</span></h2>
+                    <p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-7 pointer-events-none">Kolkata's definitive sports venue network. Secure payments, instant bookings.</p>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wide pointer-events-none">Operated by Easycommune Online Services Pvt Ltd</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm pointer-events-none">Policies</h4>
+                    <ul class="space-y-3 text-sm text-slate-400 font-medium">
+                        <li><span onclick="showModal('disc-modal')" class="hover:text-cyan-400 cursor-pointer transition relative z-10">Terms & Conditions</span></li>
+                        <li><span onclick="showModal('about-modal')" class="hover:text-cyan-400 cursor-pointer transition relative z-10">About Us</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm pointer-events-none">Contact Us</h4>
+                    <p class="text-sm text-slate-400 mb-6 font-medium pointer-events-none">support@squadup.in</p>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-5 pointer-events-none">
+                <p class="text-xs text-slate-600 font-medium">© 2026 SquadUp. All rights reserved.</p>
+                <div class="text-xs text-slate-600 font-medium">Built for Kolkata.</div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[300] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeSheet()">
         <div id="booking-sheet" class="w-full md:max-w-xl bg-[#0a0a0a] rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col border border-white/10 transform translate-y-full md:translate-y-0 md:scale-95 transition-transform duration-300 max-h-[90vh]" onclick="event.stopPropagation()">
             
             <div class="p-8 flex-shrink-0 border-b border-white/10 bg-[#121212] rounded-t-3xl md:rounded-t-3xl">
@@ -602,15 +796,11 @@
     </div>
 
     <script>
-        // ==========================================
-        // 🔗 CONNECTION STRING 
-        // ==========================================
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; // <--- PASTE YOUR /EXEC URL HERE
-        
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; 
         let currentUser = null; let activeVenue = null; window.venues = [];
         let tapCount = 0; let tapTimer; let currentFilter = 'All';
 
-        // --- SIDE MENU LOGIC ---
+        // SIDE MENU LOGIC
         function openMenu() {
             document.getElementById('side-menu-overlay').classList.remove('opacity-0', 'pointer-events-none');
             document.getElementById('side-menu').classList.remove('translate-x-full');
@@ -620,7 +810,50 @@
             document.getElementById('side-menu').classList.add('translate-x-full');
         }
 
-        // --- MAP ANIMATION CONTROLLER ---
+        // --- NEW TAB SWITCHER LOGIC ---
+        function switchTab(tabId) {
+            const marketing = document.getElementById('view-home');
+            const feed = document.getElementById('venues-section');
+            const rank = document.getElementById('view-rank');
+            const admin = document.getElementById('view-admin');
+            const grid = document.getElementById('venue-grid');
+            const filters = document.getElementById('sport-filters');
+            
+            const blogHub = document.getElementById('view-blog-hub');
+            const blogDetail = document.getElementById('view-blog-detail');
+
+            if(marketing) marketing.classList.add('hidden');
+            if(feed) feed.classList.add('hidden');
+            if(rank) rank.classList.add('hidden');
+            if(admin) admin.classList.add('hidden');
+            if(blogHub) blogHub.classList.add('hidden');
+            if(blogDetail) blogDetail.classList.add('hidden');
+
+            if(tabId === 'feed') {
+                if(marketing) marketing.classList.remove('hidden');
+                if(feed) feed.classList.remove('hidden'); 
+                if(grid) grid.classList.remove('hidden'); 
+                if(filters) filters.classList.remove('hidden');
+            } else if (tabId === 'rank') {
+                if(feed) feed.classList.remove('hidden'); 
+                if(grid) grid.classList.add('hidden'); 
+                if(filters) filters.classList.add('hidden');
+                if(rank) rank.classList.remove('hidden');
+            } else if (tabId === 'admin') {
+                if(feed) feed.classList.remove('hidden'); 
+                if(grid) grid.classList.add('hidden'); 
+                if(filters) filters.classList.add('hidden');
+                if(admin) admin.classList.remove('hidden');
+            } else if (tabId === 'blog-hub') {
+                if(blogHub) blogHub.classList.remove('hidden');
+                document.querySelectorAll('#view-blog-hub .reveal').forEach(el => observer.observe(el));
+            } else if (tabId === 'blog-detail') {
+                if(blogDetail) blogDetail.classList.remove('hidden');
+                document.querySelectorAll('#view-blog-detail .reveal').forEach(el => observer.observe(el));
+            }
+        }
+
+        // MAP ANIMATION CONTROLLER
         function runExpansionMatrix() {
             const container = document.getElementById('map-matrix-container');
             const scaleTitle = document.getElementById('scale-title');
@@ -634,66 +867,27 @@
 
             setInterval(() => {
                 if(isKolkata) {
-                    // Transition to India
                     container.classList.remove('state-kolkata');
                     container.classList.add('state-india');
-
                     badge.innerText = "Future Scale";
                     indicator.classList.replace('bg-cyan-400', 'bg-indigo-400');
                     scaleTitle.innerHTML = 'EXPANDING TO<br><span class="text-indigo-400 luxe-shadow">ALL-INDIA NETWORK.</span>';
                     scaleDesc.innerText = "Our vision extends beyond Bengal. We are engineering the infrastructure to deploy SquadUp across every major Indian metropolis. The next generation of athletic routing is imminent.";
-                    
                     isKolkata = false;
                 } else {
-                    // Transition back to Kolkata
                     container.classList.remove('state-india');
                     container.classList.add('state-kolkata');
-
                     badge.innerText = "Network Scale";
                     indicator.classList.replace('bg-indigo-400', 'bg-cyan-400');
                     scaleTitle.innerHTML = 'THE KOLKATA POWER-HUB:<br><span class="text-cyan-400 luxe-shadow">OPERATING AT SCALE.</span>';
                     scaleDesc.innerText = "Kolkata is our genesis point. We have built the city's most robust sports booking ledger, successfully authenticating thousands of players with zero wait times.";
-                    
                     isKolkata = true;
                 }
             }, 6000); 
         }
 
-        // --- PHONE HOVER EFFECT ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const mockup = document.getElementById('hero-mockup-container');
-            if(mockup) {
-                mockup.addEventListener('mousemove', (e) => {
-                    const frame = mockup.querySelector('.mockup-frame');
-                    const rect = mockup.getBoundingClientRect();
-                    const x = e.clientX - rect.left - (rect.width / 2);
-                    const y = e.clientY - rect.top - (rect.height / 2);
-                    
-                    const xAxis = -(y / 20); 
-                    const yAxis = (x / 20);  
-                    
-                    frame.style.transform = `rotateY(${yAxis}deg) rotateX(${xAxis}deg) rotateZ(-3deg)`;
-                });
-                mockup.addEventListener('mouseleave', () => {
-                    const frame = mockup.querySelector('.mockup-frame');
-                    frame.style.transform = 'rotateY(0deg) rotateX(0deg) rotateZ(-3deg)';
-                });
-            }
-            
-            runExpansionMatrix();
-        });
-
-        // --- SESSION MEMORY & THEATRICAL PRELOADER ---
+        // SESSION MEMORY & INTERCEPTORS
         document.addEventListener('DOMContentLoaded', async () => {
-            
-            const preloader = document.getElementById('preloader');
-            if(preloader) {
-                setTimeout(() => {
-                    preloader.style.opacity = '0';
-                    preloader.style.visibility = 'hidden';
-                    setTimeout(() => preloader.remove(), 500); 
-                }, 2200);
-            }
             
             const savedUser = localStorage.getItem('squadupUser');
             if (savedUser) { currentUser = JSON.parse(savedUser); }
@@ -708,7 +902,6 @@
                 console.log("Database connection pending.", e);
             }
 
-            // Always load placeholders if database is missing
             const pendingVenues = [
                 { sport: "Football", name: "Salt Lake Elite", loc: "New Town", price: 359, type: "outdoor", cap: 10, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80", times: "" },
                 { sport: "Cricket", name: "Behala Turf", loc: "Behala", price: 179, type: "outdoor", cap: 14, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80", times: "" },
@@ -741,7 +934,7 @@
             }
         });
 
-        // --- AUTH LOGIC ---
+        // AUTH LOGIC
         function ghostTrigger() {
             tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(() => tapCount = 0, 1500);
             if(tapCount === 5) {
@@ -804,62 +997,6 @@
             location.reload(); 
         }
 
-        function updateUILoggedIn() {
-            // Replaces the "Login/Sign Up" button inside the Side Drawer with User Details
-            document.getElementById('menu-auth-section').innerHTML = `
-                <div class="flex items-center gap-4 bg-slate-900/50 p-4 rounded-2xl border border-white/5 relative z-20">
-                    <div class="w-12 h-12 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 flex items-center justify-center font-black text-xl shadow-[0_0_15px_rgba(6,182,212,0.3)]">${currentUser.name[0].toUpperCase()}</div>
-                    <div>
-                        <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest leading-none mb-1.5">Logged In</p>
-                        <p class="text-sm font-bold text-white leading-none">${currentUser.name}</p>
-                    </div>
-                </div>
-                <button onclick="logout()" class="w-full text-left mt-4 text-xs text-red-500 font-bold uppercase tracking-widest hover:text-red-400 transition flex items-center gap-2 pl-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg> Logout
-                </button>
-            `;
-            
-            if(currentUser.role === 'owner' || currentUser.role === 'staff') {
-                const navAdminDesk = document.getElementById('nav-btn-admin-desktop');
-                if(navAdminDesk) navAdminDesk.classList.remove('hidden');
-                
-                const menuAdmin = document.getElementById('menu-btn-admin');
-                if(menuAdmin) menuAdmin.classList.remove('hidden');
-                
-                const ownerPanel = document.getElementById('owner-panel');
-                if(currentUser.role === 'owner' && ownerPanel) ownerPanel.classList.remove('hidden');
-                populateAdminSelect();
-            }
-            
-            renderRankings();
-            filterVenues('All', document.querySelector('.filter-pill')); 
-        }
-
-        function switchTab(tabId) {
-            const marketing = document.getElementById('marketing-sections');
-            const feed = document.getElementById('venues-section');
-            const rank = document.getElementById('view-rank');
-            const admin = document.getElementById('view-admin');
-            const grid = document.getElementById('venue-grid');
-            const filters = document.getElementById('sport-filters');
-
-            if(tabId === 'feed') {
-                if(marketing) marketing.classList.remove('hidden');
-                feed.classList.remove('hidden'); grid.classList.remove('hidden'); filters.classList.remove('hidden');
-                rank.classList.add('hidden'); admin.classList.add('hidden');
-            } else if (tabId === 'rank') {
-                if(marketing) marketing.classList.add('hidden');
-                feed.classList.remove('hidden'); grid.classList.add('hidden'); filters.classList.add('hidden');
-                rank.classList.remove('hidden'); admin.classList.add('hidden');
-            } else if (tabId === 'admin') {
-                if(marketing) marketing.classList.add('hidden');
-                feed.classList.remove('hidden'); grid.classList.add('hidden'); filters.classList.add('hidden');
-                rank.classList.add('hidden'); admin.classList.remove('hidden');
-            }
-            window.scrollTo(0, 0);
-        }
-
-        // --- TIME ENGINE ---
         function getLocalISODate() {
             const now = new Date();
             const offset = now.getTimezoneOffset() * 60000;
@@ -920,7 +1057,6 @@
             if(addedCount === 0) { timeSelect.innerHTML = `<option value="">No times available</option>`; }
         }
 
-        // --- SPATIAL ENGINE ---
         function getDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
@@ -946,7 +1082,6 @@
             }
         }
 
-        // --- BACKEND API ---
         function fetchJSONP(params) { 
             return new Promise((resolve) => { 
                 const callbackName = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000); 
@@ -1022,6 +1157,7 @@
             fetchJSONP(data).then(res => { if(res.status === 'success') { alert("Account Created! Please Login."); toggleAuth('login'); } else { alert(res.msg); } btn.innerText = "Sign Up"; btn.classList.remove('opacity-50'); });
         }
 
+        // IMAGE SANITIZER: Overrides bad DB links with guaranteed correct ones
         function filterVenues(sport, btnElement) {
             currentFilter = sport;
             if(btnElement) {
@@ -1060,13 +1196,12 @@
                 
                 const safeName = v.name.replace(/'/g, "\\'");
                 
-                // IMAGE SANITIZER: Overrides bad DB links
                 let safeImg = v.img;
                 if(safeImg && (safeImg.includes('1518609878373') || safeImg.includes('unsplash.com'))) {
                     if(v.sport.toLowerCase() === 'football') safeImg = 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80';
                     else if(v.sport.toLowerCase() === 'cricket') safeImg = 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80';
                     else if(v.sport.toLowerCase() === 'chess') safeImg = 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80';
-                    else safeImg = 'https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80';
+                    else safeImg = 'https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80'; 
                 }
 
                 let visual = '';
