@@ -112,6 +112,17 @@
         </div>
     </div>
 
+    <script>
+        setTimeout(() => {
+            const loader = document.getElementById('preloader');
+            if (loader) {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                setTimeout(() => loader.remove(), 500); 
+            }
+        }, 2200);
+    </script>
+
     <div id="side-menu-overlay" class="fixed inset-0 bg-black/60 z-[300] opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm" onclick="closeMenu()"></div>
     
     <div id="side-menu" class="fixed top-0 right-0 h-full w-80 sm:w-96 bg-[#020617] z-[400] transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] border-l border-white/5 shadow-2xl flex flex-col">
@@ -370,7 +381,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </section>
@@ -820,13 +830,9 @@
     </footer>
 
     <script>
-        var scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; 
-        var currentUser = null; 
-        var activeVenue = null; 
-        window.venues = [];
-        var tapCount = 0; 
-        var tapTimer; 
-        var currentFilter = 'All';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; 
+        let currentUser = null; let activeVenue = null; window.venues = [];
+        let tapCount = 0; let tapTimer; let currentFilter = 'All';
 
         // SIDE MENU LOGIC
         function openMenu() {
@@ -840,20 +846,22 @@
 
         // TAB SWITCHER LOGIC
         function switchTab(tabId) {
-            var views = [
+            const views = [
                 document.getElementById('view-home'),
                 document.getElementById('venues-section'),
                 document.getElementById('view-rank'),
                 document.getElementById('view-admin'),
                 document.getElementById('view-blog-hub'),
                 document.getElementById('view-blog-detail'),
-                document.getElementById('view-academy')
+                document.getElementById('view-academy') // New Academy View
             ];
 
-            views.forEach(function(view) { if(view) view.classList.add('hidden'); });
+            // Hide all main views
+            views.forEach(view => { if(view) view.classList.add('hidden'); });
 
-            var grid = document.getElementById('venue-grid');
-            var filters = document.getElementById('sport-filters');
+            // Specific UI elements for Home/Feed
+            const grid = document.getElementById('venue-grid');
+            const filters = document.getElementById('sport-filters');
             if(grid) grid.classList.add('hidden');
             if(filters) filters.classList.add('hidden');
 
@@ -870,25 +878,26 @@
                 if(views[3]) views[3].classList.remove('hidden');
             } else if (tabId === 'blog-hub') {
                 if(views[4]) views[4].classList.remove('hidden');
-                document.querySelectorAll('#view-blog-hub .reveal').forEach(function(el){ observer.observe(el); });
+                document.querySelectorAll('#view-blog-hub .reveal').forEach(el => observer.observe(el));
             } else if (tabId === 'blog-detail') {
                 if(views[5]) views[5].classList.remove('hidden');
-                document.querySelectorAll('#view-blog-detail .reveal').forEach(function(el){ observer.observe(el); });
+                document.querySelectorAll('#view-blog-detail .reveal').forEach(el => observer.observe(el));
             } else if (tabId === 'academy') {
                 if(views[6]) views[6].classList.remove('hidden');
-                document.querySelectorAll('#view-academy .reveal').forEach(function(el){ observer.observe(el); });
+                document.querySelectorAll('#view-academy .reveal').forEach(el => observer.observe(el));
             }
         }
 
         // ACADEMY LEAD SUBMISSION MOCK
         function submitAcademyLead(e) {
             e.preventDefault();
-            var btn = e.target.querySelector('button[type="submit"]');
-            var originalText = btn.innerText;
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
             btn.innerText = "Sending Request...";
             btn.classList.add('opacity-50', 'cursor-wait');
 
-            setTimeout(function() {
+            // Simulate network request
+            setTimeout(() => {
                 alert("Demo Request Sent! Our integration team will contact you shortly to set up AcademyOS.");
                 e.target.reset();
                 btn.innerText = originalText;
@@ -898,17 +907,17 @@
 
         // MAP ANIMATION CONTROLLER
         function runExpansionMatrix() {
-            var container = document.getElementById('map-matrix-container');
-            var scaleTitle = document.getElementById('scale-title');
-            var scaleDesc = document.getElementById('scale-desc');
-            var badge = document.getElementById('scale-badge');
-            var indicator = document.getElementById('pulse-indicator');
+            const container = document.getElementById('map-matrix-container');
+            const scaleTitle = document.getElementById('scale-title');
+            const scaleDesc = document.getElementById('scale-desc');
+            const badge = document.getElementById('scale-badge');
+            const indicator = document.getElementById('pulse-indicator');
             
             if(!container) return;
 
-            var isKolkata = true;
+            let isKolkata = true;
 
-            setInterval(function() {
+            setInterval(() => {
                 if(isKolkata) {
                     container.classList.remove('state-kolkata');
                     container.classList.add('state-india');
@@ -930,20 +939,20 @@
         }
 
         // PHONE HOVER EFFECT
-        document.addEventListener('DOMContentLoaded', function() {
-            var mockup = document.getElementById('hero-mockup-container');
+        document.addEventListener('DOMContentLoaded', () => {
+            const mockup = document.getElementById('hero-mockup-container');
             if(mockup) {
-                mockup.addEventListener('mousemove', function(e) {
-                    var frame = mockup.querySelector('.mockup-frame');
-                    var rect = mockup.getBoundingClientRect();
-                    var x = e.clientX - rect.left - (rect.width / 2);
-                    var y = e.clientY - rect.top - (rect.height / 2);
-                    var xAxis = -(y / 20); 
-                    var yAxis = (x / 20);  
+                mockup.addEventListener('mousemove', (e) => {
+                    const frame = mockup.querySelector('.mockup-frame');
+                    const rect = mockup.getBoundingClientRect();
+                    const x = e.clientX - rect.left - (rect.width / 2);
+                    const y = e.clientY - rect.top - (rect.height / 2);
+                    const xAxis = -(y / 20); 
+                    const yAxis = (x / 20);  
                     frame.style.transform = `rotateY(${yAxis}deg) rotateX(${xAxis}deg) rotateZ(-3deg)`;
                 });
-                mockup.addEventListener('mouseleave', function() {
-                    var frame = mockup.querySelector('.mockup-frame');
+                mockup.addEventListener('mouseleave', () => {
+                    const frame = mockup.querySelector('.mockup-frame');
                     frame.style.transform = 'rotateY(0deg) rotateX(0deg) rotateZ(-3deg)';
                 });
             }
@@ -952,12 +961,22 @@
         });
 
         // SESSION MEMORY & INTERCEPTORS
-        document.addEventListener('DOMContentLoaded', async function() {
-            var savedUser = localStorage.getItem('squadupUser');
+        document.addEventListener('DOMContentLoaded', async () => {
+            
+            const preloader = document.getElementById('preloader');
+            if(preloader) {
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.style.visibility = 'hidden';
+                    setTimeout(() => preloader.remove(), 500); 
+                }, 2200);
+            }
+            
+            const savedUser = localStorage.getItem('squadupUser');
             if (savedUser) { currentUser = JSON.parse(savedUser); }
 
             try {
-                var res = await fetchJSONP({ action: 'sync' });
+                const res = await fetchJSONP({ action: 'sync' });
                 if(res && res.status === 'success') {
                     window.venues = res.venues || [];
                     window.activeBookings = res.bookings || [];
@@ -966,21 +985,21 @@
                 console.log("Database connection pending.", e);
             }
 
-            var pendingVenues = [
+            const pendingVenues = [
                 { sport: "Football", name: "Salt Lake Elite", loc: "New Town", price: 359, type: "outdoor", cap: 10, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80", times: "" },
                 { sport: "Cricket", name: "Behala Turf", loc: "Behala", price: 179, type: "outdoor", cap: 14, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80", times: "" },
                 { sport: "Chess", name: "Grandmaster Hub", loc: "Park Street", price: 149, type: "indoor", cap: 4, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80", times: "" },
                 { sport: "Carrom", name: "Strikers Den", loc: "Jadavpur", price: 49, type: "indoor", cap: 4, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80", times: "" }
             ];
-            pendingVenues.forEach(function(p) { if(!window.venues.find(function(v){ return v.name === p.name; })) window.venues.push(p); });
+            pendingVenues.forEach(p => { if(!window.venues.find(v => v.name === p.name)) window.venues.push(p); });
 
             if (currentUser) { updateUILoggedIn(); } 
             else { filterVenues('All', document.querySelector('.filter-pill')); }
         });
 
-        var observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-        var observer = new IntersectionObserver(function(entries, observer) {
-            entries.forEach(function(entry) {
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                     observer.unobserve(entry.target);
@@ -988,10 +1007,10 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) { observer.observe(el); });
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => { observer.observe(el); });
 
-        window.addEventListener('scroll', function() {
-            var nav = document.querySelector('.glass-nav');
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.glass-nav');
             if(nav) {
                 if (window.scrollY > 20) nav.classList.add('scrolled');
                 else nav.classList.remove('scrolled');
@@ -1000,7 +1019,7 @@
 
         // AUTH LOGIC
         function ghostTrigger() {
-            tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(function(){ tapCount = 0; }, 1500);
+            tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(() => tapCount = 0, 1500);
             if(tapCount === 5) {
                 document.getElementById('login-box').classList.add('hidden');
                 document.getElementById('admin-login-box').classList.remove('hidden');
@@ -1019,10 +1038,10 @@
         }
 
         function openAuth() {
-            var overlay = document.getElementById('auth-overlay');
-            var card = document.getElementById('auth-card');
+            const overlay = document.getElementById('auth-overlay');
+            const card = document.getElementById('auth-card');
             overlay.classList.remove('hidden');
-            setTimeout(function() {
+            setTimeout(() => {
                 overlay.classList.remove('opacity-0', 'pointer-events-none');
                 card.classList.remove('scale-95');
                 card.classList.add('scale-100');
@@ -1030,30 +1049,30 @@
         }
 
         function closeAuth() {
-            var overlay = document.getElementById('auth-overlay');
-            var card = document.getElementById('auth-card');
+            const overlay = document.getElementById('auth-overlay');
+            const card = document.getElementById('auth-card');
             card.classList.remove('scale-100');
             card.classList.add('scale-95');
             overlay.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(function() { overlay.classList.add('hidden'); }, 400);
+            setTimeout(() => { overlay.classList.add('hidden'); }, 400);
         }
 
         function showModal(id) {
-            var overlay = document.getElementById(id);
-            var card = overlay.querySelector('.card-luxe');
+            const overlay = document.getElementById(id);
+            const card = overlay.querySelector('.card-luxe');
             overlay.classList.remove('hidden');
-            setTimeout(function() {
+            setTimeout(() => {
                 overlay.classList.remove('opacity-0', 'pointer-events-none');
                 if(card) { card.classList.remove('scale-95'); card.classList.add('scale-100'); }
             }, 10);
         }
 
         function closeModal(id) {
-            var overlay = document.getElementById(id);
-            var card = overlay.querySelector('.card-luxe');
+            const overlay = document.getElementById(id);
+            const card = overlay.querySelector('.card-luxe');
             if(card) { card.classList.remove('scale-100'); card.classList.add('scale-95'); }
             overlay.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(function() { overlay.classList.add('hidden'); }, 400);
+            setTimeout(() => { overlay.classList.add('hidden'); }, 400);
         }
         
         function logout() { 
@@ -1063,10 +1082,10 @@
 
         function updateUILoggedIn() {
             
-            var uName = currentUser?.name || 'Player';
-            var initial = uName.charAt(0).toUpperCase();
+            const uName = currentUser?.name || 'Player';
+            const initial = uName.charAt(0).toUpperCase();
             
-            var menuAuthSection = document.getElementById('menu-auth-section');
+            const menuAuthSection = document.getElementById('menu-auth-section');
             if(menuAuthSection) {
                 menuAuthSection.innerHTML = `
                     <div class="flex items-center gap-4 bg-slate-900/50 p-4 rounded-2xl border border-white/5 relative z-20">
@@ -1083,13 +1102,13 @@
             }
             
             if(currentUser?.role === 'owner' || currentUser?.role === 'staff') {
-                var navAdminDesk = document.getElementById('nav-btn-admin-desktop');
+                const navAdminDesk = document.getElementById('nav-btn-admin-desktop');
                 if(navAdminDesk) navAdminDesk.classList.remove('hidden');
                 
-                var menuAdmin = document.getElementById('menu-btn-admin');
+                const menuAdmin = document.getElementById('menu-btn-admin');
                 if(menuAdmin) menuAdmin.classList.remove('hidden');
                 
-                var ownerPanel = document.getElementById('owner-panel');
+                const ownerPanel = document.getElementById('owner-panel');
                 if(currentUser?.role === 'owner' && ownerPanel) ownerPanel.classList.remove('hidden');
                 populateAdminSelect();
             }
@@ -1099,14 +1118,14 @@
         }
 
         function getLocalISODate() {
-            var now = new Date();
-            var offset = now.getTimezoneOffset() * 60000;
+            const now = new Date();
+            const offset = now.getTimezoneOffset() * 60000;
             return new Date(now.getTime() - offset).toISOString().split('T')[0];
         }
 
         function initDatePicker() {
-            var dateInput = document.getElementById('book-date'); 
-            var todayStr = getLocalISODate();
+            const dateInput = document.getElementById('book-date'); 
+            const todayStr = getLocalISODate();
             dateInput.min = todayStr; 
             dateInput.value = todayStr;
         }
@@ -1117,32 +1136,32 @@
         }
 
         function populateTimeSlots() {
-            var timeSelect = document.getElementById('book-time');
-            var selectedDate = document.getElementById('book-date');
+            const timeSelect = document.getElementById('book-time');
+            const selectedDate = document.getElementById('book-date');
             if(!selectedDate || !timeSelect) return;
             
-            var selectedDateVal = selectedDate.value;
-            var todayStr = getLocalISODate();
-            var isToday = selectedDateVal === todayStr;
+            const selectedDateVal = selectedDate.value;
+            const todayStr = getLocalISODate();
+            const isToday = selectedDateVal === todayStr;
 
-            var now = new Date();
-            var currentHour = now.getHours();
-            var currentMin = now.getMinutes();
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMin = now.getMinutes();
 
             timeSelect.innerHTML = '';
-            var addedCount = 0;
+            let addedCount = 0;
 
             if(activeVenue && activeVenue.times) {
-                activeVenue.times.split(',').forEach(function(t) {
-                    var timeStr = t.trim();
-                    var isPast = false;
+                activeVenue.times.split(',').forEach(t => {
+                    const timeStr = t.trim();
+                    let isPast = false;
 
                     if(isToday) {
-                        var match = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+                        const match = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
                         if(match) {
-                            var hour = parseInt(match[1], 10);
-                            var min = parseInt(match[2], 10);
-                            var ampm = match[3].toUpperCase();
+                            let hour = parseInt(match[1], 10);
+                            const min = parseInt(match[2], 10);
+                            const ampm = match[3].toUpperCase();
 
                             if(ampm === 'PM' && hour < 12) hour += 12;
                             if(ampm === 'AM' && hour === 12) hour = 0;
@@ -1159,49 +1178,49 @@
         }
 
         function getDistance(lat1, lon1, lat2, lon2) {
-            var R = 6371; var dLat = (lat2 - lat1) * Math.PI / 180; var dLon = (lon2 - lon1) * Math.PI / 180;
-            var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
             return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         }
 
         function sortVenuesByProximity(btn) {
             if(!btn) return;
             if (navigator.geolocation) {
-                var originalText = btn.innerHTML;
+                const originalText = btn.innerHTML;
                 btn.innerHTML = `📍 Locating...`;
                 
-                navigator.geolocation.getCurrentPosition(function(pos) {
-                    window.venues.forEach(function(v) { if(v.lat && v.lon) v.distance = getDistance(pos.coords.latitude, pos.coords.longitude, v.lat, v.lon).toFixed(1); });
-                    window.venues.sort(function(a, b) { return (a.distance || 99) - (b.distance || 99); });
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    window.venues.forEach(v => { if(v.lat && v.lon) v.distance = getDistance(pos.coords.latitude, pos.coords.longitude, v.lat, v.lon).toFixed(1); });
+                    window.venues.sort((a, b) => (a.distance || 99) - (b.distance || 99));
                     filterVenues(currentFilter, null); 
                     btn.innerHTML = `📍 Sorted`;
-                    setTimeout(function() { btn.innerHTML = originalText; }, 3000);
-                }, function() {
+                    setTimeout(() => { btn.innerHTML = originalText; }, 3000);
+                }, () => {
                     btn.innerHTML = `❌ Denied`;
-                    setTimeout(function() { btn.innerHTML = originalText; }, 3000);
+                    setTimeout(() => { btn.innerHTML = originalText; }, 3000);
                 });
             }
         }
 
         function fetchJSONP(params) { 
-            return new Promise(function(resolve, reject) { 
-                var callbackName = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000); 
-                var script = document.createElement('script'); 
+            return new Promise((resolve, reject) => { 
+                const callbackName = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000); 
+                const script = document.createElement('script'); 
                 
-                var timeout = setTimeout(function() {
+                const timeout = setTimeout(() => {
                     document.body.removeChild(script);
                     delete window[callbackName];
                     reject(new Error("Request timed out. Please check your deployment URL."));
                 }, 8000);
                 
-                script.onerror = function() {
+                script.onerror = () => {
                     clearTimeout(timeout);
                     document.body.removeChild(script);
                     delete window[callbackName];
-                    reject(new Error("Database link failed. Is YOUR_NEW_DEPLOYMENT_URL_HERE replaced?"));
+                    reject(new Error("Database link failed. Is https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec replaced?"));
                 };
 
-                window[callbackName] = function(data) { 
+                window[callbackName] = (data) => { 
                     clearTimeout(timeout);
                     resolve(data); 
                     document.body.removeChild(script); 
@@ -1215,34 +1234,34 @@
         }
 
         async function handleLogin(type) {
-            var btn = type === 'admin' ? document.getElementById('admin-btn-login') : document.getElementById('login-btn');
-            var idField = type === 'admin' ? 'admin-login-id' : 'login-id';
-            var passField = type === 'admin' ? 'admin-login-pass' : 'login-pass';
+            const btn = type === 'admin' ? document.getElementById('admin-btn-login') : document.getElementById('login-btn');
+            const idField = type === 'admin' ? 'admin-login-id' : 'login-id';
+            const passField = type === 'admin' ? 'admin-login-pass' : 'login-pass';
             
-            var originalText = btn.innerText;
+            const originalText = btn.innerText;
             btn.innerText = "Authenticating..."; btn.classList.add('opacity-50', 'cursor-wait');
             
             try {
-                var res = await fetchJSONP({ action: 'login', loginId: document.getElementById(idField).value, password: document.getElementById(passField).value });
+                const res = await fetchJSONP({ action: 'login', loginId: document.getElementById(idField).value, password: document.getElementById(passField).value });
                 
                 if(res && res.status === 'success') {
                     currentUser = res.user; window.venues = res.venues || []; window.activeBookings = res.bookings || []; 
                     
-                    var pendingVenues = [
+                    const pendingVenues = [
                         { sport: "Football", name: "Salt Lake Elite", loc: "New Town", price: 359, type: "outdoor", cap: 10, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80", times: "" },
                         { sport: "Cricket", name: "Behala Turf", loc: "Behala", price: 179, type: "outdoor", cap: 14, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80", times: "" },
                         { sport: "Chess", name: "Grandmaster Hub", loc: "Park Street", price: 149, type: "indoor", cap: 4, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80", times: "" },
                         { sport: "Carrom", name: "Strikers Den", loc: "Jadavpur", price: 49, type: "indoor", cap: 4, status: "Pending", map: "", img: "https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80", times: "" }
                     ];
-                    pendingVenues.forEach(function(p) { if(!window.venues.find(function(v){ return v.name === p.name; })) window.venues.push(p); });
+                    pendingVenues.forEach(p => { if(!window.venues.find(v => v.name === p.name)) window.venues.push(p); });
                     
                     localStorage.setItem('squadupUser', JSON.stringify(currentUser));
                     
                     closeAuth();
                     updateUILoggedIn();
                     
-                    setTimeout(function() { 
-                        var vs = document.getElementById('venues-section');
+                    setTimeout(() => { 
+                        const vs = document.getElementById('venues-section');
                         if(vs) vs.scrollIntoView({behavior: 'smooth'}); 
                     }, 500);
 
@@ -1260,14 +1279,14 @@
         }
 
         async function handleRegister() {
-            var btn = document.getElementById('reg-btn'); btn.innerText = "Creating Account..."; btn.classList.add('opacity-50');
-            var phoneVal = document.getElementById('reg-phone').value;
+            const btn = document.getElementById('reg-btn'); btn.innerText = "Creating Account..."; btn.classList.add('opacity-50');
+            const phoneVal = document.getElementById('reg-phone').value;
             if(phoneVal.length !== 10 || isNaN(phoneVal)) { alert("Phone number must be exactly 10 digits."); btn.innerText = "Sign Up"; btn.classList.remove('opacity-50'); return; }
             
-            var data = { action: 'register', name: document.getElementById('reg-name').value, phone: phoneVal, email: document.getElementById('reg-email').value, password: document.getElementById('reg-pass').value, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value };
+            const data = { action: 'register', name: document.getElementById('reg-name').value, phone: phoneVal, email: document.getElementById('reg-email').value, password: document.getElementById('reg-pass').value, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value };
             
             try {
-                var res = await fetchJSONP(data);
+                const res = await fetchJSONP(data);
                 if(res && res.status === 'success') { 
                     alert("Account Created! Please Login."); 
                     toggleAuth('login'); 
@@ -1285,7 +1304,7 @@
         function filterVenues(sport, btnElement) {
             currentFilter = sport;
             if(btnElement) {
-                document.querySelectorAll('.filter-pill').forEach(function(b) {
+                document.querySelectorAll('.filter-pill').forEach(b => {
                     b.classList.remove('bg-white', 'text-black', 'border-white');
                     b.classList.add('bg-transparent', 'text-[#a1a1aa]', 'border-white/10');
                 });
@@ -1293,7 +1312,7 @@
                 btnElement.classList.add('bg-white', 'text-black', 'border-white');
             }
             
-            var cont = document.getElementById('venue-grid'); 
+            const cont = document.getElementById('venue-grid'); 
             if(!cont) return;
             cont.innerHTML = '';
             
@@ -1305,22 +1324,22 @@
                         <p class="text-gray-500 font-medium mb-8 max-w-md text-center">Please login to view available arenas and book slots.</p>
                         <button onclick="openAuth()" class="btn-luxe px-10 py-4 text-sm relative z-10">Login Now</button>
                     </div>`;
-                document.querySelectorAll('#venue-grid .reveal').forEach(function(el){ observer.observe(el); });
+                document.querySelectorAll('#venue-grid .reveal').forEach(el => observer.observe(el));
                 return;
             }
 
-            var filtered = window.venues;
-            if(sport !== 'All') filtered = window.venues.filter(function(v){ return v.sport === sport; });
+            let filtered = window.venues;
+            if(sport !== 'All') filtered = window.venues.filter(v => v.sport === sport);
             
             if(filtered.length === 0) { cont.innerHTML = `<div class="col-span-full text-center py-20"><p class="text-gray-600 font-bold font-display uppercase tracking-widest text-sm">No arenas found for ${sport}.</p></div>`; return; }
 
-            filtered.forEach(function(v, index) {
-                var isP = v.status === "Pending";
-                var distDisplay = v.distance ? `<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] px-2 py-0.5 rounded-md font-bold ml-2 whitespace-nowrap tracking-wide font-display">${v.distance} km</span>` : '';
+            filtered.forEach((v, index) => {
+                const isP = v.status === "Pending";
+                const distDisplay = v.distance ? `<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] px-2 py-0.5 rounded-md font-bold ml-2 whitespace-nowrap tracking-wide font-display">${v.distance} km</span>` : '';
                 
-                var safeName = v.name.replace(/'/g, "\\'");
+                const safeName = v.name.replace(/'/g, "\\'");
                 
-                var safeImg = v.img;
+                let safeImg = v.img;
                 if(safeImg && (safeImg.includes('1518609878373') || safeImg.includes('unsplash.com'))) {
                     if(v.sport.toLowerCase() === 'football') safeImg = 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80';
                     else if(v.sport.toLowerCase() === 'cricket') safeImg = 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80';
@@ -1328,11 +1347,11 @@
                     else safeImg = 'https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80'; 
                 }
 
-                var visual = '';
+                let visual = '';
                 if (safeImg && safeImg.startsWith('http')) {
                     visual = `<img src="${safeImg}" class="absolute inset-0 w-full h-full object-cover ${isP ? 'grayscale opacity-30' : ''}">`;
                 } else {
-                    var fallbackEmoji = '🏟️';
+                    let fallbackEmoji = '🏟️';
                     if(v.sport === 'Football') fallbackEmoji = '⚽';
                     if(v.sport === 'Cricket') fallbackEmoji = '🏏';
                     if(v.sport === 'Chess') fallbackEmoji = '♟️';
@@ -1340,11 +1359,11 @@
                     visual = `<div class="absolute inset-0 w-full h-full flex items-center justify-center text-6xl bg-[#0f172a] ${isP ? 'opacity-30' : ''}">${fallbackEmoji}</div>`;
                 }
                 
-                var btn = isP 
+                const btn = isP 
                     ? `<button class="bg-white/5 text-gray-500 px-6 py-4 rounded-xl text-xs font-bold cursor-not-allowed w-full font-display uppercase tracking-widest relative z-10">Coming Soon</button>` 
                     : `<button onclick="openBooking('${safeName}')" class="btn-luxe px-6 py-4 rounded-xl text-xs font-black w-full font-display uppercase tracking-widest transition relative z-10">Book Arena</button>`;
 
-                var delay = index * 50;
+                const delay = index * 50;
 
                 cont.innerHTML += `
                 <div class="card-luxe relative flex flex-col h-full reveal group" style="transition-delay: ${delay}ms">
@@ -1373,13 +1392,13 @@
                 </div>`;
             });
             
-            document.querySelectorAll('#venue-grid .reveal').forEach(function(el){ observer.observe(el); });
+            document.querySelectorAll('#venue-grid .reveal').forEach(el => observer.observe(el));
         }
 
         function renderRankings() {
-            var uName = currentUser ? (currentUser.name || 'Player') : "Player";
-            var uSkill = currentUser && currentUser.skill ? currentUser.skill : "Intermediate";
-            var list = document.getElementById('rank-list');
+            const uName = currentUser ? (currentUser.name || 'Player') : "Player";
+            const uSkill = currentUser && currentUser.skill ? currentUser.skill : "Intermediate";
+            const list = document.getElementById('rank-list');
             if(!list) return;
 
             list.innerHTML = `
@@ -1420,22 +1439,22 @@
         }
 
         function openBooking(name) {
-            activeVenue = window.venues.find(function(v){ return v.name === name; }); 
+            activeVenue = window.venues.find(v => v.name === name); 
             document.getElementById('book-venue-name').innerText = activeVenue.name; 
             document.getElementById('book-venue-sport').innerText = activeVenue.sport;
             
-            var countInput = document.getElementById('book-count');
+            const countInput = document.getElementById('book-count');
             countInput.max = activeVenue.cap;
             countInput.value = 1;
             
             initDatePicker();
             populateTimeSlots();
 
-            var overlay = document.getElementById('modal-backdrop');
-            var sheet = document.getElementById('booking-sheet');
+            const overlay = document.getElementById('modal-backdrop');
+            const sheet = document.getElementById('booking-sheet');
             
             overlay.classList.remove('hidden');
-            setTimeout(function() { 
+            setTimeout(() => { 
                 overlay.classList.add('open');
                 sheet.classList.add('open');
             }, 10);
@@ -1444,24 +1463,24 @@
         }
 
         function closeSheet() {
-            var overlay = document.getElementById('modal-backdrop');
-            var sheet = document.getElementById('booking-sheet');
+            const overlay = document.getElementById('modal-backdrop');
+            const sheet = document.getElementById('booking-sheet');
             
             overlay.classList.remove('open');
             sheet.classList.remove('open');
             
-            setTimeout(function() { overlay.classList.add('hidden'); }, 500);
+            setTimeout(() => { overlay.classList.add('hidden'); }, 500);
         }
 
         function adjCount(change) {
-            var el = document.getElementById('book-count');
-            var val = parseInt(el.value) + change;
+            const el = document.getElementById('book-count');
+            let val = parseInt(el.value) + change;
             if(val >= 1 && val <= parseInt(el.max)) { el.value = val; updatePrice(); }
         }
 
         function toggleWarning() {
-            var payType = document.getElementById('book-pay').value;
-            var warning = document.getElementById('liquidation-warning');
+            const payType = document.getElementById('book-pay').value;
+            const warning = document.getElementById('liquidation-warning');
             
             if(payType === 'Token') {
                 warning.innerHTML = "⚠️ <span class=\"font-bold text-orange-500\">Notice:</span> Pay 20% now to hold slot. Pay remaining balance at the venue.";
@@ -1477,10 +1496,10 @@
 
         function checkAvailability() {
             if(!activeVenue) return;
-            var rawDate = document.getElementById('book-date').value;
-            var timeSelect = document.getElementById('book-time');
-            var statusEl = document.getElementById('slot-status');
-            var btn = document.getElementById('main-deploy-btn');
+            const rawDate = document.getElementById('book-date').value;
+            const timeSelect = document.getElementById('book-time');
+            const statusEl = document.getElementById('slot-status');
+            const btn = document.getElementById('main-deploy-btn');
 
             if(!rawDate || !timeSelect.value || timeSelect.value === "") {
                 statusEl.innerText = "NO SLOTS AVAILABLE";
@@ -1494,19 +1513,19 @@
                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
             
-            var fDate = rawDate.split("-").reverse().join("-");
-            var selTime = timeSelect.value;
-            var targetDetail = `${activeVenue.sport} | ${fDate} | ${selTime}`;
+            const fDate = rawDate.split("-").reverse().join("-");
+            const selTime = timeSelect.value;
+            const targetDetail = `${activeVenue.sport} | ${fDate} | ${selTime}`;
 
-            var bookedSlots = 0;
-            window.activeBookings.forEach(function(b) {
+            let bookedSlots = 0;
+            window.activeBookings.forEach(b => {
                 if(b.venue === activeVenue.name && b.details === targetDetail && b.method !== 'Standby Waitlist') {
-                    var slots = parseInt(b.slots) || Math.round(parseInt(b.amount) / activeVenue.price);
+                    let slots = parseInt(b.slots) || Math.round(parseInt(b.amount) / activeVenue.price);
                     bookedSlots += (isNaN(slots) ? 0 : slots);
                 }
             });
 
-            var remaining = activeVenue.cap - bookedSlots;
+            let remaining = activeVenue.cap - bookedSlots;
             if(remaining < 0) remaining = 0;
 
             if(remaining === 0) {
@@ -1517,11 +1536,11 @@
                 statusEl.innerText = `${remaining} SLOTS AVAILABLE`; statusEl.className = "text-base font-black text-white font-display pointer-events-none";
             }
             
-            var countInput = document.getElementById('book-count');
+            const countInput = document.getElementById('book-count');
             countInput.max = remaining;
             if(remaining > 0 && parseInt(countInput.value) > remaining) countInput.value = remaining;
             
-            var paySelect = document.getElementById('book-pay');
+            const paySelect = document.getElementById('book-pay');
             if(remaining === 0) {
                 countInput.value = 0;
                 paySelect.innerHTML = `<option value="Waitlist">Join Standby Queue (₹0)</option>`;
@@ -1532,41 +1551,41 @@
         }
 
         function updatePrice() { 
-            var count = parseInt(document.getElementById('book-count').value) || 0;
-            var slotRate = activeVenue.price; 
-            var total = count * slotRate;
+            const count = parseInt(document.getElementById('book-count').value) || 0;
+            const slotRate = activeVenue.price; 
+            const total = count * slotRate;
             
             document.getElementById('total-price').innerText = `₹${total}`; 
             
-            var paySelect = document.getElementById('book-pay');
-            var maxRemaining = parseInt(document.getElementById('book-count').max) || 0;
+            const paySelect = document.getElementById('book-pay');
+            const maxRemaining = parseInt(document.getElementById('book-count').max) || 0;
 
             if (maxRemaining === 0) {
                 paySelect.innerHTML = `<option value="Waitlist">Join Standby Queue (₹0)</option>`;
             } else if (count >= 6) {
                 paySelect.innerHTML = `<option value="Razorpay">Pay Full Amount (100%)</option><option value="Waitlist">Join Standby Queue</option>`;
             } else {
-                var tokenText = count >= 3 ? "Pay 50% Advance" : "Pay 20% Advance";
+                let tokenText = count >= 3 ? "Pay 50% Advance" : "Pay 20% Advance";
                 paySelect.innerHTML = `<option value="Token">${tokenText}</option><option value="Razorpay">Pay Full Amount (100%)</option><option value="Waitlist">Join Standby Queue</option>`;
             }
             toggleWarning();
         }
         
         async function processBooking() {
-            var rawDate = document.getElementById('book-date').value;
-            var total = parseInt(document.getElementById('total-price').innerText.replace('₹', '')) || 0;
-            var payType = document.getElementById('book-pay').value;
-            var count = parseInt(document.getElementById('book-count').value) || 0;
-            var btn = document.getElementById('main-deploy-btn');
-            var timeSlot = document.getElementById('book-time').value;
+            const rawDate = document.getElementById('book-date').value;
+            const total = parseInt(document.getElementById('total-price').innerText.replace('₹', '')) || 0;
+            const payType = document.getElementById('book-pay').value;
+            const count = parseInt(document.getElementById('book-count').value) || 0;
+            const btn = document.getElementById('main-deploy-btn');
+            const timeSlot = document.getElementById('book-time').value;
 
             if (count === 0 && payType !== 'Waitlist') return alert("Please select at least 1 player.");
             if (!timeSlot || timeSlot === "") return alert("Please select a time slot.");
 
             if (payType === 'Waitlist') {
                 btn.innerText = "Please wait..."; btn.classList.add('opacity-50');
-                var fDate = rawDate.split("-").reverse().join("-"); 
-                var data = { action: 'book', name: currentUser?.name || "Player", phone: currentUser?.phone || "", skill: currentUser?.skill || "", game: activeVenue.sport, playDate: fDate, timeSlot: timeSlot, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0, slots: 0 };
+                const fDate = rawDate.split("-").reverse().join("-"); 
+                const data = { action: 'book', name: currentUser?.name || "Player", phone: currentUser?.phone || "", skill: currentUser?.skill || "", game: activeVenue.sport, playDate: fDate, timeSlot: timeSlot, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0, slots: 0 };
                 
                 try {
                     await fetchJSONP(data);
@@ -1580,17 +1599,17 @@
                 return;
             }
 
-            var tokenPct = 0.20;
+            let tokenPct = 0.20;
             if(count >= 3 && count <= 5) tokenPct = 0.50;
             if(count >= 6) tokenPct = 1.00; 
-            var finalAmount = payType === 'Token' && tokenPct < 1.00 ? Math.ceil(total * tokenPct) : total;
+            let finalAmount = payType === 'Token' && tokenPct < 1.00 ? Math.ceil(total * tokenPct) : total;
 
             try {
                 btn.innerText = "Processing Payment..."; btn.classList.add('opacity-50', 'cursor-wait');
-                var orderRes = await fetchJSONP({ action:'createOrder', amount: finalAmount });
-                var fDate = rawDate.split("-").reverse().join("-");
+                const orderRes = await fetchJSONP({ action:'createOrder', amount: finalAmount });
+                const fDate = rawDate.split("-").reverse().join("-");
 
-                var options = {
+                const options = {
                     "key": "rzp_live_XXXXXXXXXXXX", // REPLACE WITH YOUR LIVE RAZORPAY KEY
                     "amount": orderRes.order.amount,
                     "currency": "INR",
@@ -1599,10 +1618,10 @@
                     "order_id": orderRes.order.id,
                     "prefill": { "contact": currentUser?.phone || "", "name": currentUser?.name || "" },
                     "theme": { "color": "#06b6d4" }, 
-                    "handler": async function(res) {
+                    "handler": async (res) => {
                         btn.innerText = "Verifying Payment...";
                         try {
-                            var verify = await fetchJSONP({
+                            const verify = await fetchJSONP({
                                 action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature,
                                 venue: activeVenue.name, game: activeVenue.sport, slots: count,
                                 playDate: fDate, timeSlot: timeSlot,
@@ -1618,7 +1637,7 @@
                     }
                 };
                 
-                var rzp = new Razorpay(options);
+                const rzp = new Razorpay(options);
                 rzp.on('payment.failed', function (response){ alert("Payment Failed."); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); });
                 rzp.open();
             } catch(e) {
@@ -1628,18 +1647,18 @@
         }
 
         function populateAdminSelect() {
-            var select = document.getElementById('admin-venue-select'); select.innerHTML = '';
-            window.venues.forEach(function(v) { select.innerHTML += `<option value="${v.name}">${v.sport} - ${v.name}</option>`; });
+            const select = document.getElementById('admin-venue-select'); select.innerHTML = '';
+            window.venues.forEach(v => { select.innerHTML += `<option value="${v.name}">${v.sport} - ${v.name}</option>`; });
             loadAdminVenueData();
         }
         function loadAdminVenueData() {
-            var v = window.venues.find(function(ven) { return ven.name === document.getElementById('admin-venue-select').value; });
+            const v = window.venues.find(ven => ven.name === document.getElementById('admin-venue-select').value);
             if(v) { document.getElementById('admin-cap').value = v.cap; document.getElementById('admin-times').value = v.times; }
         }
         async function updateVenue() {
-            var btn = document.getElementById('admin-btn'); btn.innerText = "Saving...";
+            const btn = document.getElementById('admin-btn'); btn.innerText = "Saving...";
             try {
-                var res = await fetchJSONP({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
+                const res = await fetchJSONP({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
                 alert(res?.msg || "Venue Updated"); 
                 if(res && res.status==='success') { loadAdminVenueData(); }
             } catch(e) {
@@ -1649,14 +1668,14 @@
             }
         }
         async function deployNewVenue() {
-            var btn = document.getElementById('add-venue-btn'); btn.innerText = "Publishing...";
-            var data = {
+            const btn = document.getElementById('add-venue-btn'); btn.innerText = "Publishing...";
+            const data = {
                 action: 'addVenue', vSport: document.getElementById('new-v-sport').value, vName: document.getElementById('new-v-name').value,
                 vLoc: document.getElementById('new-v-loc').value, vPrice: document.getElementById('new-v-price').value,
                 vType: document.getElementById('new-v-type').value, vStatus: document.getElementById('new-v-status').value, vImg: document.getElementById('new-v-img').value
             };
             try {
-                var res = await fetchJSONP(data);
+                const res = await fetchJSONP(data);
                 alert(res?.msg || "Venue Added"); 
             } catch(e) {
                 alert("Error: " + e.message);
