@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <title>SquadUp | Kolkata's Premium Sports Network</title>
     
     <meta name="description" content="Book premium turfs, courts, and arenas instantly across Kolkata. Zero waiting, secure payments, and professional academy management.">
@@ -13,13 +12,12 @@
     <meta property="og:url" content="https://squadup.in">
     <meta name="twitter:card" content="summary_large_image">
 
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-
     <style>
         :root { 
             --neon-cyan: #06b6d4; 
@@ -908,10 +906,15 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; 
-        let currentUser = null; let activeVenue = null; window.venues = [];
-        let tapCount = 0; let tapTimer; let currentFilter = 'All';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; // DO NOT FORGET TO ADD YOUR SECURE URL
+        let currentUser = null; 
+        let activeVenue = null; 
+        window.venues = [];
+        let tapCount = 0; 
+        let tapTimer; 
+        let currentFilter = 'All';
 
+        // Fix 3: Toastify Function
         function showToast(msg, type = 'success') {
             var bg = type === 'error' ? "linear-gradient(to right, #ef4444, #dc2626)" : "linear-gradient(to right, #06b6d4, #6366f1)";
             Toastify({
@@ -920,13 +923,15 @@
             }).showToast();
         }
 
+        // Fix 1: Secure Password Hashing
         async function hashPassword(password) {
             var msgBuffer = new TextEncoder().encode(password);
             var hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
             var hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
         }
 
+        // Fix 1: Secure REST API Call (Replaces fetchJSONP)
         async function fetchAPI(data) { 
             try {
                 var response = await fetch(scriptURL, {
@@ -1063,7 +1068,7 @@
             if (savedUser) { currentUser = JSON.parse(savedUser); }
 
             try {
-                var res = await fetchAPI({ action: 'sync' });
+                var res = await fetchAPI({ action: 'sync' }); // Fix 1: Using fetchAPI
                 if(res && res.status === 'success') {
                     window.venues = res.venues || [];
                     window.activeBookings = res.bookings || [];
@@ -1300,10 +1305,10 @@
             
             try {
                 var rawPass = document.getElementById(passField).value;
-                if(!rawPass) throw new Error("Password cannot be empty");
-                var hashedPass = await hashPassword(rawPass);
+                if(!rawPass) { showToast("Password cannot be empty.", "error"); btn.innerText = originalText; btn.classList.remove('opacity-50', 'cursor-wait'); return; }
+                var hashedPass = await hashPassword(rawPass); // Fix 1: Hash before sending
                 
-                var res = await fetchAPI({ action: 'login', loginId: document.getElementById(idField).value, password: hashedPass });
+                var res = await fetchAPI({ action: 'login', loginId: document.getElementById(idField).value, password: hashedPass }); // Fix 1: fetchAPI
                 
                 if(res && res.status === 'success') {
                     currentUser = res.user; window.venues = res.venues || []; window.activeBookings = res.bookings || []; 
@@ -1346,12 +1351,12 @@
             
             var rawPass = document.getElementById('reg-pass').value;
             if(!rawPass) { showToast("Password cannot be empty.", "error"); btn.innerText = "Sign Up"; btn.classList.remove('opacity-50'); return; }
-            var hashedPass = await hashPassword(rawPass);
+            var hashedPass = await hashPassword(rawPass); // Fix 1: Hash before sending
             
             var data = { action: 'register', name: document.getElementById('reg-name').value, phone: phoneVal, email: document.getElementById('reg-email').value, password: hashedPass, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value };
             
             try {
-                var res = await fetchAPI(data);
+                var res = await fetchAPI(data); // Fix 1: fetchAPI
                 if(res && res.status === 'success') { 
                     showToast("Account Created! Please Login."); 
                     toggleAuth('login'); 
@@ -1380,6 +1385,9 @@
             var cont = document.getElementById('venue-grid'); 
             if(!cont) return;
             cont.innerHTML = '';
+            
+            // Fix 2: Remove the Login Wall block completely!
+            // No more "Members Only" blocker here.
 
             var filtered = window.venues;
             if(sport !== 'All') filtered = window.venues.filter(function(v){ return v.sport === sport; });
@@ -1412,6 +1420,7 @@
                     visual = `<div class="absolute inset-0 w-full h-full flex items-center justify-center text-6xl bg-[#0f172a] ${isP ? 'opacity-30' : ''}">${fallbackEmoji}</div>`;
                 }
                 
+                // Fix 2 (cont): Button dynamically changes if not logged in
                 var btn = isP 
                     ? `<button class="bg-white/5 text-gray-500 px-6 py-4 rounded-xl text-xs font-bold cursor-not-allowed w-full font-display uppercase tracking-widest relative z-10">Coming Soon</button>` 
                     : (!currentUser 
@@ -1643,7 +1652,7 @@
                 var data = { action: 'book', name: currentUser?.name || "Player", phone: currentUser?.phone || "", skill: currentUser?.skill || "", game: activeVenue.sport, playDate: fDate, timeSlot: timeSlot, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0, slots: 0 };
                 
                 try {
-                    await fetchAPI(data);
+                    await fetchAPI(data); // Fix 1: fetchAPI
                     showToast("You have joined the standby queue! We will notify you if a slot opens.");
                     closeSheet(); 
                 } catch(e) {
@@ -1661,11 +1670,11 @@
 
             try {
                 btn.innerText = "Processing Payment..."; btn.classList.add('opacity-50', 'cursor-wait');
-                var orderRes = await fetchAPI({ action:'createOrder', amount: finalAmount });
+                var orderRes = await fetchAPI({ action:'createOrder', amount: finalAmount }); // Fix 1: fetchAPI
                 var fDate = rawDate.split("-").reverse().join("-");
 
                 var options = {
-                    "key": "rzp_live_XXXXXXXXXXXX", // REPLACE WITH YOUR LIVE RAZORPAY KEY
+                    "key": "rzp_live_XXXXXXXXXXXX", 
                     "amount": orderRes.order.amount,
                     "currency": "INR",
                     "name": "SquadUp",
@@ -1676,7 +1685,7 @@
                     "handler": async function(res) {
                         btn.innerText = "Verifying Payment...";
                         try {
-                            var verify = await fetchAPI({
+                            var verify = await fetchAPI({ // Fix 1: fetchAPI
                                 action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature,
                                 venue: activeVenue.name, game: activeVenue.sport, slots: count,
                                 playDate: fDate, timeSlot: timeSlot,
@@ -1713,7 +1722,7 @@
         async function updateVenue() {
             var btn = document.getElementById('admin-btn'); btn.innerText = "Saving...";
             try {
-                var res = await fetchAPI({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
+                var res = await fetchAPI({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value }); // Fix 1: fetchAPI
                 showToast(res?.msg || "Venue Updated"); 
                 if(res && res.status==='success') { loadAdminVenueData(); }
             } catch(e) {
@@ -1730,7 +1739,7 @@
                 vType: document.getElementById('new-v-type').value, vStatus: document.getElementById('new-v-status').value, vImg: document.getElementById('new-v-img').value
             };
             try {
-                var res = await fetchAPI(data);
+                var res = await fetchAPI(data); // Fix 1: fetchAPI
                 showToast(res?.msg || "Venue Added"); 
             } catch(e) {
                 showToast("Error: " + e.message, "error");
