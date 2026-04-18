@@ -35,7 +35,6 @@
         .delay-1 { animation-delay: 0.2s; } .delay-2 { animation-delay: 0.6s; } .delay-3 { animation-delay: 1.0s; } .delay-4 { animation-delay: 1.4s; }
         @keyframes popUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* ANIMATION ENGINE CLASSES */
         .reveal { opacity: 0; transform: translateY(60px) scale(0.98); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
         .reveal-left { opacity: 0; transform: translateX(-60px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
@@ -77,12 +76,6 @@
         
         .tracking-premium { letter-spacing: -0.05em; }
         .luxe-shadow { filter: drop-shadow(0 0 10px var(--neon-cyan-glow)); }
-
-        .map-layer { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity 0.8s ease; display: flex; align-items: center; justify-content: center; }
-        .state-kolkata #kolkata-view { opacity: 1; z-index: 20; pointer-events: auto; }
-        .state-kolkata #india-view { opacity: 0; z-index: 10; pointer-events: none; }
-        .state-india #kolkata-view { opacity: 0; z-index: 10; pointer-events: none; }
-        .state-india #india-view { opacity: 1; z-index: 20; pointer-events: auto; }
 
         @keyframes pulse-dark { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
         .animate-skeleton { animation: pulse-dark 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
@@ -220,7 +213,7 @@
                 
                 <div class="flex items-center gap-6 md:gap-10">
                     <nav class="hidden md:flex gap-10 items-center">
-                        <button onclick="switchTab('feed'); document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-8 py-3 text-sm font-bold uppercase tracking-widest">Book Your Slot</button>
+                        <button onclick="switchTab('feed'); document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-8 py-3 text-sm font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(6,182,212,0.4)]">Book Your Slot</button>
                         <button id="nav-btn-admin-desktop" onclick="switchTab('admin')" class="hidden text-sm font-bold text-red-500 hover:text-red-400 transition tracking-wide uppercase">Admin Panel</button>
                     </nav>
 
@@ -239,6 +232,9 @@
         <div id="view-home" class="block">
             <div id="marketing-sections">
                 <section class="relative w-full h-[85vh] flex items-center overflow-hidden">
+                    <div class="absolute inset-0 bg-slate-900 z-0">
+                        <img src="https://images.unsplash.com/photo-1518610543666-419b4891157c?auto=format&fit=crop&w=1920&q=80" alt="Stadium" class="w-full h-full object-cover opacity-30">
+                    </div>
                     <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-80 pointer-events-none">
                         <source src="https://assets.mixkit.co/videos/preview/mixkit-playing-football-on-a-dark-field-41154-large.mp4" type="video/mp4">
                     </video>
@@ -479,6 +475,7 @@
     </div> 
 
     <footer class="bg-slate-950/80 border-t border-white/5 pt-20 pb-10 mt-auto relative z-20">
+        <div class="absolute inset-0 opacity-[0.01] pointer-events-none" style="background-image: var(--glass-pattern)"></div>
         <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
                 <div class="md:col-span-2 pr-10">
@@ -587,20 +584,31 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        // --- ANIMATION ENGINE RESTORED ---
-        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
+        // --- BLANK SCREEN PREVENTER (Forces visibility if JS fails) ---
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
+                    el.classList.add('active'); 
+                });
+            }, 3000);
+        });
+
+        // --- ANIMATION ENGINE ---
+        var observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        var observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                     observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
-        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => { observer.observe(el); });
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) { observer.observe(el); });
         // ---------------------------------
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; // DO NOT FORGET TO ADD YOUR URL
+        // 🛑 REPLACE THIS WITH YOUR NEW GOOGLE SCRIPT URL 🛑
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; 
+        
         let currentUser = null; let activeVenue = null; window.venues = [];
         let currentFilter = 'All'; let authShownOnce = false;
 
@@ -620,17 +628,21 @@
         function closeMenu() { document.getElementById('side-menu-overlay').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('side-menu').classList.add('translate-x-full'); }
 
         function switchTab(tabId) {
-            const views = ['view-home', 'venues-section', 'view-rank', 'view-admin', 'view-blog-hub', 'view-blog-detail', 'view-academy', 'view-partner', 'view-news', 'view-careers'];
-            views.forEach(v => { if(document.getElementById(v)) document.getElementById(v).classList.add('hidden'); });
+            const views = ['view-home', 'view-academy', 'view-blog-hub', 'view-blog-detail', 'view-admin', 'view-partner', 'view-news', 'view-careers'];
+            views.forEach(v => { const el = document.getElementById(v); if(el) el.classList.add('hidden'); });
+            
             const grid = document.getElementById('venue-grid'); const filters = document.getElementById('sport-filters');
-            if(grid) grid.classList.add('hidden'); if(filters) filters.classList.add('hidden');
-
+            
             if(tabId === 'feed') {
                 document.getElementById('view-home').classList.remove('hidden'); document.getElementById('venues-section').classList.remove('hidden'); 
-                grid.classList.remove('hidden'); filters.classList.remove('hidden');
+                if(grid) grid.classList.remove('hidden'); if(filters) filters.classList.remove('hidden');
             } else if (tabId === 'admin') {
                 document.getElementById('venues-section').classList.remove('hidden'); document.getElementById('view-admin').classList.remove('hidden');
-            } else { document.getElementById('view-' + tabId).classList.remove('hidden'); }
+            } else {
+                const vs = document.getElementById('venues-section'); if(vs) vs.classList.add('hidden'); 
+                const el = document.getElementById('view-' + tabId); if(el) el.classList.remove('hidden');
+            }
+            window.scrollTo(0,0);
             
             // Re-trigger animations for new tabs
             document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => { el.classList.remove('active'); observer.observe(el); });
@@ -650,6 +662,7 @@
             const savedUser = sessionStorage.getItem('squadupUser');
             if (savedUser) { currentUser = JSON.parse(savedUser); }
 
+            // INJECT SKELETON LOADERS
             const cont = document.getElementById('venue-grid'); 
             if(cont) {
                 cont.innerHTML = '';
@@ -660,20 +673,20 @@
 
             try {
                 const res = await fetchAPI({ action: 'sync' });
+                
+                // DATA RECEIVED: REMOVE PRELOADER INSTANTLY
                 const loader = document.getElementById('preloader');
                 if (loader) {
                     loader.style.opacity = '0';
                     setTimeout(() => loader.remove(), 500); 
+                    
                     setTimeout(() => { if(!authShownOnce && !currentUser) { openAuth(); authShownOnce = true; } }, 1000);
                 }
+
                 if(res && res.status === 'success') { window.venues = res.venues || []; window.activeBookings = res.bookings || []; }
             } catch(e) { console.log("Database connection pending.", e); }
 
             if (currentUser) { updateUILoggedIn(); } else { filterVenues('All', document.querySelector('.filter-pill')); }
-            
-            // Map Fix: Ensure the iframe is loaded with a valid URL so 404 is gone
-            const mapIframe = document.querySelector('#kolkata-view iframe');
-            if(mapIframe) mapIframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117925.35231278278!2d88.26495089307466!3d22.535406374526744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f882db4908f667%3A0x43e330e68f6c2cbc!2sKolkata%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1713511100000!5m2!1sen!2sin";
         });
 
         function toggleAuth(type) { 
@@ -787,7 +800,7 @@
                   : `<button onclick="openBooking(${index})" class="btn-luxe px-6 py-4 rounded-xl text-xs font-black w-full uppercase transition">Book Arena</button>`);
 
                 cont.innerHTML += `
-                <div class="card-luxe relative flex flex-col h-full group reveal">
+                <div class="card-luxe relative flex flex-col h-full group reveal active">
                     ${isP ? '<div class="absolute top-5 left-5 bg-gray-800 text-white text-[9px] px-3 py-1.5 rounded shadow-lg font-bold uppercase z-20 pointer-events-none">Coming Soon</div>' : ''}
                     <div class="relative w-full h-56 flex-shrink-0 bg-slate-900 pointer-events-none overflow-hidden rounded-t-2xl border-b border-white/5">${visual}</div>
                     <div class="p-7 flex flex-col flex-grow relative z-10">
@@ -799,8 +812,6 @@
                     </div>
                 </div>`;
             });
-            // Attach observer to newly rendered cards
-            document.querySelectorAll('#venue-grid .reveal').forEach(el => observer.observe(el));
         }
 
         async function fetchAPI(data) { 
