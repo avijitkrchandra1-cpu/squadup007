@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>SquadUp | Kolkata's Premium Sports Network</title>
+    <meta name="description" content="Book premium turfs, courts, and arenas instantly across Kolkata. Zero waiting, secure payments, and professional academy management.">
+    <meta property="og:title" content="SquadUp | Kolkata's Premium Sports Network">
+    <meta property="og:description" content="Kolkata's definitive sports venue network. Secure, instant, elite.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:url" content="https://squadup.in">
+    <meta name="twitter:card" content="summary_large_image">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
     <style>
         :root { 
             --neon-cyan: #06b6d4; 
@@ -19,7 +30,6 @@
         }
         body { font-family: 'Outfit', sans-serif; background-color: var(--onyx); color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
-        /* Theatrical Preloader */
         #preloader { position: fixed; inset: 0; background: var(--onyx); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
         .seq-word { opacity: 0; transform: translateY(20px); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.05em; animation: popUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @media (min-width: 768px) { .seq-word { font-size: 4.5rem; } }
@@ -27,7 +37,6 @@
         .delay-1 { animation-delay: 0.2s; } .delay-2 { animation-delay: 0.6s; } .delay-3 { animation-delay: 1.0s; } .delay-4 { animation-delay: 1.4s; }
         @keyframes popUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* Custom Animations */
         .reveal { opacity: 0; transform: translateY(60px) scale(0.98); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
         .reveal-left { opacity: 0; transform: translateX(-60px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
@@ -35,11 +44,9 @@
         .reveal-right { opacity: 0; transform: translateX(60px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal-right.active { opacity: 1; transform: translateX(0); }
 
-        /* Premium Navigation */
         .glass-nav { background: rgba(2, 6, 23, 0.5); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.5s; }
         .glass-nav.scrolled { background: rgba(2, 6, 23, 0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.7); }
         
-        /* Luxe UI Elements */
         .btn-luxe { position: relative; overflow: hidden; background: linear-gradient(135deg, var(--neon-cyan), var(--electric-indigo)); color: white; font-weight: 800; border-radius: 0.75rem; transition: all 0.4s; box-shadow: 0 0 20px var(--neon-cyan-glow); }
         .btn-luxe::before { content:''; position: absolute; top:-50%; left:-50%; width:200%; height:200%; background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%); transform: scale(0); transition: transform 0.6s ease-out; opacity:0; pointer-events: none; }
         .btn-luxe:hover::before { transform: scale(1); opacity:1; }
@@ -48,48 +55,38 @@
         .input-luxe { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); color: white; border-radius: 0.75rem; padding: 1rem; width: 100%; outline: none; transition: 0.3s; }
         .input-luxe:focus { border-color: var(--neon-cyan); background: rgba(255,255,255,0.05); box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.1); }
         
-        /* THE INVISIBLE SHIELD FIX */
         .card-luxe { background: var(--surface-glass); border: 1px solid rgba(255,255,255,0.04); border-radius: 1.5rem; transition: all 0.5s cubic-bezier(0.5, 0, 0, 1); position: relative; overflow: hidden; background-image: var(--glass-pattern); display: flex; flex-direction: column; }
         .card-luxe::after { content:''; position: absolute; inset:0; box-shadow: inset 0 0 0px var(--neon-cyan-glow); transition: all 0.5s; pointer-events: none; }
         .card-luxe:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(6, 182, 212, 0.2); box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
         .card-luxe:hover::after { box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.1); }
 
-        /* Phone Mockup */
         .mockup-frame { border: 14px solid #1e293b; border-radius: 3rem; overflow: hidden; box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 50px var(--neon-cyan-glow); position: relative; transition: transform 0.15s ease-out; transform-style: preserve-3d; }
         .mockup-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 45%; height: 28px; background: #1e293b; border-bottom-left-radius: 1.2rem; border-bottom-right-radius: 1.2rem; z-index: 20; }
         .mockup-inner { background-image: var(--glass-pattern); background-color: #0f172a; height: 100%; display: flex; flex-direction: column; padding: 1rem; padding-top: 3.5rem; }
 
-        /* Scrollbars */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--onyx); }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--electric-indigo); }
         .hide-scroll::-webkit-scrollbar { display: none; }
 
-        /* Overlays & Sheets */
         .hero-overlay { background: linear-gradient(110deg, var(--onyx) 15%, rgba(2,6,23,0.7) 60%, rgba(2,6,23,0.2) 100%); pointer-events: none; }
         .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(20px); }
         .modal-overlay.open { opacity: 1; pointer-events: auto; }
         
-        /* Pills & Badges */
         .filter-pill { padding: 0.6rem 1.5rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.01); color: #94a3b8; font-weight: 700; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: 0.3s; letter-spacing: 0.05em; }
         .filter-pill.active { background: white; color: var(--onyx); border-color: white; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
         
-        /* Premium Text Styles */
         .tracking-premium { letter-spacing: -0.05em; }
         .tracking-wide { letter-spacing: 0.1em; }
         .luxe-shadow { filter: drop-shadow(0 0 10px var(--neon-cyan-glow)); }
 
-        /* UNBREAKABLE MAP STATE CSS */
         .map-layer { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity 0.8s ease; display: flex; align-items: center; justify-content: center; }
-        
         .state-kolkata #kolkata-view { opacity: 1; z-index: 20; pointer-events: auto; }
         .state-kolkata #india-view { opacity: 0; z-index: 10; pointer-events: none; }
-        
         .state-india #kolkata-view { opacity: 0; z-index: 10; pointer-events: none; }
         .state-india #india-view { opacity: 1; z-index: 20; pointer-events: auto; }
 
-        /* BLOG TYPOGRAPHY */
         .blog-content p { color: #94a3b8; font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem; font-weight: 400; }
         .blog-content h2 { color: #f8fafc; font-size: 2.25rem; font-weight: 900; margin-top: 3.5rem; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
         .blog-content h3 { color: #e2e8f0; font-size: 1.5rem; font-weight: 800; margin-top: 2.5rem; margin-bottom: 1rem; }
@@ -443,10 +440,7 @@
                         </div>
                         
                         <div id="venue-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 reveal">
-                            <div class="col-span-full text-center py-24 text-slate-500 font-bold border-2 border-dashed border-white/10 rounded-3xl bg-slate-900/30">
-                                Please <span class="text-cyan-400 cursor-pointer underline hover:text-cyan-300 transition luxe-shadow relative z-10" onclick="openAuth()">Login</span> to access live arena availability.
                             </div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -830,42 +824,44 @@
         </div>
     </footer>
 
-    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[500] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm transition-opacity opacity-0" onclick="closeSheet()">
-        <div id="booking-sheet" class="w-full md:max-w-xl bg-[#0a0a0a] rounded-t-3xl md:rounded-3xl border border-white/10 p-8 transform translate-y-full transition-transform duration-500" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center mb-8">
-                <div>
-                    <h2 id="book-venue-name" class="text-3xl font-black text-white leading-none font-display">Arena Name</h2>
-                    <p id="book-venue-sport" class="text-cyan-400 text-xs font-bold uppercase tracking-widest mt-2">Football</p>
+    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[300] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeSheet()">
+        <div id="booking-sheet" class="w-full md:max-w-xl bg-[#0a0a0a] rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col border border-white/10 transform translate-y-full md:translate-y-0 md:scale-95 transition-transform duration-300 max-h-[90vh]" onclick="event.stopPropagation()">
+            
+            <div class="p-8 flex-shrink-0 border-b border-white/10 bg-[#121212] rounded-t-3xl md:rounded-t-3xl">
+                <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-4 md:hidden"></div>
+                <div class="flex justify-between items-center pr-2">
+                    <div>
+                        <h2 class="text-2xl font-black text-white tracking-tight pointer-events-none" id="book-venue-name">Arena Name</h2>
+                        <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1 pointer-events-none">Sport</p>
+                    </div>
+                    <button onclick="closeSheet()" class="w-8 h-8 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 transition hidden md:flex text-lg relative z-10">✕</button>
                 </div>
-                <button onclick="closeSheet()" class="text-gray-500 text-2xl">✕</button>
             </div>
             
-            <div class="space-y-6">
-                <div class="flex justify-between items-center bg-slate-900/50 p-5 rounded-2xl border border-white/5">
-                    <span class="font-bold text-gray-300">Total Players</span>
-                    <div class="flex items-center gap-5">
-                        <button onclick="adjCount(-1)" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center font-bold text-xl">-</button>
-                        <input type="number" id="book-count" value="1" class="w-8 bg-transparent text-center font-black text-2xl text-white outline-none" readonly>
-                        <button onclick="adjCount(1)" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center font-bold text-xl">+</button>
+            <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-6 relative z-10">
+                <div class="flex justify-between items-center bg-[#121212] p-4 rounded-2xl border border-white/5">
+                    <div>
+                        <label class="text-sm font-bold text-white block pointer-events-none">Number of Players</label>
+                        <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mt-1 font-display pointer-events-none">Limits apply per arena</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-[#050505] p-1.5 rounded-full border border-white/10 relative z-10">
+                        <button onclick="adjCount(-1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition relative z-10">-</button>
+                        <input type="number" id="book-count" min="1" max="10" value="1" class="w-8 bg-transparent text-center text-lg font-black text-white outline-none relative z-10" onchange="updatePrice()" readonly>
+                        <button onclick="adjCount(1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition relative z-10">+</button>
                     </div>
                 </div>
-
-                <div class="grid grid-cols-2 gap-4">
+                
+                <div class="grid grid-cols-2 gap-4 relative z-10">
                     <div>
-                        <label class="text-[10px] text-gray-500 uppercase font-black mb-2 block tracking-widest">Select Date</label>
-                        <input type="date" id="book-date" class="input-luxe py-3.5 text-sm" onchange="handleDateChange()">
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Date</label>
+                        <input type="date" id="book-date" class="input-luxe py-3 text-sm relative z-10" onchange="handleDateChange()">
                     </div>
                     <div>
-                        <label class="text-[10px] text-gray-500 uppercase font-black mb-2 block tracking-widest">Select Time</label>
-                        <select id="book-time" class="input-luxe py-3.5 text-sm" onchange="checkAvailability()">
-                            <option value="08:00 AM">08:00 AM</option>
-                            <option value="10:00 AM">10:00 AM</option>
-                            <option value="06:00 PM">06:00 PM</option>
-                            <option value="08:00 PM">08:00 PM</option>
-                        </select>
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Time</label>
+                        <select id="book-time" class="input-luxe py-3 text-sm relative z-10" onchange="checkAvailability()"></select>
                     </div>
                 </div>
-
+                
                 <div class="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-center justify-between pointer-events-none">
                     <span class="text-xs font-bold text-cyan-500 uppercase tracking-wide luxe-shadow">Availability</span>
                     <span id="slot-status" class="text-sm font-black text-white">Checking...</span>
@@ -879,20 +875,39 @@
                 <div id="liquidation-warning" class="hidden bg-orange-500/10 text-orange-400 text-[11px] font-medium p-4 rounded-xl border border-orange-500/20 leading-relaxed pointer-events-none"></div>
             </div>
 
-            <div class="pt-8 border-t border-white/5 flex justify-between items-center">
+            <div class="p-6 border-t border-white/10 bg-[#121212] md:rounded-b-3xl flex items-center justify-between pb-safe relative z-10">
                 <div>
-                    <p class="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-1">Total Amount</p>
-                    <p id="total-price" class="text-4xl font-black text-white">₹0</p>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5 pointer-events-none">Total Amount</p>
+                    <p id="total-price" class="text-3xl font-black text-white luxe-shadow pointer-events-none">₹0</p>
                 </div>
-                <button onclick="processBooking()" id="main-deploy-btn" class="btn-luxe px-10 py-5 font-black uppercase tracking-widest text-sm">Pay & Book</button>
+                <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-4 btn-luxe text-base w-1/2 relative z-10">Confirm Booking</button>
             </div>
         </div>
     </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; 
         let currentUser = null; let activeVenue = null; window.venues = [];
         let tapCount = 0; let tapTimer; let currentFilter = 'All';
+
+        // UTILITY: TOAST NOTIFICATIONS
+        function showToast(msg, type = 'success') {
+            const bg = type === 'error' ? "linear-gradient(to right, #ef4444, #dc2626)" : "linear-gradient(to right, #06b6d4, #6366f1)";
+            Toastify({
+                text: msg, duration: 3000, close: true, gravity: "top", position: "center",
+                style: { background: bg, borderRadius: "10px", fontWeight: "bold", fontFamily: "'Outfit', sans-serif" }
+            }).showToast();
+        }
+
+        // UTILITY: PASSWORD HASHING
+        async function hashPassword(password) {
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
         // SIDE MENU LOGIC
         function openMenu() {
@@ -958,7 +973,7 @@
 
             // Simulate network request
             setTimeout(() => {
-                alert("Demo Request Sent! Our integration team will contact you shortly to set up AcademyOS.");
+                showToast("Demo Request Sent! Our integration team will contact you shortly.");
                 e.target.reset();
                 btn.innerText = originalText;
                 btn.classList.remove('opacity-50', 'cursor-wait');
@@ -1036,7 +1051,7 @@
             if (savedUser) { currentUser = JSON.parse(savedUser); }
 
             try {
-                const res = await fetchJSONP({ action: 'sync' });
+                const res = await fetchAPI({ action: 'sync' });
                 if(res && res.status === 'success') {
                     window.venues = res.venues || [];
                     window.activeBookings = res.bookings || [];
@@ -1256,41 +1271,30 @@
                     btn.innerHTML = `📍 Sorted`;
                     setTimeout(() => { btn.innerHTML = originalText; }, 3000);
                 }, () => {
+                    showToast("Location access denied.", "error");
                     btn.innerHTML = `❌ Denied`;
                     setTimeout(() => { btn.innerHTML = originalText; }, 3000);
                 });
+            } else {
+                showToast("Geolocation is not supported by your browser.", "error");
             }
         }
 
-        function fetchJSONP(params) { 
-            return new Promise((resolve, reject) => { 
-                const callbackName = 'jsonp_' + Date.now() + Math.floor(Math.random()*1000); 
-                const script = document.createElement('script'); 
-                
-                const timeout = setTimeout(() => {
-                    document.body.removeChild(script);
-                    delete window[callbackName];
-                    reject(new Error("Request timed out. Please check your deployment URL."));
-                }, 8000);
-                
-                script.onerror = () => {
-                    clearTimeout(timeout);
-                    document.body.removeChild(script);
-                    delete window[callbackName];
-                    reject(new Error("Database link failed. Is YOUR_NEW_DEPLOYMENT_URL_HERE replaced?"));
-                };
-
-                window[callbackName] = (data) => { 
-                    clearTimeout(timeout);
-                    resolve(data); 
-                    document.body.removeChild(script); 
-                    delete window[callbackName]; 
-                }; 
-                
-                params.callback = callbackName; 
-                script.src = scriptURL + '?' + new URLSearchParams(params).toString(); 
-                document.body.appendChild(script); 
-            }); 
+        // NEW REST API FUNCTION (REPLACES JSONP)
+        async function fetchAPI(data) { 
+            try {
+                // We use method: 'POST' and text/plain to avoid preflight issues with Google Apps Script
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                return result;
+            } catch (e) {
+                console.error(e);
+                throw new Error("Database connection failed. Please check your internet.");
+            }
         }
 
         async function handleLogin(type) {
@@ -1302,7 +1306,13 @@
             btn.innerText = "Authenticating..."; btn.classList.add('opacity-50', 'cursor-wait');
             
             try {
-                const res = await fetchJSONP({ action: 'login', loginId: document.getElementById(idField).value, password: document.getElementById(passField).value });
+                const rawPass = document.getElementById(passField).value;
+                if(!rawPass) throw new Error("Password cannot be empty");
+                
+                // Security: Hash the password before sending
+                const hashedPass = await hashPassword(rawPass);
+
+                const res = await fetchAPI({ action: 'login', loginId: document.getElementById(idField).value, password: hashedPass });
                 
                 if(res && res.status === 'success') {
                     currentUser = res.user; window.venues = res.venues || []; window.activeBookings = res.bookings || []; 
@@ -1319,6 +1329,7 @@
                     
                     closeAuth();
                     updateUILoggedIn();
+                    showToast("Login Successful!");
                     
                     setTimeout(() => { 
                         const vs = document.getElementById('venues-section');
@@ -1326,13 +1337,13 @@
                     }, 500);
 
                 } else { 
-                    alert(res?.msg || "Login Failed."); 
+                    showToast(res?.msg || "Login Failed.", "error"); 
                     btn.innerText = originalText; 
                     btn.classList.remove('opacity-50', 'cursor-wait'); 
                 }
             } catch (e) {
                 console.error("Login Error:", e);
-                alert(e.message || "An unexpected error occurred.");
+                showToast(e.message || "An unexpected error occurred.", "error");
                 btn.innerText = originalText; 
                 btn.classList.remove('opacity-50', 'cursor-wait');
             }
@@ -1341,21 +1352,27 @@
         async function handleRegister() {
             const btn = document.getElementById('reg-btn'); btn.innerText = "Creating Account..."; btn.classList.add('opacity-50');
             const phoneVal = document.getElementById('reg-phone').value;
-            if(phoneVal.length !== 10 || isNaN(phoneVal)) { alert("Phone number must be exactly 10 digits."); btn.innerText = "Sign Up"; btn.classList.remove('opacity-50'); return; }
+            const rawPass = document.getElementById('reg-pass').value;
             
-            const data = { action: 'register', name: document.getElementById('reg-name').value, phone: phoneVal, email: document.getElementById('reg-email').value, password: document.getElementById('reg-pass').value, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value };
+            if(phoneVal.length !== 10 || isNaN(phoneVal)) { showToast("Phone number must be exactly 10 digits.", "error"); btn.innerText = "Sign Up"; btn.classList.remove('opacity-50'); return; }
+            if(!rawPass) { showToast("Password cannot be empty.", "error"); btn.innerText = "Sign Up"; btn.classList.remove('opacity-50'); return; }
+            
+            // Hash password
+            const hashedPass = await hashPassword(rawPass);
+
+            const data = { action: 'register', name: document.getElementById('reg-name').value, phone: phoneVal, email: document.getElementById('reg-email').value, password: hashedPass, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value };
             
             try {
-                const res = await fetchJSONP(data);
+                const res = await fetchAPI(data);
                 if(res && res.status === 'success') { 
-                    alert("Account Created! Please Login."); 
+                    showToast("Account Created! Please Login."); 
                     toggleAuth('login'); 
                 } else { 
-                    alert(res?.msg || "Registration Failed"); 
+                    showToast(res?.msg || "Registration Failed", "error"); 
                 }
             } catch(e) {
                 console.error("Register Error:", e);
-                alert("Error: " + e.message);
+                showToast("Error: " + e.message, "error");
             } finally {
                 btn.innerText = "Sign Up"; btn.classList.remove('opacity-50');
             }
@@ -1375,18 +1392,6 @@
             const cont = document.getElementById('venue-grid'); 
             if(!cont) return;
             cont.innerHTML = '';
-            
-            if(!currentUser) {
-                cont.innerHTML = `
-                    <div class="col-span-full flex flex-col items-center justify-center py-32 border border-white/5 rounded-3xl bg-[#0a0a0a] reveal">
-                        <svg class="w-16 h-16 text-gray-800 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                        <h3 class="text-2xl font-black text-white font-display tracking-tight mb-2">Members Only</h3>
-                        <p class="text-gray-500 font-medium mb-8 max-w-md text-center">Please login to view available arenas and book slots.</p>
-                        <button onclick="openAuth()" class="btn-luxe px-10 py-4 text-sm relative z-10">Login Now</button>
-                    </div>`;
-                document.querySelectorAll('#venue-grid .reveal').forEach(el => observer.observe(el));
-                return;
-            }
 
             let filtered = window.venues;
             if(sport !== 'All') filtered = window.venues.filter(v => v.sport === sport);
@@ -1398,6 +1403,8 @@
             filtered.forEach((v, index) => {
                 const isP = v.status === "Pending";
                 const distDisplay = v.distance ? `<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] px-2 py-0.5 rounded-md font-bold ml-2 whitespace-nowrap tracking-wide font-display">${v.distance} km</span>` : '';
+                
+                const safeName = v.name.replace(/'/g, "\\'");
                 
                 let safeImg = v.img;
                 if(safeImg && (safeImg.includes('1518609878373') || safeImg.includes('unsplash.com'))) {
@@ -1419,9 +1426,14 @@
                     visual = `<div class="absolute inset-0 w-full h-full flex items-center justify-center text-6xl bg-[#0f172a] ${isP ? 'opacity-30' : ''}">${fallbackEmoji}</div>`;
                 }
                 
-                const btn = isP 
-                    ? `<button class="bg-white/5 text-gray-500 px-6 py-4 rounded-xl text-xs font-bold cursor-not-allowed w-full font-display uppercase tracking-widest relative z-10">Coming Soon</button>` 
-                    : `<button onclick="openBooking(${index})" class="btn-luxe px-6 py-4 rounded-xl text-xs font-black w-full font-display uppercase tracking-widest transition relative z-10">Book Arena</button>`;
+                let btn = '';
+                if (isP) {
+                    btn = `<button class="bg-white/5 text-gray-500 px-6 py-4 rounded-xl text-xs font-bold cursor-not-allowed w-full font-display uppercase tracking-widest relative z-10">Coming Soon</button>`;
+                } else if (!currentUser) {
+                    btn = `<button onclick="openAuth()" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-4 rounded-xl text-xs font-black w-full font-display uppercase tracking-widest transition relative z-10">Login to Book</button>`;
+                } else {
+                    btn = `<button onclick="openBooking(${index})" class="btn-luxe px-6 py-4 rounded-xl text-xs font-black w-full font-display uppercase tracking-widest transition relative z-10">Book Arena</button>`;
+                }
 
                 const delay = index * 50;
 
@@ -1643,8 +1655,8 @@
             const btn = document.getElementById('main-deploy-btn');
             const timeSlot = document.getElementById('book-time').value;
 
-            if (count === 0 && payType !== 'Waitlist') return alert("Please select at least 1 player.");
-            if (!timeSlot || timeSlot === "") return alert("Please select a time slot.");
+            if (count === 0 && payType !== 'Waitlist') return showToast("Please select at least 1 player.", "error");
+            if (!timeSlot || timeSlot === "") return showToast("Please select a time slot.", "error");
 
             if (payType === 'Waitlist') {
                 btn.innerText = "Please wait..."; btn.classList.add('opacity-50');
@@ -1652,13 +1664,13 @@
                 const data = { action: 'book', name: currentUser?.name || "Player", phone: currentUser?.phone || "", skill: currentUser?.skill || "", game: activeVenue.sport, playDate: fDate, timeSlot: timeSlot, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0, slots: 0 };
                 
                 try {
-                    await fetchJSONP(data);
-                    alert("You have joined the standby queue! We will notify you if a slot opens.");
+                    await fetchAPI(data);
+                    showToast("You have joined the standby queue! We will notify you if a slot opens.");
                     closeSheet(); 
                 } catch(e) {
-                    alert("Queue Error: " + e.message);
+                    showToast("Queue Error: " + e.message, "error");
                 } finally {
-                    btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50'); 
+                    btn.innerText = "Pay & Book"; btn.classList.remove('opacity-50'); 
                 }
                 return;
             }
@@ -1670,7 +1682,7 @@
 
             try {
                 btn.innerText = "Processing Payment..."; btn.classList.add('opacity-50', 'cursor-wait');
-                const orderRes = await fetchJSONP({ action:'createOrder', amount: finalAmount });
+                const orderRes = await fetchAPI({ action:'createOrder', amount: finalAmount });
                 const fDate = rawDate.split("-").reverse().join("-");
 
                 const options = {
@@ -1685,28 +1697,28 @@
                     "handler": async (res) => {
                         btn.innerText = "Verifying Payment...";
                         try {
-                            const verify = await fetchJSONP({
+                            const verify = await fetchAPI({
                                 action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature,
                                 venue: activeVenue.name, game: activeVenue.sport, slots: count,
                                 playDate: fDate, timeSlot: timeSlot,
                                 totalAmount: orderRes.order.amount / 100, phone: currentUser?.phone || "", name: currentUser?.name || ""
                             });
                             
-                            if(verify && verify.status === "success") { alert("Booking Confirmed!"); location.reload(); } 
-                            else { alert(verify?.msg || "Booking Verification Failed"); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); }
+                            if(verify && verify.status === "success") { showToast("Booking Confirmed!"); location.reload(); } 
+                            else { showToast(verify?.msg || "Booking Verification Failed", "error"); btn.innerText = "Pay & Book"; btn.classList.remove('opacity-50', 'cursor-wait'); }
                         } catch(e) {
-                            alert("Verification Error: " + e.message);
-                            btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait');
+                            showToast("Verification Error: " + e.message, "error");
+                            btn.innerText = "Pay & Book"; btn.classList.remove('opacity-50', 'cursor-wait');
                         }
                     }
                 };
                 
                 const rzp = new Razorpay(options);
-                rzp.on('payment.failed', function (response){ alert("Payment Failed."); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); });
+                rzp.on('payment.failed', function (response){ showToast("Payment Failed.", "error"); btn.innerText = "Pay & Book"; btn.classList.remove('opacity-50', 'cursor-wait'); });
                 rzp.open();
             } catch(e) {
-                alert("Checkout Error: " + e.message);
-                btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait');
+                showToast("Checkout Error: " + e.message, "error");
+                btn.innerText = "Pay & Book"; btn.classList.remove('opacity-50', 'cursor-wait');
             }
         }
 
@@ -1722,11 +1734,11 @@
         async function updateVenue() {
             const btn = document.getElementById('admin-btn'); btn.innerText = "Saving...";
             try {
-                const res = await fetchJSONP({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
-                alert(res?.msg || "Venue Updated"); 
+                const res = await fetchAPI({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
+                showToast(res?.msg || "Venue Updated"); 
                 if(res && res.status==='success') { loadAdminVenueData(); }
             } catch(e) {
-                alert("Error: " + e.message);
+                showToast("Error: " + e.message, "error");
             } finally {
                 btn.innerText = "Save Changes";
             }
@@ -1739,10 +1751,10 @@
                 vType: document.getElementById('new-v-type').value, vStatus: document.getElementById('new-v-status').value, vImg: document.getElementById('new-v-img').value
             };
             try {
-                const res = await fetchJSONP(data);
-                alert(res?.msg || "Venue Added"); 
+                const res = await fetchAPI(data);
+                showToast(res?.msg || "Venue Added"); 
             } catch(e) {
-                alert("Error: " + e.message);
+                showToast("Error: " + e.message, "error");
             } finally {
                 btn.innerText = "Publish Arena";
             }
