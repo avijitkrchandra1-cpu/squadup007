@@ -124,26 +124,18 @@
         <div class="card-luxe w-full max-w-md p-10 relative transform scale-95 transition-transform duration-400" id="auth-card" onclick="event.stopPropagation()">
             <button onclick="closeAuth()" class="absolute top-6 right-6 text-gray-500 hover:text-white font-bold text-2xl transition">✕</button>
             <div class="text-center mb-10">
-                <h2 class="text-4xl font-black tracking-premium text-white cursor-pointer" onclick="ghostTrigger()">Squad<span class="text-cyan-400 luxe-shadow">Up</span></h2>
+                <h2 class="text-4xl font-black tracking-premium text-white">Squad<span class="text-cyan-400 luxe-shadow">Up</span></h2>
                 <p class="text-gray-400 text-sm mt-2 font-medium">Please login to continue.</p>
             </div>
             
             <div id="login-box" class="space-y-5">
-                <input type="text" id="login-id" placeholder="Phone Number or Email" class="input-luxe" onkeydown="if(event.key === 'Enter') handleLogin('player')">
-                <input type="password" id="login-pass" placeholder="Password" class="input-luxe" onkeydown="if(event.key === 'Enter') handleLogin('player')">
-                <button onclick="handleLogin('player')" id="login-btn" class="w-full py-4.5 btn-luxe text-lg mt-3 relative z-10">Login</button>
+                <input type="text" id="login-id" placeholder="Phone Number or Email" class="input-luxe" onkeydown="if(event.key === 'Enter') handleLogin()">
+                <input type="password" id="login-pass" placeholder="Password" class="input-luxe" onkeydown="if(event.key === 'Enter') handleLogin()">
+                <button onclick="handleLogin()" id="login-btn" class="w-full py-4.5 btn-luxe text-lg mt-3 relative z-10">Login</button>
                 <div class="flex justify-between items-center pt-4 border-t border-white/5 mt-6 relative z-10">
                     <p onclick="showToast('Please contact support@squadup.in to reset your password.', 'error')" class="text-xs text-gray-500 font-bold cursor-pointer hover:text-white transition">Forgot Password?</p>
                     <p onclick="toggleAuth('register')" class="text-xs text-cyan-400 font-bold cursor-pointer hover:underline">Create Account</p>
                 </div>
-            </div>
-
-            <div id="admin-login-box" class="hidden space-y-5">
-                <h3 class="text-red-500 font-bold text-center text-sm uppercase tracking-wide mb-3">Admin Portal</h3>
-                <input type="text" id="admin-login-id" placeholder="Admin ID" class="input-luxe border-red-500/20" onkeydown="if(event.key === 'Enter') handleLogin('admin')">
-                <input type="password" id="admin-login-pass" placeholder="Admin Password" class="input-luxe border-red-500/20" onkeydown="if(event.key === 'Enter') handleLogin('admin')">
-                <button onclick="handleLogin('admin')" id="admin-btn-login" class="w-full py-4.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition shadow-[0_0_20px_rgba(220,38,38,0.4)] relative z-10">Login as Admin</button>
-                <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-500 cursor-pointer mt-3 hover:text-white transition relative z-10">Cancel</p>
             </div>
 
             <form id="register-box" class="hidden space-y-4" onsubmit="event.preventDefault(); handleRegister();">
@@ -506,7 +498,7 @@
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; // DO NOT FORGET TO ADD YOUR URL
         let currentUser = null; let activeVenue = null; window.venues = [];
-        let tapCount = 0; let tapTimer; let currentFilter = 'All'; let authShownOnce = false;
+        let currentFilter = 'All'; let authShownOnce = false;
 
         function showToast(msg, type = 'success') {
             const bg = type === 'error' ? "linear-gradient(to right, #ef4444, #dc2626)" : "linear-gradient(to right, #06b6d4, #6366f1)";
@@ -586,19 +578,9 @@
             else { filterVenues('All', document.querySelector('.filter-pill')); }
         });
 
-        function ghostTrigger() {
-            tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(() => tapCount = 0, 1500);
-            if(tapCount === 5) {
-                document.getElementById('login-box').classList.add('hidden');
-                document.getElementById('admin-login-box').classList.remove('hidden');
-                tapCount = 0;
-            }
-        }
-        
         function toggleAuth(type) { 
             document.getElementById('login-box').classList.add('hidden');
             document.getElementById('register-box').classList.add('hidden');
-            document.getElementById('admin-login-box').classList.add('hidden');
             document.getElementById(type + '-box').classList.remove('hidden');
         }
 
@@ -753,10 +735,10 @@
             } catch (e) { throw new Error("Database connection failed."); }
         }
 
-        async function handleLogin(type) {
-            const btn = type === 'admin' ? document.getElementById('admin-btn-login') : document.getElementById('login-btn');
-            const idField = type === 'admin' ? 'admin-login-id' : 'login-id';
-            const passField = type === 'admin' ? 'admin-login-pass' : 'login-pass';
+        async function handleLogin() {
+            const btn = document.getElementById('login-btn');
+            const idField = 'login-id';
+            const passField = 'login-pass';
             const originalText = btn.innerText;
             btn.innerText = "Authenticating..."; btn.classList.add('opacity-50', 'cursor-wait');
             
