@@ -30,50 +30,230 @@
             --surface-glass: rgba(15, 23, 42, 0.6); 
             --glass-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/1999/xlink' width='100' height='100' viewBox='0 0 100 100'%3E%3Cdefs%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100' height='100' filter='url(%23a)' opacity='0.03'/%3E%3C/svg%3E");
         }
-        body { font-family: 'Outfit', sans-serif; background-color: var(--onyx); color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--onyx); 
+            color: #f8fafc; 
+            overflow-x: hidden; 
+            -webkit-font-smoothing: antialiased; 
+        }
         
         /* Theatrical Preloader */
-        #preloader { position: fixed; inset: 0; background: var(--onyx); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
-        .seq-word { opacity: 0; transform: translateY(20px); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.05em; animation: popUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @media (min-width: 768px) { .seq-word { font-size: 4.5rem; } }
-        @media (min-width: 1024px) { .seq-word { font-size: 6rem; } }
-        .delay-1 { animation-delay: 0.2s; } .delay-2 { animation-delay: 0.6s; } .delay-3 { animation-delay: 1.0s; } .delay-4 { animation-delay: 1.4s; }
-        @keyframes popUp { to { opacity: 1; transform: translateY(0); } }
+        #preloader { 
+            position: fixed; 
+            inset: 0; 
+            background: var(--onyx); 
+            z-index: 9999; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            transition: opacity 0.5s ease, visibility 0.5s ease; 
+        }
+        
+        .seq-word { 
+            opacity: 0; 
+            transform: translateY(20px); 
+            font-size: 2.5rem; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: -0.05em; 
+            animation: popUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+        
+        @media (min-width: 768px) { 
+            .seq-word { font-size: 4.5rem; } 
+        }
+        
+        @media (min-width: 1024px) { 
+            .seq-word { font-size: 6rem; } 
+        }
+        
+        .delay-1 { animation-delay: 0.2s; } 
+        .delay-2 { animation-delay: 0.6s; } 
+        .delay-3 { animation-delay: 1.0s; } 
+        .delay-4 { animation-delay: 1.4s; }
+        
+        @keyframes popUp { 
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            } 
+        }
 
         /* Custom Animations */
-        .reveal { opacity: 0; transform: translateY(60px) scale(0.98); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
-        .reveal-left { opacity: 0; transform: translateX(-60px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
-        .reveal-left.active { opacity: 1; transform: translateX(0); }
-        .reveal-right { opacity: 0; transform: translateX(60px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
-        .reveal-right.active { opacity: 1; transform: translateX(0); }
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(60px) scale(0.98); 
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1); 
+        }
+        
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0) scale(1); 
+        }
+        
+        .reveal-left { 
+            opacity: 0; 
+            transform: translateX(-60px); 
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1); 
+        }
+        
+        .reveal-left.active { 
+            opacity: 1; 
+            transform: translateX(0); 
+        }
+        
+        .reveal-right { 
+            opacity: 0; 
+            transform: translateX(60px); 
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1); 
+        }
+        
+        .reveal-right.active { 
+            opacity: 1; 
+            transform: translateX(0); 
+        }
 
         /* Premium Navigation */
-        .glass-nav { background: rgba(2, 6, 23, 0.5); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.5s; }
-        .glass-nav.scrolled { background: rgba(2, 6, 23, 0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.7); }
+        .glass-nav { 
+            background: rgba(2, 6, 23, 0.5); 
+            backdrop-filter: blur(20px); 
+            border-bottom: 1px solid rgba(255,255,255,0.03); 
+            transition: background 0.5s; 
+        }
+        
+        .glass-nav.scrolled { 
+            background: rgba(2, 6, 23, 0.95); 
+            box-shadow: 0 4px 30px rgba(0,0,0,0.7); 
+        }
         
         /* Luxe UI Elements */
-        .btn-luxe { position: relative; overflow: hidden; background: linear-gradient(135deg, var(--neon-cyan), var(--electric-indigo)); color: white; font-weight: 800; border-radius: 0.75rem; transition: all 0.4s; box-shadow: 0 0 20px var(--neon-cyan-glow); }
-        .btn-luxe::before { content:''; position: absolute; top:-50%; left:-50%; width:200%; height:200%; background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%); transform: scale(0); transition: transform 0.6s ease-out; opacity:0; pointer-events: none; }
-        .btn-luxe:hover::before { transform: scale(1); opacity:1; }
-        .btn-luxe:hover { transform: translateY(-3px); box-shadow: 0 0 35px var(--neon-cyan-glow); }
+        .btn-luxe { 
+            position: relative; 
+            overflow: hidden; 
+            background: linear-gradient(135deg, var(--neon-cyan), var(--electric-indigo)); 
+            color: white; 
+            font-weight: 800; 
+            border-radius: 0.75rem; 
+            transition: all 0.4s; 
+            box-shadow: 0 0 20px var(--neon-cyan-glow); 
+        }
         
-        .input-luxe { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); color: white; border-radius: 0.75rem; padding: 1rem; width: 100%; outline: none; transition: 0.3s; color-scheme: dark; }
-        .input-luxe:focus { border-color: var(--neon-cyan); background: rgba(255,255,255,0.05); box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.1); }
+        .btn-luxe::before { 
+            content:''; 
+            position: absolute; 
+            top:-50%; 
+            left:-50%; 
+            width:200%; 
+            height:200%; 
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%); 
+            transform: scale(0); 
+            transition: transform 0.6s ease-out; 
+            opacity:0; 
+            pointer-events: none; 
+        }
         
-        /* Dropdown Visibility Fix */
-        select option { background-color: #0f172a; color: white; }
+        .btn-luxe:hover::before { 
+            transform: scale(1); 
+            opacity:1; 
+        }
         
-        /* THE INVISIBLE SHIELD FIX */
-        .card-luxe { background: var(--surface-glass); border: 1px solid rgba(255,255,255,0.04); border-radius: 1.5rem; transition: all 0.5s cubic-bezier(0.5, 0, 0, 1); position: relative; overflow: hidden; background-image: var(--glass-pattern); display: flex; flex-direction: column; }
-        .card-luxe::after { content:''; position: absolute; inset:0; box-shadow: inset 0 0 0px var(--neon-cyan-glow); transition: all 0.5s; pointer-events: none; }
-        .card-luxe:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(6, 182, 212, 0.2); box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
-        .card-luxe:hover::after { box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.1); }
+        .btn-luxe:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 0 35px var(--neon-cyan-glow); 
+        }
+        
+        /* Input & Dropdown Styling */
+        .input-luxe { 
+            background: rgba(255,255,255,0.02); 
+            border: 1px solid rgba(255,255,255,0.08); 
+            color: white; 
+            border-radius: 0.75rem; 
+            padding: 1rem; 
+            width: 100%; 
+            outline: none; 
+            transition: 0.3s; 
+            color-scheme: dark; 
+        }
+        
+        .input-luxe:focus { 
+            border-color: var(--neon-cyan); 
+            background: rgba(255,255,255,0.05); 
+            box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.1); 
+        }
+        
+        /* Dropdown Options Fix */
+        select option { 
+            background-color: #0f172a; 
+            color: white; 
+        }
+        
+        /* Card Elements */
+        .card-luxe { 
+            background: var(--surface-glass); 
+            border: 1px solid rgba(255,255,255,0.04); 
+            border-radius: 1.5rem; 
+            transition: all 0.5s cubic-bezier(0.5, 0, 0, 1); 
+            position: relative; 
+            overflow: hidden; 
+            background-image: var(--glass-pattern); 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        .card-luxe::after { 
+            content:''; 
+            position: absolute; 
+            inset:0; 
+            box-shadow: inset 0 0 0px var(--neon-cyan-glow); 
+            transition: all 0.5s; 
+            pointer-events: none; 
+        }
+        
+        .card-luxe:hover { 
+            transform: translateY(-8px) scale(1.02); 
+            border-color: rgba(6, 182, 212, 0.2); 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6); 
+        }
+        
+        .card-luxe:hover::after { 
+            box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.1); 
+        }
 
         /* Phone Mockup */
-        .mockup-frame { border: 14px solid #1e293b; border-radius: 3rem; overflow: hidden; box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 50px var(--neon-cyan-glow); position: relative; transition: transform 0.15s ease-out; transform-style: preserve-3d; }
-        .mockup-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 45%; height: 28px; background: #1e293b; border-bottom-left-radius: 1.2rem; border-bottom-right-radius: 1.2rem; z-index: 20; }
-        .mockup-inner { background-image: var(--glass-pattern); background-color: #0f172a; height: 100%; display: flex; flex-direction: column; padding: 1rem; padding-top: 3.5rem; }
+        .mockup-frame { 
+            border: 14px solid #1e293b; 
+            border-radius: 3rem; 
+            overflow: hidden; 
+            box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7), 0 0 50px var(--neon-cyan-glow); 
+            position: relative; 
+            transition: transform 0.15s ease-out; 
+            transform-style: preserve-3d; 
+        }
+        
+        .mockup-notch { 
+            position: absolute; 
+            top: 0; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 45%; 
+            height: 28px; 
+            background: #1e293b; 
+            border-bottom-left-radius: 1.2rem; 
+            border-bottom-right-radius: 1.2rem; 
+            z-index: 20; 
+        }
+        
+        .mockup-inner { 
+            background-image: var(--glass-pattern); 
+            background-color: #0f172a; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 1rem; 
+            padding-top: 3.5rem; 
+        }
 
         /* Scrollbars */
         ::-webkit-scrollbar { width: 6px; }
@@ -83,21 +263,61 @@
         .hide-scroll::-webkit-scrollbar { display: none; }
 
         /* Overlays & Sheets */
-        .hero-overlay { background: linear-gradient(110deg, var(--onyx) 15%, rgba(2,6,23,0.7) 60%, rgba(2,6,23,0.2) 100%); pointer-events: none; }
-        .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(20px); }
-        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .hero-overlay { 
+            background: linear-gradient(110deg, var(--onyx) 15%, rgba(2,6,23,0.7) 60%, rgba(2,6,23,0.2) 100%); 
+            pointer-events: none; 
+        }
+        
+        .modal-overlay { 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 0.4s ease; 
+            backdrop-filter: blur(20px); 
+        }
+        
+        .modal-overlay.open { 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
         
         /* Pills & Badges */
-        .filter-pill { padding: 0.6rem 1.5rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.01); color: #94a3b8; font-weight: 700; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: 0.3s; letter-spacing: 0.05em; }
-        .filter-pill.active { background: white; color: var(--onyx); border-color: white; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+        .filter-pill { 
+            padding: 0.6rem 1.5rem; 
+            border-radius: 2rem; 
+            border: 1px solid rgba(255,255,255,0.06); 
+            background: rgba(255,255,255,0.01); 
+            color: #94a3b8; 
+            font-weight: 700; 
+            font-size: 0.8rem; 
+            white-space: nowrap; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            letter-spacing: 0.05em; 
+        }
+        
+        .filter-pill.active { 
+            background: white; 
+            color: var(--onyx); 
+            border-color: white; 
+            box-shadow: 0 0 20px rgba(255,255,255,0.3); 
+        }
         
         /* Premium Text Styles */
         .tracking-premium { letter-spacing: -0.05em; }
         .tracking-wide { letter-spacing: 0.1em; }
         .luxe-shadow { filter: drop-shadow(0 0 10px var(--neon-cyan-glow)); }
 
-        /* UNBREAKABLE MAP STATE CSS */
-        .map-layer { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity 0.8s ease; display: flex; align-items: center; justify-content: center; }
+        /* Map State CSS */
+        .map-layer { 
+            position: absolute; 
+            inset: 0; 
+            width: 100%; 
+            height: 100%; 
+            transition: opacity 0.8s ease; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
         
         .state-kolkata #kolkata-view { opacity: 1; z-index: 20; pointer-events: auto; }
         .state-kolkata #india-view { opacity: 0; z-index: 10; pointer-events: none; }
@@ -105,16 +325,12 @@
         .state-india #kolkata-view { opacity: 0; z-index: 10; pointer-events: none; }
         .state-india #india-view { opacity: 1; z-index: 20; pointer-events: auto; }
 
-        /* BLOG TYPOGRAPHY */
-        .blog-content p { color: #94a3b8; font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem; font-weight: 400; }
-        .blog-content h2 { color: #f8fafc; font-size: 2.25rem; font-weight: 900; margin-top: 3.5rem; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
-        .blog-content h3 { color: #e2e8f0; font-size: 1.5rem; font-weight: 800; margin-top: 2.5rem; margin-bottom: 1rem; }
-        .blog-content ul { color: #94a3b8; font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem; list-style-type: disc; padding-left: 1.5rem; }
-        .blog-content li { margin-bottom: 0.5rem; }
-        .blog-content blockquote { border-left: 4px solid var(--neon-cyan); padding-left: 1.5rem; margin: 2rem 0; font-style: italic; color: #f8fafc; font-size: 1.25rem; font-weight: 500; background: linear-gradient(90deg, rgba(6,182,212,0.1) 0%, transparent 100%); padding-top: 1.5rem; padding-bottom: 1.5rem; border-radius: 0 1rem 1rem 0; }
-        .blog-content a { color: var(--neon-cyan); text-decoration: none; border-bottom: 1px solid rgba(6,182,212,0.3); transition: all 0.3s; }
-        .blog-content a:hover { color: #fff; border-bottom-color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan-glow); }
-        .blog-content img { border-radius: 1.5rem; margin: 3rem 0; width: 100%; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
+        /* Skeleton Loaders */
+        @keyframes pulse-dark { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: .5; } 
+        }
+        .animate-skeleton { animation: pulse-dark 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     </style>
 </head>
 <body class="antialiased selection:bg-cyan-500 selection:text-white">
@@ -134,7 +350,9 @@
         
         <div class="p-8 flex justify-end items-center h-24 flex-shrink-0">
             <button onclick="closeMenu()" class="text-gray-500 hover:text-white transition focus:outline-none group">
-                <svg class="w-8 h-8 transform group-hover:rotate-90 transition duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <svg class="w-8 h-8 transform group-hover:rotate-90 transition duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
             </button>
         </div>
         
@@ -143,19 +361,21 @@
                 
                 <div id="menu-auth-section" class="mb-6 pb-6 border-b border-white/5">
                     <button onclick="closeMenu(); openAuth();" class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 w-full py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-cyan-500/20 transition luxe-shadow flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg> Login / Sign Up
+                        <i class="fas fa-user"></i> Login / Sign Up
                     </button>
                 </div>
 
                 <a href="#" onclick="closeMenu(); switchTab('feed'); window.scrollTo(0,0);" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Home</a>
                 <a href="#" onclick="closeMenu(); showModal('about-modal');" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">About us</a>
-                <a href="#" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Partner With Us</a>
+                <a href="#" onclick="closeMenu(); switchTab('partner'); window.scrollTo(0,0);" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Partner With Us</a>
                 
-                <a href="#" onclick="closeMenu(); switchTab('academy'); window.scrollTo(0,0);" class="text-cyan-400 text-lg font-bold transition tracking-wide flex items-center gap-2">Academy Membership <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span></a>
+                <a href="#" onclick="closeMenu(); switchTab('academy'); window.scrollTo(0,0);" class="text-cyan-400 text-lg font-bold transition tracking-wide flex items-center gap-2">
+                    Academy Membership <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                </a>
                 
                 <a href="#" onclick="closeMenu(); switchTab('feed'); document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Book Now</a>
-                <a href="#" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">News and Events</a>
-                <a href="#" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Careers</a>
+                <a href="#" onclick="closeMenu(); switchTab('news'); window.scrollTo(0,0);" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">News and Events</a>
+                <a href="#" onclick="closeMenu(); switchTab('careers'); window.scrollTo(0,0);" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Careers</a>
                 <a href="#" onclick="closeMenu(); switchTab('blog-hub'); window.scrollTo(0,0);" class="text-white text-lg font-medium hover:text-cyan-400 transition tracking-wide">Blogs</a>
                 
                 <a href="#" id="menu-btn-admin" onclick="closeMenu(); switchTab('admin');" class="hidden text-red-500 text-lg font-medium hover:text-red-400 transition tracking-wide mt-2">Admin Dashboard</a>
@@ -171,17 +391,21 @@
     </div>
 
     <div id="auth-overlay" class="hidden fixed inset-0 z-[500] bg-black/80 flex items-center justify-center p-4 backdrop-blur-3xl opacity-0 pointer-events-none transition-opacity duration-400" onclick="closeAuth()">
+        
         <div class="card-luxe w-full max-w-md p-10 relative transform scale-95 transition-transform duration-400" id="auth-card" onclick="event.stopPropagation()">
+            
             <button onclick="closeAuth()" class="absolute top-6 right-6 text-gray-500 hover:text-white font-bold text-2xl transition">✕</button>
+            
             <div class="text-center mb-10">
                 <h2 class="text-4xl font-black tracking-premium text-white cursor-pointer" onclick="ghostTrigger()">Squad<span class="text-cyan-400 luxe-shadow">Up</span></h2>
                 <p class="text-gray-400 text-sm mt-2 font-medium">Please login to continue.</p>
             </div>
             
             <div id="login-box" class="space-y-5">
-                <input type="text" id="login-id" placeholder="Phone Number or Email" class="input-luxe" onkeydown="if(event.key === 'Enter') handleLogin('player')">
-                <input type="password" id="login-pass" placeholder="Password" class="input-luxe" onkeydown="if(event.key === 'Enter') handleLogin('player')">
-                <button onclick="handleLogin('player')" id="login-btn" class="w-full py-4.5 btn-luxe text-lg mt-3 relative z-10">Login</button>
+                <input type="text" id="login-id" placeholder="Phone Number or Email" class="input-luxe" onkeydown="if(event.key === 'Enter') handleLogin()">
+                <input type="password" id="login-pass" placeholder="Password" class="input-luxe" onkeydown="if(event.key === 'Enter') handleLogin()">
+                <button onclick="handleLogin()" id="login-btn" class="w-full py-4.5 btn-luxe text-lg mt-3 relative z-10">Login</button>
+                
                 <div class="flex justify-between items-center pt-4 border-t border-white/5 mt-6 relative z-10">
                     <p onclick="showToast('Please contact support@squadup.in to reset your password.', 'error')" class="text-xs text-gray-500 font-bold cursor-pointer hover:text-white transition">Forgot Password?</p>
                     <p onclick="toggleAuth('register')" class="text-xs text-cyan-400 font-bold cursor-pointer hover:underline">Create Account</p>
@@ -196,18 +420,20 @@
                 <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-500 cursor-pointer mt-3 hover:text-white transition relative z-10">Cancel</p>
             </div>
 
-            <div id="register-box" class="hidden space-y-4">
+            <form id="register-box" class="hidden space-y-4" onsubmit="event.preventDefault(); handleRegister();">
                 <input type="text" id="reg-name" placeholder="Full Name*" class="input-luxe py-3.5 text-sm" required>
+                
                 <div class="grid grid-cols-2 gap-4">
                     <input type="tel" id="reg-phone" placeholder="Phone (10 Digits)*" class="input-luxe py-3.5 text-sm" maxlength="10" required>
                     <input type="email" id="reg-email" placeholder="Email*" class="input-luxe py-3.5 text-sm" required>
                 </div>
+                
                 <div class="grid grid-cols-2 gap-4">
                     <div class="relative">
-                        <input type="date" id="reg-dob" class="input-luxe py-3.5 text-sm text-gray-500 appearance-none" required>
+                        <input type="date" id="reg-dob" class="input-luxe py-3.5 text-sm text-gray-300 appearance-none" required>
                         <i class="fas fa-calendar-alt absolute right-4 top-4 text-gray-400 pointer-events-none z-20"></i>
                     </div>
-                    <select id="reg-blood" class="input-luxe py-3.5 text-sm text-gray-500" required>
+                    <select id="reg-blood" class="input-luxe py-3.5 text-sm text-gray-300" required>
                         <option value="" disabled selected>Blood Group*</option>
                         <option value="A+">A+</option>
                         <option value="A-">A-</option>
@@ -219,8 +445,9 @@
                         <option value="AB-">AB-</option>
                     </select>
                 </div>
+                
                 <div class="grid grid-cols-2 gap-4">
-                    <select id="reg-sport" class="input-luxe py-3.5 text-sm text-gray-500" required>
+                    <select id="reg-sport" class="input-luxe py-3.5 text-sm text-gray-300" required>
                         <option value="" disabled selected>Primary Sport*</option>
                         <option value="Football">Football</option>
                         <option value="Cricket">Cricket</option>
@@ -230,17 +457,43 @@
                         <option value="Tennis">Tennis</option>
                         <option value="Table Tennis">Table Tennis</option>
                     </select>
-                    <select id="reg-skill" class="input-luxe py-3.5 text-sm text-gray-500" required>
+                    <select id="reg-skill" class="input-luxe py-3.5 text-sm text-gray-300" required>
                         <option value="" disabled selected>Skill Level*</option>
                         <option value="Beginner">Beginner</option>
                         <option value="Intermediate">Intermediate</option>
                         <option value="Pro">Pro Player</option>
                     </select>
                 </div>
+                
                 <input type="password" id="reg-pass" placeholder="Create Password*" class="input-luxe py-3.5 text-sm" required>
-                <button onclick="handleRegister()" id="reg-btn" class="w-full py-4.5 btn-luxe mt-3 relative z-10">Sign Up</button>
+                <button type="submit" id="reg-btn" class="w-full py-4.5 btn-luxe mt-3 relative z-10">Sign Up</button>
                 <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-500 cursor-pointer mt-3 hover:text-white transition relative z-10">Already registered?</p>
+            </form>
+        </div>
+    </div>
+
+    <div id="disc-modal" class="hidden fixed inset-0 z-[600] bg-black/80 flex items-center justify-center p-4 backdrop-blur-xl opacity-0 transition-opacity duration-300">
+        <div class="card-luxe w-full max-w-2xl p-8 relative transform scale-95 transition-transform duration-300 max-h-[80vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <h2 class="text-3xl font-black text-white mb-6">Terms & Conditions</h2>
+            <div class="text-gray-400 text-sm space-y-4 mb-8 leading-relaxed">
+                <p>Welcome to SquadUp. By accessing or using our platform, you acknowledge and agree to be bound by these terms.</p>
+                <p><strong class="text-white">1. Bookings & Availability:</strong> All bookings are subject to real-time turf availability. In the event of a double-booking error, a full refund will be initiated.</p>
+                <p><strong class="text-white">2. Payments:</strong> Advance payments made to secure a slot are final. Cancellations made within 24 hours of the play time are non-refundable.</p>
+                <p><strong class="text-white">3. Code of Conduct:</strong> Players must adhere strictly to the rules of the respective arenas. SquadUp reserves the right to suspend accounts of users reported for misconduct or vandalism.</p>
+                <p><strong class="text-white">4. Weather Disruptions:</strong> In case of rain or unplayable conditions, refunds or rescheduling will be processed directly according to the specific turf owner's policy.</p>
             </div>
+            <button onclick="closeModal('disc-modal')" class="w-full btn-luxe py-4 font-bold text-lg uppercase tracking-widest shadow-[0_0_20px_rgba(6,182,212,0.4)]">I Acknowledge</button>
+        </div>
+    </div>
+
+    <div id="about-modal" class="hidden fixed inset-0 z-[600] bg-black/80 flex items-center justify-center p-4 backdrop-blur-xl opacity-0 transition-opacity duration-300" onclick="closeModal('about-modal')">
+        <div class="card-luxe w-full max-w-2xl p-10 relative transform scale-95 transition-transform duration-300 text-center" onclick="event.stopPropagation()">
+            <button onclick="closeModal('about-modal')" class="absolute top-6 right-6 text-gray-500 hover:text-white text-2xl transition">✕</button>
+            <div class="w-20 h-20 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-cyan-500/40">
+                <i class="fas fa-bolt text-3xl text-cyan-400"></i>
+            </div>
+            <h2 class="text-4xl font-black text-white mb-4">About <span class="text-cyan-400 luxe-shadow">SquadUp</span></h2>
+            <p class="text-gray-400 text-base leading-relaxed max-w-lg mx-auto">Built locally in Kolkata, SquadUp is the premier digital network connecting players to the city's finest turfs, courts, and arenas. We eliminate the friction of phone calls and wait times, replacing them with instant, secure bookings.</p>
         </div>
     </div>
 
@@ -254,7 +507,12 @@
                 
                 <div class="flex items-center gap-6 md:gap-10">
                     <nav class="hidden md:flex gap-10 items-center">
-                        <button onclick="switchTab('feed'); document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-8 py-3 text-sm font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(6,182,212,0.4)]">Book Your Slot</button>
+                        <button onclick="switchTab('feed'); document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-8 py-3 text-sm font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+                            Book Your Slot
+                        </button>
+                        <button id="nav-btn-admin-desktop" onclick="switchTab('admin')" class="hidden text-sm font-bold text-red-500 hover:text-red-400 transition tracking-wide uppercase">
+                            Admin Panel
+                        </button>
                     </nav>
 
                     <button onclick="openMenu()" class="group flex flex-col justify-center items-end gap-[6px] w-10 h-10 focus:outline-none transition-all">
@@ -274,6 +532,9 @@
             
             <div id="marketing-sections">
                 <section class="relative w-full h-[85vh] flex items-center overflow-hidden">
+                    <div class="absolute inset-0 bg-slate-900 z-0">
+                        <img src="https://images.unsplash.com/photo-1518610543666-419b4891157c?auto=format&fit=crop&w=1920&q=80" alt="Stadium" class="w-full h-full object-cover opacity-30">
+                    </div>
                     <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-80 pointer-events-none">
                         <source src="https://assets.mixkit.co/videos/preview/mixkit-playing-football-on-a-dark-field-41154-large.mp4" type="video/mp4">
                     </video>
@@ -293,7 +554,9 @@
                                     Access the highest standard of sports venues instantly. Zero waiting, secure payments, and premium arenas.
                                 </p>
                                 <div class="flex flex-wrap gap-5">
-                                    <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-10 py-5 text-base">View Arenas</button>
+                                    <button onclick="document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'})" class="btn-luxe px-10 py-5 text-base">
+                                        View Arenas
+                                    </button>
                                     <button onclick="sortVenuesByProximity(this); document.getElementById('venues-section').scrollIntoView({behavior: 'smooth'});" class="bg-white/5 hover:bg-white/10 text-white px-10 py-5 rounded-xl font-bold text-base transition border border-white/5 flex items-center gap-2.5 tracking-wide">
                                         📍 Find Near Me
                                     </button>
@@ -462,30 +725,41 @@
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
                     <div id="view-feed" class="block">
                         <div class="flex flex-col xl:flex-row xl:items-center justify-between mb-12 reveal">
+                            
                             <div class="mb-6 xl:mb-0 pr-10">
                                 <h2 class="text-4xl font-black text-white tracking-premium">Available Arenas</h2>
                                 <p class="text-slate-400 mt-1 font-medium text-sm">Real-time availability for verified venues.</p>
                             </div>
-                            <div class="flex overflow-x-auto gap-3.5 hide-scroll pb-2.5 xl:pb-0" id="sport-filters">
-                                <button onclick="filterVenues('All', this)" class="filter-pill active">All Arenas</button>
-                                <button onclick="filterVenues('Football', this)" class="filter-pill">Football</button>
-                                <button onclick="filterVenues('Cricket', this)" class="filter-pill">Cricket</button>
-                                <button onclick="filterVenues('Chess', this)" class="filter-pill">Chess</button>
-                                <button onclick="filterVenues('Carrom', this)" class="filter-pill">Carrom</button>
-                                <button onclick="filterVenues('Basketball', this)" class="filter-pill">Basketball</button>
-                                <button onclick="filterVenues('Tennis', this)" class="filter-pill">Tennis</button>
+                            
+                            <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                                
+                                <div class="relative w-full md:w-64">
+                                    <input type="text" id="venue-search" onkeyup="searchVenues(this.value)" placeholder="Search arenas..." class="input-luxe py-2 px-4 pl-10 text-sm">
+                                    <i class="fas fa-search absolute left-4 top-3 text-gray-500"></i>
+                                </div>
+                                
+                                <div class="flex overflow-x-auto gap-3.5 hide-scroll pb-2.5 md:pb-0 w-full" id="sport-filters">
+                                    <button onclick="filterVenues('All', this)" class="filter-pill active">All</button>
+                                    <button onclick="filterVenues('Football', this)" class="filter-pill">Football</button>
+                                    <button onclick="filterVenues('Cricket', this)" class="filter-pill">Cricket</button>
+                                    <button onclick="filterVenues('Chess', this)" class="filter-pill">Chess</button>
+                                    <button onclick="filterVenues('Carrom', this)" class="filter-pill">Carrom</button>
+                                    <button onclick="filterVenues('Basketball', this)" class="filter-pill">Basketball</button>
+                                    <button onclick="filterVenues('Tennis', this)" class="filter-pill">Tennis</button>
+                                </div>
+                                
                             </div>
                         </div>
                         
                         <div id="venue-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 reveal">
                             </div>
+                        
                     </div>
                 </div>
             </section>
         </div>
 
         <div id="view-academy" class="hidden">
-            
             <section class="relative w-full py-32 flex items-center overflow-hidden border-b border-white/5 bg-slate-900">
                 <div class="absolute inset-0 z-0">
                     <img src="https://images.unsplash.com/photo-1518610543666-419b4891157c?auto=format&fit=crop&w=1920&q=80" alt="Sports Academy" class="w-full h-full object-cover opacity-30 mix-blend-luminosity">
@@ -606,7 +880,6 @@
                     </div>
                 </div>
             </section>
-
         </div>
 
         <div id="view-blog-hub" class="hidden">
@@ -637,15 +910,15 @@
                 <div class="flex flex-col md:flex-row md:items-center justify-between mb-12 reveal">
                     <h2 class="text-3xl font-black text-white tracking-premium mb-6 md:mb-0">Latest Transmissions</h2>
                     <div class="flex overflow-x-auto gap-3 hide-scroll pb-2 md:pb-0">
-                        <button class="filter-pill active">All Posts</button>
-                        <button class="filter-pill">Tactics</button>
-                        <button class="filter-pill">Venues</button>
-                        <button class="filter-pill">App Updates</button>
+                        <button onclick="filterBlogs('All', this)" class="blog-pill filter-pill active">All Posts</button>
+                        <button onclick="filterBlogs('Tactics', this)" class="blog-pill filter-pill">Tactics</button>
+                        <button onclick="filterBlogs('Venues', this)" class="blog-pill filter-pill">Venues</button>
+                        <button onclick="filterBlogs('Updates', this)" class="blog-pill filter-pill">App Updates</button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="card-luxe group cursor-pointer reveal flex flex-col h-full" onclick="switchTab('blog-detail'); window.scrollTo(0,0);">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
+                    <div class="blog-card card-luxe group cursor-pointer reveal flex flex-col h-full" data-category="Tactics" onclick="switchTab('blog-detail'); window.scrollTo(0,0);">
                         <div class="relative h-64 overflow-hidden rounded-t-2xl border-b border-white/5 flex-shrink-0">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-80 z-10"></div>
                             <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80" alt="Football" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
@@ -664,7 +937,7 @@
                         </div>
                     </div>
 
-                    <div class="card-luxe group cursor-pointer reveal flex flex-col h-full" style="transition-delay: 100ms;" onclick="switchTab('blog-detail'); window.scrollTo(0,0);">
+                    <div class="blog-card card-luxe group cursor-pointer reveal flex flex-col h-full" data-category="Venues" onclick="switchTab('blog-detail'); window.scrollTo(0,0);">
                         <div class="relative h-64 overflow-hidden rounded-t-2xl border-b border-white/5 flex-shrink-0">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-80 z-10"></div>
                             <img src="https://images.unsplash.com/photo-1511886929837-354d827a43f7?auto=format&fit=crop&w=600&q=80" alt="Indoor Sports" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
@@ -683,7 +956,7 @@
                         </div>
                     </div>
 
-                    <div class="card-luxe group cursor-pointer reveal flex flex-col h-full" style="transition-delay: 200ms;" onclick="switchTab('blog-detail'); window.scrollTo(0,0);">
+                    <div class="blog-card card-luxe group cursor-pointer reveal flex flex-col h-full" data-category="Updates" onclick="switchTab('blog-detail'); window.scrollTo(0,0);">
                         <div class="relative h-64 overflow-hidden rounded-t-2xl border-b border-white/5 flex-shrink-0">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-80 z-10"></div>
                             <img src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=600&q=80" alt="Team" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
@@ -795,6 +1068,22 @@
             </div>
 
         </div>
+        
+        <div id="view-partner" class="hidden py-40 text-center max-w-2xl mx-auto px-6">
+            <i class="fas fa-handshake text-6xl text-cyan-400 mb-6"></i>
+            <h1 class="text-5xl font-black text-white mb-6">Partner With Us</h1>
+            <p class="text-gray-400 text-lg">Own a turf or run an academy? Join Kolkata's fastest-growing sports network. Drop us an email at <span class="text-white font-bold">partner@squadup.in</span> and we'll set you up in 24 hours.</p>
+        </div>
+        <div id="view-news" class="hidden py-40 text-center max-w-2xl mx-auto px-6">
+            <i class="fas fa-newspaper text-6xl text-indigo-400 mb-6"></i>
+            <h1 class="text-5xl font-black text-white mb-6">News & Events</h1>
+            <p class="text-gray-400 text-lg">We are currently organizing the Summer '26 Corporate League in Salt Lake. Check back soon for registration details and brackets.</p>
+        </div>
+        <div id="view-careers" class="hidden py-40 text-center max-w-2xl mx-auto px-6">
+            <i class="fas fa-briefcase text-6xl text-cyan-400 mb-6"></i>
+            <h1 class="text-5xl font-black text-white mb-6">Careers at SquadUp</h1>
+            <p class="text-gray-400 text-lg">We are looking for Ground Ambassadors in Behala and New Town. Send your resume to <span class="text-white font-bold">careers@squadup.in</span>.</p>
+        </div>
 
         <div id="view-rank" class="hidden reveal max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-10">
             <div class="max-w-4xl mx-auto py-12">
@@ -843,7 +1132,7 @@
                 <div class="md:col-span-2 pr-10">
                     <h2 class="text-4xl font-black text-white tracking-premium mb-5 pointer-events-none">Squad<span class="text-cyan-400 luxe-shadow">Up</span></h2>
                     <p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-7 pointer-events-none">Kolkata's definitive sports venue network. Secure payments, instant bookings.</p>
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wide pointer-events-none">Operated by Easycommune Online Services Pvt Ltd</p>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wide pointer-events-none">Operated by TrendNexus India</p>
                 </div>
                 <div>
                     <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm pointer-events-none">Policies</h4>
@@ -864,126 +1153,142 @@
         </div>
     </footer>
 
-    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[500] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeSheet()">
+    <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[500] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeSheet()">
         <div id="booking-sheet" class="w-full md:max-w-xl bg-[#0a0a0a] rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col border border-white/10 transform translate-y-full md:translate-y-0 md:scale-95 transition-transform duration-300 max-h-[90vh]" onclick="event.stopPropagation()">
             
-            <div class="p-8 flex-shrink-0 border-b border-white/10 bg-[#121212] rounded-t-3xl md:rounded-t-3xl">
-                <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-4 md:hidden"></div>
-                <div class="flex justify-between items-center pr-2">
-                    <div>
-                        <h2 class="text-2xl font-black text-white tracking-tight pointer-events-none" id="book-venue-name">Arena Name</h2>
-                        <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1 pointer-events-none">Sport</p>
+            <div id="booking-form-content" class="flex flex-col h-full">
+                <div class="p-8 flex-shrink-0 border-b border-white/10 bg-[#121212] rounded-t-3xl md:rounded-t-3xl">
+                    <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-4 md:hidden"></div>
+                    <div class="flex justify-between items-center pr-2">
+                        <div>
+                            <h2 class="text-2xl font-black text-white tracking-tight pointer-events-none" id="book-venue-name">Arena Name</h2>
+                            <p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1 pointer-events-none">Sport</p>
+                        </div>
+                        <button onclick="closeSheet()" class="w-8 h-8 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 transition hidden md:flex text-lg relative z-10">✕</button>
                     </div>
-                    <button onclick="closeSheet()" class="w-8 h-8 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 transition hidden md:flex text-lg relative z-10">✕</button>
+                </div>
+                
+                <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-6 relative z-10">
+                    <div class="flex justify-between items-center bg-[#121212] p-4 rounded-2xl border border-white/5">
+                        <div>
+                            <label class="text-sm font-bold text-white block pointer-events-none">Number of Players</label>
+                            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mt-1 font-display pointer-events-none">Limits apply per arena</p>
+                        </div>
+                        <div class="flex items-center gap-3 bg-[#050505] p-1.5 rounded-full border border-white/10 relative z-10">
+                            <button onclick="adjCount(-1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition relative z-10">-</button>
+                            <input type="number" id="book-count" min="1" max="10" value="1" class="w-8 bg-transparent text-center text-lg font-black text-white outline-none relative z-10" onchange="updatePrice()" readonly>
+                            <button onclick="adjCount(1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition relative z-10">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 relative z-10">
+                        <div class="relative">
+                            <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Date</label>
+                            <input type="date" id="book-date" class="input-luxe py-3 text-sm w-full relative z-10 appearance-none" onchange="handleDateChange()">
+                            <i class="fas fa-calendar-alt absolute right-4 top-[38px] text-gray-400 pointer-events-none z-20"></i>
+                        </div>
+                        <div class="relative">
+                            <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Time</label>
+                            <select id="book-time" class="input-luxe py-3 text-sm w-full relative z-10 appearance-none" onchange="checkAvailability()">
+                                <option value="06:00 AM to 08:00 AM">06:00 A.M to 8:00 A.M</option>
+                                <option value="09:00 AM to 11:00 AM">09:00 A.M to 11:00 A.M</option>
+                                <option value="05:00 PM to 07:00 PM">05:00 P.M to 07:00 P.M</option>
+                                <option value="08:00 PM to 10:00 PM">08:00 P.M to 10:00 P.M</option>
+                            </select>
+                            <i class="fas fa-clock absolute right-4 top-[38px] text-gray-400 pointer-events-none z-20"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-center justify-between pointer-events-none">
+                        <span class="text-xs font-bold text-cyan-500 uppercase tracking-wide luxe-shadow">Availability</span>
+                        <span id="slot-status" class="text-sm font-black text-white">Checking...</span>
+                    </div>
+                    
+                    <div class="relative z-10">
+                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Payment Method</label>
+                        <select id="book-pay" class="input-luxe py-4 font-semibold text-white relative z-10" onchange="toggleWarning()"></select>
+                    </div>
+                    
+                    <div id="liquidation-warning" class="hidden bg-orange-500/10 text-orange-400 text-[11px] font-medium p-4 rounded-xl border border-orange-500/20 leading-relaxed pointer-events-none"></div>
+                </div>
+
+                <div class="p-6 border-t border-white/10 bg-[#121212] md:rounded-b-3xl flex items-center justify-between pb-safe relative z-10">
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5 pointer-events-none">Total Amount</p>
+                        <p id="total-price" class="text-3xl font-black text-white luxe-shadow pointer-events-none">₹0</p>
+                    </div>
+                    <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-4 btn-luxe text-base w-1/2 relative z-10">Confirm Booking</button>
                 </div>
             </div>
             
-            <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-6 relative z-10">
-                <div class="flex justify-between items-center bg-[#121212] p-4 rounded-2xl border border-white/5">
-                    <div>
-                        <label class="text-sm font-bold text-white block pointer-events-none">Number of Players</label>
-                        <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mt-1 font-display pointer-events-none">Limits apply per arena</p>
-                    </div>
-                    <div class="flex items-center gap-3 bg-[#050505] p-1.5 rounded-full border border-white/10 relative z-10">
-                        <button onclick="adjCount(-1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition relative z-10">-</button>
-                        <input type="number" id="book-count" min="1" max="10" value="1" class="w-8 bg-transparent text-center text-lg font-black text-white outline-none relative z-10" onchange="updatePrice()" readonly>
-                        <button onclick="adjCount(1)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition relative z-10">+</button>
-                    </div>
+            <div id="booking-success-screen" class="hidden flex-col items-center justify-center p-12 text-center h-full">
+                <div class="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center border border-green-500/40 mb-6">
+                    <i class="fas fa-check text-4xl text-green-400"></i>
                 </div>
-                
-                <div class="grid grid-cols-2 gap-4 relative z-10">
-                    <div class="relative">
-                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Date</label>
-                        <input type="date" id="book-date" class="input-luxe py-3 text-sm relative z-10 appearance-none" onchange="handleDateChange()">
-                        <i class="fas fa-calendar-alt absolute right-4 top-[38px] text-gray-400 pointer-events-none z-20"></i>
-                    </div>
-                    <div class="relative">
-                        <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Select Time</label>
-                        <select id="book-time" class="input-luxe py-3 text-sm relative z-10 appearance-none" onchange="checkAvailability()">
-                            <option value="06:00 AM to 08:00 AM">06:00 A.M to 8:00 A.M</option>
-                            <option value="09:00 AM to 11:00 AM">09:00 A.M to 11:00 A.M</option>
-                            <option value="05:00 PM to 07:00 PM">05:00 P.M to 07:00 P.M</option>
-                            <option value="08:00 PM to 10:00 PM">08:00 P.M to 10:00 P.M</option>
-                        </select>
-                        <i class="fas fa-clock absolute right-4 top-[38px] text-gray-400 pointer-events-none z-20"></i>
-                    </div>
-                </div>
-                
-                <div class="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-center justify-between pointer-events-none">
-                    <span class="text-xs font-bold text-cyan-500 uppercase tracking-wide luxe-shadow">Availability</span>
-                    <span id="slot-status" class="text-sm font-black text-white">Checking...</span>
-                </div>
-                
-                <div class="relative z-10">
-                    <label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest pointer-events-none">Payment Method</label>
-                    <select id="book-pay" class="input-luxe py-4 font-semibold text-white relative z-10" onchange="toggleWarning()"></select>
-                </div>
-                
-                <div id="liquidation-warning" class="hidden bg-orange-500/10 text-orange-400 text-[11px] font-medium p-4 rounded-xl border border-orange-500/20 leading-relaxed pointer-events-none"></div>
+                <h2 class="text-4xl font-black text-white mb-2">Confirmed!</h2>
+                <p class="text-gray-400 text-sm mb-8">Your slot is locked in. We've sent a receipt to your registered phone number.</p>
+                <button onclick="closeSheetAndReset()" class="w-full py-4 btn-luxe text-sm font-bold uppercase tracking-widest">Back to Arenas</button>
             </div>
 
-            <div class="p-6 border-t border-white/10 bg-[#121212] md:rounded-b-3xl flex items-center justify-between pb-safe relative z-10">
-                <div>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5 pointer-events-none">Total Amount</p>
-                    <p id="total-price" class="text-3xl font-black text-white luxe-shadow pointer-events-none">₹0</p>
-                </div>
-                <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-4 btn-luxe text-base w-1/2 relative z-10">Confirm Booking</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="disc-modal" class="hidden fixed inset-0 z-[600] bg-black/80 flex items-center justify-center p-4 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-400">
-        <div class="card-luxe p-10 max-w-lg w-full shadow-2xl relative transform scale-95 transition-transform duration-400" onclick="event.stopPropagation()">
-            <h2 class="text-3xl font-black mb-5 text-red-500 uppercase border-b border-white/5 pb-4 tracking-premium pointer-events-none">Terms & Conditions</h2>
-            <div class="text-gray-500 text-sm leading-relaxed mb-8 space-y-4 max-h-64 overflow-y-auto pr-2 hide-scroll font-medium border-l-2 border-white/5 pl-4 relative z-10">
-                <p>Welcome to SquadUp. By accessing or using our platform, you acknowledge and agree to be bound by these terms.</p>
-                <p><strong class="text-white">1. Bookings & Availability:</strong> All bookings are subject to real-time turf availability. In the event of a double-booking error, a full refund will be initiated.</p>
-                <p><strong class="text-white">2. Payments:</strong> Advance payments made to secure a slot are final. Cancellations made within 24 hours of the play time are non-refundable.</p>
-                <p><strong class="text-white">3. Code of Conduct:</strong> Players must adhere strictly to the rules of the respective arenas. SquadUp reserves the right to suspend accounts of users reported for misconduct or vandalism.</p>
-            </div>
-            <button onclick="closeModal('disc-modal')" class="w-full py-4.5 bg-white text-onyx font-bold rounded-xl hover:bg-slate-200 transition tracking-wide uppercase text-sm relative z-10">I Acknowledge</button>
-        </div>
-    </div>
-
-    <div id="about-modal" class="hidden fixed inset-0 z-[600] bg-black/80 flex items-center justify-center p-4 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-400" onclick="closeModal('about-modal')">
-        <div class="card-luxe p-10 max-w-md w-full shadow-2xl relative transform scale-95 transition-transform duration-400 text-center" onclick="event.stopPropagation()">
-            <button onclick="closeModal('about-modal')" class="absolute top-6 right-6 text-gray-500 hover:text-white text-2xl transition">✕</button>
-            <div class="w-20 h-20 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-cyan-500/40">
-                <i class="fas fa-bolt text-3xl text-cyan-400"></i>
-            </div>
-            <h2 class="text-4xl font-black text-white mb-4">About <span class="text-cyan-400 luxe-shadow">SquadUp</span></h2>
-            <p class="text-gray-400 text-base leading-relaxed max-w-lg mx-auto">Built locally in Kolkata, SquadUp is the premier digital network connecting players to the city's finest turfs, courts, and arenas. We eliminate the friction of phone calls and wait times, replacing them with instant, secure bookings.</p>
         </div>
     </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; // DO NOT FORGET TO ADD YOUR URL
-        let currentUser = null; let activeVenue = null; window.venues = [];
-        let tapCount = 0; let tapTimer; let currentFilter = 'All';
+        // --- BLANK SCREEN PREVENTER (Forces visibility if JS fails) ---
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
+                    el.classList.add('active'); 
+                });
+            }, 3000);
+        });
 
-        // FIX 3: Toastify Implementation
+        // --- ANIMATION ENGINE ---
+        var observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        var observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) { observer.observe(el); });
+        // ---------------------------------
+
+        // 🛑 REPLACE THIS WITH YOUR NEW GOOGLE SCRIPT URL 🛑
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbywQhG5tuqFgsF795DbBWhEplxzAKBSyVn8AuaZVklyKWlP1DXtS2cJ_i917cI-e-0f/exec'; 
+        
+        let currentUser = null; 
+        let activeVenue = null; 
+        window.venues = [];
+        let tapCount = 0; 
+        let tapTimer; 
+        let currentFilter = 'All'; 
+        let authShownOnce = false;
+
+        // FIX 3: Toastify Function
         function showToast(msg, type = 'success') {
-            const bg = type === 'error' ? "linear-gradient(to right, #ef4444, #dc2626)" : "linear-gradient(to right, #06b6d4, #6366f1)";
+            var bg = type === 'error' ? "linear-gradient(to right, #ef4444, #dc2626)" : "linear-gradient(to right, #06b6d4, #6366f1)";
             Toastify({
                 text: msg, duration: 3000, close: true, gravity: "top", position: "center",
                 style: { background: bg, borderRadius: "10px", fontWeight: "bold", fontFamily: "'Outfit', sans-serif" }
             }).showToast();
         }
 
-        // FIX 1: Password Hashing
+        // FIX 1: Secure Password Hashing
         async function hashPassword(password) {
-            const msgBuffer = new TextEncoder().encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            var msgBuffer = new TextEncoder().encode(password);
+            var hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            var hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
         }
 
-        // FIX 1: Secure POST Request (Replaces fetchJSONP)
+        // FIX 1: Secure REST API Call (Replaces fetchJSONP)
         async function fetchAPI(data) { 
             try {
-                const response = await fetch(scriptURL, {
+                var response = await fetch(scriptURL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(data)
@@ -999,198 +1304,141 @@
             document.getElementById('side-menu-overlay').classList.remove('opacity-0', 'pointer-events-none');
             document.getElementById('side-menu').classList.remove('translate-x-full');
         }
+        
         function closeMenu() {
             document.getElementById('side-menu-overlay').classList.add('opacity-0', 'pointer-events-none');
             document.getElementById('side-menu').classList.add('translate-x-full');
         }
 
         function switchTab(tabId) {
-            const views = [
+            var views = [
                 document.getElementById('view-home'),
                 document.getElementById('venues-section'),
                 document.getElementById('view-rank'),
                 document.getElementById('view-admin'),
                 document.getElementById('view-blog-hub'),
                 document.getElementById('view-blog-detail'),
-                document.getElementById('view-academy')
+                document.getElementById('view-academy'),
+                document.getElementById('view-partner'),
+                document.getElementById('view-news'),
+                document.getElementById('view-careers')
             ];
 
             views.forEach(function(view) { if(view) view.classList.add('hidden'); });
 
-            const grid = document.getElementById('venue-grid');
-            const filters = document.getElementById('sport-filters');
+            var grid = document.getElementById('venue-grid');
+            var filters = document.getElementById('sport-filters');
             if(grid) grid.classList.add('hidden');
             if(filters) filters.classList.add('hidden');
 
             if(tabId === 'feed') {
-                if(views[0]) views[0].classList.remove('hidden');
-                if(views[1]) views[1].classList.remove('hidden'); 
+                document.getElementById('view-home').classList.remove('hidden');
+                document.getElementById('venues-section').classList.remove('hidden'); 
                 if(grid) grid.classList.remove('hidden'); 
                 if(filters) filters.classList.remove('hidden');
-            } else if (tabId === 'rank') {
-                if(views[1]) views[1].classList.remove('hidden'); 
-                if(views[2]) views[2].classList.remove('hidden');
             } else if (tabId === 'admin') {
-                if(views[1]) views[1].classList.remove('hidden'); 
-                if(views[3]) views[3].classList.remove('hidden');
-            } else if (tabId === 'blog-hub') {
-                if(views[4]) views[4].classList.remove('hidden');
-                document.querySelectorAll('#view-blog-hub .reveal').forEach(function(el){ observer.observe(el); });
-            } else if (tabId === 'blog-detail') {
-                if(views[5]) views[5].classList.remove('hidden');
-                document.querySelectorAll('#view-blog-detail .reveal').forEach(function(el){ observer.observe(el); });
-            } else if (tabId === 'academy') {
-                if(views[6]) views[6].classList.remove('hidden');
-                document.querySelectorAll('#view-academy .reveal').forEach(function(el){ observer.observe(el); });
+                document.getElementById('venues-section').classList.remove('hidden'); 
+                document.getElementById('view-admin').classList.remove('hidden');
+            } else {
+                var vs = document.getElementById('venues-section'); 
+                if(vs) vs.classList.add('hidden'); 
+                var el = document.getElementById('view-' + tabId); 
+                if(el) el.classList.remove('hidden');
             }
-        }
-
-        function submitAcademyLead(e) {
-            e.preventDefault();
-            const btn = e.target.querySelector('button[type="submit"]');
-            const originalText = btn.innerText;
-            btn.innerText = "Sending Request...";
-            btn.classList.add('opacity-50', 'cursor-wait');
-
-            setTimeout(function() {
-                showToast("Demo Request Sent! Our integration team will contact you shortly.");
-                e.target.reset();
-                btn.innerText = originalText;
-                btn.classList.remove('opacity-50', 'cursor-wait');
-            }, 1500);
-        }
-
-        function runExpansionMatrix() {
-            const container = document.getElementById('map-matrix-container');
-            const scaleTitle = document.getElementById('scale-title');
-            const scaleDesc = document.getElementById('scale-desc');
-            const badge = document.getElementById('scale-badge');
-            const indicator = document.getElementById('pulse-indicator');
             
-            if(!container) return;
-
-            let isKolkata = true;
-
-            setInterval(function() {
-                if(isKolkata) {
-                    container.classList.remove('state-kolkata');
-                    container.classList.add('state-india');
-                    badge.innerText = "Future Scale";
-                    indicator.classList.replace('bg-cyan-400', 'bg-indigo-400');
-                    scaleTitle.innerHTML = 'EXPANDING TO<br><span class="text-indigo-400 luxe-shadow">ALL-INDIA NETWORK.</span>';
-                    scaleDesc.innerText = "Our vision extends beyond Bengal. We are engineering the infrastructure to deploy SquadUp across every major Indian metropolis. The next generation of athletic routing is imminent.";
-                    isKolkata = false;
-                } else {
-                    container.classList.remove('state-india');
-                    container.classList.add('state-kolkata');
-                    badge.innerText = "Network Scale";
-                    indicator.classList.replace('bg-indigo-400', 'bg-cyan-400');
-                    scaleTitle.innerHTML = 'THE KOLKATA POWER-HUB:<br><span class="text-cyan-400 luxe-shadow">OPERATING AT SCALE.</span>';
-                    scaleDesc.innerText = "Kolkata is our genesis point. We have built the city's most robust sports booking ledger, successfully authenticating thousands of players with zero wait times.";
-                    isKolkata = true;
-                }
-            }, 6000); 
+            window.scrollTo(0,0);
+            
+            // Re-trigger animations for new tabs
+            document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) { 
+                el.classList.remove('active'); 
+                observer.observe(el); 
+            });
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const mockup = document.getElementById('hero-mockup-container');
-            if(mockup) {
-                mockup.addEventListener('mousemove', function(e) {
-                    const frame = mockup.querySelector('.mockup-frame');
-                    const rect = mockup.getBoundingClientRect();
-                    const x = e.clientX - rect.left - (rect.width / 2);
-                    const y = e.clientY - rect.top - (rect.height / 2);
-                    const xAxis = -(y / 20); 
-                    const yAxis = (x / 20);  
-                    frame.style.transform = `rotateY(${yAxis}deg) rotateX(${xAxis}deg) rotateZ(-3deg)`;
+        // BLOG FILTER LOGIC
+        function filterBlogs(category, btnElement) {
+            if(btnElement) {
+                document.querySelectorAll('.blog-pill').forEach(function(b) {
+                    b.classList.remove('bg-white', 'text-black', 'border-white');
+                    b.classList.add('bg-transparent', 'text-[#a1a1aa]', 'border-white/10');
                 });
-                mockup.addEventListener('mouseleave', function() {
-                    const frame = mockup.querySelector('.mockup-frame');
-                    frame.style.transform = 'rotateY(0deg) rotateX(0deg) rotateZ(-3deg)';
-                });
+                btnElement.classList.remove('bg-transparent', 'text-[#a1a1aa]', 'border-white/10');
+                btnElement.classList.add('bg-white', 'text-black', 'border-white');
             }
-            runExpansionMatrix();
-        });
+            
+            var cards = document.querySelectorAll('.blog-card');
+            cards.forEach(function(card) {
+                if (category === 'All' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
 
         document.addEventListener('DOMContentLoaded', async function() {
-            const savedUser = sessionStorage.getItem('squadupUser');
+            var savedUser = sessionStorage.getItem('squadupUser');
             if (savedUser) { currentUser = JSON.parse(savedUser); }
 
-            // FIX 10 & 2: Exact Onboarding Flow
-            setTimeout(() => {
-                const loader = document.getElementById('preloader');
+            // INJECT SKELETON LOADERS IMMEDIATELY
+            var cont = document.getElementById('venue-grid'); 
+            if(cont) {
+                cont.innerHTML = '';
+                for(let i=0; i<4; i++) {
+                    cont.innerHTML += `
+                    <div class="card-luxe p-6 animate-skeleton opacity-50">
+                        <div class="h-44 bg-slate-800 rounded-2xl mb-4"></div>
+                        <div class="h-6 bg-slate-800 w-3/4 rounded mb-2"></div>
+                        <div class="h-4 bg-slate-800 w-1/2 rounded mb-6"></div>
+                    </div>`;
+                }
+            }
+
+            try {
+                var res = await fetchAPI({ action: 'sync' });
+                
+                // DATA RECEIVED: REMOVE PRELOADER INSTANTLY
+                var loader = document.getElementById('preloader');
                 if (loader) {
                     loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 500);
+                    setTimeout(function() { loader.style.display = 'none'; }, 500); 
                     
-                    // Show Auth exactly 2 seconds after preloader starts fading
-                    setTimeout(() => {
+                    // FIX 2 & 10: T&C or Auth Flow
+                    setTimeout(function() {
                         if(!currentUser) {
                             openAuth();
                         } else {
-                            // If they are already logged in from a previous session, show T&C immediately upon entering site
+                            // If logged in from a previous session, show T&C
                             showModal('disc-modal');
                         }
-                    }, 2000);
+                    }, 1000);
                 }
-            }, 2200);
 
-            try {
-                const res = await fetchAPI({ action: 'sync' });
                 if(res && res.status === 'success') {
                     window.venues = res.venues || [];
                     window.activeBookings = res.bookings || [];
                 }
-            } catch(e) {
-                console.log("Database connection pending.", e);
+            } catch(e) { 
+                console.log("Database connection pending.", e); 
             }
 
             if (currentUser) { updateUILoggedIn(); } 
             else { filterVenues('All', document.querySelector('.filter-pill')); }
+            
+            // Map Fix: Ensure the iframe is loaded with a valid URL so 404 is gone
+            var mapIframe = document.querySelector('#kolkata-view iframe');
+            if(mapIframe) mapIframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117925.35231278278!2d88.26495089307466!3d22.535406374526744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f882db4908f667%3A0x43e330e68f6c2cbc!2sKolkata%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1713511100000!5m2!1sen!2sin";
         });
 
-        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-        const observer = new IntersectionObserver(function(entries, observer) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) { observer.observe(el); });
-
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('.glass-nav');
-            if(nav) {
-                if (window.scrollY > 20) nav.classList.add('scrolled');
-                else nav.classList.remove('scrolled');
-            }
-        });
-
-        function ghostTrigger() {
-            tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(function(){ tapCount = 0; }, 1500);
-            if(tapCount === 5) {
-                document.getElementById('login-box').classList.add('hidden');
-                document.getElementById('admin-login-box').classList.remove('hidden');
-                tapCount = 0;
-            }
-        }
-        
         function toggleAuth(type) { 
             document.getElementById('login-box').classList.add('hidden');
             document.getElementById('register-box').classList.add('hidden');
-            document.getElementById('admin-login-box').classList.add('hidden');
-            
-            if(type === 'login') document.getElementById('login-box').classList.remove('hidden');
-            if(type === 'register') document.getElementById('register-box').classList.remove('hidden');
-            if(type === 'admin') document.getElementById('admin-login-box').classList.remove('hidden');
+            document.getElementById(type + '-box').classList.remove('hidden');
         }
 
         function openAuth() {
-            const overlay = document.getElementById('auth-overlay');
-            const card = document.getElementById('auth-card');
+            var overlay = document.getElementById('auth-overlay');
+            var card = document.getElementById('auth-card');
             overlay.classList.remove('hidden');
             setTimeout(function() {
                 overlay.classList.remove('opacity-0', 'pointer-events-none');
@@ -1200,23 +1448,23 @@
         }
 
         function closeAuth() {
-            const overlay = document.getElementById('auth-overlay');
-            const card = document.getElementById('auth-card');
+            var overlay = document.getElementById('auth-overlay');
+            var card = document.getElementById('auth-card');
             card.classList.remove('scale-100');
             card.classList.add('scale-95');
             overlay.classList.add('opacity-0', 'pointer-events-none');
             
             setTimeout(function() { 
                 overlay.classList.add('hidden'); 
-                // FIX 10: Trigger T&C immediately after Auth box closes
+                // FIX 2 & 10: Trigger T&C immediately after Auth box closes
                 showModal('disc-modal');
             }, 400);
         }
 
         function showModal(id) {
-            const overlay = document.getElementById(id);
+            var overlay = document.getElementById(id);
             if(!overlay) return;
-            const card = overlay.querySelector('.card-luxe');
+            var card = overlay.querySelector('.card-luxe');
             overlay.classList.remove('hidden');
             setTimeout(function() {
                 overlay.classList.remove('opacity-0', 'pointer-events-none');
@@ -1225,9 +1473,9 @@
         }
 
         function closeModal(id) {
-            const overlay = document.getElementById(id);
+            var overlay = document.getElementById(id);
             if(!overlay) return;
-            const card = overlay.querySelector('.card-luxe');
+            var card = overlay.querySelector('.card-luxe');
             if(card) { card.classList.remove('scale-100'); card.classList.add('scale-95'); }
             overlay.classList.add('opacity-0', 'pointer-events-none');
             setTimeout(function() { overlay.classList.add('hidden'); }, 400);
@@ -1239,10 +1487,10 @@
         }
 
         function updateUILoggedIn() {
-            const uName = currentUser?.name || 'Player';
-            const initial = uName.charAt(0).toUpperCase();
+            var uName = currentUser?.name || 'Player';
+            var initial = uName.charAt(0).toUpperCase();
             
-            const menuAuthSection = document.getElementById('menu-auth-section');
+            var menuAuthSection = document.getElementById('menu-auth-section');
             if(menuAuthSection) {
                 menuAuthSection.innerHTML = `
                     <div class="flex items-center gap-4 bg-slate-900/50 p-4 rounded-2xl border border-white/5 relative z-20">
@@ -1259,13 +1507,13 @@
             }
             
             if(currentUser?.role === 'owner' || currentUser?.role === 'staff') {
-                const navAdminDesk = document.getElementById('nav-btn-admin-desktop');
+                var navAdminDesk = document.getElementById('nav-btn-admin-desktop');
                 if(navAdminDesk) navAdminDesk.classList.remove('hidden');
                 
-                const menuAdmin = document.getElementById('menu-btn-admin');
+                var menuAdmin = document.getElementById('menu-btn-admin');
                 if(menuAdmin) menuAdmin.classList.remove('hidden');
                 
-                const ownerPanel = document.getElementById('owner-panel');
+                var ownerPanel = document.getElementById('owner-panel');
                 if(currentUser?.role === 'owner' && ownerPanel) ownerPanel.classList.remove('hidden');
                 populateAdminSelect();
             }
@@ -1275,14 +1523,14 @@
         }
 
         function getLocalISODate() {
-            const now = new Date();
-            const offset = now.getTimezoneOffset() * 60000;
+            var now = new Date();
+            var offset = now.getTimezoneOffset() * 60000;
             return new Date(now.getTime() - offset).toISOString().split('T')[0];
         }
 
         function initDatePicker() {
-            const dateInput = document.getElementById('book-date'); 
-            const todayStr = getLocalISODate();
+            var dateInput = document.getElementById('book-date'); 
+            var todayStr = getLocalISODate();
             dateInput.min = todayStr; 
             dateInput.value = todayStr;
         }
@@ -1293,36 +1541,36 @@
         }
 
         function populateTimeSlots() {
-            const timeSelect = document.getElementById('book-time');
-            const selectedDate = document.getElementById('book-date');
+            var timeSelect = document.getElementById('book-time');
+            var selectedDate = document.getElementById('book-date');
             if(!selectedDate || !timeSelect) return;
             
-            const selectedDateVal = selectedDate.value;
-            const todayStr = getLocalISODate();
-            const isToday = selectedDateVal === todayStr;
+            var selectedDateVal = selectedDate.value;
+            var todayStr = getLocalISODate();
+            var isToday = selectedDateVal === todayStr;
 
-            const now = new Date();
-            const currentHour = now.getHours();
-            const currentMin = now.getMinutes();
+            var now = new Date();
+            var currentHour = now.getHours();
+            var currentMin = now.getMinutes();
 
             timeSelect.innerHTML = '';
-            let addedCount = 0;
+            var addedCount = 0;
             
-            // FIX 3: Default EXACT Time Slots requested by user if venue doesn't specify
-            let timesToUse = (activeVenue && activeVenue.times && activeVenue.times !== "") 
+            // FIX 3: Default EXACT Time Slots requested by user
+            var timesToUse = (activeVenue && activeVenue.times && activeVenue.times !== "") 
                 ? activeVenue.times 
                 : "06:00 AM to 08:00 AM, 09:00 AM to 11:00 AM, 05:00 PM to 07:00 PM, 08:00 PM to 10:00 PM";
 
             timesToUse.split(',').forEach(function(t) {
-                const timeStr = t.trim();
-                let isPast = false;
+                var timeStr = t.trim();
+                var isPast = false;
 
                 if(isToday) {
-                    const match = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+                    var match = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
                     if(match) {
-                        let hour = parseInt(match[1], 10);
-                        const min = parseInt(match[2], 10);
-                        const ampm = match[3].toUpperCase();
+                        var hour = parseInt(match[1], 10);
+                        var min = parseInt(match[2], 10);
+                        var ampm = match[3].toUpperCase();
 
                         if(ampm === 'PM' && hour < 12) hour += 12;
                         if(ampm === 'AM' && hour === 12) hour = 0;
@@ -1331,110 +1579,44 @@
                     }
                 }
 
-                if(!isPast) { timeSelect.innerHTML += `<option value="${timeStr}">${timeStr}</option>`; addedCount++; }
+                if(!isPast) { 
+                    // FIX 4: Ensures dropdown options are visible with dark bg
+                    timeSelect.innerHTML += `<option value="${timeStr}" style="background: #0f172a; color: white;">${timeStr}</option>`; 
+                    addedCount++; 
+                }
             });
 
-            if(addedCount === 0) { timeSelect.innerHTML = `<option value="">No times available</option>`; }
+            if(addedCount === 0) { 
+                timeSelect.innerHTML = `<option value="" style="background: #0f172a; color: white;">No times available</option>`; 
+            }
         }
 
         function getDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            var R = 6371; var dLat = (lat2 - lat1) * Math.PI / 180; var dLon = (lon2 - lon1) * Math.PI / 180;
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
             return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         }
 
-        function sortVenuesByProximity(btn) {
-            if(!btn) return;
-            if (navigator.geolocation) {
-                const originalText = btn.innerHTML;
-                btn.innerHTML = `📍 Locating...`;
-                
-                navigator.geolocation.getCurrentPosition(function(pos) {
-                    window.venues.forEach(function(v) { if(v.lat && v.lon) v.distance = getDistance(pos.coords.latitude, pos.coords.longitude, v.lat, v.lon).toFixed(1); });
-                    window.venues.sort(function(a, b) { return (a.distance || 99) - (b.distance || 99); });
-                    filterVenues(currentFilter, null); 
-                    btn.innerHTML = `📍 Sorted`;
-                    setTimeout(function() { btn.innerHTML = originalText; }, 3000);
-                }, function() {
-                    showToast("Location access denied.", "error");
-                    btn.innerHTML = `❌ Denied`;
-                    setTimeout(function() { btn.innerHTML = originalText; }, 3000);
-                });
-            } else {
-                showToast("Geolocation is not supported by your browser.", "error");
-            }
-        }
-
-        async function handleLogin(type) {
-            const btn = type === 'admin' ? document.getElementById('admin-btn-login') : document.getElementById('login-btn');
-            const idField = type === 'admin' ? 'admin-login-id' : 'login-id';
-            const passField = type === 'admin' ? 'admin-login-pass' : 'login-pass';
+        // INSTANT TEXT SEARCH
+        function searchVenues(query) {
+            var cont = document.getElementById('venue-grid'); 
+            if(!cont) return;
             
-            const originalText = btn.innerText;
-            btn.innerText = "Authenticating..."; btn.classList.add('opacity-50', 'cursor-wait');
+            var lowerQuery = query.toLowerCase();
+            var filtered = window.venues.filter(function(v) {
+                var matchesSport = currentFilter === 'All' || v.sport === currentFilter;
+                var matchesText = v.name.toLowerCase().includes(lowerQuery) || v.loc.toLowerCase().includes(lowerQuery);
+                return matchesSport && matchesText;
+            });
             
-            try {
-                const rawPass = document.getElementById(passField).value;
-                if(!rawPass) { showToast("Password cannot be empty.", "error"); btn.innerText = originalText; btn.classList.remove('opacity-50', 'cursor-wait'); return; }
-                const hashedPass = await hashPassword(rawPass);
-                
-                const res = await fetchAPI({ action: 'login', loginId: document.getElementById(idField).value, password: hashedPass });
-                
-                if(res && res.status === 'success') {
-                    currentUser = res.user; window.venues = res.venues || []; window.activeBookings = res.bookings || []; 
-                    sessionStorage.setItem('squadupUser', JSON.stringify(currentUser));
-                    closeAuth();
-                    updateUILoggedIn();
-                    
-                    setTimeout(function() { 
-                        const vs = document.getElementById('venues-section');
-                        if(vs) vs.scrollIntoView({behavior: 'smooth'}); 
-                    }, 500);
-
-                } else { 
-                    showToast(res?.msg || "Login Failed.", "error"); 
-                    btn.innerText = originalText; 
-                    btn.classList.remove('opacity-50', 'cursor-wait'); 
-                }
-            } catch (e) {
-                console.error("Login Error:", e);
-                showToast(e.message || "An unexpected error occurred.", "error");
-                btn.innerText = originalText; 
-                btn.classList.remove('opacity-50', 'cursor-wait');
-            }
-        }
-
-        async function handleRegister() {
-            const btn = document.getElementById('reg-btn'); btn.innerText = "Creating Account..."; btn.classList.add('opacity-50');
-            const phoneVal = document.getElementById('reg-phone').value;
-            if(phoneVal.length !== 10 || isNaN(phoneVal)) { showToast("Phone number must be exactly 10 digits.", "error"); btn.innerText = "Sign Up"; btn.classList.remove('opacity-50'); return; }
-            
-            const rawPass = document.getElementById('reg-pass').value;
-            if(!rawPass) { showToast("Password cannot be empty.", "error"); btn.innerText = "Sign Up"; btn.classList.remove('opacity-50'); return; }
-            const hashedPass = await hashPassword(rawPass);
-            
-            const data = { action: 'register', name: document.getElementById('reg-name').value, phone: phoneVal, email: document.getElementById('reg-email').value, password: hashedPass, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value };
-            
-            try {
-                const res = await fetchAPI(data);
-                if(res && res.status === 'success') { 
-                    showToast("Account Created! Please Login."); 
-                    toggleAuth('login'); 
-                } else { 
-                    showToast(res?.msg || "Registration Failed", "error"); 
-                }
-            } catch(e) {
-                console.error("Register Error:", e);
-                showToast("Error: " + e.message, "error");
-            } finally {
-                btn.innerText = "Sign Up"; btn.classList.remove('opacity-50');
-            }
+            window.currentFilteredVenues = filtered;
+            renderVenueGrid(filtered, cont);
         }
 
         function filterVenues(sport, btnElement) {
             currentFilter = sport;
             if(btnElement) {
-                document.querySelectorAll('.filter-pill').forEach(function(b) {
+                document.querySelectorAll('#sport-filters .filter-pill').forEach(function(b) {
                     b.classList.remove('bg-white', 'text-black', 'border-white');
                     b.classList.add('bg-transparent', 'text-[#a1a1aa]', 'border-white/10');
                 });
@@ -1442,48 +1624,61 @@
                 btnElement.classList.add('bg-white', 'text-black', 'border-white');
             }
             
-            const cont = document.getElementById('venue-grid'); 
-            if(!cont) return;
-            cont.innerHTML = '';
-            
-            // FIX 2: Login Wall removed. All users can see the venues.
+            var searchBar = document.getElementById('venue-search');
+            if(searchBar) searchBar.value = '';
 
-            let filtered = window.venues;
-            if(sport !== 'All') filtered = window.venues.filter(function(v){ return v.sport === sport; });
+            var cont = document.getElementById('venue-grid'); 
+            if(!cont) return; 
             
-            if(filtered.length === 0) { cont.innerHTML = `<div class="col-span-full text-center py-20"><p class="text-gray-600 font-bold font-display uppercase tracking-widest text-sm">No arenas found for ${sport}.</p></div>`; return; }
+            var filtered = window.venues;
+            if(sport !== 'All') {
+                filtered = window.venues.filter(function(v){ return v.sport === sport; });
+            }
+            
+            window.currentFilteredVenues = filtered;
+            renderVenueGrid(filtered, cont);
+        }
+
+        function renderVenueGrid(filtered, cont) {
+            cont.innerHTML = '';
+            if(filtered.length === 0) { 
+                cont.innerHTML = `<div class="col-span-full text-center py-20"><p class="text-gray-600 font-bold font-display uppercase tracking-widest text-sm">No arenas found for ${currentFilter}.</p></div>`; 
+                return; 
+            }
 
             filtered.forEach(function(v, index) {
-                const isP = v.status === "Pending";
-                const distDisplay = v.distance ? `<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] px-2 py-0.5 rounded-md font-bold ml-2 whitespace-nowrap tracking-wide font-display">${v.distance} km</span>` : '';
+                var isP = v.status === "Pending";
+                var distDisplay = v.distance ? `<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] px-2 py-0.5 rounded-md font-bold ml-2 whitespace-nowrap tracking-wide font-display">${v.distance} km</span>` : '';
                 
-                const safeName = v.name.replace(/'/g, "\\'");
+                var safeName = v.name.replace(/'/g, "\\'");
                 
-                // FIX 1: Exact Original Image Logic Reverted
-                const safeImg = v.img;
-                let visual = '';
-                if (safeImg && safeImg.trim() !== '') {
-                    visual = `<img src="${safeImg}" class="absolute inset-0 w-full h-full object-cover ${isP ? 'grayscale opacity-30' : ''}">`;
-                } else {
-                    let fallbackEmoji = '🏟️';
-                    if(v.sport === 'Football') fallbackEmoji = '⚽';
-                    if(v.sport === 'Cricket') fallbackEmoji = '🏏';
-                    if(v.sport === 'Chess') fallbackEmoji = '♟️';
-                    if(v.sport === 'Carrom') fallbackEmoji = '🎯';
-                    if(v.sport === 'Basketball') fallbackEmoji = '🏀';
-                    if(v.sport === 'Tennis') fallbackEmoji = '🎾';
-                    if(v.sport === 'Table Tennis') fallbackEmoji = '🏓';
-                    visual = `<div class="absolute inset-0 w-full h-full flex items-center justify-center text-6xl bg-[#0f172a] ${isP ? 'opacity-30' : ''}">${fallbackEmoji}</div>`;
+                // Image Fallback System
+                var safeImg = v.img;
+                var fallbackImg = '';
+                var s = v.sport ? v.sport.toLowerCase() : '';
+                
+                if(s === 'football') fallbackImg = 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80';
+                else if(s === 'cricket') fallbackImg = 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80';
+                else if(s === 'chess') fallbackImg = 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80';
+                else if(s === 'basketball') fallbackImg = 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80';
+                else if(s === 'tennis') fallbackImg = 'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=800&q=80';
+                else if(s === 'table tennis') fallbackImg = 'https://images.unsplash.com/photo-1534158914592-062992fbe900?auto=format&fit=crop&w=800&q=80';
+                else fallbackImg = 'https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80';
+                
+                if (!safeImg || safeImg.trim() === '' || !safeImg.startsWith('http')) {
+                    safeImg = fallbackImg;
                 }
                 
+                var visual = `<img src="${safeImg}" onerror="this.src='${fallbackImg}'" class="absolute inset-0 w-full h-full object-cover ${isP ? 'grayscale opacity-30' : ''}">`;
+                
                 // FIX 2: Prompt Login ONLY at the moment of booking
-                const btn = isP 
+                var btn = isP 
                     ? `<button class="bg-white/5 text-gray-500 px-6 py-4 rounded-xl text-xs font-bold cursor-not-allowed w-full font-display uppercase tracking-widest relative z-10">Coming Soon</button>` 
                     : (!currentUser 
                         ? `<button onclick="openAuth()" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-4 rounded-xl text-xs font-black w-full font-display uppercase tracking-widest transition relative z-10">Login to Book</button>`
-                        : `<button onclick="openBooking('${safeName}')" class="btn-luxe px-6 py-4 rounded-xl text-xs font-black w-full font-display uppercase tracking-widest transition relative z-10">Book Arena</button>`);
+                        : `<button onclick="openBooking(${index})" class="btn-luxe px-6 py-4 rounded-xl text-xs font-black w-full font-display uppercase tracking-widest transition relative z-10">Book Arena</button>`);
 
-                const delay = index * 50;
+                var delay = index * 50;
 
                 cont.innerHTML += `
                 <div class="card-luxe relative flex flex-col h-full reveal group" style="transition-delay: ${delay}ms">
@@ -1512,13 +1707,14 @@
                 </div>`;
             });
             
+            // Attach observer to newly rendered cards
             document.querySelectorAll('#venue-grid .reveal').forEach(function(el){ observer.observe(el); });
         }
 
         function renderRankings() {
-            const uName = currentUser ? (currentUser.name || 'Player') : "Player";
-            const uSkill = currentUser && currentUser.skill ? currentUser.skill : "Intermediate";
-            const list = document.getElementById('rank-list');
+            var uName = currentUser ? (currentUser.name || 'Player') : "Player";
+            var uSkill = currentUser && currentUser.skill ? currentUser.skill : "Intermediate";
+            var list = document.getElementById('rank-list');
             if(!list) return;
 
             list.innerHTML = `
@@ -1558,57 +1754,76 @@
                 </div>`;
         }
 
-        function openBooking(name) {
-            activeVenue = window.venues.find(function(v){ return v.name === name; }); 
+        function openBooking(index) {
+            activeVenue = window.currentFilteredVenues[index]; 
+            if(!activeVenue) return;
+            
             document.getElementById('book-venue-name').innerText = activeVenue.name; 
-            document.getElementById('book-venue-sport').innerText = activeVenue.sport;
+            document.getElementById('book-venue-sport').innerText = activeVenue.sport; 
+            document.getElementById('book-count').max = activeVenue.cap;
+            document.getElementById('book-count').value = 1;
             
-            const countInput = document.getElementById('book-count');
-            countInput.max = activeVenue.cap;
-            countInput.value = 1;
+            // Ensure form is visible, success screen is hidden
+            document.getElementById('booking-form-content').classList.remove('hidden');
+            document.getElementById('booking-success-screen').classList.add('hidden');
             
-            initDatePicker();
+            initDatePicker(); 
             populateTimeSlots();
-
-            const overlay = document.getElementById('modal-backdrop');
-            const sheet = document.getElementById('booking-sheet');
+            
+            var overlay = document.getElementById('modal-backdrop');
+            var sheet = document.getElementById('booking-sheet');
             
             overlay.classList.remove('hidden');
             setTimeout(function() { 
-                overlay.classList.add('open');
-                sheet.classList.add('open');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                sheet.classList.remove('translate-y-full'); // triggers slide up on mobile
+                sheet.classList.remove('md:scale-95'); // triggers scale up on desktop
+                sheet.classList.add('md:scale-100');
             }, 10);
             
             checkAvailability(); 
         }
 
         function closeSheet() {
-            const overlay = document.getElementById('modal-backdrop');
-            const sheet = document.getElementById('booking-sheet');
+            var overlay = document.getElementById('modal-backdrop');
+            var sheet = document.getElementById('booking-sheet');
             
-            overlay.classList.remove('open');
-            sheet.classList.remove('open');
+            sheet.classList.add('translate-y-full'); // triggers slide down on mobile
+            sheet.classList.remove('md:scale-100'); // triggers scale down on desktop
+            sheet.classList.add('md:scale-95');
             
-            setTimeout(function() { overlay.classList.add('hidden'); }, 500);
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            
+            setTimeout(function() { overlay.classList.add('hidden'); }, 400);
+        }
+
+        // RESET FUNCTION AFTER SUCCESS
+        function closeSheetAndReset() {
+            closeSheet();
+            setTimeout(function() {
+                document.getElementById('booking-form-content').classList.remove('hidden');
+                document.getElementById('booking-success-screen').classList.add('hidden');
+            }, 400);
         }
 
         function adjCount(change) {
-            const el = document.getElementById('book-count');
-            let val = parseInt(el.value) + change;
+            var el = document.getElementById('book-count');
+            var val = parseInt(el.value) + change;
             if(val >= 1 && val <= parseInt(el.max)) { el.value = val; updatePrice(); }
         }
 
         function toggleWarning() {
-            const payType = document.getElementById('book-pay').value;
-            const warning = document.getElementById('liquidation-warning');
+            var payType = document.getElementById('book-pay').value;
+            var warning = document.getElementById('liquidation-warning');
             
             if(payType === 'Token') {
                 warning.innerHTML = "⚠️ <span class=\"font-bold text-orange-500\">Notice:</span> Pay 20% now to hold slot. Pay remaining balance at the venue.";
                 warning.classList.remove('hidden');
+                warning.className = "bg-orange-500/10 text-orange-400 text-[11px] font-medium p-4 rounded-xl border border-orange-500/20 mt-4 leading-relaxed pointer-events-none";
             } else if (payType === 'Waitlist') {
                 warning.innerHTML = "🕒 <span class=\"font-bold text-white\">Standby Queue:</span> No payment required now. We will notify you if a slot opens up.";
                 warning.classList.remove('hidden');
-                warning.className = "bg-white/5 text-gray-300 text-[11px] font-medium p-5 rounded-2xl border border-white/10 mt-4 leading-relaxed pointer-events-none";
+                warning.className = "bg-white/5 text-gray-300 text-[11px] font-medium p-4 rounded-xl border border-white/10 mt-4 leading-relaxed pointer-events-none";
             } else {
                 warning.classList.add('hidden');
             }
@@ -1616,10 +1831,10 @@
 
         function checkAvailability() {
             if(!activeVenue) return;
-            const rawDate = document.getElementById('book-date').value;
-            const timeSelect = document.getElementById('book-time');
-            const statusEl = document.getElementById('slot-status');
-            const btn = document.getElementById('main-deploy-btn');
+            var rawDate = document.getElementById('book-date').value;
+            var timeSelect = document.getElementById('book-time');
+            var statusEl = document.getElementById('slot-status');
+            var btn = document.getElementById('main-deploy-btn');
 
             if(!rawDate || !timeSelect.value || timeSelect.value === "") {
                 statusEl.innerText = "NO SLOTS AVAILABLE";
@@ -1633,19 +1848,19 @@
                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
             
-            const fDate = rawDate.split("-").reverse().join("-");
-            const selTime = timeSelect.value;
-            const targetDetail = `${activeVenue.sport} | ${fDate} | ${selTime}`;
+            var fDate = rawDate.split("-").reverse().join("-");
+            var selTime = timeSelect.value;
+            var targetDetail = `${activeVenue.sport} | ${fDate} | ${selTime}`;
 
-            let bookedSlots = 0;
+            var bookedSlots = 0;
             window.activeBookings.forEach(function(b) {
                 if(b.venue === activeVenue.name && b.details === targetDetail && b.method !== 'Standby Waitlist') {
-                    let slots = parseInt(b.slots) || Math.round(parseInt(b.amount) / activeVenue.price);
+                    var slots = parseInt(b.slots) || Math.round(parseInt(b.amount) / activeVenue.price);
                     bookedSlots += (isNaN(slots) ? 0 : slots);
                 }
             });
 
-            let remaining = activeVenue.cap - bookedSlots;
+            var remaining = activeVenue.cap - bookedSlots;
             if(remaining < 0) remaining = 0;
 
             if(remaining === 0) {
@@ -1656,11 +1871,11 @@
                 statusEl.innerText = `${remaining} SLOTS AVAILABLE`; statusEl.className = "text-base font-black text-white font-display pointer-events-none";
             }
             
-            const countInput = document.getElementById('book-count');
+            var countInput = document.getElementById('book-count');
             countInput.max = remaining;
             if(remaining > 0 && parseInt(countInput.value) > remaining) countInput.value = remaining;
             
-            const paySelect = document.getElementById('book-pay');
+            var paySelect = document.getElementById('book-pay');
             if(remaining === 0) {
                 countInput.value = 0;
                 paySelect.innerHTML = `<option value="Waitlist">Join Standby Queue (₹0)</option>`;
@@ -1671,46 +1886,48 @@
         }
 
         function updatePrice() { 
-            const count = parseInt(document.getElementById('book-count').value) || 0;
-            const slotRate = activeVenue.price; 
-            const total = count * slotRate;
+            var count = parseInt(document.getElementById('book-count').value) || 0;
+            var slotRate = activeVenue.price; 
+            var total = count * slotRate;
             
             document.getElementById('total-price').innerText = `₹${total}`; 
             
-            const paySelect = document.getElementById('book-pay');
-            const maxRemaining = parseInt(document.getElementById('book-count').max) || 0;
+            var paySelect = document.getElementById('book-pay');
+            var maxRemaining = parseInt(document.getElementById('book-count').max) || 0;
 
             if (maxRemaining === 0) {
                 paySelect.innerHTML = `<option value="Waitlist">Join Standby Queue (₹0)</option>`;
             } else if (count >= 6) {
                 paySelect.innerHTML = `<option value="Razorpay">Pay Full Amount (100%)</option><option value="Waitlist">Join Standby Queue</option>`;
             } else {
-                let tokenText = count >= 3 ? "Pay 50% Advance" : "Pay 20% Advance";
+                var tokenText = count >= 3 ? "Pay 50% Advance" : "Pay 20% Advance";
                 paySelect.innerHTML = `<option value="Token">${tokenText}</option><option value="Razorpay">Pay Full Amount (100%)</option><option value="Waitlist">Join Standby Queue</option>`;
             }
             toggleWarning();
         }
         
         async function processBooking() {
-            const rawDate = document.getElementById('book-date').value;
-            const total = parseInt(document.getElementById('total-price').innerText.replace('₹', '')) || 0;
-            const payType = document.getElementById('book-pay').value;
-            const count = parseInt(document.getElementById('book-count').value) || 0;
-            const btn = document.getElementById('main-deploy-btn');
-            const timeSlot = document.getElementById('book-time').value;
+            var rawDate = document.getElementById('book-date').value;
+            var total = parseInt(document.getElementById('total-price').innerText.replace('₹', '')) || 0;
+            var payType = document.getElementById('book-pay').value;
+            var count = parseInt(document.getElementById('book-count').value) || 0;
+            var btn = document.getElementById('main-deploy-btn');
+            var timeSlot = document.getElementById('book-time').value;
 
             if (count === 0 && payType !== 'Waitlist') return showToast("Please select at least 1 player.", "error");
             if (!timeSlot || timeSlot === "") return showToast("Please select a time slot.", "error");
 
             if (payType === 'Waitlist') {
                 btn.innerText = "Please wait..."; btn.classList.add('opacity-50');
-                const fDate = rawDate.split("-").reverse().join("-"); 
-                const data = { action: 'book', name: currentUser?.name || "Player", phone: currentUser?.phone || "", skill: currentUser?.skill || "", game: activeVenue.sport, playDate: fDate, timeSlot: timeSlot, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0, slots: 0 };
+                var fDate = rawDate.split("-").reverse().join("-"); 
+                var data = { action: 'book', name: currentUser?.name || "Player", phone: currentUser?.phone || "", skill: currentUser?.skill || "", game: activeVenue.sport, playDate: fDate, timeSlot: timeSlot, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0, slots: 0 };
                 
                 try {
                     await fetchAPI(data);
-                    showToast("You have joined the standby queue! We will notify you if a slot opens.");
-                    closeSheet(); 
+                    // NO RELOAD - SHOW SUCCESS SCREEN
+                    document.getElementById('booking-form-content').classList.add('hidden');
+                    document.getElementById('booking-success-screen').classList.remove('hidden');
+                    document.getElementById('booking-success-screen').classList.add('flex');
                 } catch(e) {
                     showToast("Queue Error: " + e.message, "error");
                 } finally {
@@ -1719,17 +1936,17 @@
                 return;
             }
 
-            let tokenPct = 0.20;
+            var tokenPct = 0.20;
             if(count >= 3 && count <= 5) tokenPct = 0.50;
             if(count >= 6) tokenPct = 1.00; 
-            const finalAmount = payType === 'Token' && tokenPct < 1.00 ? Math.ceil(total * tokenPct) : total;
+            var finalAmount = payType === 'Token' && tokenPct < 1.00 ? Math.ceil(total * tokenPct) : total;
 
             try {
                 btn.innerText = "Processing Payment..."; btn.classList.add('opacity-50', 'cursor-wait');
-                const orderRes = await fetchAPI({ action:'createOrder', amount: finalAmount });
-                const fDate = rawDate.split("-").reverse().join("-");
+                var orderRes = await fetchAPI({ action:'createOrder', amount: finalAmount });
+                var fDate = rawDate.split("-").reverse().join("-");
 
-                const options = {
+                var options = {
                     "key": "rzp_live_XXXXXXXXXXXX", // REPLACE WITH YOUR LIVE RAZORPAY KEY
                     "amount": orderRes.order.amount,
                     "currency": "INR",
@@ -1741,14 +1958,21 @@
                     "handler": async function(res) {
                         btn.innerText = "Verifying Payment...";
                         try {
-                            const verify = await fetchAPI({
+                            var verify = await fetchAPI({
                                 action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature,
                                 venue: activeVenue.name, game: activeVenue.sport, slots: count,
                                 playDate: fDate, timeSlot: timeSlot,
                                 totalAmount: orderRes.order.amount / 100, phone: currentUser?.phone || "", name: currentUser?.name || ""
                             });
                             
-                            if(verify && verify.status === "success") { showToast("Booking Confirmed!"); location.reload(); } 
+                            if(verify && verify.status === "success") { 
+                                // NO RELOAD - SHOW SUCCESS SCREEN
+                                document.getElementById('booking-form-content').classList.add('hidden');
+                                document.getElementById('booking-success-screen').classList.remove('hidden');
+                                document.getElementById('booking-success-screen').classList.add('flex');
+                                // Refresh background data silently
+                                fetchAPI({ action: 'sync' }).then(function(r) { if(r.status === 'success') { window.venues = r.venues; window.activeBookings = r.bookings; }});
+                            } 
                             else { showToast(verify?.msg || "Booking Verification Failed", "error"); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); }
                         } catch(e) {
                             showToast("Verification Error: " + e.message, "error");
@@ -1757,7 +1981,7 @@
                     }
                 };
                 
-                const rzp = new Razorpay(options);
+                var rzp = new Razorpay(options);
                 rzp.on('payment.failed', function (response){ showToast("Payment Failed.", "error"); btn.innerText = "Confirm Booking"; btn.classList.remove('opacity-50', 'cursor-wait'); });
                 rzp.open();
             } catch(e) {
@@ -1767,18 +1991,20 @@
         }
 
         function populateAdminSelect() {
-            const select = document.getElementById('admin-venue-select'); select.innerHTML = '';
+            var select = document.getElementById('admin-venue-select'); select.innerHTML = '';
             window.venues.forEach(function(v) { select.innerHTML += `<option value="${v.name}">${v.sport} - ${v.name}</option>`; });
             loadAdminVenueData();
         }
+        
         function loadAdminVenueData() {
-            const v = window.venues.find(function(ven) { return ven.name === document.getElementById('admin-venue-select').value; });
+            var v = window.venues.find(function(ven) { return ven.name === document.getElementById('admin-venue-select').value; });
             if(v) { document.getElementById('admin-cap').value = v.cap; document.getElementById('admin-times').value = v.times; }
         }
+        
         async function updateVenue() {
-            const btn = document.getElementById('admin-btn'); btn.innerText = "Saving...";
+            var btn = document.getElementById('admin-btn'); btn.innerText = "Saving...";
             try {
-                const res = await fetchAPI({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
+                var res = await fetchAPI({ action: 'updateVenue', name: document.getElementById('admin-venue-select').value, cap: document.getElementById('admin-cap').value, times: document.getElementById('admin-times').value });
                 showToast(res?.msg || "Venue Updated"); 
                 if(res && res.status==='success') { loadAdminVenueData(); }
             } catch(e) {
@@ -1787,15 +2013,16 @@
                 btn.innerText = "Save Changes";
             }
         }
+        
         async function deployNewVenue() {
-            const btn = document.getElementById('add-venue-btn'); btn.innerText = "Publishing...";
-            const data = {
+            var btn = document.getElementById('add-venue-btn'); btn.innerText = "Publishing...";
+            var data = {
                 action: 'addVenue', vSport: document.getElementById('new-v-sport').value, vName: document.getElementById('new-v-name').value,
                 vLoc: document.getElementById('new-v-loc').value, vPrice: document.getElementById('new-v-price').value,
                 vType: document.getElementById('new-v-type').value, vStatus: document.getElementById('new-v-status').value, vImg: document.getElementById('new-v-img').value
             };
             try {
-                const res = await fetchAPI(data);
+                var res = await fetchAPI(data);
                 showToast(res?.msg || "Venue Added"); 
             } catch(e) {
                 showToast("Error: " + e.message, "error");
