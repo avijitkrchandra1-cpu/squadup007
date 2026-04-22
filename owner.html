@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- FIX: Prevent turf manager portal from appearing in Google -->
     <meta name="robots" content="noindex, nofollow">
-    <title>SquadUp | Turf Manager Portal</title>
+    <title>SquadOn | Turf Manager Portal</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏟️</text></svg>" type="image/svg+xml">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -264,7 +264,7 @@
 
         // ==================== LOGIN ====================
         document.addEventListener('DOMContentLoaded', async function() {
-            var saved = sessionStorage.getItem('squadupOwnerSession');
+            var saved = sessionStorage.getItem('squadonOwnerSession');
             if (saved) {
                 currentUser = JSON.parse(saved);
                 if (currentUser.role === 'owner' || currentUser.role === 'admin') {
@@ -287,7 +287,7 @@
 
                 if (res && res.status === 'success' && res.user && (res.user.role === 'owner' || res.user.role === 'admin')) {
                     currentUser = res.user;
-                    sessionStorage.setItem('squadupOwnerSession', JSON.stringify(currentUser));
+                    sessionStorage.setItem('squadonOwnerSession', JSON.stringify(currentUser));
                     showToast('Welcome, ' + currentUser.name + '!', 'success');
                     setupDashboard();
                 } else {
@@ -301,7 +301,7 @@
         }
 
         function logout() {
-            sessionStorage.removeItem('squadupOwnerSession');
+            sessionStorage.removeItem('squadonOwnerSession');
             location.reload();
         }
 
@@ -453,7 +453,7 @@
                         // WhatsApp quick-contact link
                         var waHtml = '';
                         if (l.phone && l.phone !== '—') {
-                            var waMsg = encodeURIComponent('Hi ' + (l.name||'there') + ', this is ' + currentUser.name + ' from SquadUp regarding your booking at ' + venue + ' on ' + fDate + '.');
+                            var waMsg = encodeURIComponent('Hi ' + (l.name||'there') + ', this is ' + currentUser.name + ' from SquadOn regarding your booking at ' + venue + ' on ' + fDate + '.');
                             waHtml = '<a href="https://wa.me/91' + l.phone + '?text=' + waMsg + '" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-green-400 hover:text-green-300 text-xs font-bold transition whitespace-nowrap" aria-label="WhatsApp ' + (l.name||'player') + '"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp</a>';
                         }
 
