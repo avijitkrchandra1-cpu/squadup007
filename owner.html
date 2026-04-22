@@ -3,317 +3,553 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FIX: Prevent turf manager portal from appearing in Google -->
+    <meta name="robots" content="noindex, nofollow">
     <title>SquadUp | Turf Manager Portal</title>
-    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏟️</text></svg>" type="image/svg+xml">
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FIX: Font Awesome was missing — added (needed for spinner and WhatsApp icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
-    
+
     <style>
-        :root { 
-            --neon-cyan: #06b6d4; 
+        :root {
+            --neon-cyan: #06b6d4;
             --electric-indigo: #6366f1;
-            --onyx: #020617; 
+            --onyx: #020617;
             --glass-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/1999/xlink' width='100' height='100' viewBox='0 0 100 100'%3E%3Cdefs%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100' height='100' filter='url(%23a)' opacity='0.03'/%3E%3C/svg%3E");
         }
         body { font-family: 'Outfit', sans-serif; background-color: var(--onyx); color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-        
-        .input-luxe { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); color: white; border-radius: 0.75rem; padding: 1rem; width: 100%; outline: none; transition: 0.3s; color-scheme: dark; }
-        .input-luxe:focus { border-color: var(--electric-indigo); background: rgba(255,255,255,0.05); box-shadow: inset 0 0 10px rgba(99, 102, 241, 0.1); }
+
+        .input-luxe { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); color: white; border-radius: 0.75rem; padding: 0.875rem 1rem; width: 100%; outline: none; transition: 0.3s; color-scheme: dark; }
+        .input-luxe:focus { border-color: var(--electric-indigo); background: rgba(255,255,255,0.05); box-shadow: inset 0 0 10px rgba(99,102,241,0.1); }
         select option { background-color: #0f172a; color: white; }
-        
-        .card-luxe { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.04); border-radius: 1.5rem; position: relative; overflow: hidden; background-image: var(--glass-pattern); }
-        .btn-luxe { background: linear-gradient(135deg, var(--neon-cyan), var(--electric-indigo)); color: white; font-weight: 800; border-radius: 0.75rem; transition: all 0.4s; }
-        .btn-luxe:hover { transform: translateY(-3px); box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
-        .tracking-wide { letter-spacing: 0.1em; }
-        .luxe-shadow { filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.6)); }
-        
-        /* Custom Scrollbar for Ledger */
+
+        .card-luxe { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.04); border-radius: 1.5rem; position: relative; overflow: hidden; background-image: var(--glass-pattern); }
+
+        .btn-indigo { background: #4f46e5; color: white; font-weight: 800; border-radius: 0.75rem; transition: all 0.3s; border: none; cursor: pointer; }
+        .btn-indigo:hover { background: #4338ca; transform: translateY(-2px); box-shadow: 0 0 20px rgba(99,102,241,0.5); }
+        .btn-outline-indigo { background: transparent; border: 1px solid rgba(99,102,241,0.5); color: #818cf8; font-weight: 800; border-radius: 0.75rem; transition: all 0.3s; cursor: pointer; }
+        .btn-outline-indigo:hover { background: rgba(99,102,241,0.1); }
+        .btn-danger { background: transparent; border: 1px solid rgba(239,68,68,0.4); color: #f87171; font-weight: 800; border-radius: 0.75rem; transition: all 0.3s; cursor: pointer; }
+        .btn-danger:hover { background: rgba(239,68,68,0.1); }
+
+        .luxe-shadow { filter: drop-shadow(0 0 10px rgba(99,102,241,0.6)); }
+        .stat-card { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 1.25rem; padding: 1.25rem; }
+
+        /* Ledger */
         .hide-scroll::-webkit-scrollbar { width: 4px; }
         .hide-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
         .hide-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+        /* Status badges */
+        .badge { display: inline-block; font-size: 0.6rem; padding: 2px 8px; border-radius: 9999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; border: 1px solid; }
+        .badge-paid { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.2); }
+        .badge-wait { background: rgba(245,158,11,0.1); color: #fbbf24; border-color: rgba(245,158,11,0.2); }
+        .badge-block { background: rgba(239,68,68,0.1); color: #f87171; border-color: rgba(239,68,68,0.2); }
+        .badge-token { background: rgba(99,102,241,0.1); color: #818cf8; border-color: rgba(99,102,241,0.2); }
+
+        @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+        .pulse-dot { animation: pulse-dot 2s infinite; }
     </style>
 </head>
-<body class="antialiased selection:bg-indigo-500 selection:text-white flex flex-col min-h-screen">
+<body class="antialiased flex flex-col min-h-screen">
 
-    <div class="fixed inset-0 pointer-events-none opacity-20" style="background-image: var(--glass-pattern)"></div>
+    <div class="fixed inset-0 pointer-events-none opacity-20" style="background-image: var(--glass-pattern)" aria-hidden="true"></div>
 
+    <!-- Login Screen -->
     <div class="flex-grow flex items-center justify-center p-6 relative z-10" id="login-container">
         <div class="card-luxe w-full max-w-md p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)]">
             <div class="text-center mb-10">
-                <h2 class="text-4xl font-black tracking-widest text-white">Squad<span class="text-indigo-400">Up</span></h2>
-                <p class="text-gray-400 text-xs mt-2 font-bold uppercase tracking-widest text-indigo-400">Turf Manager Portal</p>
+                <div class="w-16 h-16 bg-indigo-500/10 border border-indigo-500/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-location-dot text-2xl text-indigo-400" aria-hidden="true"></i>
+                </div>
+                <h2 class="text-3xl font-black text-white">Squad<span class="text-indigo-400">Up</span></h2>
+                <p class="text-indigo-400 text-xs mt-2 font-bold uppercase tracking-widest">Turf Manager Portal</p>
             </div>
             <div class="space-y-5">
                 <div>
-                    <label class="text-[10px] text-gray-500 font-bold uppercase block mb-1.5 tracking-wide">Manager ID / Phone</label>
-                    <input type="text" id="owner-login-id" placeholder="Enter ID" class="input-luxe" onkeydown="if(event.key === 'Enter') handleOwnerLogin()">
+                    <label for="owner-login-id" class="text-[10px] text-gray-500 font-bold uppercase block mb-1.5 tracking-wide">Manager ID / Phone</label>
+                    <input type="text" id="owner-login-id" placeholder="Your registered phone number" class="input-luxe" onkeydown="if(event.key==='Enter') handleOwnerLogin()" autocomplete="username">
                 </div>
                 <div>
-                    <label class="text-[10px] text-gray-500 font-bold uppercase block mb-1.5 tracking-wide">Secure Password</label>
-                    <input type="password" id="owner-login-pass" placeholder="••••••••" class="input-luxe" onkeydown="if(event.key === 'Enter') handleOwnerLogin()">
+                    <label for="owner-login-pass" class="text-[10px] text-gray-500 font-bold uppercase block mb-1.5 tracking-wide">Secure Password</label>
+                    <input type="password" id="owner-login-pass" placeholder="••••••••" class="input-luxe" onkeydown="if(event.key==='Enter') handleOwnerLogin()" autocomplete="current-password">
                 </div>
-                <button onclick="handleOwnerLogin()" id="owner-btn-login" class="w-full py-4 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition shadow-[0_0_20px_rgba(99,102,241,0.4)] mt-4 uppercase text-sm tracking-widest">Access Management</button>
-                <div class="text-center mt-6">
+                <button onclick="handleOwnerLogin()" id="owner-btn-login" class="w-full py-4 btn-indigo mt-2 uppercase text-sm tracking-widest shadow-[0_0_20px_rgba(99,102,241,0.4)]">
+                    <i class="fas fa-lock mr-2" aria-hidden="true"></i> Access Management
+                </button>
+                <div class="text-center mt-4">
                     <a href="index.html" class="text-xs text-gray-500 hover:text-white transition">← Return to Player Site</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="dashboard-container" class="hidden w-full max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 py-16 relative z-10 flex-grow">
-        
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-10 border-b border-white/10 pb-6 gap-4">
-            <div>
-                <h2 class="text-4xl font-black text-white tracking-widest">Turf Management</h2>
-                <p class="text-gray-400 text-sm mt-1">Logged in as: <span id="owner-name-display" class="font-bold text-white"></span></p>
+    <!-- Dashboard -->
+    <div id="dashboard-container" class="hidden w-full relative z-10 flex-grow flex flex-col">
+
+        <!-- Top Bar -->
+        <div class="sticky top-0 z-50 bg-[#020617]/95 backdrop-blur border-b border-white/5 px-6 sm:px-10 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <h1 class="text-xl font-black text-white">Squad<span class="text-indigo-400">Up</span> <span class="text-sm font-medium text-gray-500">Turf Management</span></h1>
+                <div class="hidden md:flex items-center gap-1.5 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 pulse-dot" aria-hidden="true"></span>
+                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest" id="logged-in-badge">Manager</span>
+                </div>
             </div>
-            <button onclick="logout()" class="px-6 py-3 bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-white/10 transition">Log Out</button>
+            <div class="flex items-center gap-3">
+                <p class="text-sm text-gray-400 hidden sm:block"><span id="owner-name-display" class="font-bold text-white"></span></p>
+                <button onclick="logout()" class="px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-red-500/20 transition">
+                    <i class="fas fa-sign-out-alt mr-1" aria-hidden="true"></i> Logout
+                </button>
+            </div>
         </div>
 
-        <div class="max-w-4xl mx-auto">
-            
-            <div class="card-luxe p-10 border-indigo-500/20 shadow-[0_0_40px_rgba(99,102,241,0.15)]">
-                <h3 class="text-xl font-bold text-indigo-400 luxe-shadow mb-8 border-b border-white/5 pb-4 tracking-wide uppercase">Quick Manage Slots (Offline Booking)</h3>
-                <p class="text-sm text-gray-400 mb-6">Instantly block a slot if a customer calls you directly. Unblock it to notify waitlisted players via WhatsApp that the slot is open again.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div class="col-span-1 md:col-span-2">
-                        <label class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Select Your Turf</label>
-                        <select id="owner-block-venue" class="input-luxe text-sm py-4" onchange="loadLedger()"></select>
+        <div class="max-w-4xl mx-auto w-full px-6 sm:px-8 py-8 flex-grow">
+
+            <!-- Revenue Summary Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="revenue-stats-row">
+                <div class="stat-card text-center">
+                    <p class="text-2xl font-black text-indigo-400" id="rev-today">—</p>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Revenue Today</p>
+                </div>
+                <div class="stat-card text-center">
+                    <p class="text-2xl font-black text-white" id="rev-bookings-today">—</p>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Bookings Today</p>
+                </div>
+                <div class="stat-card text-center">
+                    <p class="text-2xl font-black text-cyan-400" id="rev-week">—</p>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Revenue This Week</p>
+                </div>
+                <div class="stat-card text-center">
+                    <p class="text-2xl font-black text-amber-400" id="rev-waitlist">—</p>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Waitlisted Players</p>
+                </div>
+            </div>
+
+            <!-- Main Management Card -->
+            <div class="card-luxe p-8 md:p-10 border-indigo-500/20 shadow-[0_0_40px_rgba(99,102,241,0.12)] mb-6">
+
+                <h3 class="text-xl font-bold text-indigo-400 luxe-shadow mb-2 uppercase tracking-wide">
+                    <i class="fas fa-sliders mr-2" aria-hidden="true"></i> Quick Slot Management
+                </h3>
+                <p class="text-sm text-gray-400 mb-8">Block a slot for an offline/walk-in customer, or unblock it to notify your waitlisted players.</p>
+
+                <!-- Venue + Date -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                    <div>
+                        <label for="owner-block-venue" class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Your Turf</label>
+                        <select id="owner-block-venue" class="input-luxe text-sm py-4" onchange="onVenueChange()"></select>
                     </div>
                     <div>
-                        <label class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Date</label>
+                        <label for="owner-block-date" class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Date</label>
                         <input type="date" id="owner-block-date" class="input-luxe text-sm py-4" onchange="loadLedger()">
                     </div>
-                    <div>
-                        <label class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Time Slot (For Blocking)</label>
-                        <select id="owner-block-time" class="input-luxe text-sm py-4">
-                            <option value="06:00 AM to 08:00 AM">06:00 A.M to 8:00 A.M</option>
-                            <option value="09:00 AM to 11:00 AM">09:00 A.M to 11:00 A.M</option>
-                            <option value="05:00 PM to 07:00 PM">05:00 P.M to 07:00 P.M</option>
-                            <option value="08:00 PM to 10:00 PM">08:00 P.M to 10:00 P.M</option>
-                        </select>
-                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                    <button onclick="manageSlotAsOwner('block')" id="owner-btn-block" class="w-full py-4 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(99,102,241,0.4)]">Block Slot</button>
-                    <button onclick="manageSlotAsOwner('unblock')" id="owner-btn-unblock" class="w-full py-4 bg-transparent border border-indigo-500/50 text-indigo-400 font-bold rounded-xl hover:bg-indigo-500/10 transition uppercase tracking-widest text-sm">Unblock Slot</button>
+                <!-- FIX: Time slot dropdown now loads dynamically from venue data -->
+                <div class="mb-5">
+                    <label for="owner-block-time" class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Time Slot</label>
+                    <select id="owner-block-time" class="input-luxe text-sm py-4">
+                        <option value="">— Select a time slot —</option>
+                    </select>
                 </div>
 
-                <div class="border-t border-white/10 pt-8">
-                    <h4 class="text-lg font-bold text-white mb-4">Live Ledger: <span id="ledger-date-display" class="text-indigo-400">Select a Date</span></h4>
-                    
-                    <div id="ledger-container" class="space-y-3 max-h-[350px] overflow-y-auto hide-scroll pr-2">
-                        <div class="bg-[#0a0a0a] p-4 rounded-xl border border-white/5 text-center text-gray-500 text-sm">
-                            Please select a date to view current bookings, blocks, and waitlists.
+                <!-- Offline booking player details -->
+                <div id="offline-player-section" class="bg-indigo-500/5 border border-indigo-500/15 rounded-2xl p-5 mb-6">
+                    <p class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-4">
+                        <i class="fas fa-user-plus mr-1.5" aria-hidden="true"></i> Walk-in Customer Details (for Block action)
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="offline-player-name" class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-wide">Customer Name</label>
+                            <input type="text" id="offline-player-name" placeholder="Full name (optional)" class="input-luxe text-sm py-3">
+                        </div>
+                        <div>
+                            <label for="offline-player-phone" class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-wide">Phone Number</label>
+                            <input type="tel" id="offline-player-phone" placeholder="10-digit mobile (optional)" maxlength="10" class="input-luxe text-sm py-3">
                         </div>
                     </div>
+                    <p class="text-[10px] text-gray-600 mt-3">Recording customer details helps resolve disputes and track your offline revenue.</p>
                 </div>
 
+                <!-- Action buttons -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button onclick="manageSlotAsOwner('block')" id="owner-btn-block" class="w-full py-4 btn-indigo uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(99,102,241,0.4)]">
+                        <i class="fas fa-ban mr-2" aria-hidden="true"></i> Block Slot
+                    </button>
+                    <button onclick="manageSlotAsOwner('unblock')" id="owner-btn-unblock" class="w-full py-4 btn-outline-indigo uppercase tracking-widest text-sm">
+                        <i class="fas fa-lock-open mr-2" aria-hidden="true"></i> Unblock & Notify Waitlist
+                    </button>
+                </div>
             </div>
-        </div>
 
+            <!-- Live Ledger -->
+            <div class="card-luxe p-8 md:p-10">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h4 class="text-lg font-bold text-white">
+                            <i class="fas fa-book mr-2 text-indigo-400" aria-hidden="true"></i>
+                            Live Ledger: <span id="ledger-date-display" class="text-indigo-400">Select a Date</span>
+                        </h4>
+                        <p class="text-xs text-gray-500 mt-0.5">All bookings, blocks, and waitlisted players for the selected date</p>
+                    </div>
+                    <button onclick="loadLedger()" class="px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold rounded-xl hover:bg-indigo-500/20 transition" title="Refresh ledger">
+                        <i class="fas fa-rotate-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <!-- Ledger summary row -->
+                <div id="ledger-summary" class="hidden grid grid-cols-3 gap-3 mb-5"></div>
+
+                <div id="ledger-container" class="space-y-2.5 max-h-[420px] overflow-y-auto hide-scroll pr-1">
+                    <div class="bg-[#0a0a0a] p-5 rounded-2xl border border-white/5 text-center text-gray-500 text-sm">
+                        <i class="fas fa-calendar-alt text-2xl text-gray-700 mb-3 block" aria-hidden="true"></i>
+                        Select a date above to view current bookings, blocks, and waitlists.
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        // 🛑 REPLACE WITH YOUR GOOGLE APPS SCRIPT URL 🛑
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzymgAXLSjubsooq2h3ehgSqvwurWgHWUXep-fwAn4Zun088m8gEsgAM1sDT51Uqpox/exec'; 
-        
-        let currentUser = null; 
-        window.venues = [];
+        // ⚠️ Replace with your deployed Google Apps Script URL:
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzymgAXLSjubsooq2h3ehgSqvwurWgHWUXep-fwAn4Zun088m8gEsgAM1sDT51Uqpox/exec';
 
-        function showToast(msg, type = 'success') {
-            const bg = type === 'error' ? "linear-gradient(to right, #ef4444, #dc2626)" : "linear-gradient(to right, #6366f1, #8b5cf6)";
-            Toastify({
-                text: msg, duration: 3000, close: true, gravity: "top", position: "center",
-                style: { background: bg, borderRadius: "10px", fontWeight: "bold", fontFamily: "'Outfit', sans-serif" }
+        let currentUser = null;
+        window.venues = [];
+        window.allBookings = [];
+
+        // ==================== UTILITIES ====================
+        function showToast(msg, type) {
+            type = type || 'success';
+            var bgs = { success:'linear-gradient(to right,#6366f1,#8b5cf6)', error:'linear-gradient(to right,#ef4444,#dc2626)', info:'linear-gradient(to right,#06b6d4,#6366f1)', warning:'linear-gradient(to right,#f59e0b,#d97706)' };
+            Toastify({ text: msg, duration: 3500, close: true, gravity: 'top', position: 'center',
+                style: { background: bgs[type] || bgs.success, borderRadius: '10px', fontWeight: 'bold', fontFamily: "'Outfit',sans-serif", fontSize: '13px' }
             }).showToast();
         }
 
         async function hashPassword(password) {
-            const msgBuffer = new TextEncoder().encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            var buf = new TextEncoder().encode(password);
+            var hash = await crypto.subtle.digest('SHA-256', buf);
+            return Array.from(new Uint8Array(hash)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
         }
 
-        async function fetchAPI(data) { 
-            try {
-                const response = await fetch(scriptURL, {
-                    method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data)
-                });
-                return await response.json();
-            } catch (e) {
-                console.error(e);
-                throw new Error("Database connection failed. Please check your internet.");
-            }
+        async function fetchAPI(data) {
+            var res = await fetch(scriptURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(data)
+            });
+            return await res.json();
         }
 
-        // Set default date to today
+        // FIX: getLocalISODate was missing from this file — now defined
         function getLocalISODate() {
-            const now = new Date();
-            const offset = now.getTimezoneOffset() * 60000;
-            return new Date(now.getTime() - offset).toISOString().split('T')[0];
+            var now = new Date();
+            return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
         }
 
-        // Check if user is already logged in
-        document.addEventListener('DOMContentLoaded', async () => {
-            const savedUser = sessionStorage.getItem('squadupOwnerSession');
-            if (savedUser) { 
-                currentUser = JSON.parse(savedUser); 
+        function formatDateDisplay(isoDate) {
+            if (!isoDate) return '—';
+            var parts = isoDate.split('-');
+            if (parts.length === 3) return parts[2] + '-' + parts[1] + '-' + parts[0]; // DD-MM-YYYY
+            return isoDate;
+        }
+
+        // ==================== LOGIN ====================
+        document.addEventListener('DOMContentLoaded', async function() {
+            var saved = sessionStorage.getItem('squadupOwnerSession');
+            if (saved) {
+                currentUser = JSON.parse(saved);
                 if (currentUser.role === 'owner' || currentUser.role === 'admin') {
-                    document.getElementById('owner-block-date').value = getLocalISODate();
-                    showDashboard();
+                    setupDashboard();
                 }
             }
         });
 
-        // Secure Owner Login Function
         async function handleOwnerLogin() {
-            const btn = document.getElementById('owner-btn-login');
-            const idField = 'owner-login-id';
-            const passField = 'owner-login-pass';
-            const originalText = btn.innerText;
-            
-            btn.innerText = "Authenticating..."; btn.classList.add('opacity-50', 'cursor-wait');
-            
+            var btn = document.getElementById('owner-btn-login');
+            var id = document.getElementById('owner-login-id').value.trim();
+            var pass = document.getElementById('owner-login-pass').value;
+            if (!id || !pass) { showToast('Please enter your ID and password.', 'error'); return; }
+
+            var orig = btn.innerText; btn.innerText = 'Authenticating...'; btn.classList.add('opacity-50', 'cursor-wait');
+
             try {
-                const rawPass = document.getElementById(passField).value;
-                if(!rawPass) throw new Error("Password cannot be empty");
-                const hashedPass = await hashPassword(rawPass);
-                
-                const res = await fetchAPI({ action: 'login', loginId: document.getElementById(idField).value, password: hashedPass });
-                
-                // Allow owners OR admins to use this portal
-                if(res && res.status === 'success' && (res.user.role === 'owner' || res.user.role === 'admin')) {
-                    currentUser = res.user; 
+                var hashed = await hashPassword(pass);
+                var res = await fetchAPI({ action: 'login', loginId: id, password: hashed });
+
+                if (res && res.status === 'success' && res.user && (res.user.role === 'owner' || res.user.role === 'admin')) {
+                    currentUser = res.user;
                     sessionStorage.setItem('squadupOwnerSession', JSON.stringify(currentUser));
-                    showToast("Login Successful!");
-                    document.getElementById('owner-block-date').value = getLocalISODate();
-                    showDashboard();
-                } else { 
-                    showToast(res?.msg || "Unauthorized. Turf Manager access required.", "error"); 
-                    btn.innerText = originalText; btn.classList.remove('opacity-50', 'cursor-wait'); 
+                    showToast('Welcome, ' + currentUser.name + '!', 'success');
+                    setupDashboard();
+                } else {
+                    showToast((res && res.msg) || 'Unauthorized. Turf Manager access required.', 'error');
+                    btn.innerText = orig; btn.classList.remove('opacity-50', 'cursor-wait');
                 }
             } catch (e) {
-                showToast(e.message || "An unexpected error occurred.", "error");
-                btn.innerText = originalText; btn.classList.remove('opacity-50', 'cursor-wait');
+                showToast('Connection failed: ' + e.message, 'error');
+                btn.innerText = orig; btn.classList.remove('opacity-50', 'cursor-wait');
             }
         }
 
-        function showDashboard() {
+        function logout() {
+            sessionStorage.removeItem('squadupOwnerSession');
+            location.reload();
+        }
+
+        // ==================== DASHBOARD SETUP ====================
+        async function setupDashboard() {
             document.getElementById('login-container').classList.add('hidden');
             document.getElementById('dashboard-container').classList.remove('hidden');
             document.getElementById('owner-name-display').innerText = currentUser.name;
-            
-            fetchAPI({ action: 'sync' }).then(r => { 
-                if(r && r.status === 'success') { 
-                    window.venues = r.venues; 
-                    populateOwnerSelect(); 
-                } 
-            });
-        }
+            document.getElementById('logged-in-badge').innerText = currentUser.role === 'admin' ? 'Admin (Owner View)' : 'Turf Manager';
 
-        function logout() { 
-            sessionStorage.removeItem('squadupOwnerSession'); 
-            location.reload(); 
-        }
+            // Pre-fill today's date
+            document.getElementById('owner-block-date').value = getLocalISODate();
 
-        function populateOwnerSelect() {
-            const blockSelect = document.getElementById('owner-block-venue');
-            if (!blockSelect) return;
-            blockSelect.innerHTML = '';
-            window.venues.forEach(function(v) { 
-                blockSelect.innerHTML += `<option value="${v.name}">${v.sport} — ${v.name}</option>`;
-            });
-            loadLedger(); // Load ledger immediately for the first option
-        }
-
-        // FEATURE: LIVE LEDGER
-        async function loadLedger() {
-            const venue = document.getElementById('owner-block-venue').value;
-            const date = document.getElementById('owner-block-date').value;
-            const container = document.getElementById('ledger-container');
-            const displayDate = document.getElementById('ledger-date-display');
-            
-            if(!venue || !date) return;
-            
-            const fDate = date.split('-').reverse().join('-');
-            displayDate.innerText = fDate;
-            
-            container.innerHTML = `<div class="text-center py-4"><i class="fas fa-circle-notch fa-spin text-indigo-400 text-2xl"></i></div>`;
-            
             try {
-                const res = await fetchAPI({ action: 'getLedger', venue: venue, date: fDate });
-                container.innerHTML = '';
-                
-                if (res.ledger && res.ledger.length > 0) {
-                    res.ledger.forEach(l => {
-                        let badgeClass = "bg-green-500/10 text-green-400 border-green-500/20"; // Paid
-                        if(l.method === 'Standby Waitlist') badgeClass = "bg-orange-500/10 text-orange-400 border-orange-500/20";
-                        if(l.method === 'Offline Block (Owner)') badgeClass = "bg-red-500/10 text-red-400 border-red-500/20";
-                        
-                        // Extract time from details (e.g. "Football | 22-04-2026 | 08:00 PM to 10:00 PM")
-                        let timeStr = l.details.split(' | ')[2] || l.details;
-                        
-                        container.innerHTML += `
-                        <div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 flex flex-col sm:flex-row justify-between gap-3 hover:border-white/10 transition">
-                            <div>
-                                <p class="text-white font-bold text-sm">${timeStr}</p>
-                                <p class="text-xs text-gray-500 mt-1">${l.name} • ${l.phone}</p>
-                            </div>
-                            <div class="flex flex-col sm:items-end gap-1">
-                                <span class="text-[9px] px-2 py-1 rounded font-bold uppercase tracking-widest border ${badgeClass}">${l.method}</span>
-                                ${l.amount > 0 ? `<p class="text-xs font-black text-white mt-1">₹${l.amount}</p>` : ''}
-                            </div>
-                        </div>`;
-                    });
-                } else {
-                    container.innerHTML = `<div class="bg-[#0a0a0a] p-4 rounded-xl border border-white/5 text-center text-gray-500 text-sm">No bookings or blocks for this date.</div>`;
+                var res = await fetchAPI({ action: 'sync' });
+                if (res && res.status === 'success') {
+                    window.venues = res.venues || [];
+                    window.allBookings = res.bookings || [];
+                    populateOwnerSelect();
+                    renderRevenueStats();
                 }
             } catch (e) {
-                container.innerHTML = `<div class="text-red-400 text-sm text-center">Failed to load ledger.</div>`;
+                showToast('Could not load venue data: ' + e.message, 'error');
             }
         }
 
-        // API Call: Block / Unblock Slots & Notify
-        async function manageSlotAsOwner(actionType) {
-            const btn = actionType === 'block' ? document.getElementById('owner-btn-block') : document.getElementById('owner-btn-unblock');
-            const venue = document.getElementById('owner-block-venue').value;
-            const date = document.getElementById('owner-block-date').value;
-            const time = document.getElementById('owner-block-time').value;
+        // FIX: Only show venues assigned to this manager (by phone), unless admin
+        function populateOwnerSelect() {
+            var blockSelect = document.getElementById('owner-block-venue');
+            if (!blockSelect) return;
+            blockSelect.innerHTML = '<option value="">— Select your turf —</option>';
 
-            if(!venue || !date || !time) { showToast("Select turf, date, and time.", "error"); return; }
-            
-            const origText = btn.innerText;
-            btn.innerText = actionType === 'block' ? 'Blocking...' : 'Unblocking...'; 
-            btn.classList.add('opacity-50');
-            
-            try {
-                const vData = window.venues.find(function(v) { return v.name === venue; });
-                const fDate = date.split('-').reverse().join('-');
-                
-                const res = await fetchAPI({ 
-                    action: 'manageSlot', 
-                    type: actionType,
-                    venue: venue, 
-                    sport: vData ? vData.sport : 'Multi-Sport',
-                    date: fDate, 
-                    time: time, 
-                    cap: vData ? vData.cap : 10,
-                    adminPhone: currentUser.phone 
+            var myVenues = window.venues;
+            if (currentUser.role !== 'admin' && currentUser.phone) {
+                // Filter to only venues assigned to this manager's phone number
+                var filtered = window.venues.filter(function(v) {
+                    return v.managerPhone === currentUser.phone || v.manager === currentUser.phone;
                 });
-                
-                if (res && res.status === 'success') { 
-                    showToast(res.msg, 'success'); 
-                    loadLedger(); // Refresh the ledger immediately
-                } 
-                else { showToast((res && res.msg) || 'Failed to manage slot.', 'error'); }
-            } catch (e) { showToast('Error: ' + e.message, 'error'); } 
-            finally { btn.innerText = origText; btn.classList.remove('opacity-50'); }
+                // Fallback: if no assigned venues found, show all (until manager assignment is set up in Apps Script)
+                myVenues = filtered.length > 0 ? filtered : window.venues;
+            }
+
+            myVenues.forEach(function(v) {
+                blockSelect.innerHTML += '<option value="' + v.name + '">' + v.sport + ' — ' + v.name + ' (' + v.loc + ')</option>';
+            });
+
+            if (myVenues.length > 0) {
+                blockSelect.value = myVenues[0].name;
+                onVenueChange();
+                loadLedger();
+            }
+        }
+
+        // FIX: Load time slots dynamically from venue data instead of hardcoded
+        function onVenueChange() {
+            var venueName = document.getElementById('owner-block-venue').value;
+            var venue = window.venues.find(function(v) { return v.name === venueName; });
+            var timeSelect = document.getElementById('owner-block-time');
+            timeSelect.innerHTML = '<option value="">— Select a time slot —</option>';
+
+            var times = (venue && venue.times && venue.times.trim())
+                ? venue.times
+                : '06:00 AM to 08:00 AM, 09:00 AM to 11:00 AM, 05:00 PM to 07:00 PM, 08:00 PM to 10:00 PM';
+
+            times.split(',').forEach(function(t) {
+                var ts = t.trim();
+                if (ts) timeSelect.innerHTML += '<option value="' + ts + '">' + ts + '</option>';
+            });
+
+            loadLedger();
+            renderRevenueStats();
+        }
+
+        // ==================== REVENUE STATS ====================
+        function renderRevenueStats() {
+            var venueName = document.getElementById('owner-block-venue').value;
+            var bookings = window.allBookings.filter(function(b) {
+                return (!venueName || b.venue === venueName) && b.method !== 'Standby Waitlist';
+            });
+
+            var todayISO = getLocalISODate();
+            var todayStr = formatDateDisplay(todayISO); // DD-MM-YYYY
+
+            var todayBookings = bookings.filter(function(b) { return b.playDate === todayStr; });
+            var todayRev = todayBookings.reduce(function(s,b){ return s + (parseInt(b.amount)||0); }, 0);
+
+            // This week (last 7 days)
+            var weekRev = 0;
+            for (var i = 0; i < 7; i++) {
+                var d = new Date(); d.setDate(d.getDate() - i);
+                var dStr = [String(d.getDate()).padStart(2,'0'), String(d.getMonth()+1).padStart(2,'0'), d.getFullYear()].join('-');
+                bookings.filter(function(b){ return b.playDate === dStr; })
+                    .forEach(function(b){ weekRev += parseInt(b.amount)||0; });
+            }
+
+            var waitlistCount = window.allBookings.filter(function(b) {
+                return (!venueName || b.venue === venueName) && b.method === 'Standby Waitlist';
+            }).length;
+
+            document.getElementById('rev-today').innerText = '₹' + todayRev.toLocaleString('en-IN');
+            document.getElementById('rev-bookings-today').innerText = todayBookings.length;
+            document.getElementById('rev-week').innerText = '₹' + weekRev.toLocaleString('en-IN');
+            document.getElementById('rev-waitlist').innerText = waitlistCount;
+        }
+
+        // ==================== LEDGER ====================
+        async function loadLedger() {
+            var venue = document.getElementById('owner-block-venue').value;
+            var date = document.getElementById('owner-block-date').value;
+            var container = document.getElementById('ledger-container');
+            var displayDate = document.getElementById('ledger-date-display');
+
+            if (!venue || !date) {
+                container.innerHTML = '<div class="bg-[#0a0a0a] p-5 rounded-2xl border border-white/5 text-center text-gray-500 text-sm">Select a turf and date to view the ledger.</div>';
+                return;
+            }
+
+            var fDate = formatDateDisplay(date);
+            displayDate.innerText = fDate;
+
+            container.innerHTML = '<div class="text-center py-6"><i class="fas fa-circle-notch fa-spin text-indigo-400 text-2xl" aria-hidden="true"></i><p class="text-gray-500 text-sm mt-2">Loading ledger...</p></div>';
+
+            try {
+                var res = await fetchAPI({ action: 'getLedger', venue: venue, date: fDate });
+                container.innerHTML = '';
+
+                if (res.ledger && res.ledger.length > 0) {
+                    var paid = res.ledger.filter(function(l){ return l.method !== 'Standby Waitlist' && l.method !== 'Offline Block (Owner)'; });
+                    var totalRev = paid.reduce(function(s,l){ return s+(parseInt(l.amount)||0); }, 0);
+                    var blocks = res.ledger.filter(function(l){ return l.method === 'Offline Block (Owner)'; });
+                    var waiters = res.ledger.filter(function(l){ return l.method === 'Standby Waitlist'; });
+
+                    // Ledger summary
+                    var summaryEl = document.getElementById('ledger-summary');
+                    summaryEl.classList.remove('hidden');
+                    summaryEl.innerHTML =
+                        '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-cyan-400">₹' + totalRev.toLocaleString('en-IN') + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Online Revenue</p></div>' +
+                        '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-red-400">' + blocks.length + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Offline Blocks</p></div>' +
+                        '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-amber-400">' + waiters.length + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Waitlisted</p></div>';
+
+                    res.ledger.forEach(function(l) {
+                        var badgeClass = 'badge-paid';
+                        if (l.method === 'Standby Waitlist') badgeClass = 'badge-wait';
+                        if (l.method === 'Offline Block (Owner)') badgeClass = 'badge-block';
+                        if (l.method === 'Token') badgeClass = 'badge-token';
+
+                        var timeStr = l.details ? (l.details.split(' | ')[2] || l.details) : l.timeSlot || '—';
+
+                        // WhatsApp quick-contact link
+                        var waHtml = '';
+                        if (l.phone && l.phone !== '—') {
+                            var waMsg = encodeURIComponent('Hi ' + (l.name||'there') + ', this is ' + currentUser.name + ' from SquadUp regarding your booking at ' + venue + ' on ' + fDate + '.');
+                            waHtml = '<a href="https://wa.me/91' + l.phone + '?text=' + waMsg + '" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-green-400 hover:text-green-300 text-xs font-bold transition whitespace-nowrap" aria-label="WhatsApp ' + (l.name||'player') + '"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp</a>';
+                        }
+
+                        container.innerHTML += '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 hover:border-white/10 transition">' +
+                            '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">' +
+                                '<div class="flex items-start gap-3">' +
+                                    '<div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">' +
+                                        '<i class="fas fa-clock text-indigo-400 text-xs" aria-hidden="true"></i>' +
+                                    '</div>' +
+                                    '<div>' +
+                                        '<p class="text-white font-bold text-sm">' + timeStr + '</p>' +
+                                        '<p class="text-xs text-gray-500 mt-0.5">' + (l.name||'Unknown') + (l.phone ? ' • ' + l.phone : '') + '</p>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="flex items-center gap-3 flex-shrink-0 ml-11 sm:ml-0">' +
+                                    '<span class="badge ' + badgeClass + '">' + l.method + '</span>' +
+                                    (l.amount && parseInt(l.amount) > 0 ? '<span class="text-xs font-black text-white">₹' + l.amount + '</span>' : '') +
+                                    waHtml +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
+                    });
+                } else {
+                    document.getElementById('ledger-summary').classList.add('hidden');
+                    container.innerHTML = '<div class="bg-[#0a0a0a] p-5 rounded-2xl border border-white/5 text-center">' +
+                        '<i class="fas fa-check-circle text-green-500/40 text-3xl mb-3 block" aria-hidden="true"></i>' +
+                        '<p class="text-gray-500 text-sm font-medium">No bookings or blocks for this date.</p>' +
+                        '<p class="text-gray-600 text-xs mt-1">All slots are currently open.</p>' +
+                    '</div>';
+                }
+            } catch (e) {
+                container.innerHTML = '<div class="bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-red-400 text-sm text-center"><i class="fas fa-exclamation-triangle mr-2" aria-hidden="true"></i>Failed to load ledger. Check your connection.</div>';
+            }
+        }
+
+        // ==================== BLOCK / UNBLOCK ====================
+        async function manageSlotAsOwner(actionType) {
+            var venue = document.getElementById('owner-block-venue').value;
+            var date = document.getElementById('owner-block-date').value;
+            var time = document.getElementById('owner-block-time').value;
+
+            if (!venue) { showToast('Please select your turf first.', 'error'); return; }
+            if (!date) { showToast('Please select a date.', 'error'); return; }
+            if (!time) { showToast('Please select a time slot.', 'error'); return; }
+
+            // FIX: Confirmation dialog before any block/unblock action
+            var fDate = formatDateDisplay(date);
+            var confirmMsg = actionType === 'block'
+                ? 'Block ' + time + ' on ' + fDate + ' at ' + venue + '?\n\nThis will mark the slot as unavailable to online players.'
+                : 'Unblock ' + time + ' on ' + fDate + ' at ' + venue + '?\n\nThis will notify all waitlisted players that the slot is open again.';
+
+            if (!window.confirm(confirmMsg)) return;
+
+            var btn = actionType === 'block' ? document.getElementById('owner-btn-block') : document.getElementById('owner-btn-unblock');
+            var origText = btn.innerText;
+            btn.innerText = actionType === 'block' ? 'Blocking...' : 'Unblocking...';
+            btn.classList.add('opacity-50', 'cursor-wait');
+
+            // Collect offline player details for block action
+            var offlineName = document.getElementById('offline-player-name').value.trim();
+            var offlinePhone = document.getElementById('offline-player-phone').value.trim();
+
+            try {
+                var vData = window.venues.find(function(v) { return v.name === venue; });
+                var res = await fetchAPI({
+                    action: 'manageSlot',
+                    type: actionType,
+                    venue: venue,
+                    sport: vData ? vData.sport : 'Multi-Sport',
+                    date: fDate,
+                    time: time,
+                    cap: vData ? vData.cap : 10,
+                    ownerPhone: currentUser.phone,
+                    // NEW: pass offline customer details so they're recorded
+                    offlineCustomerName: offlineName || 'Walk-in Customer',
+                    offlineCustomerPhone: offlinePhone || ''
+                });
+
+                if (res && res.status === 'success') {
+                    showToast(res.msg || (actionType === 'block' ? 'Slot blocked successfully.' : 'Slot unblocked! Waitlisted players notified.'), 'success');
+                    // Clear offline details after successful block
+                    if (actionType === 'block') {
+                        document.getElementById('offline-player-name').value = '';
+                        document.getElementById('offline-player-phone').value = '';
+                    }
+                    loadLedger();
+                    renderRevenueStats();
+                } else {
+                    showToast((res && res.msg) || 'Failed to ' + actionType + ' the slot. Try again.', 'error');
+                }
+            } catch (e) {
+                showToast('Error: ' + e.message, 'error');
+            } finally {
+                btn.innerText = origText;
+                btn.classList.remove('opacity-50', 'cursor-wait');
+            }
         }
     </script>
 </body>
