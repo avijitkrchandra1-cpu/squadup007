@@ -8,6 +8,7 @@
     <meta name="keywords" content="sports turf booking Kolkata, football turf Salt Lake, cricket turf Behala, turf booking New Town, SquadUp, book turf online Kolkata, sports arena Jadavpur">
     <meta name="author" content="SquadUp - TrendNexus India">
     <meta name="robots" content="index, follow">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏟️</text></svg>" type="image/svg+xml">
     <meta property="og:title" content="SquadUp | Book Sports Turfs in Kolkata Instantly">
     <meta property="og:description" content="Book premium sports turfs in Salt Lake, Behala & New Town. Football, Cricket, Chess, Carrom. Secure payments, real-time availability.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=80">
@@ -119,9 +120,26 @@
 <body class="antialiased selection:bg-cyan-500 selection:text-white">
     <noscript>
         <div style="padding:2rem;font-family:sans-serif;background:#020617;color:#f1f5f9">
-            <h1>SquadUp — Kolkata's Sports Turf Booking Platform</h1>
-            <p>Book premium sports turfs across Salt Lake, Behala, New Town and Jadavpur. Football, Cricket, Chess, Carrom, Basketball, Tennis.</p>
-            <p>Contact: support@squadup.in</p>
+            <h1>SquadUp — Kolkata's #1 Sports Turf Booking Platform</h1>
+            <p>Book premium sports turfs and arenas instantly across Salt Lake, Behala, New Town, and Jadavpur, Kolkata.</p>
+            <h2>Available Sports</h2>
+            <p>Football, Cricket, Chess, Carrom, Basketball, Tennis — all in one platform.</p>
+            <h2>Featured Venues</h2>
+            <ul>
+                <li>Salt Lake Elite — Football Turf — New Town, Kolkata — ₹359/head</li>
+                <li>Behala Turf — Cricket Ground — Behala, Kolkata — ₹179/head</li>
+                <li>Grandmaster Hub — Chess Arena — Park Street, Kolkata — ₹149/head</li>
+                <li>Strikers Den — Carrom Center — Jadavpur, Kolkata — ₹49/head</li>
+            </ul>
+            <h2>Why SquadUp?</h2>
+            <ul>
+                <li>Zero waiting — real-time slot availability</li>
+                <li>Secure Razorpay payments — pay 20%, 50%, or 100% upfront</li>
+                <li>160+ premium arenas across Kolkata</li>
+                <li>12,000+ active players on the network</li>
+            </ul>
+            <p>Contact: support@squadup.in | partner@squadup.in</p>
+            <p>Operated by TrendNexus India, Kolkata, West Bengal</p>
         </div>
     </noscript>
 
@@ -157,6 +175,8 @@
                 <a href="#" onclick="closeMenu(); switchTab('careers'); window.scrollTo(0,0);" class="text-white text-lg font-medium hover:text-cyan-400 transition">Careers</a>
                 <a href="#" onclick="closeMenu(); switchTab('blog-hub'); window.scrollTo(0,0);" class="text-white text-lg font-medium hover:text-cyan-400 transition">Blogs</a>
                 <a href="#" id="menu-btn-my-bookings" onclick="closeMenu(); switchTab('my-bookings'); window.scrollTo(0,0);" class="hidden text-cyan-400 text-lg font-bold hover:text-cyan-300 transition">My Bookings</a>
+                <a href="admin.html" id="menu-btn-admin-portal" class="hidden text-red-400 text-lg font-medium hover:text-red-300 transition">Admin Portal ↗</a>
+                <a href="owner.html" id="menu-btn-owner-portal" class="hidden text-indigo-400 text-lg font-medium hover:text-indigo-300 transition">Manager Portal ↗</a>
             </div>
             <div class="flex flex-col gap-6 justify-end pb-8 ml-6 border-l border-white/5 pl-6 flex-shrink-0">
                 <a href="https://facebook.com/squadupkolkata" target="_blank" rel="noopener noreferrer" aria-label="SquadUp on Facebook" class="text-gray-500 hover:text-cyan-400 transition"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
@@ -290,6 +310,8 @@
                     <nav class="hidden md:flex gap-8 items-center" aria-label="Main navigation">
                         <button onclick="switchTab('feed'); document.getElementById('venues-section').scrollIntoView({behavior:'smooth'})" class="btn-luxe px-7 py-3 text-sm font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(6,182,212,0.4)]">Book Your Slot</button>
                         <button id="nav-btn-my-bookings" onclick="switchTab('my-bookings')" class="hidden text-sm font-bold text-cyan-400 hover:text-cyan-300 transition tracking-wide uppercase">My Bookings</button>
+                        <a id="nav-btn-admin-portal" href="admin.html" class="hidden text-sm font-bold text-red-400 hover:text-red-300 transition tracking-wide uppercase">Admin Portal</a>
+                        <a id="nav-btn-owner-portal" href="owner.html" class="hidden text-sm font-bold text-indigo-400 hover:text-indigo-300 transition tracking-wide uppercase">Manager Portal</a>
                     </nav>
                     <button onclick="openMenu()" aria-label="Open navigation menu" aria-expanded="false" class="group flex flex-col justify-center items-end gap-[6px] w-10 h-10 focus:outline-none transition-all">
                         <span class="w-8 h-[2px] bg-white rounded-full group-hover:bg-cyan-400 transition-all duration-300" aria-hidden="true"></span>
@@ -1236,10 +1258,27 @@
                     </button>`;
             }
 
+            // FIX: Show My Bookings for all logged-in users
             var navMyBookings = document.getElementById('nav-btn-my-bookings');
             if (navMyBookings) navMyBookings.classList.remove('hidden');
             var menuMyBookings = document.getElementById('menu-btn-my-bookings');
             if (menuMyBookings) menuMyBookings.classList.remove('hidden');
+
+            // FIX: Show admin/owner portal links for privileged roles
+            var role = currentUser && currentUser.role ? currentUser.role : 'player';
+            if (role === 'admin') {
+                // Show quick link to admin portal in the nav header
+                var navAdminBtn = document.getElementById('nav-btn-admin-portal');
+                if (navAdminBtn) navAdminBtn.classList.remove('hidden');
+                var menuAdminBtn = document.getElementById('menu-btn-admin-portal');
+                if (menuAdminBtn) menuAdminBtn.classList.remove('hidden');
+            }
+            if (role === 'owner' || role === 'admin') {
+                var navOwnerBtn = document.getElementById('nav-btn-owner-portal');
+                if (navOwnerBtn) navOwnerBtn.classList.remove('hidden');
+                var menuOwnerBtn = document.getElementById('menu-btn-owner-portal');
+                if (menuOwnerBtn) menuOwnerBtn.classList.remove('hidden');
+            }
 
             renderRankings();
             filterVenues('All', document.querySelector('.filter-pill'));
@@ -1356,17 +1395,20 @@
 
         // ==================== BLOG SHARE ====================
         function shareBlog(platform) {
-            var url = encodeURIComponent('https://squadup.in/blog/night-cricket-salt-lake');
+            // FIX: Use actual site URL dynamically instead of hardcoded broken path
+            var pageUrl = window.location.origin || 'https://squadup.in';
+            var shareUrl = encodeURIComponent(pageUrl);
             var title = encodeURIComponent('The Rise of Night Cricket in Salt Lake — SquadUp Blog');
             if (platform === 'twitter') {
-                window.open('https://twitter.com/intent/tweet?url=' + url + '&text=' + title, '_blank');
+                window.open('https://twitter.com/intent/tweet?url=' + shareUrl + '&text=' + title, '_blank');
             } else if (platform === 'facebook') {
-                window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank');
+                window.open('https://www.facebook.com/sharer/sharer.php?u=' + shareUrl, '_blank');
             } else if (platform === 'copy') {
-                navigator.clipboard.writeText('https://squadup.in/blog/night-cricket-salt-lake').then(function() {
+                var copyText = pageUrl + '?blog=night-cricket-salt-lake';
+                navigator.clipboard.writeText(copyText).then(function() {
                     showToast('Link copied to clipboard! 📋', 'success');
                 }).catch(function() {
-                    showToast('Copy failed. Please copy the URL manually.', 'error');
+                    showToast('Could not copy. URL: ' + copyText, 'info');
                 });
             }
         }
@@ -1387,7 +1429,7 @@
             btn.innerText = 'Sending Request...'; btn.classList.add('opacity-50', 'cursor-wait');
 
             try {
-                await fetchAPI({
+                var res = await fetchAPI({
                     action: 'academyLead',
                     academyName: document.getElementById('acad-name').value,
                     location: document.getElementById('acad-loc').value,
@@ -1395,11 +1437,16 @@
                     phone: document.getElementById('acad-phone').value,
                     sport: document.getElementById('acad-sport').value
                 });
-                showToast('✅ Demo request sent! Our team will call you within 24 hours.', 'success');
-                e.target.reset();
+                // FIX: Only show success if API actually succeeded
+                if (res && res.status === 'success') {
+                    showToast('✅ Demo request sent! Our team will call you within 24 hours.', 'success');
+                    e.target.reset();
+                } else {
+                    showToast((res && res.msg) || 'Submission failed. Please email us at partner@squadup.in', 'error');
+                }
             } catch (err) {
-                showToast('Request sent! We will contact you at the number provided.', 'success');
-                e.target.reset();
+                // FIX: Show error on failure — never show fake success
+                showToast('Could not connect. Please email your details to partner@squadup.in', 'error');
             } finally {
                 btn.innerText = 'Submit Request'; btn.classList.remove('opacity-50', 'cursor-wait');
             }
@@ -1812,8 +1859,9 @@
             document.getElementById('user-coins-display').innerText = '🪙 ' + coins + ' Squad Coins';
             document.getElementById('stat-coins').innerText = coins + ' 🪙';
 
+            // FIX: Filter by phone only — name matching is unreliable (two users could share a name)
             var userBookings = (window.activeBookings || []).filter(function(b) {
-                return b.phone === currentUser.phone || b.name === currentUser.name;
+                return currentUser.phone && b.phone === currentUser.phone;
             });
 
             document.getElementById('stat-total-bookings').innerText = userBookings.length;
@@ -1827,7 +1875,12 @@
             }
 
             list.innerHTML = '';
-            userBookings.reverse().forEach(function(b) {
+            // Show most recent first
+            var sorted = userBookings.slice().sort(function(a, b) {
+                var da = parseDateStr(a.playDate), db = parseDateStr(b.playDate);
+                return db - da;
+            });
+            sorted.forEach(function(b) {
                 var isUpcoming = isBookingUpcoming(b.playDate);
                 list.innerHTML += `
                 <div class="bg-[#0f172a] border border-white/6 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -1850,6 +1903,16 @@
             });
         }
 
+        // Helper: parse DD-MM-YYYY to Date safely (cross-browser)
+        function parseDateStr(dateStr) {
+            if (!dateStr) return new Date(0);
+            var parts = dateStr.split('-');
+            if (parts.length === 3 && parts[0].length <= 2) {
+                return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+            }
+            return new Date(dateStr);
+        }
+
         function getSportEmoji(sport) {
             var emojis = { Football: '⚽', Cricket: '🏏', Chess: '♟️', Carrom: '🎯', Basketball: '🏀', Tennis: '🎾' };
             return emojis[sport] || '🏟️';
@@ -1857,9 +1920,18 @@
 
         function isBookingUpcoming(dateStr) {
             if (!dateStr) return false;
+            // FIX: Explicit parsing for DD-MM-YYYY format — new Date('DD-MM-YYYY') fails in Safari
             var parts = dateStr.split('-');
-            var d = parts.length === 3 ? new Date(parts[2] + '-' + parts[1] + '-' + parts[0]) : new Date(dateStr);
-            return d >= new Date();
+            var d;
+            if (parts.length === 3 && parts[0].length <= 2) {
+                // DD-MM-YYYY format from our system
+                d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+            } else {
+                d = new Date(dateStr);
+            }
+            if (isNaN(d.getTime())) return false;
+            var today = new Date(); today.setHours(0, 0, 0, 0);
+            return d >= today;
         }
 
         // ==================== RANKINGS ====================
@@ -1868,7 +1940,19 @@
             var uSkill = currentUser ? (currentUser.skill || 'Intermediate') : 'Intermediate';
             var list = document.getElementById('rank-list');
             if (!list) return;
+
+            // FIX: Calculate real match count from booking data for current user
+            var userMatchCount = 0;
+            if (currentUser && currentUser.phone && window.activeBookings) {
+                userMatchCount = window.activeBookings.filter(function(b) {
+                    return b.phone === currentUser.phone && b.method !== 'Standby Waitlist';
+                }).length;
+            }
+
             list.innerHTML = `
+                <div class="bg-[#0a0a0a] p-6 rounded-2xl border border-white/5 text-center mb-6">
+                    <p class="text-xs text-gray-600 font-bold uppercase tracking-widest">Rankings update weekly based on verified bookings. Data sourced from your booking history.</p>
+                </div>
                 <div class="bg-[#121212] p-8 border-l-4 border-cyan-400 rounded-3xl relative overflow-hidden border-y border-r border-white/5">
                     <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-transparent opacity-40 pointer-events-none"></div>
                     <div class="flex justify-between items-center mb-6 relative z-10 gap-4">
@@ -1882,15 +1966,17 @@
                         <span class="text-xs text-gray-500 font-bold uppercase tracking-widest">Player Rating</span><span class="text-cyan-400 text-xl tracking-widest luxe-shadow">★★★★★</span>
                     </div>
                 </div>
+                ${currentUser ? `
                 <div class="bg-[#0a0a0a] p-8 mt-5 border border-white/5 rounded-3xl">
                     <div class="flex justify-between items-center mb-6 gap-4">
                         <div><span class="font-black text-white text-2xl tracking-tighter">${uName}</span><br><span class="text-sm text-gray-500 font-bold uppercase tracking-widest">${uSkill}</span></div>
-                        <div class="text-right flex-shrink-0"><span class="font-black text-white block text-5xl tracking-tighter">12</span><span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Matches</span></div>
+                        <div class="text-right flex-shrink-0"><span class="font-black text-white block text-5xl tracking-tighter">${userMatchCount}</span><span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Matches</span></div>
                     </div>
                     <div class="bg-[#050505] p-5 rounded-2xl flex justify-between items-center border border-white/5">
-                        <span class="text-xs text-gray-500 font-bold uppercase tracking-widest">Player Rating</span><span class="text-yellow-500 text-xl tracking-widest">★★★★☆</span>
+                        <span class="text-xs text-gray-500 font-bold uppercase tracking-widest">Player Rating</span>
+                        <span class="text-yellow-500 text-xl tracking-widest">${userMatchCount >= 20 ? '★★★★★' : userMatchCount >= 10 ? '★★★★☆' : userMatchCount >= 5 ? '★★★☆☆' : '★★☆☆☆'}</span>
                     </div>
-                </div>`;
+                </div>` : ''}`;
         }
     </script>
 </body>
