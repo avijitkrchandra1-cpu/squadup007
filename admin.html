@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- FIX: Prevent admin portal from appearing in Google search results -->
     <meta name="robots" content="noindex, nofollow">
-    <title>SquadUp | Command Center</title>
+    <title>SquadOn | Command Center</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏟️</text></svg>" type="image/svg+xml">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -443,7 +443,7 @@
 
         // ==================== LOGIN ====================
         document.addEventListener('DOMContentLoaded', async function() {
-            var saved = sessionStorage.getItem('squadupAdminSession');
+            var saved = sessionStorage.getItem('squadonAdminSession');
             if (saved) { currentUser = JSON.parse(saved); if (currentUser.role === 'admin') showDashboard(); }
         });
 
@@ -462,7 +462,7 @@
                 if (res && res.status === 'success' && res.user && res.user.role === 'admin') {
                     loginAttempts = 0;
                     currentUser = res.user;
-                    sessionStorage.setItem('squadupAdminSession', JSON.stringify(currentUser));
+                    sessionStorage.setItem('squadonAdminSession', JSON.stringify(currentUser));
                     showToast('Welcome back, ' + currentUser.name + '! 🛡️', 'success');
                     showDashboard();
                 } else {
@@ -478,7 +478,7 @@
         }
 
         function logout() {
-            sessionStorage.removeItem('squadupAdminSession');
+            sessionStorage.removeItem('squadonAdminSession');
             location.reload();
         }
 
@@ -616,7 +616,7 @@
             var el = document.getElementById('waitlist-list');
             if (waitlist.length === 0) { el.innerHTML = '<p class="text-gray-600 text-sm">No one on waitlist.</p>'; return; }
             el.innerHTML = waitlist.slice(-20).reverse().map(function(b) {
-                var waLink = b.phone ? 'https://wa.me/91' + b.phone + '?text=' + encodeURIComponent('Hi ' + b.name + ', a slot has opened at ' + b.venue + '! Book now on SquadUp.') : '#';
+                var waLink = b.phone ? 'https://wa.me/91' + b.phone + '?text=' + encodeURIComponent('Hi ' + b.name + ', a slot has opened at ' + b.venue + '! Book now on SquadOn.') : '#';
                 return '<div class="flex justify-between items-center py-2 border-b border-white/5 text-xs">' +
                     '<div><span class="text-white font-bold">' + b.name + '</span><span class="text-gray-500 ml-2">• ' + b.venue + ' • ' + b.playDate + '</span></div>' +
                     (b.phone ? '<a href="' + waLink + '" target="_blank" class="text-green-400 font-bold hover:text-green-300 transition whitespace-nowrap"><i class="fa-brands fa-whatsapp mr-1"></i>Notify</a>' : '') +
@@ -687,7 +687,7 @@
             var blob = new Blob(['\uFEFF'+csv], { type: 'text/csv;charset=utf-8' });
             var url = URL.createObjectURL(blob);
             var a = document.createElement('a');
-            a.href = url; a.download = 'squadup_bookings_' + getLocalISODate() + '.csv';
+            a.href = url; a.download = 'squadon_bookings_' + getLocalISODate() + '.csv';
             document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
             showToast('CSV exported! Check your Downloads folder.', 'success');
             logAction('Exported bookings CSV');
@@ -862,7 +862,7 @@
                 var res = await fetchAPI({ action: 'getAcademyLeads' });
                 if (res && res.leads && res.leads.length > 0) {
                     tbody.innerHTML = res.leads.map(function(l) {
-                        var waLink = l.phone ? 'https://wa.me/91' + l.phone + '?text=' + encodeURIComponent('Hi ' + l.ownerName + ', this is SquadUp! We received your AcademyOS demo request. Let\'s schedule a walkthrough.') : '#';
+                        var waLink = l.phone ? 'https://wa.me/91' + l.phone + '?text=' + encodeURIComponent('Hi ' + l.ownerName + ', this is SquadOn! We received your AcademyOS demo request. Let\'s schedule a walkthrough.') : '#';
                         return '<tr>' +
                             '<td class="text-white font-bold">' + (l.academyName||'—') + '</td>' +
                             '<td>' + (l.ownerName||'—') + '</td>' +
