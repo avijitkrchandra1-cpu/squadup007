@@ -1160,13 +1160,9 @@
                 }
             }
 
-            var pendingVenues = [
-                { sport: 'Football', name: 'Salt Lake Elite', loc: 'New Town', price: 359, type: 'outdoor', cap: 10, status: 'Pending', img: '', times: '' },
-                { sport: 'Cricket', name: 'Behala Turf', loc: 'Behala', price: 179, type: 'outdoor', cap: 14, status: 'Pending', img: '', times: '' },
-                { sport: 'Chess', name: 'Grandmaster Hub', loc: 'Park Street', price: 149, type: 'indoor', cap: 4, status: 'Pending', img: '', times: '' },
-                { sport: 'Carrom', name: 'Strikers Den', loc: 'Jadavpur', price: 49, type: 'indoor', cap: 4, status: 'Pending', img: '', times: '' }
-            ];
-            window.venues = pendingVenues;
+            pendingVenues.forEach(function(p) {
+                if (!window.venues.find(function(v) { return v.name === p.name; })) window.venues.push(p);
+            });
 
             try {
                 var res = await fetchAPI({ action: 'sync' });
