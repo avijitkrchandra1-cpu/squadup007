@@ -2324,19 +2324,9 @@
 
 
 
-            var pendingVenues = [
-
-                { sport: 'Football', name: 'Salt Lake Elite', loc: 'New Town', price: 359, type: 'outdoor', cap: 10, status: 'Pending', img: '', times: '' },
-
-                { sport: 'Cricket', name: 'Behala Turf', loc: 'Behala', price: 179, type: 'outdoor', cap: 14, status: 'Pending', img: '', times: '' },
-
-                { sport: 'Chess', name: 'Grandmaster Hub', loc: 'Park Street', price: 149, type: 'indoor', cap: 4, status: 'Pending', img: '', times: '' },
-
-                { sport: 'Carrom', name: 'Strikers Den', loc: 'Jadavpur', price: 49, type: 'indoor', cap: 4, status: 'Pending', img: '', times: '' }
-
-            ];
-
-            window.venues = pendingVenues;
+           pendingVenues.forEach(function(p) {
+    if (!window.venues.find(function(v) { return v.name === p.name; })) window.venues.push(p);
+});
 
 
 
@@ -3034,7 +3024,7 @@
 
                 var img = (v.img && v.img.startsWith('http')) ? v.img : fallback;
 
-                var visual = `<img src="${img}" onerror="this.src='${fallback}'" alt="${v.name} — ${v.sport} turf in ${v.loc}, Kolkata" loading="lazy" class="absolute inset-0 w-full h-full object-cover ${isP ? 'grayscale opacity-30' : ''}">`;
+                var visual = `<img src="${img}" onerror="this.onerror=null; this.src='${fallback}';" alt="${v.name} — ${v.sport} turf in ${v.loc}, Kolkata" loading="lazy" class="absolute inset-0 w-full h-full object-cover ${isP ? 'grayscale opacity-30' : ''}">`;
 
 
 
