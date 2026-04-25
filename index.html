@@ -207,10 +207,6 @@
                 <button onclick="handleLogin()" id="login-btn" class="w-full py-4 btn-luxe text-lg mt-3">Login</button>
                 <div class="flex justify-between items-center pt-4 border-t border-white/5 mt-6">
                     <p onclick="showToast('Contact support@squadup.in to reset your password.', 'info')" class="text-xs text-gray-500 font-bold cursor-pointer hover:text-white transition">Forgot Password?</p>
-                    <div class="flex gap-4">
-                        <a href="admin.html" class="text-xs text-red-400 font-bold hover:underline">Admin Login</a>
-                        <a href="owner.html" class="text-xs text-indigo-400 font-bold hover:underline">Owner Login</a>
-                    </div>
                 </div>
                 <div class="text-center mt-4">
                     <p onclick="toggleAuth('register')" class="text-xs text-cyan-400 font-bold cursor-pointer hover:underline">Create New Account</p>
@@ -930,6 +926,16 @@
                             <select id="book-time" class="input-luxe py-3 text-sm" onchange="checkAvailability()"></select>
                         </div>
                     </div>
+                    <div class="flex items-center gap-3 bg-[#121212] p-4 rounded-2xl border border-white/5">
+                        <input type="checkbox" id="recurring-booking" class="w-4 h-4 accent-cyan-400" onchange="toggleRecurring()">
+                        <div>
+                            <label for="recurring-booking" class="text-sm font-bold text-white cursor-pointer">Book this slot every week 🔄</label>
+                            <p class="text-[10px] text-gray-500 mt-0.5">Lock the same day & time slot for the next 4 weeks automatically.</p>
+                        </div>
+                    </div>
+                    <div id="recurring-info" class="hidden bg-cyan-500/10 p-3 rounded-xl border border-cyan-500/20 text-xs text-cyan-400 font-medium">
+                        📅 This will create 4 weekly bookings. Each booking earns Squad Coins separately.
+                    </div>
                     <div class="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-center justify-between">
                         <span class="text-xs font-bold text-cyan-500 uppercase tracking-wide luxe-shadow">Availability</span>
                         <span id="slot-status" class="text-sm font-black text-white">Checking...</span>
@@ -939,10 +945,14 @@
                         <select id="book-pay" class="input-luxe py-4 font-semibold text-white" onchange="toggleWarning()"></select>
                     </div>
                     <div id="liquidation-warning" class="hidden bg-orange-500/10 text-orange-400 text-[11px] font-medium p-4 rounded-xl border border-orange-500/20 leading-relaxed"></div>
+                    <div id="group-split-info" class="hidden bg-indigo-500/10 p-4 rounded-xl border border-indigo-500/20 text-xs text-indigo-300 leading-relaxed">
+                        💡 <strong class="text-white">Group Tip:</strong> Booking for 4+ players? After confirmation, share the booking ID with your squad so each person can pay their portion directly via UPI to your registered number. We're building an automated split-pay feature — coming soon!
+                    </div>
                     <div id="coins-preview" class="hidden bg-amber-500/10 p-3 rounded-xl border border-amber-500/20 flex items-center gap-3">
                         <span class="text-xl" aria-hidden="true">🪙</span>
                         <div>
                             <p class="text-xs font-bold text-amber-400">You'll earn <span id="coins-to-earn">0</span> Squad Coins on this booking</p>
+                            <p class="text-[10px] text-gray-500 mt-0.5">1 coin per ₹100 spent</p>
                         </div>
                     </div>
                 </div>
@@ -955,8 +965,14 @@
                 </div>
             </div>
             <div id="booking-success-screen" class="hidden flex-col items-center justify-center p-12 text-center min-h-[400px]">
+                <div class="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center border border-green-500/40 mb-6">
+                    <i class="fas fa-check text-4xl text-green-400" aria-hidden="true"></i>
+                </div>
                 <h2 class="text-4xl font-black text-white mb-2">Confirmed!</h2>
+                <p class="text-gray-400 text-sm mb-3">Your slot is locked in. Check your My Bookings for details.</p>
+                <p id="success-coins-msg" class="text-amber-400 font-bold text-sm mb-8">+0 🪙 Squad Coins added to your account!</p>
                 <button onclick="closeSheetAndReset()" class="w-full py-4 btn-luxe text-sm font-bold uppercase tracking-widest">Back to Arenas</button>
+                <button onclick="closeSheetAndReset(); switchTab('my-bookings');" class="w-full mt-3 py-3 bg-white/5 border border-white/10 text-white text-sm font-bold rounded-xl hover:bg-white/10 transition">View My Bookings</button>
             </div>
         </div>
     </div>
@@ -1138,7 +1154,7 @@
                 }
             }
 
-            // Database Sync Only - No fake arrays needed here anymore
+            // ONLY SYNC REAL DATA. No fake "Coming Soon" hardcoded venues.
             try {
                 var res = await fetchAPI({ action: 'sync' });
                 if (res && res.status === 'success') {
@@ -1400,6 +1416,7 @@
                     phone: document.getElementById('acad-phone').value,
                     sport: document.getElementById('acad-sport').value
                 });
+                
                 if (res && res.status === 'success') {
                     showToast('✅ Demo request sent! Our team will call you within 24 hours.', 'success');
                     e.target.reset();
@@ -1470,7 +1487,7 @@
                 cont.innerHTML = '<div class="col-span-full text-center py-20"><p class="text-gray-600 font-bold uppercase tracking-widest text-sm">No arenas found.</p></div>';
                 return;
             }
-
+            
             var fallbackImgs = { 
                 football: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80', 
                 cricket: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80', 
@@ -1485,7 +1502,7 @@
                 var distDisplay = v.distance ? `<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] px-2 py-0.5 rounded-md font-bold ml-2 tracking-wide">${v.distance} km</span>` : '';
                 var s = (v.sport || '').toLowerCase();
                 var fallback = fallbackImgs[s] || 'https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80';
-                var img = (v.img && v.img.startsWith('http')) ? v.img : fallback;
+                var img = (v.img && v.img.startsWith('http')) ? v.img : (v.img ? v.img : fallback);
                 
                 // IMPORTANT: Infinite loop error fix included here
                 var visual = `<img src="${img}" onerror="this.onerror=null; this.src='${fallback}';" alt="${v.name} — ${v.sport} turf in ${v.loc}, Kolkata" loading="lazy" class="absolute inset-0 w-full h-full object-cover ${isP ? 'grayscale opacity-30' : ''}">`;
@@ -1846,6 +1863,7 @@
             }
 
             list.innerHTML = '';
+            // Show most recent first
             var sorted = userBookings.slice().sort(function(a, b) {
                 var da = parseDateStr(a.playDate), db = parseDateStr(b.playDate);
                 return db - da;
