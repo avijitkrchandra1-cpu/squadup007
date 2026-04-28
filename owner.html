@@ -291,14 +291,14 @@
         }
 
         function logout() {
-    // Clear the specific owner session
-    sessionStorage.removeItem('squadonOwnerSession');
-    // Clear the player session to prevent the auto-login loop
-    sessionStorage.removeItem('squadonUser'); 
-    
-    // Refresh the page to show the login screen
-    location.reload();
-}
+            // Clear the specific owner session
+            sessionStorage.removeItem('squadonOwnerSession');
+            // Clear the player session to prevent the auto-login loop
+            sessionStorage.removeItem('squadonUser'); 
+            
+            // Refresh the page to show the login screen
+            location.reload();
+        }
 
         // ==================== DASHBOARD SETUP ====================
         async function setupDashboard() {
@@ -307,8 +307,11 @@
             document.getElementById('owner-name-display').innerText = currentUser.name;
             document.getElementById('logged-in-badge').innerText = currentUser.role === 'admin' ? 'Admin (Owner View)' : 'Turf Manager';
 
-            // Pre-fill today's date
-            document.getElementById('owner-block-date').value = getLocalISODate();
+            // Pre-fill today's date and prevent past date selection
+            var todayStr = getLocalISODate();
+            var dateInput = document.getElementById('owner-block-date');
+            dateInput.value = todayStr;
+            dateInput.min = todayStr;
 
             try {
                 var res = await fetchAPI({ action: 'sync' });
