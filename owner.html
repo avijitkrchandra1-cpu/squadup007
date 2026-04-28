@@ -291,9 +291,14 @@
         }
 
         function logout() {
-            sessionStorage.removeItem('squadonOwnerSession');
-            location.reload();
-        }
+    // Clear the specific owner session
+    sessionStorage.removeItem('squadonOwnerSession');
+    // Clear the player session to prevent the auto-login loop
+    sessionStorage.removeItem('squadonUser'); 
+    
+    // Refresh the page to show the login screen
+    location.reload();
+}
 
         // ==================== DASHBOARD SETUP ====================
         async function setupDashboard() {
