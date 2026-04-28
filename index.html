@@ -1806,7 +1806,7 @@
                 var orderRes = await fetchAPI({ action: 'createOrder', venueName: activeVenue.name, slots: count, payType: payType });
 
                 var options = {
-                    key: 'rzp_live_XXXXXXXXXXXX', // ← REPLACE WITH YOUR RAZORPAY KEY
+                    key: 'rzp_test_Sj3gtk7xMDorWj', // ← REPLACE WITH YOUR RAZORPAY KEY
                     amount: orderRes.order.amount,
                     currency: 'INR',
                     name: 'SquadOn',
