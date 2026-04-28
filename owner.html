@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- FIX: Prevent turf manager portal from appearing in Google -->
     <meta name="robots" content="noindex, nofollow">
     <title>SquadOn | Turf Manager Portal</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏟️</text></svg>" type="image/svg+xml">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FIX: Font Awesome was missing — added (needed for spinner and WhatsApp icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
@@ -22,6 +20,9 @@
             --glass-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/1999/xlink' width='100' height='100' viewBox='0 0 100 100'%3E%3Cdefs%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100' height='100' filter='url(%23a)' opacity='0.03'/%3E%3C/svg%3E");
         }
         body { font-family: 'Outfit', sans-serif; background-color: var(--onyx); color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+        /* Global responsive safeguard */
+        img, video, iframe, canvas { max-width: 100%; height: auto; }
 
         .input-luxe { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); color: white; border-radius: 0.75rem; padding: 0.875rem 1rem; width: 100%; outline: none; transition: 0.3s; color-scheme: dark; }
         .input-luxe:focus { border-color: var(--electric-indigo); background: rgba(255,255,255,0.05); box-shadow: inset 0 0 10px rgba(99,102,241,0.1); }
@@ -59,7 +60,6 @@
 
     <div class="fixed inset-0 pointer-events-none opacity-20" style="background-image: var(--glass-pattern)" aria-hidden="true"></div>
 
-    <!-- Login Screen -->
     <div class="flex-grow flex items-center justify-center p-6 relative z-10" id="login-container">
         <div class="card-luxe w-full max-w-md p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)]">
             <div class="text-center mb-10">
@@ -88,10 +88,8 @@
         </div>
     </div>
 
-    <!-- Dashboard -->
     <div id="dashboard-container" class="hidden w-full relative z-10 flex-grow flex flex-col">
 
-        <!-- Top Bar -->
         <div class="sticky top-0 z-50 bg-[#020617]/95 backdrop-blur border-b border-white/5 px-6 sm:px-10 py-4 flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <h1 class="text-xl font-black text-white">Squad<span class="text-indigo-400">On</span> <span class="text-sm font-medium text-gray-500">Turf Management</span></h1>
@@ -110,27 +108,25 @@
 
         <div class="max-w-4xl mx-auto w-full px-6 sm:px-8 py-8 flex-grow">
 
-            <!-- Revenue Summary Cards -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="revenue-stats-row">
-                <div class="stat-card text-center">
-                    <p class="text-2xl font-black text-indigo-400" id="rev-today">—</p>
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Revenue Today</p>
-                </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="revenue-stats-row">
                 <div class="stat-card text-center">
                     <p class="text-2xl font-black text-white" id="rev-bookings-today">—</p>
                     <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Bookings Today</p>
                 </div>
                 <div class="stat-card text-center">
-                    <p class="text-2xl font-black text-cyan-400" id="rev-week">—</p>
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Revenue This Week</p>
+                    <p class="text-2xl font-black text-indigo-400" id="rev-today">—</p>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Revenue Today</p>
                 </div>
                 <div class="stat-card text-center">
-                    <p class="text-2xl font-black text-amber-400" id="rev-waitlist">—</p>
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Waitlisted Players</p>
+                    <p class="text-2xl font-black text-cyan-400" id="rev-month">—</p>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Revenue This Month</p>
+                </div>
+                <div class="stat-card text-center">
+                    <p class="text-2xl font-black text-amber-400" id="rev-year">—</p>
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Revenue This Year</p>
                 </div>
             </div>
 
-            <!-- Main Management Card -->
             <div class="card-luxe p-8 md:p-10 border-indigo-500/20 shadow-[0_0_40px_rgba(99,102,241,0.12)] mb-6">
 
                 <h3 class="text-xl font-bold text-indigo-400 luxe-shadow mb-2 uppercase tracking-wide">
@@ -138,7 +134,6 @@
                 </h3>
                 <p class="text-sm text-gray-400 mb-8">Block a slot for an offline/walk-in customer, or unblock it to notify your waitlisted players.</p>
 
-                <!-- Venue + Date -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                     <div>
                         <label for="owner-block-venue" class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Your Turf</label>
@@ -150,33 +145,13 @@
                     </div>
                 </div>
 
-                <!-- FIX: Time slot dropdown now loads dynamically from venue data -->
-                <div class="mb-5">
+                <div class="mb-8">
                     <label for="owner-block-time" class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Time Slot</label>
                     <select id="owner-block-time" class="input-luxe text-sm py-4">
                         <option value="">— Select a time slot —</option>
                     </select>
                 </div>
 
-                <!-- Offline booking player details -->
-                <div id="offline-player-section" class="bg-indigo-500/5 border border-indigo-500/15 rounded-2xl p-5 mb-6">
-                    <p class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-4">
-                        <i class="fas fa-user-plus mr-1.5" aria-hidden="true"></i> Walk-in Customer Details (for Block action)
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label for="offline-player-name" class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-wide">Customer Name</label>
-                            <input type="text" id="offline-player-name" placeholder="Full name (optional)" class="input-luxe text-sm py-3">
-                        </div>
-                        <div>
-                            <label for="offline-player-phone" class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-wide">Phone Number</label>
-                            <input type="tel" id="offline-player-phone" placeholder="10-digit mobile (optional)" maxlength="10" class="input-luxe text-sm py-3">
-                        </div>
-                    </div>
-                    <p class="text-[10px] text-gray-600 mt-3">Recording customer details helps resolve disputes and track your offline revenue.</p>
-                </div>
-
-                <!-- Action buttons -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <button onclick="manageSlotAsOwner('block')" id="owner-btn-block" class="w-full py-4 btn-indigo uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(99,102,241,0.4)]">
                         <i class="fas fa-ban mr-2" aria-hidden="true"></i> Block Slot
@@ -187,7 +162,6 @@
                 </div>
             </div>
 
-            <!-- Live Ledger -->
             <div class="card-luxe p-8 md:p-10">
                 <div class="flex items-center justify-between mb-6">
                     <div>
@@ -202,7 +176,6 @@
                     </button>
                 </div>
 
-                <!-- Ledger summary row -->
                 <div id="ledger-summary" class="hidden grid grid-cols-3 gap-3 mb-5"></div>
 
                 <div id="ledger-container" class="space-y-2.5 max-h-[420px] overflow-y-auto hide-scroll pr-1">
@@ -249,7 +222,6 @@
             return await res.json();
         }
 
-        // FIX: getLocalISODate was missing from this file — now defined
         function getLocalISODate() {
             var now = new Date();
             return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
@@ -262,14 +234,32 @@
             return isoDate;
         }
 
-        // ==================== LOGIN ====================
+        // Extracts only the owner's base rate (removes the 20% markup added by Squad On)
+        function calculateOwnerShare(amountStr) {
+            var cleanAmount = String(amountStr).replace(/\D/g, '');
+            var totalPaidByPlayer = parseInt(cleanAmount) || 0;
+            // Since Total = Base * 1.20, Base = Total / 1.20
+            return Math.round(totalPaidByPlayer / 1.2); 
+        }
+
+        // ==================== LOGIN / AUTO-LOGIN ====================
         document.addEventListener('DOMContentLoaded', async function() {
-            var saved = sessionStorage.getItem('squadonOwnerSession');
-            if (saved) {
-                currentUser = JSON.parse(saved);
-                if (currentUser.role === 'owner' || currentUser.role === 'admin') {
-                    setupDashboard();
+            // Check for Player Portal Session to auto-login
+            var playerSaved = sessionStorage.getItem('squadonUser');
+            var ownerSaved = sessionStorage.getItem('squadonOwnerSession');
+            
+            if (ownerSaved) {
+                currentUser = JSON.parse(ownerSaved);
+            } else if (playerSaved) {
+                var pUser = JSON.parse(playerSaved);
+                if (pUser.role === 'owner' || pUser.role === 'admin') {
+                    currentUser = pUser;
+                    sessionStorage.setItem('squadonOwnerSession', JSON.stringify(currentUser));
                 }
+            }
+
+            if (currentUser && (currentUser.role === 'owner' || currentUser.role === 'admin')) {
+                setupDashboard();
             }
         });
 
@@ -328,7 +318,6 @@
             }
         }
 
-        // FIX: Only show venues assigned to this manager (by phone), unless admin
         function populateOwnerSelect() {
             var blockSelect = document.getElementById('owner-block-venue');
             if (!blockSelect) return;
@@ -340,7 +329,6 @@
                 var filtered = window.venues.filter(function(v) {
                     return v.managerPhone === currentUser.phone || v.manager === currentUser.phone;
                 });
-                // Fallback: if no assigned venues found, show all (until manager assignment is set up in Apps Script)
                 myVenues = filtered.length > 0 ? filtered : window.venues;
             }
 
@@ -355,7 +343,6 @@
             }
         }
 
-        // FIX: Load time slots dynamically from venue data instead of hardcoded
         function onVenueChange() {
             var venueName = document.getElementById('owner-block-venue').value;
             var venue = window.venues.find(function(v) { return v.name === venueName; });
@@ -375,39 +362,50 @@
             renderRevenueStats();
         }
 
-        // ==================== REVENUE STATS ====================
+        // ==================== REVENUE STATS (Owner Only Share) ====================
         function renderRevenueStats() {
             var venueName = document.getElementById('owner-block-venue').value;
             var bookings = window.allBookings.filter(function(b) {
                 return (!venueName || b.venue === venueName) && b.method !== 'Standby Waitlist';
             });
 
+            var now = new Date();
             var todayISO = getLocalISODate();
             var todayStr = formatDateDisplay(todayISO); // DD-MM-YYYY
+            var currentMonth = now.getMonth();
+            var currentYear = now.getFullYear();
 
+            // Today's Bookings and Revenue
             var todayBookings = bookings.filter(function(b) { return b.playDate === todayStr; });
-            var todayRev = todayBookings.reduce(function(s,b){ return s + (parseInt(b.amount)||0); }, 0);
+            var todayRev = todayBookings.reduce(function(s,b){ return s + calculateOwnerShare(b.amount); }, 0);
 
-            // This week (last 7 days)
-            var weekRev = 0;
-            for (var i = 0; i < 7; i++) {
-                var d = new Date(); d.setDate(d.getDate() - i);
-                var dStr = [String(d.getDate()).padStart(2,'0'), String(d.getMonth()+1).padStart(2,'0'), d.getFullYear()].join('-');
-                bookings.filter(function(b){ return b.playDate === dStr; })
-                    .forEach(function(b){ weekRev += parseInt(b.amount)||0; });
-            }
+            var monthRev = 0;
+            var yearRev = 0;
 
-            var waitlistCount = window.allBookings.filter(function(b) {
-                return (!venueName || b.venue === venueName) && b.method === 'Standby Waitlist';
-            }).length;
+            bookings.forEach(function(b) {
+                if (!b.playDate) return;
+                var parts = b.playDate.split('-');
+                if (parts.length === 3) {
+                    var bMonth = parseInt(parts[1]) - 1;
+                    var bYear = parseInt(parts[2]);
+                    
+                    var ownerCut = calculateOwnerShare(b.amount);
+                    if (bYear === currentYear) {
+                        yearRev += ownerCut;
+                        if (bMonth === currentMonth) {
+                            monthRev += ownerCut;
+                        }
+                    }
+                }
+            });
 
-            document.getElementById('rev-today').innerText = '₹' + todayRev.toLocaleString('en-IN');
             document.getElementById('rev-bookings-today').innerText = todayBookings.length;
-            document.getElementById('rev-week').innerText = '₹' + weekRev.toLocaleString('en-IN');
-            document.getElementById('rev-waitlist').innerText = waitlistCount;
+            document.getElementById('rev-today').innerText = '₹' + todayRev.toLocaleString('en-IN');
+            document.getElementById('rev-month').innerText = '₹' + monthRev.toLocaleString('en-IN');
+            document.getElementById('rev-year').innerText = '₹' + yearRev.toLocaleString('en-IN');
         }
 
-        // ==================== LEDGER ====================
+        // ==================== LEDGER (Owner Only Share) ====================
         async function loadLedger() {
             var venue = document.getElementById('owner-block-venue').value;
             var date = document.getElementById('owner-block-date').value;
@@ -430,7 +428,7 @@
 
                 if (res.ledger && res.ledger.length > 0) {
                     var paid = res.ledger.filter(function(l){ return l.method !== 'Standby Waitlist' && l.method !== 'Offline Block (Owner)'; });
-                    var totalRev = paid.reduce(function(s,l){ return s+(parseInt(l.amount)||0); }, 0);
+                    var totalRev = paid.reduce(function(s,l){ return s + calculateOwnerShare(l.amount); }, 0);
                     var blocks = res.ledger.filter(function(l){ return l.method === 'Offline Block (Owner)'; });
                     var waiters = res.ledger.filter(function(l){ return l.method === 'Standby Waitlist'; });
 
@@ -449,6 +447,7 @@
                         if (l.method === 'Token') badgeClass = 'badge-token';
 
                         var timeStr = l.details ? (l.details.split(' | ')[2] || l.details) : l.timeSlot || '—';
+                        var ownerCutAmount = calculateOwnerShare(l.amount);
 
                         // WhatsApp quick-contact link
                         var waHtml = '';
@@ -470,7 +469,7 @@
                                 '</div>' +
                                 '<div class="flex items-center gap-3 flex-shrink-0 ml-11 sm:ml-0">' +
                                     '<span class="badge ' + badgeClass + '">' + l.method + '</span>' +
-                                    (l.amount && parseInt(l.amount) > 0 ? '<span class="text-xs font-black text-white">₹' + l.amount + '</span>' : '') +
+                                    (ownerCutAmount > 0 ? '<span class="text-xs font-black text-white">₹' + ownerCutAmount + '</span>' : '') +
                                     waHtml +
                                 '</div>' +
                             '</div>' +
@@ -499,7 +498,6 @@
             if (!date) { showToast('Please select a date.', 'error'); return; }
             if (!time) { showToast('Please select a time slot.', 'error'); return; }
 
-            // FIX: Confirmation dialog before any block/unblock action
             var fDate = formatDateDisplay(date);
             var confirmMsg = actionType === 'block'
                 ? 'Block ' + time + ' on ' + fDate + ' at ' + venue + '?\n\nThis will mark the slot as unavailable to online players.'
@@ -512,10 +510,6 @@
             btn.innerText = actionType === 'block' ? 'Blocking...' : 'Unblocking...';
             btn.classList.add('opacity-50', 'cursor-wait');
 
-            // Collect offline player details for block action
-            var offlineName = document.getElementById('offline-player-name').value.trim();
-            var offlinePhone = document.getElementById('offline-player-phone').value.trim();
-
             try {
                 var vData = window.venues.find(function(v) { return v.name === venue; });
                 var res = await fetchAPI({
@@ -527,18 +521,12 @@
                     time: time,
                     cap: vData ? vData.cap : 10,
                     ownerPhone: currentUser.phone,
-                    // NEW: pass offline customer details so they're recorded
-                    offlineCustomerName: offlineName || 'Walk-in Customer',
-                    offlineCustomerPhone: offlinePhone || ''
+                    offlineCustomerName: 'Walk-in Customer',
+                    offlineCustomerPhone: ''
                 });
 
                 if (res && res.status === 'success') {
                     showToast(res.msg || (actionType === 'block' ? 'Slot blocked successfully.' : 'Slot unblocked! Waitlisted players notified.'), 'success');
-                    // Clear offline details after successful block
-                    if (actionType === 'block') {
-                        document.getElementById('offline-player-name').value = '';
-                        document.getElementById('offline-player-phone').value = '';
-                    }
                     loadLedger();
                     renderRevenueStats();
                 } else {
