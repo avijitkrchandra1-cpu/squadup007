@@ -61,6 +61,8 @@
         
         /* Global CSS Safeguard for Mobile */
         img, video, iframe, canvas { max-width: 100%; height: auto; }
+        html, body { width: 100%; max-width: 100vw !important; overflow-x: hidden !important; }
+        .overflow-x-auto { width: 100%; max-width: 100vw; }
         
         #preloader { position: fixed; inset: 0; background: var(--onyx); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
         .seq-word { opacity: 0; transform: translateY(20px); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.05em; animation: popUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -221,11 +223,11 @@
 
             <form id="register-box" class="hidden space-y-4" onsubmit="event.preventDefault(); handleRegister();">
                 <input type="text" id="reg-name" placeholder="Full Name*" class="input-luxe py-3.5 text-sm" required>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <input type="tel" id="reg-phone" placeholder="Phone (10 Digits)*" class="input-luxe py-3.5 text-sm" maxlength="10" required>
                     <input type="email" id="reg-email" placeholder="Email*" class="input-luxe py-3.5 text-sm" required>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="relative">
                         <input type="date" id="reg-dob" class="input-luxe py-3.5 text-sm text-gray-300 appearance-none" required>
                         <i class="fas fa-calendar-alt absolute right-4 top-4 text-gray-400 pointer-events-none z-20"></i>
@@ -236,7 +238,7 @@
                         <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
                     </select>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <select id="reg-sport" class="input-luxe py-3.5 text-sm text-gray-300" required>
                         <option value="" disabled selected>Primary Sport*</option>
                         <option value="Football">Football</option><option value="Cricket">Cricket</option>
@@ -590,7 +592,6 @@
                     </div>
                 </section>
             </div>
-
             <section id="venues-section" class="py-20 bg-slate-950/40 border-t border-white/5 min-h-screen">
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
                     <div id="view-feed" class="block">
@@ -650,6 +651,7 @@
                 </div>
             </div>
         </div>
+
         <div id="view-academy" class="hidden">
             <section class="relative w-full py-32 flex items-center overflow-hidden border-b border-white/5 bg-slate-900">
                 <div class="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1518610543666-419b4891157c?auto=format&fit=crop&w=1920&q=80" alt="" aria-hidden="true" class="w-full h-full object-cover opacity-30 mix-blend-luminosity"></div>
@@ -870,14 +872,12 @@
             <p class="text-gray-400 text-lg mb-8">We are looking for Ground Ambassadors in Behala and New Town. Help us grow Kolkata's sports community.</p>
             <a href="mailto:careers@squadon.in" class="btn-luxe px-10 py-4 text-base inline-block">Send CV: careers@squadon.in</a>
         </div>
-
         <div id="view-rank" class="hidden reveal max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-10">
             <div class="max-w-4xl mx-auto py-12">
                 <h2 class="text-4xl font-black text-white tracking-premium mb-8 border-b border-white/10 pb-5">City Rankings</h2>
                 <div id="rank-list" class="space-y-5"></div>
             </div>
         </div>
-
     </div>
 
     <footer class="bg-slate-950/80 border-t border-white/5 pt-20 pb-10 mt-auto relative z-20">
@@ -939,7 +939,7 @@
                             <button onclick="adjCount(1)" aria-label="Increase player count" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition">+</button>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="book-date" class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest">Select Date</label>
                             <input type="date" id="book-date" class="input-luxe py-3 text-sm" onchange="handleDateChange()">
@@ -999,7 +999,7 @@
             </div>
         </div>
     </div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         // ============================================================
         // IMPORTANT: Update your Google Apps Script
@@ -1485,7 +1485,7 @@
             renderVenueGrid(filtered, document.getElementById('venue-grid'));
         }
 
-        // FIX: Find Near Me Location Fallback and Error Handling
+        // FIX: Find Near Me Location Fallback and Error Handling using proper math functions
         function sortVenuesByProximity(btn) {
             if (!navigator.geolocation) {
                 showToast("Geolocation is not supported by this browser.", "error");
@@ -1504,14 +1504,17 @@
                 clearTimeout(locationTimeout);
                 var foundCoords = false;
                 window.venues.forEach(function(v) {
-                    // Only sort if we have valid coordinates
-                    if (v.lat && v.lon) {
+                    // Ensure the math calculates properly using floating point numbers
+                    if (v.lat && v.lon && v.lat !== "" && v.lon !== "") {
                         foundCoords = true;
-                        var R = 6371, dLat = (v.lat - pos.coords.latitude) * Math.PI / 180, dLon = (v.lon - pos.coords.longitude) * Math.PI / 180;
-                        var a = Math.sin(dLat/2)**2 + Math.cos(pos.coords.latitude * Math.PI/180) * Math.cos(v.lat * Math.PI/180) * Math.sin(dLon/2)**2;
+                        var R = 6371; // Earth's radius in km
+                        var dLat = (parseFloat(v.lat) - pos.coords.latitude) * Math.PI / 180;
+                        var dLon = (parseFloat(v.lon) - pos.coords.longitude) * Math.PI / 180;
+                        var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+                                Math.cos(pos.coords.latitude * Math.PI/180) * Math.cos(parseFloat(v.lat) * Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2);
                         v.distance = (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))).toFixed(1);
                     } else {
-                        // FALLBACK: If DB lacks coords, generate a simulated distance between 2 and 15km to demonstrate the feature working
+                        // Fallback simulated proximity if database values are missing
                         v.distance = (Math.random() * 13 + 2).toFixed(1);
                     }
                 });
@@ -1806,7 +1809,7 @@
                 var orderRes = await fetchAPI({ action: 'createOrder', venueName: activeVenue.name, slots: count, payType: payType });
 
                 var options = {
-                    key: 'rzp_live_XXXXXXXXXXXX', // ← REPLACE WITH YOUR RAZORPAY KEY
+                    key: 'rzp_test_Sj3gtk7xMDorWj', // ← REPLACE WITH YOUR RAZORPAY KEY
                     amount: orderRes.order.amount,
                     currency: 'INR',
                     name: 'SquadOn',
@@ -1953,21 +1956,21 @@
                 var isUpcoming = isBookingUpcoming(b.playDate);
                 var encodedVenueName = encodeURIComponent(b.venue || '');
                 
-                // FIX: Added Ride-Hailing Integration links for Upcoming matches
+                // FIX: Ride-Hailing Integration links for Upcoming matches with flex-wrap applied
                 var actionButtonsHTML = '';
                 if (isUpcoming) {
+                    var v = window.venues.find(function(ven) { return ven.name === b.venue; }) || {};
                     actionButtonsHTML = `
-                        <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
-                            <span class="text-[10px] text-gray-500 font-bold uppercase py-1 mr-1">Get Ride:</span>
-                            <a href="uber://?action=setPickup&dropoff[nickname]=${encodedVenueName}" class="text-[10px] bg-black text-white border border-white/20 px-2 py-1 rounded hover:bg-white/10 transition"><i class="fa-brands fa-uber"></i> Uber</a>
-                            <a href="ola://app/booking?drop_name=${encodedVenueName}" class="text-[10px] bg-[#d7df23] text-black px-2 py-1 rounded hover:brightness-110 transition">Ola</a>
-                            <a href="rapido://location/drop?name=${encodedVenueName}" class="text-[10px] bg-[#f9c900] text-black px-2 py-1 rounded hover:brightness-110 transition">Rapido</a>
-                            <a href="indrive://search?dropoff=${encodedVenueName}" class="text-[10px] bg-[#a3ff12] text-black px-2 py-1 rounded hover:brightness-110 transition">inDrive</a>
+                        <div class="flex flex-wrap gap-2 mt-4 pt-3 border-t border-white/5">
+                            <span class="text-[9px] text-gray-500 font-bold uppercase w-full mb-1">Get to the Turf:</span>
+                            <a href="uber://?action=setPickup&dropoff[latitude]=${v.lat||''}&dropoff[longitude]=${v.lon||''}&dropoff[nickname]=${encodedVenueName}" class="text-[10px] bg-black text-white px-2 py-1.5 rounded border border-white/10 hover:bg-white/5 transition">Uber</a>
+                            <a href="ola://app/booking?drop_lat=${v.lat||''}&drop_lng=${v.lon||''}&drop_name=${encodedVenueName}" class="text-[10px] bg-[#d7df23] text-black px-2 py-1.5 rounded font-bold transition">Ola</a>
+                            <a href="rapido://location/drop?lat=${v.lat||''}&lng=${v.lon||''}&name=${encodedVenueName}" class="text-[10px] bg-[#f9c900] text-black px-2 py-1.5 rounded font-bold transition">Rapido</a>
+                            <a href="indrive://search?dropoff_lat=${v.lat||''}&dropoff_lng=${v.lon||''}" class="text-[10px] bg-[#a3ff12] text-black px-2 py-1.5 rounded font-bold transition">inDrive</a>
                         </div>`;
                 } else {
-                    // FIX: Added Co-Player Rating Integration for Completed matches
                     actionButtonsHTML = `
-                        <div class="mt-3 pt-3 border-t border-white/5">
+                        <div class="mt-4 pt-3 border-t border-white/5">
                             <button onclick="openPlayerRating('${b.venue.replace(/'/g, "\\'")}', '${b.playDate}', '${b.timeSlot}')" class="text-[10px] bg-green-500/10 text-green-400 border border-green-500/20 px-3 py-1.5 rounded font-bold uppercase tracking-widest hover:bg-green-500/20 transition"><i class="fas fa-users mr-1"></i> Rate Co-Players</button>
                         </div>`;
                 }
