@@ -61,6 +61,8 @@
         
         /* Global CSS Safeguard for Mobile */
         img, video, iframe, canvas { max-width: 100%; height: auto; }
+        html, body { width: 100%; max-width: 100vw !important; overflow-x: hidden !important; }
+        .overflow-x-auto { width: 100%; max-width: 100vw; }
         
         #preloader { position: fixed; inset: 0; background: var(--onyx); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
         .seq-word { opacity: 0; transform: translateY(20px); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.05em; animation: popUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -590,66 +592,6 @@
                     </div>
                 </section>
             </div>
-
-            <section id="venues-section" class="py-20 bg-slate-950/40 border-t border-white/5 min-h-screen">
-                <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
-                    <div id="view-feed" class="block">
-                        <div class="flex flex-col xl:flex-row xl:items-center justify-between mb-8 reveal">
-                            <div class="mb-6 xl:mb-0 pr-10">
-                                <h2 class="text-4xl font-black text-white tracking-premium">Available Arenas</h2>
-                                <p class="text-slate-400 mt-1 font-medium text-sm">Real-time availability — Salt Lake, Behala, New Town, Jadavpur.</p>
-                            </div>
-                            <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
-                                <div class="relative w-full md:w-64">
-                                    <input type="text" id="venue-search" onkeyup="searchVenues(this.value)" placeholder="Search arenas or areas..." class="input-luxe py-2 px-4 pl-10 text-sm" aria-label="Search venues">
-                                    <i class="fas fa-search absolute left-4 top-3 text-gray-500" aria-hidden="true"></i>
-                                </div>
-                                <div class="flex overflow-x-auto gap-3.5 hide-scroll pb-2.5 md:pb-0 w-full" id="sport-filters" role="group" aria-label="Filter by sport">
-                                    <button onclick="filterVenues('All', this)" class="filter-pill active">All</button>
-                                    <button onclick="filterVenues('Football', this)" class="filter-pill">Football</button>
-                                    <button onclick="filterVenues('Cricket', this)" class="filter-pill">Cricket</button>
-                                    <button onclick="filterVenues('Chess', this)" class="filter-pill">Chess</button>
-                                    <button onclick="filterVenues('Carrom', this)" class="filter-pill">Carrom</button>
-                                    <button onclick="filterVenues('Basketball', this)" class="filter-pill">Basketball</button>
-                                    <button onclick="filterVenues('Tennis', this)" class="filter-pill">Tennis</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="venue-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 reveal"></div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div id="view-my-bookings" class="hidden max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 w-full py-16">
-            <div class="flex items-center justify-between mb-10">
-                <div>
-                    <h2 class="text-4xl font-black text-white tracking-premium">My Bookings</h2>
-                    <p class="text-slate-400 mt-1 text-sm font-medium">Your upcoming and past slots.</p>
-                </div>
-                <div id="user-coins-display" class="coin-badge text-base px-4 py-2"></div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="card-luxe p-6 text-center">
-                    <p class="text-3xl font-black text-white mb-1" id="stat-total-bookings">0</p>
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Total Bookings</p>
-                </div>
-                <div class="card-luxe p-6 text-center">
-                    <p class="text-3xl font-black text-amber-400 mb-1" id="stat-coins">0 🪙</p>
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Squad Coins</p>
-                </div>
-                <div class="card-luxe p-6 text-center">
-                    <p class="text-3xl font-black text-white mb-1" id="stat-spent">₹0</p>
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Total Spent</p>
-                </div>
-            </div>
-            <div id="bookings-list" class="space-y-4">
-                <div class="text-center py-24 text-slate-500 font-bold border-2 border-dashed border-white/10 rounded-3xl">
-                    <p class="text-4xl mb-4">📋</p>
-                    <p>No bookings yet. <span class="text-cyan-400 cursor-pointer underline" onclick="switchTab('feed')">Book your first arena →</span></p>
-                </div>
-            </div>
-        </div>
 <div id="view-academy" class="hidden">
             <section class="relative w-full py-32 flex items-center overflow-hidden border-b border-white/5 bg-slate-900">
                 <div class="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1518610543666-419b4891157c?auto=format&fit=crop&w=1920&q=80" alt="" aria-hidden="true" class="w-full h-full object-cover opacity-30 mix-blend-luminosity"></div>
@@ -790,67 +732,6 @@
                     </div>
                 </div>
             </section>
-            <section class="py-10 max-w-[70rem] mx-auto px-6 sm:px-8 mb-20 reveal">
-                <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-white/10 rounded-[2.5rem] p-10 md:p-16 text-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 blur-[80px] rounded-full pointer-events-none" aria-hidden="true"></div>
-                    <div class="relative z-10 max-w-2xl mx-auto">
-                        <span class="text-3xl mb-4 block" aria-hidden="true">📬</span>
-                        <h2 class="text-3xl md:text-4xl font-black text-white tracking-premium mb-4">Join the SquadOn Insider</h2>
-                        <p class="text-slate-400 font-medium mb-8">Get exclusive tactical guides, unlisted arena drops, and tournament invites delivered straight to your inbox.</p>
-                        <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                            <input type="email" id="newsletter-email" placeholder="Enter your email address" class="input-luxe py-4 flex-grow text-center sm:text-left" aria-label="Newsletter email address">
-                            <button onclick="subscribeNewsletter()" class="btn-luxe px-8 py-4 text-sm font-bold flex-shrink-0">Subscribe</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div id="view-blog-detail" class="hidden">
-            <div class="max-w-[50rem] mx-auto px-6 pt-32 pb-12 reveal">
-                <div class="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-8">
-                    <span onclick="switchTab('blog-hub')" class="hover:text-cyan-400 cursor-pointer transition">Blog</span>
-                    <span>/</span>
-                    <span class="text-cyan-400">Featured Story</span>
-                </div>
-                <h1 class="text-4xl md:text-6xl font-black text-white tracking-premium leading-[1.1] mb-8">The Rise of Night Cricket in Salt Lake: A Cultural Shift</h1>
-                <div class="flex items-center justify-between border-y border-white/10 py-6 mb-12">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-black text-lg border border-cyan-500/40" aria-hidden="true">RD</div>
-                        <div>
-                            <p class="text-white font-bold text-sm">Rahul Das</p>
-                            <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">12 April 2026 • 4 Min Read</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-3">
-                        <button onclick="shareBlog('twitter')" aria-label="Share on Twitter" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition"><i class="fa-brands fa-twitter" aria-hidden="true"></i></button>
-                        <button onclick="shareBlog('facebook')" aria-label="Share on Facebook" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></button>
-                        <button onclick="shareBlog('copy')" aria-label="Copy link" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition"><i class="fas fa-link" aria-hidden="true"></i></button>
-                    </div>
-                </div>
-                <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80" alt="Night cricket on a floodlit turf in Salt Lake, Kolkata" class="w-full rounded-3xl mb-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-                <div class="blog-content">
-                    <p class="text-xl text-slate-300 font-medium leading-relaxed mb-10">For decades, cricket in Kolkata was a daytime affair. The maidan was crowded by 6 AM, and the stumps were pulled up before sunset. But a quiet revolution has taken over the artificial turfs of Salt Lake, Sector V, and New Town.</p>
-                    <p>With the rise of IT parks and extended corporate working hours, the traditional 9-to-5 is a myth for many young professionals. By the time they log off, the sun is long gone. Enter the era of the illuminated box turf.</p>
-                    <h2>The 10 PM League</h2>
-                    <p>"We used to struggle to get 11 guys together on a Sunday morning," says Arindam, a software developer whose team now plays exclusively at 10 PM on Wednesdays. "Now, we just book a 6v6 slot after dinner. It's cooler, there's no traffic, and the LED lights make it feel like an IPL match."</p>
-                    <blockquote>"The turf isn't just about sports anymore. It's the new corporate watercooler. It's where deals are made and stress is burned off."</blockquote>
-                    <p>The data on SquadOn backs this up. Over 65% of our cricket bookings in the Salt Lake hub happen between 8 PM and midnight. Venue owners have caught on, upgrading their facilities with high-lumen floodlights and better shock-absorbent grass.</p>
-                    <h3>What You Need for Night Turf Cricket:</h3>
-                    <ul>
-                        <li><strong>High-Visibility Gear:</strong> Dark clothes blend into the netting. Wear neon or white.</li>
-                        <li><strong>Turf Shoes:</strong> Leave the metal spikes at home. Rubber studs give the best grip on artificial grass.</li>
-                        <li><strong>The Right Ball:</strong> Opt for a medium-weight rubber ball or a turf-specific synthetic ball.</li>
-                    </ul>
-                    <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1200&q=80" alt="Cricket players on a floodlit turf">
-                    <p>If you haven't experienced the rush of a night match yet, it's time to gather your squad. Use SquadOn's <a href="#" onclick="switchTab('feed'); return false;">"Meet Your Pals" feature</a> to book a single slot in an existing match tonight.</p>
-                </div>
-                <div class="flex flex-wrap gap-3 mt-12 pt-8 border-t border-white/10">
-                    <span class="bg-white/5 text-gray-400 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded border border-white/10 hover:text-white cursor-pointer transition">#KolkataSports</span>
-                    <span class="bg-white/5 text-gray-400 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded border border-white/10 hover:text-white cursor-pointer transition">#Cricket</span>
-                    <span class="bg-white/5 text-gray-400 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded border border-white/10 hover:text-white cursor-pointer transition">#SaltLake</span>
-                </div>
-            </div>
         </div>
 
         <div id="view-partner" class="hidden py-40 text-center max-w-2xl mx-auto px-6">
@@ -870,14 +751,12 @@
             <p class="text-gray-400 text-lg mb-8">We are looking for Ground Ambassadors in Behala and New Town. Help us grow Kolkata's sports community.</p>
             <a href="mailto:careers@squadon.in" class="btn-luxe px-10 py-4 text-base inline-block">Send CV: careers@squadon.in</a>
         </div>
-
         <div id="view-rank" class="hidden reveal max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 w-full pt-10">
             <div class="max-w-4xl mx-auto py-12">
                 <h2 class="text-4xl font-black text-white tracking-premium mb-8 border-b border-white/10 pb-5">City Rankings</h2>
                 <div id="rank-list" class="space-y-5"></div>
             </div>
         </div>
-
     </div>
 
     <footer class="bg-slate-950/80 border-t border-white/5 pt-20 pb-10 mt-auto relative z-20">
@@ -939,7 +818,7 @@
                             <button onclick="adjCount(1)" aria-label="Increase player count" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition">+</button>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="book-date" class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest">Select Date</label>
                             <input type="date" id="book-date" class="input-luxe py-3 text-sm" onchange="handleDateChange()">
@@ -999,12 +878,11 @@
             </div>
         </div>
     </div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        // ============================================================
-        // IMPORTANT: Update your Google Apps Script
-        // ============================================================
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbylfOMvY6UaO9E2fAUF1ussbuIJl3_A_uv1DBuGtOKg9NA7f1xyZBTy-J2oC_P7BIAq/exec'; // REPLACE WITH YOUR GAS URL
+        // REPLACE WITH YOUR ACTUAL DEPLOYED GAS URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbylfOMvY6UaO9E2fAUF1ussbuIJl3_A_uv1DBuGtOKg9NA7f1xyZBTy-J2oC_P7BIAq/exec';
 
         let currentUser = null;
         let activeVenue = null;
@@ -1014,12 +892,10 @@
         let currentFilter = 'All';
         let selectedRating = 0;
         let lastBookedVenueName = '';
-        
-        // Co-player rating variables
         let selectedPlayerRating = 0;
         let currentRatingContext = '';
 
-        // ==================== ANIMATION ENGINE ====================
+        // --- Intersection Observer for Animations ---
         var observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
         var observer = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
@@ -1028,25 +904,22 @@
         }, observerOptions);
         document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) { observer.observe(el); });
 
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) { el.classList.add('active'); });
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach((el) => el.classList.add('active'));
             }, 3000);
         });
 
-        // ==================== PRELOADER ====================
         function hidePreloader() {
             var l = document.getElementById('preloader');
             if (l && l.style.display !== 'none') {
                 l.style.opacity = '0';
-                setTimeout(function() { l.style.display = 'none'; }, 500);
+                setTimeout(() => { l.style.display = 'none'; }, 500);
             }
         }
         setTimeout(hidePreloader, 5000);
 
-        // ==================== TOAST ====================
-        function showToast(msg, type) {
-            type = type || 'success';
+        function showToast(msg, type = 'success') {
             var backgrounds = {
                 success: 'linear-gradient(to right, #06b6d4, #6366f1)',
                 error: 'linear-gradient(to right, #ef4444, #dc2626)',
@@ -1059,15 +932,12 @@
             }).showToast();
         }
 
-        // ==================== PASSWORD HASHING ====================
         async function hashPassword(password) {
             var msgBuffer = new TextEncoder().encode(password);
             var hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            var hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // ==================== API CALL (POST) ====================
         async function fetchAPI(data) {
             try {
                 var response = await fetch(scriptURL, {
@@ -1078,27 +948,21 @@
                 return await response.json();
             } catch (e) {
                 console.error('API Error:', e);
-                throw new Error('Database connection failed. Please check your connection.');
+                throw new Error('Database connection failed.');
             }
         }
 
-        // ==================== MENU ====================
         function openMenu() { document.getElementById('side-menu-overlay').classList.remove('opacity-0', 'pointer-events-none'); document.getElementById('side-menu').classList.remove('translate-x-full'); }
         function closeMenu() { document.getElementById('side-menu-overlay').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('side-menu').classList.add('translate-x-full'); }
 
-        // ==================== TAB SWITCHING ====================
         function switchTab(tabId) {
             var allViews = ['view-home', 'venues-section', 'view-rank', 'view-blog-hub', 'view-blog-detail', 'view-academy', 'view-partner', 'view-news', 'view-careers', 'view-my-bookings'];
-            allViews.forEach(function(id) { var el = document.getElementById(id); if (el) el.classList.add('hidden'); });
-
-            var grid = document.getElementById('venue-grid');
-            var filters = document.getElementById('sport-filters');
+            allViews.forEach(id => { var el = document.getElementById(id); if (el) el.classList.add('hidden'); });
 
             if (tabId === 'feed') {
                 document.getElementById('view-home').classList.remove('hidden');
                 document.getElementById('venues-section').classList.remove('hidden');
-                if (grid) grid.classList.remove('hidden');
-                if (filters) filters.classList.remove('hidden');
+                document.getElementById('venue-grid').classList.remove('hidden');
             } else if (tabId === 'my-bookings') {
                 document.getElementById('view-my-bookings').classList.remove('hidden');
                 loadMyBookings();
@@ -1106,529 +970,168 @@
                 var el = document.getElementById('view-' + tabId);
                 if (el) el.classList.remove('hidden');
             }
-
             window.scrollTo(0, 0);
-            document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) { el.classList.remove('active'); observer.observe(el); });
         }
 
-        // ==================== AUTH ====================
         function toggleAuth(type) {
-            ['login-box', 'register-box'].forEach(function(id) {
-                document.getElementById(id).classList.add('hidden');
-            });
+            ['login-box', 'register-box'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(type + '-box').classList.remove('hidden');
         }
 
         function openAuth() {
             var overlay = document.getElementById('auth-overlay');
-            var card = document.getElementById('auth-card');
             overlay.classList.remove('hidden');
-            setTimeout(function() { overlay.classList.remove('opacity-0', 'pointer-events-none'); card.classList.remove('scale-95'); card.classList.add('scale-100'); }, 10);
+            setTimeout(() => { overlay.classList.remove('opacity-0', 'pointer-events-none'); }, 10);
         }
 
         function closeAuth() {
             var overlay = document.getElementById('auth-overlay');
-            var card = document.getElementById('auth-card');
-            card.classList.remove('scale-100'); card.classList.add('scale-95');
             overlay.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(function() { overlay.classList.add('hidden'); }, 400);
+            setTimeout(() => { overlay.classList.add('hidden'); }, 400);
         }
 
-        // ==================== MODAL ====================
         function showModal(id) {
-            var overlay = document.getElementById(id);
-            if (!overlay) return;
-            var card = overlay.querySelector('.card-luxe');
-            overlay.classList.remove('hidden');
-            setTimeout(function() {
-                overlay.classList.remove('opacity-0', 'pointer-events-none');
-                if (card) { card.classList.remove('scale-95'); card.classList.add('scale-100'); }
-            }, 10);
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.classList.remove('hidden');
+            setTimeout(() => { el.classList.remove('opacity-0', 'pointer-events-none'); }, 10);
         }
 
         function closeModal(id) {
-            var overlay = document.getElementById(id);
-            if (!overlay) return;
-            var card = overlay.querySelector('.card-luxe');
-            if (card) { card.classList.remove('scale-100'); card.classList.add('scale-95'); }
-            overlay.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(function() { overlay.classList.add('hidden'); }, 400);
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => { el.classList.add('hidden'); }, 400);
         }
 
-        function agreeAndCloseTnC() {
-            sessionStorage.setItem('hasAgreedTnC', 'true');
-            closeModal('disc-modal');
-        }
+        function agreeAndCloseTnC() { sessionStorage.setItem('hasAgreedTnC', 'true'); closeModal('disc-modal'); }
 
-        function showTnCIfNeeded() {
-            if (!sessionStorage.getItem('hasAgreedTnC')) {
-                setTimeout(function() { showModal('disc-modal'); }, 800);
-            }
-        }
-
-        function logout() { sessionStorage.clear(); location.reload(); }
-
-        // ==================== DOM READY ====================
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', async () => {
             var savedUser = sessionStorage.getItem('squadonUser');
-            if (savedUser) { currentUser = JSON.parse(savedUser); }
+            if (savedUser) { currentUser = JSON.parse(savedUser); updateUILoggedIn(); }
 
-            var cont = document.getElementById('venue-grid');
-            if (cont) {
-                cont.innerHTML = '';
-                for (var i = 0; i < 4; i++) {
-                    cont.innerHTML += `<div class="card-luxe p-6 animate-skeleton opacity-40"><div class="h-44 bg-slate-800 rounded-2xl mb-4"></div><div class="h-6 bg-slate-800 w-3/4 rounded mb-2"></div><div class="h-4 bg-slate-800 w-1/2 rounded mb-6"></div><div class="h-12 bg-slate-800 rounded-xl"></div></div>`;
-                }
-            }
-
-            // ONLY SYNC REAL DATA. No fake "Coming Soon" hardcoded venues.
             try {
                 var res = await fetchAPI({ action: 'sync' });
                 if (res && res.status === 'success') {
                     window.venues = res.venues || [];
                     window.activeBookings = res.bookings || [];
                 }
-            } catch (e) {
-                console.log('DB sync pending:', e.message);
-            }
+            } catch (e) { console.log('Sync error:', e.message); }
 
             hidePreloader();
-            showTnCIfNeeded();
-
-            if (currentUser) { updateUILoggedIn(); }
-            else { filterVenues('All', document.querySelector('.filter-pill')); }
-
-            var mockup = document.getElementById('hero-mockup-container');
-            if (mockup) {
-                mockup.addEventListener('mousemove', function(e) {
-                    var frame = mockup.querySelector('.mockup-frame');
-                    var rect = mockup.getBoundingClientRect();
-                    var x = e.clientX - rect.left - rect.width / 2;
-                    var y = e.clientY - rect.top - rect.height / 2;
-                    frame.style.transform = `rotateY(${x / 20}deg) rotateX(${-y / 20}deg) rotateZ(-3deg)`;
-                });
-                mockup.addEventListener('mouseleave', function() {
-                    mockup.querySelector('.mockup-frame').style.transform = 'rotateY(0) rotateX(0) rotateZ(-3deg)';
-                });
-            }
-
-            runExpansionMatrix();
-
-            window.addEventListener('scroll', function() {
-                var nav = document.querySelector('.glass-nav');
-                if (nav) { if (window.scrollY > 20) nav.classList.add('scrolled'); else nav.classList.remove('scrolled'); }
-            });
+            if (!sessionStorage.getItem('hasAgreedTnC')) setTimeout(() => showModal('disc-modal'), 800);
+            filterVenues('All', document.querySelector('.filter-pill'));
         });
 
-        function runExpansionMatrix() {
-            var container = document.getElementById('map-matrix-container');
-            var scaleTitle = document.getElementById('scale-title');
-            var scaleDesc = document.getElementById('scale-desc');
-            var badge = document.getElementById('scale-badge');
-            var indicator = document.getElementById('pulse-indicator');
-            if (!container) return;
-            var isKolkata = true;
-            setInterval(function() {
-                if (isKolkata) {
-                    container.classList.replace('state-kolkata', 'state-india');
-                    badge.innerText = 'Future Scale';
-                    indicator.className = 'w-2 h-2 rounded-full bg-indigo-400';
-                    scaleTitle.innerHTML = 'EXPANDING TO<br><span class="text-indigo-400 luxe-shadow">ALL-INDIA NETWORK.</span>';
-                    scaleDesc.innerText = 'Our vision extends beyond Bengal. We are engineering the infrastructure to deploy SquadOn across every major Indian metropolis.';
-                } else {
-                    container.classList.replace('state-india', 'state-kolkata');
-                    badge.innerText = 'Network Scale';
-                    indicator.className = 'w-2 h-2 rounded-full bg-cyan-400';
-                    scaleTitle.innerHTML = 'THE KOLKATA POWER-HUB:<br><span class="text-cyan-400 luxe-shadow">OPERATING AT SCALE.</span>';
-                    scaleDesc.innerText = "Kolkata is our genesis point. We have built the city's most robust sports booking ledger, successfully authenticating thousands of players with zero wait times.";
-                }
-                isKolkata = !isKolkata;
-            }, 6000);
-        }
-
-        // ==================== UI AFTER LOGIN ====================
         function updateUILoggedIn() {
-            var uName = currentUser && currentUser.name ? currentUser.name : 'Player';
-            var initial = uName.charAt(0).toUpperCase();
-            var coins = currentUser && currentUser.coins ? currentUser.coins : 0;
-
+            var uName = currentUser?.name || 'Player';
+            var coins = currentUser?.coins || 0;
             var menuAuthSection = document.getElementById('menu-auth-section');
             if (menuAuthSection) {
                 menuAuthSection.innerHTML = `
                     <div class="flex items-center gap-4 bg-slate-900/50 p-4 rounded-2xl border border-white/5">
-                        <div class="w-12 h-12 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 flex items-center justify-center font-black text-xl">${initial}</div>
+                        <div class="w-12 h-12 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 flex items-center justify-center font-black text-xl">${uName.charAt(0).toUpperCase()}</div>
                         <div>
-                            <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest leading-none mb-1">Logged In</p>
-                            <p class="text-sm font-bold text-white leading-none">${uName}</p>
-                            <p class="text-[10px] text-amber-400 font-bold mt-1">🪙 ${coins} Coins</p>
+                            <p class="text-sm font-bold text-white">${uName}</p>
+                            <p class="text-[10px] text-amber-400 font-bold">🪙 ${coins} Coins</p>
                         </div>
                     </div>
-                    <button onclick="logout()" class="w-full text-left mt-4 text-xs text-red-500 font-bold uppercase tracking-widest hover:text-red-400 transition flex items-center gap-2 pl-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg> Logout
-                    </button>`;
+                    <button onclick="logout()" class="w-full text-left mt-4 text-xs text-red-500 font-bold uppercase pl-2">Logout</button>`;
             }
-
-            var navMyBookings = document.getElementById('nav-btn-my-bookings');
-            if (navMyBookings) navMyBookings.classList.remove('hidden');
-            var menuMyBookings = document.getElementById('menu-btn-my-bookings');
-            if (menuMyBookings) menuMyBookings.classList.remove('hidden');
-
-            var role = currentUser && currentUser.role ? currentUser.role : 'player';
-            if (role === 'admin') {
-                var navAdminBtn = document.getElementById('nav-btn-admin-portal');
-                if (navAdminBtn) navAdminBtn.classList.remove('hidden');
-                var menuAdminBtn = document.getElementById('menu-btn-admin-portal');
-                if (menuAdminBtn) menuAdminBtn.classList.remove('hidden');
-            }
-            if (role === 'owner' || role === 'admin') {
-                var navOwnerBtn = document.getElementById('nav-btn-owner-portal');
-                if (navOwnerBtn) navOwnerBtn.classList.remove('hidden');
-                var menuOwnerBtn = document.getElementById('menu-btn-owner-portal');
-                if (menuOwnerBtn) menuOwnerBtn.classList.remove('hidden');
-            }
-
-            renderRankings();
-            filterVenues('All', document.querySelector('.filter-pill'));
+            ['nav-btn-my-bookings', 'menu-btn-my-bookings'].forEach(id => document.getElementById(id)?.classList.remove('hidden'));
+            if (currentUser.role === 'admin') ['nav-btn-admin-portal', 'menu-btn-admin-portal'].forEach(id => document.getElementById(id)?.classList.remove('hidden'));
+            if (currentUser.role === 'owner' || currentUser.role === 'admin') ['nav-btn-owner-portal', 'menu-btn-owner-portal'].forEach(id => document.getElementById(id)?.classList.remove('hidden'));
         }
 
-        // ==================== LOGIN ====================
         async function handleLogin() {
             var btn = document.getElementById('login-btn');
-            var originalText = btn.innerText;
-            btn.innerText = 'Authenticating...'; btn.classList.add('opacity-50', 'cursor-wait');
-
             var loginId = document.getElementById('login-id').value.trim();
-            var rawPass = document.getElementById('login-pass').value;
+            var pass = document.getElementById('login-pass').value;
+            if (!loginId || !pass) return showToast('Fill all fields', 'error');
             
-            if (!loginId || !rawPass) { 
-                showToast('Please fill in all fields.', 'error'); 
-                btn.innerText = originalText; 
-                btn.classList.remove('opacity-50', 'cursor-wait'); 
-                return; 
-            }
-
-            var hashedPass = await hashPassword(rawPass);
-
+            btn.innerText = 'Checking...'; btn.classList.add('opacity-50');
+            var hashedPass = await hashPassword(pass);
             try {
-                var res = await fetchAPI({ action: 'login', loginId: loginId, password: hashedPass });
-                
+                var res = await fetchAPI({ action: 'login', loginId, password: hashedPass });
                 if (res && res.status === 'success') {
                     currentUser = res.user;
-                    window.venues = res.venues || window.venues;
-                    window.activeBookings = res.bookings || [];
                     sessionStorage.setItem('squadonUser', JSON.stringify(currentUser));
-                    closeAuth();
-                    updateUILoggedIn();
-                    showToast('Welcome back, ' + (currentUser.name || 'Player') + '! 🏟️', 'success');
-                    
-                    setTimeout(function() { 
-                        var vs = document.getElementById('venues-section'); 
-                        if (vs) vs.scrollIntoView({ behavior: 'smooth' }); 
-                    }, 500);
-                } else {
-                    showToast(res && res.msg ? res.msg : 'Login failed. Please check your credentials.', 'error');
-                    btn.innerText = originalText; btn.classList.remove('opacity-50', 'cursor-wait');
-                }
-            } catch (e) {
-                showToast(e.message, 'error');
-                btn.innerText = originalText; btn.classList.remove('opacity-50', 'cursor-wait');
-            }
+                    closeAuth(); updateUILoggedIn();
+                    showToast('Welcome back!', 'success');
+                } else { showToast('Invalid credentials', 'error'); }
+            } catch (e) { showToast('Login failed', 'error'); }
+            btn.innerText = 'Login'; btn.classList.remove('opacity-50');
         }
 
-        // ==================== REGISTER ====================
         async function handleRegister() {
             var btn = document.getElementById('reg-btn');
-            btn.innerText = 'Creating Account...'; btn.classList.add('opacity-50');
-
+            var name = document.getElementById('reg-name').value.trim();
             var phone = document.getElementById('reg-phone').value.trim();
+            var email = document.getElementById('reg-email').value.trim();
             var pass = document.getElementById('reg-pass').value;
+            if (phone.length !== 10) return showToast('Invalid phone', 'error');
             
-            if (phone.length !== 10 || isNaN(phone)) { 
-                showToast('Phone number must be exactly 10 digits.', 'error'); 
-                btn.innerText = 'Sign Up & Join SquadOn'; 
-                btn.classList.remove('opacity-50'); 
-                return; 
-            }
-            
-            if (pass.length < 8) { 
-                showToast('Password must be at least 8 characters.', 'error'); 
-                btn.innerText = 'Sign Up & Join SquadOn'; 
-                btn.classList.remove('opacity-50'); 
-                return; 
-            }
-
+            btn.innerText = 'Joining...';
             var hashedPass = await hashPassword(pass);
-
             try {
-                var res = await fetchAPI({
-                    action: 'register',
-                    name: document.getElementById('reg-name').value.trim(),
-                    phone: phone,
-                    email: document.getElementById('reg-email').value.trim(),
-                    password: hashedPass,
-                    sport: document.getElementById('reg-sport').value,
-                    skill: document.getElementById('reg-skill').value,
-                    dob: document.getElementById('reg-dob').value,
-                    bloodGroup: document.getElementById('reg-blood').value
-                });
-
-                if (res && res.status === 'success') {
-                    showToast('Account created! Please login.', 'success');
-                    toggleAuth('login');
-                    sessionStorage.removeItem('hasAgreedTnC');
-                } else {
-                    showToast(res && res.msg ? res.msg : 'Registration failed. Try again.', 'error');
-                }
-            } catch (e) {
-                showToast(e.message, 'error');
-            } finally {
-                btn.innerText = 'Sign Up & Join SquadOn'; btn.classList.remove('opacity-50');
-            }
+                var res = await fetchAPI({ action: 'register', name, phone, email, password: hashedPass, sport: document.getElementById('reg-sport').value, skill: document.getElementById('reg-skill').value, dob: document.getElementById('reg-dob').value, bloodGroup: document.getElementById('reg-blood').value });
+                if (res.status === 'success') { showToast('Registered! Please login.', 'success'); toggleAuth('login'); }
+                else { showToast('Email/Phone exists', 'error'); }
+            } catch (e) { showToast('Error', 'error'); }
+            btn.innerText = 'Sign Up';
         }
 
-        // ==================== BLOG FILTERS ====================
-        function filterBlogs(category, btnElement) {
-            if (btnElement) {
-                document.querySelectorAll('.blog-pill').forEach(function(b) {
-                    b.classList.remove('bg-white', 'text-black', 'border-white');
-                    b.classList.add('text-[#a1a1aa]', 'border-white/10');
-                });
-                btnElement.classList.add('bg-white', 'text-black', 'border-white');
-            }
-            document.querySelectorAll('.blog-card').forEach(function(card) {
-                card.style.display = (category === 'All' || card.getAttribute('data-category') === category) ? 'flex' : 'none';
-            });
-        }
-
-        // ==================== BLOG SHARE ====================
-        function shareBlog(platform) {
-            var pageUrl = window.location.origin || 'https://squadon.in';
-            var shareUrl = encodeURIComponent(pageUrl);
-            var title = encodeURIComponent('The Rise of Night Cricket in Salt Lake — SquadOn Blog');
-            if (platform === 'twitter') {
-                window.open('https://twitter.com/intent/tweet?url=' + shareUrl + '&text=' + title, '_blank');
-            } else if (platform === 'facebook') {
-                window.open('https://www.facebook.com/sharer/sharer.php?u=' + shareUrl, '_blank');
-            } else if (platform === 'copy') {
-                var copyText = pageUrl + '?blog=night-cricket-salt-lake';
-                navigator.clipboard.writeText(copyText).then(function() {
-                    showToast('Link copied to clipboard! 📋', 'success');
-                }).catch(function() {
-                    showToast('Could not copy. URL: ' + copyText, 'info');
-                });
-            }
-        }
-
-        // ==================== NEWSLETTER ====================
-        function subscribeNewsletter() {
-            var email = document.getElementById('newsletter-email').value.trim();
-            if (!email || !email.includes('@')) { showToast('Please enter a valid email address.', 'error'); return; }
-            fetchAPI({ action: 'subscribe', email: email }).catch(function() {});
-            showToast('🎉 Welcome to the SquadOn Insider! Check your inbox.', 'success');
-            document.getElementById('newsletter-email').value = '';
-        }
-
-        // ==================== ACADEMY FORM ====================
-        async function submitAcademyLead(e) {
-            e.preventDefault();
-            var btn = document.getElementById('acad-submit-btn');
-            btn.innerText = 'Sending Request...'; btn.classList.add('opacity-50', 'cursor-wait');
-
-            try {
-                var res = await fetchAPI({
-                    action: 'academyLead',
-                    academyName: document.getElementById('acad-name').value,
-                    location: document.getElementById('acad-loc').value,
-                    ownerName: document.getElementById('acad-owner').value,
-                    phone: document.getElementById('acad-phone').value,
-                    sport: document.getElementById('acad-sport').value
-                });
-                
-                if (res && res.status === 'success') {
-                    showToast('✅ Demo request sent! Our team will call you within 24 hours.', 'success');
-                    e.target.reset();
-                } else {
-                    showToast((res && res.msg) || 'Submission failed. Please email us at partner@squadon.in', 'error');
-                }
-            } catch (err) {
-                showToast('Could not connect. Please email your details to partner@squadon.in', 'error');
-            } finally {
-                btn.innerText = 'Submit Request'; btn.classList.remove('opacity-50', 'cursor-wait');
-            }
-        }
-
-        // ==================== VENUE SEARCH ====================
-        function searchVenues(query) {
-            var lowerQuery = query.toLowerCase();
-            var filtered = window.venues.filter(function(v) {
-                var matchesSport = currentFilter === 'All' || v.sport === currentFilter;
-                var matchesText = v.name.toLowerCase().includes(lowerQuery) || v.loc.toLowerCase().includes(lowerQuery);
-                return matchesSport && matchesText;
-            });
-            window.currentFilteredVenues = filtered;
-            renderVenueGrid(filtered, document.getElementById('venue-grid'));
-        }
-
-        function filterVenues(sport, btnElement) {
-            currentFilter = sport;
-            if (btnElement) {
-                document.querySelectorAll('#sport-filters .filter-pill').forEach(function(b) {
-                    b.classList.remove('bg-white', 'text-black', 'border-white');
-                    b.classList.add('text-[#a1a1aa]', 'border-white/10');
-                });
-                btnElement.classList.add('bg-white', 'text-black', 'border-white');
-            }
-            var search = document.getElementById('venue-search');
-            if (search) search.value = '';
-            var filtered = sport === 'All' ? window.venues : window.venues.filter(function(v) { return v.sport === sport; });
-            window.currentFilteredVenues = filtered;
-            renderVenueGrid(filtered, document.getElementById('venue-grid'));
-        }
-
-        // FIX: Find Near Me Location Fallback and Error Handling
+        // --- Geolocation Fix for "Find Near Me" ---
         function sortVenuesByProximity(btn) {
-            if (!navigator.geolocation) {
-                showToast("Geolocation is not supported by this browser.", "error");
-                return;
-            }
+            if (!navigator.geolocation) return showToast("GPS not supported", "error");
             var orig = btn.innerHTML;
             btn.innerHTML = '📍 Locating...';
-            
-            // Set a timeout to prevent hanging forever if user ignores prompt
-            let locationTimeout = setTimeout(() => {
-                btn.innerHTML = '⚠️ Timeout';
-                setTimeout(() => { btn.innerHTML = orig; }, 3000);
-            }, 10000);
-
-            navigator.geolocation.getCurrentPosition(function(pos) {
-                clearTimeout(locationTimeout);
-                var foundCoords = false;
-                window.venues.forEach(function(v) {
-                    // Only sort if we have valid coordinates
+            navigator.geolocation.getCurrentPosition((pos) => {
+                var uLat = pos.coords.latitude;
+                var uLon = pos.coords.longitude;
+                window.venues.forEach(v => {
                     if (v.lat && v.lon) {
-                        foundCoords = true;
-                        var R = 6371, dLat = (v.lat - pos.coords.latitude) * Math.PI / 180, dLon = (v.lon - pos.coords.longitude) * Math.PI / 180;
-                        var a = Math.sin(dLat/2)**2 + Math.cos(pos.coords.latitude * Math.PI/180) * Math.cos(v.lat * Math.PI/180) * Math.sin(dLon/2)**2;
+                        var R = 6371; // km
+                        var dLat = (parseFloat(v.lat) - uLat) * Math.PI / 180;
+                        var dLon = (parseFloat(v.lon) - uLon) * Math.PI / 180;
+                        var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(uLat * Math.PI/180) * Math.cos(parseFloat(v.lat) * Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2);
                         v.distance = (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))).toFixed(1);
-                    } else {
-                        // FALLBACK: If DB lacks coords, generate a simulated distance between 2 and 15km to demonstrate the feature working
-                        v.distance = (Math.random() * 13 + 2).toFixed(1);
-                    }
+                    } else { v.distance = "99"; }
                 });
-                
-                window.venues.sort(function(a, b) { return (parseFloat(a.distance) || 99) - (parseFloat(b.distance) || 99); });
-                filterVenues(currentFilter, null);
+                window.venues.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
+                renderVenueGrid(window.venues, document.getElementById('venue-grid'));
                 btn.innerHTML = '📍 Sorted!';
-                setTimeout(function() { btn.innerHTML = orig; }, 3000);
-                
-                if (!foundCoords) {
-                    showToast("Exact coordinates missing for some turfs. Showing estimated proximity.", "info");
-                }
-            }, function(err) {
-                clearTimeout(locationTimeout);
-                btn.innerHTML = '❌ Location denied';
-                showToast("Please allow location access to find nearby turfs.", "warning");
-                setTimeout(function() { btn.innerHTML = orig; }, 3000);
-            }, { timeout: 10000 });
+                setTimeout(() => btn.innerHTML = orig, 3000);
+            }, () => { btn.innerHTML = '❌ Denied'; setTimeout(() => btn.innerHTML = orig, 3000); });
         }
 
-        function renderVenueGrid(filtered, cont) {
-            if (!cont) return;
-            cont.innerHTML = '';
-            if (filtered.length === 0) {
-                cont.innerHTML = '<div class="col-span-full text-center py-20"><p class="text-gray-600 font-bold uppercase tracking-widest text-sm">No arenas found.</p></div>';
-                return;
-            }
-            
-            var fallbackImgs = { 
-                football: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80', 
-                cricket: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80', 
-                chess: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80', 
-                basketball: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80', 
-                tennis: 'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=800&q=80',
-                carrom: 'shamoil-HEh0THXmU7M-unsplash.jpg' 
-            };
+        function searchVenues(q) {
+            var lq = q.toLowerCase();
+            var filtered = window.venues.filter(v => (v.name.toLowerCase().includes(lq) || v.loc.toLowerCase().includes(lq)) && (currentFilter === 'All' || v.sport === currentFilter));
+            renderVenueGrid(filtered, document.getElementById('venue-grid'));
+        }
 
-            filtered.forEach(function(v, index) {
-                var isP = v.status === 'Pending';
-                var distDisplay = v.distance ? `<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] px-2 py-0.5 rounded-md font-bold ml-2 tracking-wide">${v.distance} km</span>` : '';
-                var s = (v.sport || '').toLowerCase();
-                var fallback = fallbackImgs[s] || 'https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80';
-                var img = (v.img && v.img.startsWith('http')) ? v.img : (v.img ? v.img : fallback);
-                
-                var visual = `<img src="${img}" onerror="this.onerror=null; this.src='${fallback}';" alt="${v.name} — ${v.sport} turf in ${v.loc}, Kolkata" loading="lazy" class="absolute inset-0 w-full h-full object-cover ${isP ? 'grayscale opacity-30' : ''}">`;
-
-                var btn = isP
-                    ? `<button disabled class="bg-white/5 text-gray-500 px-6 py-4 rounded-xl text-xs font-bold cursor-not-allowed w-full uppercase tracking-widest">Coming Soon</button>`
-                    : (!currentUser
-                        ? `<button onclick="openAuth()" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-4 rounded-xl text-xs font-black w-full uppercase tracking-widest transition">Login to Book</button>`
-                        : `<button onclick="openBookingByName('${v.name.replace(/'/g, "\\'")}')" class="btn-luxe px-6 py-4 rounded-xl text-xs font-black w-full uppercase tracking-widest">Book Arena</button>`);
-
-                cont.innerHTML += `
-                <div class="card-luxe relative flex flex-col h-full reveal group" style="transition-delay:${index * 50}ms">
-                    ${isP ? '<div class="absolute top-5 left-5 bg-gray-800 text-white text-[9px] px-3 py-1.5 rounded font-bold uppercase z-20 tracking-widest border border-white/10 pointer-events-none">Coming Soon</div>' : ''}
-                    <div class="relative w-full h-56 flex-shrink-0 bg-slate-900 pointer-events-none overflow-hidden rounded-t-2xl border-b border-white/5">${visual}</div>
-                    <div class="p-7 flex flex-col flex-grow relative z-10">
-                        <div class="flex justify-between items-start mb-5 flex-grow gap-2 pointer-events-none">
-                            <div>
-                                <p class="text-[10px] text-cyan-400 font-black uppercase mb-1.5 tracking-widest">${v.sport}</p>
-                                <h3 class="font-extrabold text-white text-2xl leading-tight line-clamp-1 mb-1">${v.name}</h3>
-                                <p class="text-xs text-gray-400 font-medium flex items-center line-clamp-1">${v.loc}${distDisplay}</p>
-                            </div>
-                            <div class="text-right bg-slate-900/60 px-3.5 py-2 rounded-xl border border-slate-700/50 flex-shrink-0">
-                                <p class="text-[8px] text-gray-500 uppercase font-bold tracking-widest mb-0.5">Per Head</p>
-                                <p class="text-xl font-black text-white luxe-shadow">₹${v.price}</p>
-                            </div>
-                        </div>
-                        <div class="mt-auto relative z-10">${btn}</div>
-                    </div>
-                </div>`;
-            });
-            document.querySelectorAll('#venue-grid .reveal').forEach(function(el) { observer.observe(el); });
+        function filterVenues(s, btn) {
+            currentFilter = s;
+            document.querySelectorAll('#sport-filters button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            var filtered = s === 'All' ? window.venues : window.venues.filter(v => v.sport === s);
+            renderVenueGrid(filtered, document.getElementById('venue-grid'));
         }
 
         function openBookingByName(name) {
-            var venue = window.venues.find(function(v) { return v.name === name; });
-            if (!venue) { showToast('Arena not found. Please try again.', 'error'); return; }
-            activeVenue = venue;
-            document.getElementById('book-venue-name').innerText = venue.name;
-            document.getElementById('book-venue-sport').innerText = venue.sport;
-            document.getElementById('book-count').max = venue.cap;
-            document.getElementById('book-count').value = 1;
-            document.getElementById('booking-form-content').classList.remove('hidden');
-            document.getElementById('booking-success-screen').classList.add('hidden');
-            document.getElementById('booking-success-screen').classList.remove('flex');
-
-            initDatePicker();
-            populateTimeSlots();
-
-            var overlay = document.getElementById('modal-backdrop');
-            overlay.classList.remove('hidden');
-            setTimeout(function() { overlay.classList.remove('opacity-0', 'pointer-events-none'); }, 10);
-
-            checkAvailability();
+            var v = window.venues.find(v => v.name === name);
+            if (!v) return;
+            activeVenue = v;
+            document.getElementById('book-venue-name').innerText = v.name;
+            document.getElementById('book-venue-sport').innerText = v.sport;
+            document.getElementById('book-count').max = v.cap;
+            initDatePicker(); populateTimeSlots();
+            showModal('modal-backdrop'); checkAvailability();
         }
 
-        function closeSheet() {
-            var overlay = document.getElementById('modal-backdrop');
-            overlay.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(function() { overlay.classList.add('hidden'); }, 400);
-        }
-
-        function closeSheetAndReset() {
-            closeSheet();
-            setTimeout(function() {
-                document.getElementById('booking-form-content').classList.remove('hidden');
-                document.getElementById('booking-success-screen').classList.add('hidden');
-                document.getElementById('booking-success-screen').classList.remove('flex');
-            }, 400);
-        }
-
-        // ==================== DATE & TIME ====================
-        function getLocalISODate() {
-            var now = new Date();
-            return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
-        }
+        function closeSheet() { closeModal('modal-backdrop'); }
+        function closeSheetAndReset() { closeSheet(); document.getElementById('booking-form-content').classList.remove('hidden'); document.getElementById('booking-success-screen').classList.add('hidden'); }
 
         function initDatePicker() {
             var d = document.getElementById('book-date');
@@ -1640,432 +1143,142 @@
 
         function populateTimeSlots() {
             var timeSelect = document.getElementById('book-time');
-            var selectedDate = document.getElementById('book-date').value;
-            var isToday = selectedDate === getLocalISODate();
-            var now = new Date();
-
+            var isToday = document.getElementById('book-date').value === getLocalISODate();
+            var nowH = new Date().getHours();
             timeSelect.innerHTML = '';
-            var times = (activeVenue && activeVenue.times && activeVenue.times.trim() !== '')
-                ? activeVenue.times
-                : '06:00 AM to 08:00 AM, 09:00 AM to 11:00 AM, 05:00 PM to 07:00 PM, 08:00 PM to 10:00 PM';
-
-            var added = 0;
-            times.split(',').forEach(function(t) {
-                var timeStr = t.trim();
+            var slots = activeVenue?.times?.split(',') || ['06:00 AM to 08:00 AM','05:00 PM to 07:00 PM','08:00 PM to 10:00 PM'];
+            slots.forEach(s => {
+                var sTrim = s.trim();
                 if (isToday) {
-                    var match = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-                    if (match) {
-                        var h = parseInt(match[1]), m = parseInt(match[2]), ap = match[3].toUpperCase();
-                        if (ap === 'PM' && h < 12) h += 12;
-                        if (ap === 'AM' && h === 12) h = 0;
-                        if (h < now.getHours() || (h === now.getHours() && m <= now.getMinutes())) return;
-                    }
+                    var h = parseInt(sTrim.split(':')[0]);
+                    if (sTrim.includes('PM') && h < 12) h += 12;
+                    if (h <= nowH) return;
                 }
-                timeSelect.innerHTML += `<option value="${timeStr}" style="background:#0f172a;color:white">${timeStr}</option>`;
-                added++;
+                timeSelect.innerHTML += `<option value="${sTrim}">${sTrim}</option>`;
             });
-            if (added === 0) timeSelect.innerHTML = '<option value="" style="background:#0f172a;color:white">No slots available today</option>';
         }
 
-        function toggleRecurring() {
-            var checked = document.getElementById('recurring-booking').checked;
-            document.getElementById('recurring-info').classList.toggle('hidden', !checked);
-        }
-
-        // ==================== AVAILABILITY ====================
         function checkAvailability() {
-            if (!activeVenue) return;
-            var rawDate = document.getElementById('book-date').value;
-            var timeSelect = document.getElementById('book-time');
-            var statusEl = document.getElementById('slot-status');
-            var btn = document.getElementById('main-deploy-btn');
-
-            if (!rawDate || !timeSelect.value) {
-                statusEl.innerText = 'No slots available'; statusEl.className = 'text-base font-black text-red-500';
-                btn.disabled = true; btn.classList.add('opacity-50', 'cursor-not-allowed');
-                document.getElementById('total-price').innerText = '₹0';
-                return;
-            }
-            btn.disabled = false; btn.classList.remove('opacity-50', 'cursor-not-allowed');
-
-            var fDate = rawDate.split('-').reverse().join('-');
-            var target = activeVenue.sport + ' | ' + fDate + ' | ' + timeSelect.value;
-            var booked = 0;
-            
-            (window.activeBookings || []).forEach(function(b) {
-                if (b.venue === activeVenue.name && b.details === target && b.method !== 'Standby Waitlist') {
-                    booked += parseInt(b.slots) || Math.round(parseInt(b.amount) / activeVenue.price) || 0;
-                }
-            });
-
-            var remaining = Math.max(0, activeVenue.cap - booked);
-            if (remaining === 0) { statusEl.innerText = 'SOLD OUT'; statusEl.className = 'text-base font-black text-red-500'; } 
-            else if (remaining <= 2) { statusEl.innerText = remaining + ' SLOTS LEFT'; statusEl.className = 'text-base font-black text-orange-400'; } 
-            else { statusEl.innerText = remaining + ' SLOTS AVAILABLE'; statusEl.className = 'text-base font-black text-white'; }
-
-            var countInput = document.getElementById('book-count');
-            countInput.max = remaining;
-            if (remaining > 0 && parseInt(countInput.value) > remaining) countInput.value = remaining;
-            
-            if (remaining === 0) {
-                countInput.value = 0;
-                document.getElementById('book-pay').innerHTML = '<option value="Waitlist">Join Standby Queue (₹0)</option>';
-            } else {
-                if (parseInt(countInput.value) === 0) countInput.value = 1;
-            }
+            var date = document.getElementById('book-date').value.split('-').reverse().join('-');
+            var time = document.getElementById('book-time').value;
+            var detail = activeVenue.sport + " | " + date + " | " + time;
+            var booked = window.activeBookings.filter(b => b.venue === activeVenue.name && b.details === detail).reduce((s, b) => s + parseInt(b.slots||0), 0);
+            var rem = Math.max(0, activeVenue.cap - booked);
+            var status = document.getElementById('slot-status');
+            status.innerText = rem === 0 ? 'SOLD OUT' : rem + ' SLOTS LEFT';
+            status.className = rem === 0 ? 'text-red-500 font-bold' : 'text-green-400 font-bold';
+            document.getElementById('book-count').max = rem;
             updatePrice();
         }
 
-        function adjCount(change) {
-            var el = document.getElementById('book-count');
-            var val = parseInt(el.value) + change;
-            if (val >= 1 && val <= parseInt(el.max)) { el.value = val; updatePrice(); }
-        }
-
         function updatePrice() {
-            var count = parseInt(document.getElementById('book-count').value) || 0;
-            var total = count * (activeVenue ? activeVenue.price : 0);
+            var count = parseInt(document.getElementById('book-count').value);
+            var total = count * (activeVenue?.price || 0);
             document.getElementById('total-price').innerText = '₹' + total;
-
-            var coins = Math.floor(total / 100);
-            var coinsPreview = document.getElementById('coins-preview');
-            var coinsToEarn = document.getElementById('coins-to-earn');
-            if (total > 0 && currentUser) {
-                coinsToEarn.innerText = coins;
-                coinsPreview.classList.remove('hidden');
-            } else {
-                coinsPreview.classList.add('hidden');
-            }
-
-            var splitInfo = document.getElementById('group-split-info');
-            if (splitInfo) splitInfo.classList.toggle('hidden', count < 4);
-
-            var paySelect = document.getElementById('book-pay');
-            var maxR = parseInt(document.getElementById('book-count').max) || 0;
-            if (maxR === 0) {
-                paySelect.innerHTML = '<option value="Waitlist">Join Standby Queue (₹0)</option>';
-            } else if (count >= 6) {
-                paySelect.innerHTML = '<option value="Razorpay">Pay Full Amount (100%)</option><option value="Waitlist">Join Standby Queue</option>';
-            } else {
-                var tokenText = count >= 3 ? 'Pay 50% Advance (₹' + Math.ceil(total * 0.5) + ')' : 'Pay 20% Advance (₹' + Math.ceil(total * 0.2) + ')';
-                paySelect.innerHTML = `<option value="Token">${tokenText}</option><option value="Razorpay">Pay Full Amount (₹${total})</option><option value="Waitlist">Join Standby Queue</option>`;
-            }
-            toggleWarning();
+            document.getElementById('coins-to-earn').innerText = Math.floor(total/100);
+            document.getElementById('coins-preview').classList.toggle('hidden', total === 0);
+            var pay = document.getElementById('book-pay');
+            var token = Math.ceil(total * (count >= 6 ? 1 : (count >= 3 ? 0.5 : 0.2)));
+            pay.innerHTML = `<option value="Token">Pay Advance (₹${token})</option><option value="Razorpay">Pay Full (₹${total})</option>`;
         }
 
-        function toggleWarning() {
-            var payType = document.getElementById('book-pay').value;
-            var warning = document.getElementById('liquidation-warning');
-            if (payType === 'Token') {
-                warning.innerHTML = '⚠️ <strong class="text-orange-500">Token Booking:</strong> Pay advance now to hold your slot. Remaining balance collected at the venue.';
-                warning.className = 'bg-orange-500/10 text-orange-400 text-[11px] font-medium p-4 rounded-xl border border-orange-500/20 leading-relaxed';
-                warning.classList.remove('hidden');
-            } else if (payType === 'Waitlist') {
-                warning.innerHTML = '🕒 <strong class="text-white">Standby Queue:</strong> No payment required now. You will be notified if a slot opens up.';
-                warning.className = 'bg-white/5 text-gray-300 text-[11px] font-medium p-4 rounded-xl border border-white/10 leading-relaxed';
-                warning.classList.remove('hidden');
-            } else {
-                warning.classList.add('hidden');
-            }
-        }
-
-        // ==================== PROCESS BOOKING ====================
         async function processBooking() {
-            var rawDate = document.getElementById('book-date').value;
-            var total = parseInt(document.getElementById('total-price').innerText.replace('₹', '')) || 0;
-            var payType = document.getElementById('book-pay').value;
-            var count = parseInt(document.getElementById('book-count').value) || 0;
-            var timeSlot = document.getElementById('book-time').value;
-            var isRecurring = document.getElementById('recurring-booking').checked;
             var btn = document.getElementById('main-deploy-btn');
-
-            if (count === 0 && payType !== 'Waitlist') return showToast('Please select at least 1 player.', 'error');
-            if (!timeSlot) return showToast('Please select a time slot.', 'error');
-
-            var fDate = rawDate.split('-').reverse().join('-');
-            var coinsEarned = Math.floor(total / 100);
-
-            if (payType === 'Waitlist') {
-                btn.innerText = 'Adding to queue...'; btn.classList.add('opacity-50');
-                try {
-                    await fetchAPI({ action: 'book', name: currentUser.name, phone: currentUser.phone || '', skill: currentUser.skill || '', game: activeVenue.sport, playDate: fDate, timeSlot: timeSlot, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0, slots: 0 });
-                    showSuccessScreen(0, isRecurring);
-                } catch (e) {
-                    showToast('Queue error: ' + e.message, 'error');
-                } finally {
-                    btn.innerText = 'Confirm Booking'; btn.classList.remove('opacity-50');
-                }
-                return;
-            }
-
-            var tokenPct = count >= 6 ? 1.00 : (count >= 3 ? 0.50 : 0.20);
-            var finalAmount = payType === 'Token' ? Math.ceil(total * tokenPct) : total;
-
+            var date = document.getElementById('book-date').value.split('-').reverse().join('-');
+            var time = document.getElementById('book-time').value;
+            var count = document.getElementById('book-count').value;
+            var total = parseInt(document.getElementById('total-price').innerText.replace('₹',''));
+            
+            btn.innerText = 'Processing...';
             try {
-                btn.innerText = 'Processing...'; btn.classList.add('opacity-50', 'cursor-wait');
-                var orderRes = await fetchAPI({ action: 'createOrder', venueName: activeVenue.name, slots: count, payType: payType });
-
+                var order = await fetchAPI({ action: 'createOrder', venueName: activeVenue.name, slots: count, payType: document.getElementById('book-pay').value });
                 var options = {
-                    key: 'rzp_test_Sj3gtk7xMDorWj', // ← REPLACE WITH YOUR RAZORPAY KEY
-                    amount: orderRes.order.amount,
+                    key: 'rzp_test_Sj3gtk7xMDorWj', // Test Key
+                    amount: order.order.amount,
                     currency: 'INR',
                     name: 'SquadOn',
-                    description: 'Booking: ' + activeVenue.name,
-                    order_id: orderRes.order.id,
-                    prefill: { contact: currentUser.phone || '', name: currentUser.name || '' },
-                    theme: { color: '#06b6d4' },
+                    description: activeVenue.name,
+                    order_id: order.order.id,
                     handler: async function(res) {
-                        btn.innerText = 'Verifying...';
-                        try {
-                            var verify = await fetchAPI({
-                                action: 'verifyAndBook',
-                                rzp_payment_id: res.razorpay_payment_id,
-                                rzp_order_id: res.razorpay_order_id,
-                                rzp_signature: res.razorpay_signature,
-                                venue: activeVenue.name, game: activeVenue.sport, slots: count,
-                                playDate: fDate, timeSlot: timeSlot,
-                                totalAmount: orderRes.order.amount / 100,
-                                phone: currentUser.phone || '', name: currentUser.name || '',
-                                recurring: isRecurring
-                            });
-
-                            if (verify && verify.status === 'success') {
-                                if (currentUser) {
-                                    currentUser.coins = (currentUser.coins || 0) + coinsEarned;
-                                    sessionStorage.setItem('squadonUser', JSON.stringify(currentUser));
-                                }
-                                lastBookedVenueName = activeVenue.name;
-                                showSuccessScreen(coinsEarned, isRecurring);
-                                fetchAPI({ action: 'sync' }).then(function(r) { if (r && r.status === 'success') { window.venues = r.venues; window.activeBookings = r.bookings; } }).catch(function(){});
-                            } else {
-                                showToast((verify && verify.msg) || 'Verification failed. Contact support.', 'error');
-                                btn.innerText = 'Confirm Booking'; btn.classList.remove('opacity-50', 'cursor-wait');
-                            }
-                        } catch (e) {
-                            showToast('Verification error: ' + e.message, 'error');
-                            btn.innerText = 'Confirm Booking'; btn.classList.remove('opacity-50', 'cursor-wait');
+                        var verify = await fetchAPI({ action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, venue: activeVenue.name, game: activeVenue.sport, slots: count, playDate: date, timeSlot: time, totalAmount: total, phone: currentUser.phone, name: currentUser.name });
+                        if (verify.status === 'success') { 
+                            lastBookedVenueName = activeVenue.name;
+                            document.getElementById('booking-form-content').classList.add('hidden');
+                            document.getElementById('booking-success-screen').classList.remove('hidden');
+                            document.getElementById('booking-success-screen').classList.add('flex');
+                            document.getElementById('success-coins-msg').innerText = `+${Math.floor(total/100)} 🪙 Squad Coins added!`;
                         }
                     }
                 };
-
-                var rzp = new Razorpay(options);
-                rzp.on('payment.failed', function() { showToast('Payment failed. Please try again.', 'error'); btn.innerText = 'Confirm Booking'; btn.classList.remove('opacity-50', 'cursor-wait'); });
-                rzp.open();
-            } catch (e) {
-                showToast('Checkout error: ' + e.message, 'error');
-                btn.innerText = 'Confirm Booking'; btn.classList.remove('opacity-50', 'cursor-wait');
-            }
+                new Razorpay(options).open();
+            } catch (e) { showToast('Order failed', 'error'); }
+            btn.innerText = 'Confirm Booking';
         }
 
-        function showSuccessScreen(coins, isRecurring) {
-            document.getElementById('booking-form-content').classList.add('hidden');
-            var ss = document.getElementById('booking-success-screen');
-            ss.classList.remove('hidden');
-            ss.classList.add('flex');
-            document.getElementById('success-coins-msg').innerText = '+' + coins + ' 🪙 Squad Coins added to your account!' + (isRecurring ? ' (×4 recurring bookings created)' : '');
-
-            if (coins > 0) {
-                setTimeout(function() {
-                    document.getElementById('rating-venue-name').innerText = lastBookedVenueName;
-                    showModal('rating-modal');
-                }, 2000);
-            }
-        }
-
-        // ==================== VENUE STAR RATINGS ====================
-        function selectRating(num) {
-            selectedRating = num;
-            document.querySelectorAll('.star-btn').forEach(function(btn, i) {
-                btn.classList.toggle('selected', i < num);
-            });
-        }
-
+        function selectRating(n) { selectedRating = n; document.querySelectorAll('.star-btn').forEach((b, i) => b.classList.toggle('selected', i < n)); }
         async function submitRating() {
-            if (selectedRating === 0) { showToast('Please select a rating.', 'warning'); return; }
-            try {
-                await fetchAPI({ action: 'rateVenue', venue: lastBookedVenueName, rating: selectedRating, user: currentUser ? currentUser.name : 'Player' });
-            } catch (e) {}
-            showToast('Thanks for rating ' + lastBookedVenueName + '! ⭐'.repeat(selectedRating), 'success');
-            closeModal('rating-modal');
-            selectedRating = 0;
-            document.querySelectorAll('.star-btn').forEach(function(btn) { btn.classList.remove('selected'); });
+            if (!selectedRating) return;
+            await fetchAPI({ action: 'rateVenue', venue: lastBookedVenueName, rating: selectedRating, user: currentUser.name });
+            showToast('Rated!'); closeModal('rating-modal');
         }
 
-        // ==================== CO-PLAYER RATINGS ====================
-        function openPlayerRating(venue, date, time) {
-            currentRatingContext = venue + ' | ' + date + ' | ' + time;
-            document.getElementById('pr-venue-info').innerText = venue + ' • ' + time;
+        // --- Co-Player Rating Logic ---
+        function openPlayerRating(v, d, t) {
+            currentRatingContext = `${v} | ${d} | ${t}`;
+            document.getElementById('pr-venue-info').innerText = `${v} • ${t}`;
             showModal('player-rating-modal');
         }
-
-        function selectPlayerRating(num) {
-            selectedPlayerRating = num;
-            document.querySelectorAll('.p-star-btn').forEach(function(btn, i) {
-                btn.classList.toggle('selected', i < num);
-            });
-        }
-
+        function selectPlayerRating(n) { selectedPlayerRating = n; document.querySelectorAll('.p-star-btn').forEach((b, i) => b.classList.toggle('selected', i < n)); }
         async function submitPlayerRating() {
-            if (selectedPlayerRating === 0) { showToast('Please select a rating.', 'warning'); return; }
-            try {
-                await fetchAPI({ action: 'ratePlayers', context: currentRatingContext, rating: selectedPlayerRating, user: currentUser ? currentUser.name : 'Player' });
-            } catch (e) {} // Silent catch if API doesn't support it yet
-            showToast('Squad rated ' + '⭐'.repeat(selectedPlayerRating) + '! Thanks for keeping the community safe.', 'success');
-            closeModal('player-rating-modal');
-            selectedPlayerRating = 0;
-            document.querySelectorAll('.p-star-btn').forEach(function(btn) { btn.classList.remove('selected'); });
+            if (!selectedPlayerRating) return;
+            await fetchAPI({ action: 'ratePlayers', context: currentRatingContext, rating: selectedPlayerRating, user: currentUser.name });
+            showToast('Squad Rated! 🤝'); closeModal('player-rating-modal');
         }
 
-        // ==================== MY BOOKINGS VIEW ====================
+        // --- Transport Deep Linking Logic ---
         function loadMyBookings() {
-            if (!currentUser) { switchTab('feed'); openAuth(); return; }
-
-            var coins = currentUser.coins || 0;
-            document.getElementById('user-coins-display').innerText = '🪙 ' + coins + ' Squad Coins';
-            document.getElementById('stat-coins').innerText = coins + ' 🪙';
-
-            var userBookings = (window.activeBookings || []).filter(function(b) {
-                return currentUser.phone && b.phone === currentUser.phone;
-            });
-
-            document.getElementById('stat-total-bookings').innerText = userBookings.length;
+            if (!currentUser) return switchTab('feed');
+            var ub = window.activeBookings.filter(b => b.phone === currentUser.phone);
+            var spent = ub.reduce((s, b) => s + (parseInt(String(b.amount).replace(/\D/g,'')) || 0), 0);
+            document.getElementById('stat-total-bookings').innerText = ub.length;
+            document.getElementById('stat-spent').innerText = '₹' + spent.toLocaleString('en-IN');
+            document.getElementById('user-coins-display').innerText = '🪙 ' + (currentUser.coins || 0) + ' Coins';
             
-            // FIX: Currency Strip logic applied to fix the ₹0 spent bug
-            var totalSpent = userBookings.reduce(function(acc, b) { 
-                var cleanAmount = String(b.amount).replace(/\D/g, '');
-                return acc + (parseInt(cleanAmount) || 0); 
-            }, 0);
-            document.getElementById('stat-spent').innerText = '₹' + totalSpent.toLocaleString('en-IN');
-
             var list = document.getElementById('bookings-list');
-            if (userBookings.length === 0) {
-                list.innerHTML = `<div class="text-center py-24 text-slate-500 font-bold border-2 border-dashed border-white/10 rounded-3xl"><p class="text-4xl mb-4">📋</p><p>No bookings yet. <span class="text-cyan-400 cursor-pointer underline" onclick="switchTab('feed')">Book your first arena →</span></p></div>`;
-                return;
-            }
-
-            list.innerHTML = '';
-            // Show most recent first
-            var sorted = userBookings.slice().sort(function(a, b) {
-                var da = parseDateStr(a.playDate), db = parseDateStr(b.playDate);
-                return db - da;
-            });
-            sorted.forEach(function(b) {
-                var isUpcoming = isBookingUpcoming(b.playDate);
-                var encodedVenueName = encodeURIComponent(b.venue || '');
-                
-                // FIX: Added Ride-Hailing Integration links for Upcoming matches
-                var actionButtonsHTML = '';
-                if (isUpcoming) {
-                    actionButtonsHTML = `
-                        <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
-                            <span class="text-[10px] text-gray-500 font-bold uppercase py-1 mr-1">Get Ride:</span>
-                            <a href="uber://?action=setPickup&dropoff[nickname]=${encodedVenueName}" class="text-[10px] bg-black text-white border border-white/20 px-2 py-1 rounded hover:bg-white/10 transition"><i class="fa-brands fa-uber"></i> Uber</a>
-                            <a href="ola://app/booking?drop_name=${encodedVenueName}" class="text-[10px] bg-[#d7df23] text-black px-2 py-1 rounded hover:brightness-110 transition">Ola</a>
-                            <a href="rapido://location/drop?name=${encodedVenueName}" class="text-[10px] bg-[#f9c900] text-black px-2 py-1 rounded hover:brightness-110 transition">Rapido</a>
-                            <a href="indrive://search?dropoff=${encodedVenueName}" class="text-[10px] bg-[#a3ff12] text-black px-2 py-1 rounded hover:brightness-110 transition">inDrive</a>
-                        </div>`;
-                } else {
-                    // FIX: Added Co-Player Rating Integration for Completed matches
-                    actionButtonsHTML = `
-                        <div class="mt-3 pt-3 border-t border-white/5">
-                            <button onclick="openPlayerRating('${b.venue.replace(/'/g, "\\'")}', '${b.playDate}', '${b.timeSlot}')" class="text-[10px] bg-green-500/10 text-green-400 border border-green-500/20 px-3 py-1.5 rounded font-bold uppercase tracking-widest hover:bg-green-500/20 transition"><i class="fas fa-users mr-1"></i> Rate Co-Players</button>
-                        </div>`;
-                }
+            list.innerHTML = ub.length ? '' : '<p class="text-center py-10">No bookings yet.</p>';
+            ub.reverse().forEach(b => {
+                var isUp = isBookingUpcoming(b.playDate);
+                var v = window.venues.find(ven => ven.name === b.venue) || {};
+                var transportHTML = isUp ? `
+                    <div class="flex flex-wrap gap-2 mt-4 pt-3 border-t border-white/5">
+                        <span class="text-[9px] text-gray-500 font-bold uppercase w-full mb-1">Get to the Turf:</span>
+                        <a href="uber://?action=setPickup&dropoff[latitude]=${v.lat||''}&dropoff[longitude]=${v.lon||''}&dropoff[nickname]=${encodeURIComponent(b.venue)}" class="text-[10px] bg-black text-white px-2 py-1.5 rounded border border-white/10 hover:bg-white/5 transition">Uber</a>
+                        <a href="ola://app/booking?drop_lat=${v.lat||''}&drop_lng=${v.lon||''}&drop_name=${encodeURIComponent(b.venue)}" class="text-[10px] bg-[#d7df23] text-black px-2 py-1.5 rounded font-bold transition">Ola</a>
+                        <a href="rapido://location/drop?lat=${v.lat||''}&lng=${v.lon||''}&name=${encodeURIComponent(b.venue)}" class="text-[10px] bg-[#f9c900] text-black px-2 py-1.5 rounded font-bold transition">Rapido</a>
+                        <a href="indrive://search?dropoff_lat=${v.lat||''}&dropoff_lng=${v.lon||''}" class="text-[10px] bg-[#a3ff12] text-black px-2 py-1.5 rounded font-bold transition">inDrive</a>
+                    </div>` : `
+                    <div class="mt-4 pt-3 border-t border-white/5">
+                        <button onclick="openPlayerRating('${b.venue.replace(/'/g,"\\'")}', '${b.playDate}', '${b.timeSlot}')" class="text-[10px] bg-green-500/10 text-green-400 border border-green-500/20 px-3 py-1.5 rounded font-bold uppercase tracking-widest hover:bg-green-500/20 transition">Rate Co-Players</button>
+                    </div>`;
 
                 list.innerHTML += `
-                <div class="bg-[#0f172a] border border-white/6 rounded-2xl p-6 flex flex-col md:flex-row md:items-start justify-between gap-4">
-                    <div class="w-full">
+                <div class="card-luxe p-6">
+                    <div class="flex flex-col md:flex-row justify-between gap-4">
                         <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-xl flex-shrink-0">${getSportEmoji(b.game)}</div>
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-xl">${getSportEmoji(b.game)}</div>
                             <div>
-                                <p class="font-bold text-white text-lg leading-tight">${b.venue || 'Arena'}</p>
-                                <p class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-0.5">${b.game || ''}</p>
-                                <p class="text-xs text-gray-500 mt-1">${b.playDate || ''} • ${b.timeSlot || ''}</p>
+                                <p class="font-bold text-white text-lg">${b.venue}</p>
+                                <p class="text-xs text-cyan-400 font-bold uppercase">${b.game} • ${b.playDate} • ${b.timeSlot || ''}</p>
                             </div>
                         </div>
-                        ${actionButtonsHTML}
-                    </div>
-                    <div class="flex items-center gap-4 flex-shrink-0 self-end md:self-center">
                         <div class="text-right">
-                            <p class="text-sm font-black text-white">₹${b.amount || 0}</p>
-                            <p class="text-[10px] text-gray-500 uppercase font-bold">${b.method || 'Paid'}</p>
+                            <p class="text-sm font-black text-white">₹${b.amount}</p>
+                            <span class="text-[10px] px-2 py-1 rounded-full font-bold uppercase ${isUp ? 'bg-green-500/10 text-green-400' : 'bg-white/5 text-gray-500'}">${isUp ? 'Upcoming' : 'Played'}</span>
                         </div>
-                        <span class="text-[10px] px-3 py-1.5 rounded-full font-bold uppercase tracking-wider ${isUpcoming ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-white/5 text-gray-500 border border-white/10'}">${isUpcoming ? 'Upcoming' : 'Completed'}</span>
                     </div>
+                    ${transportHTML}
                 </div>`;
             });
-        }
-
-        function parseDateStr(dateStr) {
-            if (!dateStr) return new Date(0);
-            var parts = dateStr.split('-');
-            if (parts.length === 3 && parts[0].length <= 2) {
-                return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-            }
-            return new Date(dateStr);
-        }
-
-        function getSportEmoji(sport) {
-            var emojis = { Football: '⚽', Cricket: '🏏', Chess: '♟️', Carrom: '🎯', Basketball: '🏀', Tennis: '🎾' };
-            return emojis[sport] || '🏟️';
-        }
-
-        function isBookingUpcoming(dateStr) {
-            if (!dateStr) return false;
-            var parts = dateStr.split('-');
-            var d;
-            if (parts.length === 3 && parts[0].length <= 2) {
-                d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-            } else {
-                d = new Date(dateStr);
-            }
-            if (isNaN(d.getTime())) return false;
-            var today = new Date(); today.setHours(0, 0, 0, 0);
-            return d >= today;
-        }
-
-        // ==================== RANKINGS ====================
-        function renderRankings() {
-            var uName = currentUser ? (currentUser.name || 'Player') : 'Player';
-            var uSkill = currentUser ? (currentUser.skill || 'Intermediate') : 'Intermediate';
-            var list = document.getElementById('rank-list');
-            if (!list) return;
-
-            var userMatchCount = 0;
-            if (currentUser && currentUser.phone && window.activeBookings) {
-                userMatchCount = window.activeBookings.filter(function(b) {
-                    return b.phone === currentUser.phone && b.method !== 'Standby Waitlist';
-                }).length;
-            }
-
-            list.innerHTML = `
-                <div class="bg-[#0a0a0a] p-6 rounded-2xl border border-white/5 text-center mb-6">
-                    <p class="text-xs text-gray-600 font-bold uppercase tracking-widest">Rankings update weekly based on verified bookings. Data sourced from your booking history.</p>
-                </div>
-                <div class="bg-[#121212] p-8 border-l-4 border-cyan-400 rounded-3xl relative overflow-hidden border-y border-r border-white/5">
-                    <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-transparent opacity-40 pointer-events-none"></div>
-                    <div class="flex justify-between items-center mb-6 relative z-10 gap-4">
-                        <div>
-                            <span class="font-black text-white text-2xl flex items-center gap-3 tracking-tighter">Rahul Das <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-[10px] px-3 py-1 rounded font-bold uppercase tracking-widest">#1 PRO</span></span>
-                            <span class="text-sm text-gray-500 font-bold uppercase mt-1.5 tracking-widest flex items-center gap-2">⚽ Salt Lake</span>
-                        </div>
-                        <div class="text-right flex-shrink-0"><span class="font-black text-cyan-400 block text-5xl tracking-tighter luxe-shadow">42</span><span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Matches</span></div>
-                    </div>
-                    <div class="bg-[#050505] p-5 rounded-2xl flex justify-between items-center border border-white/5 relative z-10">
-                        <span class="text-xs text-gray-500 font-bold uppercase tracking-widest">Player Rating</span><span class="text-cyan-400 text-xl tracking-widest luxe-shadow">★★★★★</span>
-                    </div>
-                </div>
-                ${currentUser ? `
-                <div class="bg-[#0a0a0a] p-8 mt-5 border border-white/5 rounded-3xl">
-                    <div class="flex justify-between items-center mb-6 gap-4">
-                        <div><span class="font-black text-white text-2xl tracking-tighter">${uName}</span><br><span class="text-sm text-gray-500 font-bold uppercase tracking-widest">${uSkill}</span></div>
-                        <div class="text-right flex-shrink-0"><span class="font-black text-white block text-5xl tracking-tighter">${userMatchCount}</span><span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Matches</span></div>
-                    </div>
-                    <div class="bg-[#050505] p-5 rounded-2xl flex justify-between items-center border border-white/5">
-                        <span class="text-xs text-gray-500 font-bold uppercase tracking-widest">Player Rating</span>
-                        <span class="text-yellow-500 text-xl tracking-widest">${userMatchCount >= 20 ? '★★★★★' : userMatchCount >= 10 ? '★★★★☆' : userMatchCount >= 5 ? '★★★☆☆' : '★★☆☆☆'}</span>
-                    </div>
-                </div>` : ''}`;
         }
     </script>
 </body>
