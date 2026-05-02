@@ -57,6 +57,10 @@
             --surface-glass: rgba(15, 23, 42, 0.6); 
             --glass-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/1999/xlink' width='100' height='100' viewBox='0 0 100 100'%3E%3Cdefs%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100' height='100' filter='url(%23a)' opacity='0.03'/%3E%3C/svg%3E");
         }
+        
+        /* FIX: Ensure strictly NO elements break 100vw box sizing */
+        *, *::before, *::after { box-sizing: border-box; }
+        
         body { font-family: 'Outfit', sans-serif; background-color: var(--onyx); color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
         /* Global CSS Safeguard for Mobile */
@@ -404,8 +408,7 @@
                         </div>
                     </div>
                 </section>
-
-                <section class="border-y border-white/5 bg-slate-950/50 backdrop-blur relative overflow-hidden pointer-events-none">
+<section class="border-y border-white/5 bg-slate-950/50 backdrop-blur relative overflow-hidden pointer-events-none">
                     <div class="absolute inset-0 opacity-[0.02]" style="background-image:var(--glass-pattern)" aria-hidden="true"></div>
                     <div class="max-w-[90rem] mx-auto px-6 lg:px-12 py-10 reveal relative z-10">
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-center divide-x divide-white/5">
@@ -592,6 +595,7 @@
                     </div>
                 </section>
             </div>
+
             <section id="venues-section" class="py-20 bg-slate-950/40 border-t border-white/5 min-h-screen">
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
                     <div id="view-feed" class="block">
@@ -916,7 +920,7 @@
 
     <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[500] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeSheet()">
         <div id="booking-sheet" class="w-full md:max-w-xl bg-[#0a0a0a] rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col border border-white/10 max-h-[92vh] transition-all duration-300" onclick="event.stopPropagation()">
-            <div id="booking-form-content">
+            <div id="booking-form-content" class="flex flex-col h-full overflow-hidden">
                 <div class="p-8 flex-shrink-0 border-b border-white/10 bg-[#121212] rounded-t-3xl">
                     <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-4 md:hidden" aria-hidden="true"></div>
                     <div class="flex justify-between items-center">
@@ -927,7 +931,7 @@
                         <button onclick="closeSheet()" aria-label="Close booking sheet" class="w-8 h-8 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 transition text-lg">✕</button>
                     </div>
                 </div>
-                <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-5">
+                <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-5 min-h-0">
                     <div class="flex justify-between items-center bg-[#121212] p-4 rounded-2xl border border-white/5">
                         <div>
                             <label class="text-sm font-bold text-white block">Number of Players</label>
@@ -979,7 +983,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6 border-t border-white/10 bg-[#121212] md:rounded-b-3xl flex items-center justify-between">
+                <div class="p-6 border-t border-white/10 bg-[#121212] md:rounded-b-3xl flex items-center justify-between flex-shrink-0">
                     <div>
                         <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5">Total Amount</p>
                         <p id="total-price" class="text-3xl font-black text-white luxe-shadow">₹0</p>
@@ -999,6 +1003,7 @@
             </div>
         </div>
     </div>
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         // ============================================================
@@ -1246,7 +1251,7 @@
             }, 6000);
         }
 
-        // ==================== UI AFTER LOGIN ====================
+        // ==================== FIX 2: UI AFTER LOGIN (Mobile stretching fix) ====================
         function updateUILoggedIn() {
             var uName = currentUser && currentUser.name ? currentUser.name : 'Player';
             var initial = uName.charAt(0).toUpperCase();
@@ -1254,12 +1259,13 @@
 
             var menuAuthSection = document.getElementById('menu-auth-section');
             if (menuAuthSection) {
+                // FIX 2: flex-wrap, overflow-hidden, and truncate added
                 menuAuthSection.innerHTML = `
-                    <div class="flex items-center gap-4 bg-slate-900/50 p-4 rounded-2xl border border-white/5">
-                        <div class="w-12 h-12 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 flex items-center justify-center font-black text-xl">${initial}</div>
-                        <div>
+                    <div class="flex items-center gap-4 bg-slate-900/50 p-4 rounded-2xl border border-white/5 flex-wrap sm:flex-nowrap">
+                        <div class="w-12 h-12 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 flex items-center justify-center font-black text-xl flex-shrink-0">${initial}</div>
+                        <div class="overflow-hidden min-w-0 flex-1">
                             <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest leading-none mb-1">Logged In</p>
-                            <p class="text-sm font-bold text-white leading-none">${uName}</p>
+                            <p class="text-sm font-bold text-white leading-none truncate">${uName}</p>
                             <p class="text-[10px] text-amber-400 font-bold mt-1">🪙 ${coins} Coins</p>
                         </div>
                     </div>
@@ -2027,7 +2033,7 @@
             return d >= today;
         }
 
-        // ==================== RANKINGS ====================
+        // ==================== FIX 2: RANKINGS MOBILE LAYOUT FIX ====================
         function renderRankings() {
             var uName = currentUser ? (currentUser.name || 'Player') : 'Player';
             var uSkill = currentUser ? (currentUser.skill || 'Intermediate') : 'Intermediate';
@@ -2047,12 +2053,15 @@
                 </div>
                 <div class="bg-[#121212] p-8 border-l-4 border-cyan-400 rounded-3xl relative overflow-hidden border-y border-r border-white/5">
                     <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-transparent opacity-40 pointer-events-none"></div>
-                    <div class="flex justify-between items-center mb-6 relative z-10 gap-4">
-                        <div>
-                            <span class="font-black text-white text-2xl flex items-center gap-3 tracking-tighter">Rahul Das <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-[10px] px-3 py-1 rounded font-bold uppercase tracking-widest">#1 PRO</span></span>
-                            <span class="text-sm text-gray-500 font-bold uppercase mt-1.5 tracking-widest flex items-center gap-2">⚽ Salt Lake</span>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 relative z-10 gap-4">
+                        <div class="overflow-hidden min-w-0 w-full sm:w-auto">
+                            <span class="font-black text-white text-2xl flex items-center gap-3 tracking-tighter truncate">
+                                <span class="truncate">Rahul Das</span> 
+                                <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-[10px] px-3 py-1 rounded font-bold uppercase tracking-widest flex-shrink-0">#1 PRO</span>
+                            </span>
+                            <span class="text-sm text-gray-500 font-bold uppercase mt-1.5 tracking-widest flex items-center gap-2 truncate">⚽ Salt Lake</span>
                         </div>
-                        <div class="text-right flex-shrink-0"><span class="font-black text-cyan-400 block text-5xl tracking-tighter luxe-shadow">42</span><span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Matches</span></div>
+                        <div class="text-left sm:text-right flex-shrink-0"><span class="font-black text-cyan-400 block text-5xl tracking-tighter luxe-shadow">42</span><span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Matches</span></div>
                     </div>
                     <div class="bg-[#050505] p-5 rounded-2xl flex justify-between items-center border border-white/5 relative z-10">
                         <span class="text-xs text-gray-500 font-bold uppercase tracking-widest">Player Rating</span><span class="text-cyan-400 text-xl tracking-widest luxe-shadow">★★★★★</span>
@@ -2060,9 +2069,9 @@
                 </div>
                 ${currentUser ? `
                 <div class="bg-[#0a0a0a] p-8 mt-5 border border-white/5 rounded-3xl">
-                    <div class="flex justify-between items-center mb-6 gap-4">
-                        <div><span class="font-black text-white text-2xl tracking-tighter">${uName}</span><br><span class="text-sm text-gray-500 font-bold uppercase tracking-widest">${uSkill}</span></div>
-                        <div class="text-right flex-shrink-0"><span class="font-black text-white block text-5xl tracking-tighter">${userMatchCount}</span><span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Matches</span></div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <div class="overflow-hidden min-w-0 w-full sm:w-auto"><span class="font-black text-white text-2xl tracking-tighter truncate block">${uName}</span><span class="text-sm text-gray-500 font-bold uppercase tracking-widest truncate block">${uSkill}</span></div>
+                        <div class="text-left sm:text-right flex-shrink-0"><span class="font-black text-white block text-5xl tracking-tighter">${userMatchCount}</span><span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Matches</span></div>
                     </div>
                     <div class="bg-[#050505] p-5 rounded-2xl flex justify-between items-center border border-white/5">
                         <span class="text-xs text-gray-500 font-bold uppercase tracking-widest">Player Rating</span>
