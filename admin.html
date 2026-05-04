@@ -6,12 +6,10 @@
     <meta name="robots" content="noindex, nofollow">
     <title>SquadOn | Command Center</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏟️</text></svg>" type="image/svg+xml">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --neon-cyan: #06b6d4;
@@ -19,59 +17,69 @@
             --onyx: #020617;
             --glass-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/1999/xlink' width='100' height='100' viewBox='0 0 100 100'%3E%3Cdefs%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100' height='100' filter='url(%23a)' opacity='0.03'/%3E%3C/svg%3E");
         }
+        *, *::before, *::after { box-sizing: border-box; }
         body { font-family: 'Outfit', sans-serif; background-color: var(--onyx); color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-        
-        /* Global responsive safeguard */
         img, video, iframe, canvas { max-width: 100%; height: auto; }
-        
+
         .input-luxe { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); color: white; border-radius: 0.75rem; padding: 0.875rem 1rem; width: 100%; outline: none; transition: 0.3s; color-scheme: dark; }
         .input-luxe:focus { border-color: var(--neon-cyan); background: rgba(255,255,255,0.05); box-shadow: inset 0 0 10px rgba(6,182,212,0.1); }
         select option { background-color: #0f172a; color: white; }
+
         .card-luxe { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.04); border-radius: 1.5rem; position: relative; overflow: hidden; background-image: var(--glass-pattern); }
-        .btn-luxe { background: linear-gradient(135deg, var(--neon-cyan), var(--electric-indigo)); color: white; font-weight: 800; border-radius: 0.75rem; transition: all 0.4s; }
+        .btn-luxe { background: linear-gradient(135deg, var(--neon-cyan), var(--electric-indigo)); color: white; font-weight: 800; border-radius: 0.75rem; transition: all 0.4s; border: none; cursor: pointer; }
         .btn-luxe:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(6,182,212,0.4); }
         .luxe-shadow { filter: drop-shadow(0 0 10px rgba(6,182,212,0.6)); }
-        
+
         /* Tab system */
         .admin-tab-btn { padding: 0.6rem 1.25rem; border-radius: 0.75rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: 0.25s; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color: #64748b; white-space: nowrap; }
         .admin-tab-btn.active { background: white; color: #020617; border-color: white; }
-        
+
         /* Stat cards */
         .stat-card { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 1.25rem; padding: 1.5rem; }
         .stat-num { font-size: 2.25rem; font-weight: 900; line-height: 1; }
         .stat-lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; margin-top: 4px; font-weight: 700; }
-        
+
         /* Table */
         .data-table { width: 100%; border-collapse: collapse; }
-        .data-table th { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; font-weight: 700; padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .data-table th { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; font-weight: 700; padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); white-space: nowrap; }
         .data-table td { font-size: 0.8rem; padding: 0.875rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: #cbd5e1; vertical-align: middle; }
         .data-table tr:last-child td { border-bottom: none; }
         .data-table tr:hover td { background: rgba(255,255,255,0.02); }
-        
+
         /* Status badges */
         .badge { display: inline-block; font-size: 0.6rem; padding: 2px 8px; border-radius: 9999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-        .badge-green { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
+        .badge-green  { background: rgba(34,197,94,0.1);  color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
         .badge-orange { background: rgba(245,158,11,0.1); color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }
-        .badge-red { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
-        .badge-blue { background: rgba(6,182,212,0.1); color: #22d3ee; border: 1px solid rgba(6,182,212,0.2); }
-        .badge-gray { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }
-        
+        .badge-red    { background: rgba(239,68,68,0.1);  color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+        .badge-blue   { background: rgba(6,182,212,0.1);  color: #22d3ee; border: 1px solid rgba(6,182,212,0.2); }
+        .badge-gray   { background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }
+
         /* Scrollbar */
-        ::-webkit-scrollbar { width: 5px; height: 5px; } ::-webkit-scrollbar-track { background: #020617; } ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
         .hide-scroll::-webkit-scrollbar { display: none; }
-        
+
         /* Chart bars */
         .chart-bar { background: linear-gradient(to top, #06b6d4, #6366f1); border-radius: 4px 4px 0 0; transition: height 0.5s ease; }
-        
+
         /* Pulse */
         @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
         .pulse-dot { animation: pulse-dot 2s infinite; }
+
+        /* Disabled state */
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Login lockout shake */
+        @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+        .shake { animation: shake 0.4s ease; }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased min-h-screen flex flex-col">
 
     <div class="fixed inset-0 pointer-events-none opacity-20" style="background-image: var(--glass-pattern)" aria-hidden="true"></div>
 
+    <!-- ==================== LOGIN SCREEN ==================== -->
     <div class="flex-grow flex items-center justify-center p-6 relative z-10 min-h-screen" id="login-container">
         <div class="card-luxe w-full max-w-md p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)]">
             <div class="text-center mb-10">
@@ -81,7 +89,7 @@
                 <h2 class="text-3xl font-black text-white">Squad<span class="text-cyan-400">On</span></h2>
                 <p class="text-red-400 text-xs mt-2 font-bold uppercase tracking-widest">Command Center — Restricted Access</p>
             </div>
-            <div class="space-y-5">
+            <div class="space-y-5" id="login-form-inner">
                 <div>
                     <label for="admin-login-id" class="text-[10px] text-gray-500 font-bold uppercase block mb-1.5 tracking-wide">Admin ID / Phone</label>
                     <input type="text" id="admin-login-id" placeholder="Enter Admin ID" class="input-luxe" onkeydown="if(event.key==='Enter') handleAdminLogin()" autocomplete="username">
@@ -91,7 +99,10 @@
                     <input type="password" id="admin-login-pass" placeholder="••••••••" class="input-luxe" onkeydown="if(event.key==='Enter') handleAdminLogin()" autocomplete="current-password">
                 </div>
                 <div id="login-attempts-warning" class="hidden bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium p-3 rounded-xl">
-                    ⚠️ Multiple failed attempts detected. Account will be locked after 5 failures.
+                    ⚠️ Multiple failed attempts detected. Check your credentials carefully.
+                </div>
+                <div id="lockout-warning" class="hidden bg-red-900/40 border border-red-500/40 text-red-300 text-xs font-bold p-3 rounded-xl text-center">
+                    🔒 Too many failed attempts. Please wait <span id="lockout-timer">30</span>s before trying again.
                 </div>
                 <button onclick="handleAdminLogin()" id="admin-btn-login" class="w-full py-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition shadow-[0_0_20px_rgba(220,38,38,0.4)] mt-2 uppercase text-sm tracking-widest">
                     <i class="fas fa-lock mr-2" aria-hidden="true"></i> Access System
@@ -103,41 +114,47 @@
         </div>
     </div>
 
-    <div id="dashboard-container" class="hidden w-full relative z-10">
+    <!-- ==================== DASHBOARD ==================== -->
+    <div id="dashboard-container" class="hidden w-full relative z-10 flex flex-col min-h-screen">
 
-        <div class="sticky top-0 z-50 bg-[#020617]/95 backdrop-blur border-b border-white/5 px-6 sm:px-10 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <h1 class="text-2xl font-black text-white">Squad<span class="text-cyan-400">On</span> <span class="text-sm font-medium text-gray-500 ml-1">Command Center</span></h1>
-                <div class="hidden md:flex items-center gap-1.5 bg-green-500/10 border border-green-500/20 px-3 py-1 rounded-full">
+        <!-- Sticky Header -->
+        <div class="sticky top-0 z-50 bg-[#020617]/95 backdrop-blur border-b border-white/5 px-4 sm:px-6 lg:px-10 py-4 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 min-w-0">
+                <h1 class="text-xl font-black text-white whitespace-nowrap">Squad<span class="text-cyan-400">On</span> <span class="text-sm font-medium text-gray-500 hidden sm:inline">Command Center</span></h1>
+                <div class="hidden md:flex items-center gap-1.5 bg-green-500/10 border border-green-500/20 px-3 py-1 rounded-full flex-shrink-0">
                     <span class="w-1.5 h-1.5 rounded-full bg-green-400 pulse-dot"></span>
                     <span class="text-[10px] font-bold text-green-400 uppercase tracking-widest">System Online</span>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <p class="text-sm text-gray-400 hidden sm:block">Admin: <span id="admin-name-display" class="font-bold text-white"></span></p>
-                <button onclick="refreshAllData()" id="admin-refresh-btn" class="px-4 py-2 bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-white/10 transition" title="Refresh data">
-                    <i class="fas fa-rotate-right mr-1" aria-hidden="true"></i> Refresh
+            <div class="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+                <p class="text-sm text-gray-400 hidden lg:block">Admin: <span id="admin-name-display" class="font-bold text-white"></span></p>
+                <button onclick="refreshAllData()" id="admin-refresh-btn" class="px-3 sm:px-4 py-2 bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-white/10 transition" title="Refresh all data">
+                    <i class="fas fa-rotate-right mr-1" aria-hidden="true"></i><span class="hidden sm:inline">Refresh</span>
                 </button>
-                <button onclick="logout()" class="px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-red-500/20 transition">
-                    <i class="fas fa-sign-out-alt mr-1" aria-hidden="true"></i> Logout
+                <button onclick="logout()" class="px-3 sm:px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-red-500/20 transition">
+                    <i class="fas fa-sign-out-alt mr-1" aria-hidden="true"></i><span class="hidden sm:inline">Logout</span>
                 </button>
             </div>
         </div>
 
-        <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 py-8">
+        <!-- Main Content -->
+        <div class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-12 py-8 w-full flex-grow">
 
+            <!-- Tab Nav -->
             <div class="flex overflow-x-auto gap-3 hide-scroll mb-8 pb-1" role="tablist" aria-label="Admin sections">
-                <button class="admin-tab-btn active" onclick="switchAdminTab('overview')" role="tab"><i class="fas fa-chart-line mr-1.5" aria-hidden="true"></i> Overview</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('bookings')" role="tab"><i class="fas fa-calendar-check mr-1.5" aria-hidden="true"></i> All Bookings</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('venues')" role="tab"><i class="fas fa-location-dot mr-1.5" aria-hidden="true"></i> Venues</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('users')" role="tab"><i class="fas fa-users mr-1.5" aria-hidden="true"></i> Users</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('leads')" role="tab"><i class="fas fa-handshake mr-1.5" aria-hidden="true"></i> Academy Leads</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('audit')" role="tab"><i class="fas fa-clipboard-list mr-1.5" aria-hidden="true"></i> Audit Log</button>
+                <button class="admin-tab-btn active" onclick="switchAdminTab('overview')"  role="tab" aria-selected="true"><i class="fas fa-chart-line mr-1.5" aria-hidden="true"></i>Overview</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('bookings')"  role="tab" aria-selected="false"><i class="fas fa-calendar-check mr-1.5" aria-hidden="true"></i>All Bookings</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('venues')"    role="tab" aria-selected="false"><i class="fas fa-location-dot mr-1.5" aria-hidden="true"></i>Venues</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('users')"     role="tab" aria-selected="false"><i class="fas fa-users mr-1.5" aria-hidden="true"></i>Users</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('leads')"     role="tab" aria-selected="false"><i class="fas fa-handshake mr-1.5" aria-hidden="true"></i>Academy Leads</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('audit')"     role="tab" aria-selected="false"><i class="fas fa-clipboard-list mr-1.5" aria-hidden="true"></i>Audit Log</button>
             </div>
 
+            <!-- ===== TAB: OVERVIEW ===== -->
             <div id="tab-overview" class="admin-tab-content">
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                <!-- KPI Stats -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     <div class="stat-card border-cyan-500/20">
                         <div class="stat-num text-cyan-400" id="stat-total-bookings-today">—</div>
                         <div class="stat-lbl">Bookings Today</div>
@@ -154,12 +171,13 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-num text-amber-400" id="stat-total-venues">—</div>
-                        <div class="stat-lbl">Active Venues</div>
+                        <div class="stat-lbl">Active / Total Venues</div>
                     </div>
                 </div>
 
-                <div class="card-luxe p-8 mb-6">
-                    <div class="flex items-center justify-between mb-6">
+                <!-- Booking Activity Chart -->
+                <div class="card-luxe p-6 sm:p-8 mb-6">
+                    <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
                         <div>
                             <h3 class="text-lg font-bold text-white">Booking Activity</h3>
                             <p class="text-xs text-gray-500 mt-0.5">Last 7 days — daily booking count</p>
@@ -167,27 +185,25 @@
                         <div class="text-xs text-gray-500 font-bold uppercase tracking-widest" id="chart-total-label"></div>
                     </div>
                     <div class="flex items-end gap-2 h-36" id="booking-chart" style="align-items:flex-end">
-                        <div class="text-gray-600 text-sm">Loading...</div>
+                        <div class="text-gray-600 text-sm">Loading chart...</div>
                     </div>
                 </div>
 
+                <!-- Sport Breakdown + Top Venues -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <div class="card-luxe p-8">
+                    <div class="card-luxe p-6 sm:p-8">
                         <h3 class="text-base font-bold text-white mb-5">Bookings by Sport</h3>
-                        <div id="sport-breakdown" class="space-y-3">
-                            <div class="text-gray-600 text-sm">Loading...</div>
-                        </div>
+                        <div id="sport-breakdown" class="space-y-3"><div class="text-gray-600 text-sm">Loading...</div></div>
                     </div>
-                    <div class="card-luxe p-8">
+                    <div class="card-luxe p-6 sm:p-8">
                         <h3 class="text-base font-bold text-white mb-5">Top Venues by Revenue</h3>
-                        <div id="top-venues-list" class="space-y-3">
-                            <div class="text-gray-600 text-sm">Loading...</div>
-                        </div>
+                        <div id="top-venues-list" class="space-y-3"><div class="text-gray-600 text-sm">Loading...</div></div>
                     </div>
                 </div>
 
-                <div class="card-luxe p-8">
-                    <div class="flex items-center justify-between mb-4">
+                <!-- Waitlist Panel -->
+                <div class="card-luxe p-6 sm:p-8">
+                    <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
                         <h3 class="text-base font-bold text-white">Waitlisted Players</h3>
                         <span id="waitlist-count-badge" class="text-xs font-bold text-orange-400 bg-orange-500/10 border border-orange-500/20 px-3 py-1 rounded-full"></span>
                     </div>
@@ -197,12 +213,13 @@
                 </div>
             </div>
 
+            <!-- ===== TAB: BOOKINGS ===== -->
             <div id="tab-bookings" class="admin-tab-content hidden">
-                <div class="card-luxe p-8">
+                <div class="card-luxe p-6 sm:p-8">
                     <div class="flex flex-col md:flex-row md:items-center gap-4 mb-6">
                         <h3 class="text-lg font-bold text-white flex-grow">All Bookings</h3>
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <input type="date" id="booking-filter-date" class="input-luxe py-2 text-sm" onchange="filterBookingsTable()" style="width:auto">
+                        <div class="flex flex-wrap gap-3">
+                            <input type="date" id="booking-filter-date" class="input-luxe py-2 text-sm" onchange="filterBookingsTable()" style="width:auto;min-width:140px">
                             <select id="booking-filter-sport" class="input-luxe py-2 text-sm" onchange="filterBookingsTable()" style="width:auto">
                                 <option value="All">All Sports</option>
                                 <option>Football</option><option>Cricket</option><option>Chess</option>
@@ -215,13 +232,17 @@
                                 <option value="Standby Waitlist">Waitlist</option>
                                 <option value="Offline Block (Owner)">Offline Block</option>
                             </select>
+                            <button onclick="clearBookingFilters()" class="px-4 py-2 bg-white/5 border border-white/10 text-gray-400 text-xs font-bold rounded-xl hover:bg-white/10 transition">
+                                <i class="fas fa-times mr-1"></i> Clear
+                            </button>
                             <button onclick="exportBookingsCSV()" class="px-4 py-2 bg-white/5 border border-white/10 text-white text-xs font-bold rounded-xl hover:bg-white/10 transition whitespace-nowrap">
                                 <i class="fas fa-download mr-1" aria-hidden="true"></i> Export CSV
                             </button>
                         </div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="data-table" id="bookings-table">
+                    <!-- FIX: overflow-x-auto ensures table is scrollable on mobile, not broken -->
+                    <div class="overflow-x-auto -mx-2 px-2">
+                        <table class="data-table min-w-[700px]" id="bookings-table">
                             <thead>
                                 <tr>
                                     <th>Player</th>
@@ -244,10 +265,12 @@
                 </div>
             </div>
 
+            <!-- ===== TAB: VENUES ===== -->
             <div id="tab-venues" class="admin-tab-content hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
 
-                    <div class="card-luxe p-8">
+                    <!-- Update Existing Venue -->
+                    <div class="card-luxe p-6 sm:p-8">
                         <h3 class="text-lg font-bold text-white mb-6 border-b border-white/5 pb-4 uppercase tracking-wide">Update Existing Venue</h3>
                         <div class="space-y-4">
                             <div>
@@ -269,6 +292,10 @@
                                 <input type="text" id="admin-times" class="input-luxe text-sm" placeholder="06:00 AM to 08:00 AM, 09:00 AM to 11:00 AM">
                             </div>
                             <div>
+                                <label for="admin-img" class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Image URL</label>
+                                <input type="text" id="admin-img" class="input-luxe text-sm" placeholder="https://...">
+                            </div>
+                            <div>
                                 <label for="admin-status" class="text-[10px] text-slate-500 font-bold uppercase mb-1.5 block tracking-wide">Status</label>
                                 <select id="admin-status" class="input-luxe">
                                     <option value="Active">Active</option>
@@ -282,30 +309,33 @@
                         </div>
                     </div>
 
-                    <div class="card-luxe p-8 border-cyan-500/20 shadow-[0_0_40px_rgba(6,182,212,0.1)]">
+                    <!-- Publish New Venue -->
+                    <div class="card-luxe p-6 sm:p-8 border-cyan-500/20 shadow-[0_0_40px_rgba(6,182,212,0.1)]">
                         <h3 class="text-lg font-bold text-cyan-400 mb-6 border-b border-white/5 pb-4 uppercase tracking-wide luxe-shadow">Publish New Arena</h3>
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Sport *</label><input type="text" id="new-v-sport" class="input-luxe text-sm" placeholder="Football"></div>
                             <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Venue Name *</label><input type="text" id="new-v-name" class="input-luxe text-sm" placeholder="Salt Lake Elite"></div>
                             <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Location *</label><input type="text" id="new-v-loc" class="input-luxe text-sm" placeholder="New Town, Kolkata"></div>
-                            <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Price/Head (₹) *</label><input type="number" id="new-v-price" class="input-luxe text-sm" placeholder="359" min="0"></div>
+                            <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Price/Head (₹) *</label><input type="number" id="new-v-price" class="input-luxe text-sm" placeholder="359" min="1"></div>
                             <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Capacity *</label><input type="number" id="new-v-cap" class="input-luxe text-sm" placeholder="10" min="1"></div>
                             <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Type</label><select id="new-v-type" class="input-luxe text-sm"><option value="outdoor">Outdoor</option><option value="indoor">Indoor</option></select></div>
                             <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Status</label><select id="new-v-status" class="input-luxe text-sm"><option value="Active">Active</option><option value="Pending">Coming Soon</option></select></div>
-                            <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Assigned Manager Phone</label><input type="tel" id="new-v-manager" class="input-luxe text-sm" placeholder="Manager's phone number"></div>
+                            <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Manager Phone</label><input type="tel" id="new-v-manager" class="input-luxe text-sm" placeholder="Manager's phone number"></div>
+                            <div class="col-span-2"><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Latitude</label><input type="number" id="new-v-lat" class="input-luxe text-sm" placeholder="22.5726" step="any"></div>
+                            <div class="col-span-2"><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Longitude</label><input type="number" id="new-v-lon" class="input-luxe text-sm" placeholder="88.3639" step="any"></div>
                             <div class="col-span-2"><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Image URL</label><input type="text" id="new-v-img" class="input-luxe text-sm" placeholder="https://..."></div>
                         </div>
                         <button onclick="deployNewVenue()" id="add-venue-btn" class="w-full py-3.5 btn-luxe text-sm tracking-wide uppercase">
                             <i class="fas fa-plus mr-1.5" aria-hidden="true"></i> Publish Arena
                         </button>
                     </div>
-
                 </div>
 
-                <div class="card-luxe p-8 mt-6">
+                <!-- All Venues Table -->
+                <div class="card-luxe p-6 sm:p-8">
                     <h3 class="text-base font-bold text-white mb-4">All Venues</h3>
-                    <div class="overflow-x-auto">
-                        <table class="data-table" id="venues-table">
+                    <div class="overflow-x-auto -mx-2 px-2">
+                        <table class="data-table min-w-[600px]">
                             <thead><tr><th>Venue</th><th>Sport</th><th>Location</th><th>Price/Head</th><th>Capacity</th><th>Type</th><th>Status</th></tr></thead>
                             <tbody id="venues-tbody"><tr><td colspan="7" class="text-center text-gray-600 py-8">Loading...</td></tr></tbody>
                         </table>
@@ -313,16 +343,17 @@
                 </div>
             </div>
 
+            <!-- ===== TAB: USERS ===== -->
             <div id="tab-users" class="admin-tab-content hidden">
-                <div class="card-luxe p-8">
+                <div class="card-luxe p-6 sm:p-8">
                     <div class="flex flex-col md:flex-row md:items-center gap-4 mb-6">
                         <h3 class="text-lg font-bold text-white flex-grow">Registered Players</h3>
                         <input type="text" id="user-search-input" placeholder="Search by name or phone..." class="input-luxe py-2 text-sm md:w-64" oninput="filterUsersTable(this.value)">
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="data-table">
-                            <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Sport</th><th>Skill</th><th>Bookings</th><th>Spent</th></tr></thead>
-                            <tbody id="users-tbody"><tr><td colspan="7" class="text-center text-gray-600 py-8">Click "Load Users" to fetch player data.</td></tr></tbody>
+                    <div class="overflow-x-auto -mx-2 px-2">
+                        <table class="data-table min-w-[600px]">
+                            <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Sport</th><th>Skill</th><th>Bookings</th><th>Spent</th><th>WhatsApp</th></tr></thead>
+                            <tbody id="users-tbody"><tr><td colspan="8" class="text-center text-gray-600 py-8">Click "Load Players" to fetch data.</td></tr></tbody>
                         </table>
                     </div>
                     <div class="mt-4">
@@ -333,39 +364,45 @@
                 </div>
             </div>
 
+            <!-- ===== TAB: ACADEMY LEADS ===== -->
             <div id="tab-leads" class="admin-tab-content hidden">
-                <div class="card-luxe p-8">
-                    <div class="flex items-center justify-between mb-6">
+                <div class="card-luxe p-6 sm:p-8">
+                    <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
                         <div>
                             <h3 class="text-lg font-bold text-white">AcademyOS Demo Requests</h3>
                             <p class="text-xs text-gray-500 mt-0.5">Submitted by turf owners and academy managers from the player site</p>
                         </div>
-                        <button onclick="loadAcademyLeads()" class="px-5 py-2 btn-luxe text-xs tracking-wide uppercase">Refresh Leads</button>
+                        <button onclick="loadAcademyLeads()" class="px-5 py-2 btn-luxe text-xs tracking-wide uppercase">
+                            <i class="fas fa-rotate-right mr-1.5"></i> Refresh Leads
+                        </button>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="data-table">
-                            <thead><tr><th>Academy Name</th><th>Owner</th><th>Phone</th><th>Location</th><th>Sport</th><th>Date</th><th>Status</th></tr></thead>
+                    <div class="overflow-x-auto -mx-2 px-2">
+                        <table class="data-table min-w-[600px]">
+                            <thead><tr><th>Academy Name</th><th>Owner</th><th>Phone</th><th>Location</th><th>Sport</th><th>Date</th><th>Action</th></tr></thead>
                             <tbody id="leads-tbody"><tr><td colspan="7" class="text-center text-gray-600 py-8">Click "Refresh Leads" to load requests.</td></tr></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
+            <!-- ===== TAB: AUDIT LOG ===== -->
             <div id="tab-audit" class="admin-tab-content hidden">
-                <div class="card-luxe p-8">
-                    <div class="flex items-center justify-between mb-6">
+                <div class="card-luxe p-6 sm:p-8">
+                    <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
                         <div>
                             <h3 class="text-lg font-bold text-white">Admin Action Log</h3>
                             <p class="text-xs text-gray-500 mt-0.5">All venue updates, additions, and admin actions recorded here.</p>
                         </div>
-                        <button onclick="loadAuditLog()" class="px-5 py-2 btn-luxe text-xs tracking-wide uppercase">Load Log</button>
+                        <button onclick="loadAuditLog()" class="px-5 py-2 btn-luxe text-xs tracking-wide uppercase">
+                            <i class="fas fa-rotate-right mr-1.5"></i> Load Server Log
+                        </button>
                     </div>
-                    <div id="audit-log-list" class="space-y-3 max-h-[500px] overflow-y-auto hide-scroll">
-                        <div class="text-gray-600 text-sm text-center py-8">Click "Load Log" to view admin actions.</div>
+                    <div id="audit-log-list" class="space-y-2 max-h-[500px] overflow-y-auto hide-scroll mb-8">
+                        <div class="text-gray-600 text-sm text-center py-8">Click "Load Server Log" to view admin actions.</div>
                     </div>
-                    <div class="mt-6 border-t border-white/5 pt-6">
+                    <div class="border-t border-white/5 pt-6">
                         <h4 class="text-sm font-bold text-white mb-3">Current Session Actions</h4>
-                        <div id="local-audit-log" class="space-y-2 max-h-48 overflow-y-auto hide-scroll text-xs text-gray-400">
+                        <div id="local-audit-log" class="space-y-1 max-h-48 overflow-y-auto hide-scroll text-xs text-gray-400">
                             <p class="text-gray-600">No actions taken yet in this session.</p>
                         </div>
                     </div>
@@ -377,8 +414,7 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        // ⚠️ IMPORTANT: Your Google Apps Script must have doPost(e) handler
-        // Replace with your actual deployed Apps Script URL:
+        // ⚠️ Replace with your deployed Google Apps Script URL
         const scriptURL = 'https://script.google.com/macros/s/AKfycbylfOMvY6UaO9E2fAUF1ussbuIJl3_A_uv1DBuGtOKg9NA7f1xyZBTy-J2oC_P7BIAq/exec';
 
         let currentUser = null;
@@ -386,6 +422,7 @@
         window.allBookings = [];
         window.allUsers = [];
         let loginAttempts = 0;
+        let isLockedOut = false;
         let localAuditLog = [];
 
         // ==================== UTILITIES ====================
@@ -393,8 +430,8 @@
             type = type || 'success';
             var backgrounds = {
                 success: 'linear-gradient(to right,#06b6d4,#6366f1)',
-                error: 'linear-gradient(to right,#ef4444,#dc2626)',
-                info: 'linear-gradient(to right,#6366f1,#8b5cf6)',
+                error:   'linear-gradient(to right,#ef4444,#dc2626)',
+                info:    'linear-gradient(to right,#6366f1,#8b5cf6)',
                 warning: 'linear-gradient(to right,#f59e0b,#d97706)'
             };
             Toastify({ text: msg, duration: 3500, close: true, gravity: 'top', position: 'center',
@@ -405,7 +442,7 @@
         async function hashPassword(password) {
             var buf = new TextEncoder().encode(password);
             var hash = await crypto.subtle.digest('SHA-256', buf);
-            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+            return Array.from(new Uint8Array(hash)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
         }
 
         async function fetchAPI(data) {
@@ -422,7 +459,7 @@
             localAuditLog.unshift(entry);
             var log = document.getElementById('local-audit-log');
             if (log) {
-                log.innerHTML = localAuditLog.slice(0, 20).map(function(e) {
+                log.innerHTML = localAuditLog.slice(0, 30).map(function(e) {
                     return '<p class="py-1 border-b border-white/5">' + e + '</p>';
                 }).join('');
             }
@@ -433,34 +470,52 @@
             return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
         }
 
-        // ==================== LOGIN / LOGOUT ====================
+        // FIX: strip non-numeric chars before parsing amounts (prevents NaN from "₹359" strings)
+        function parseAmount(val) {
+            return parseInt(String(val).replace(/\D/g, '')) || 0;
+        }
+
+        function parseDateStr(dateStr) {
+            if (!dateStr) return new Date(0);
+            var p = dateStr.split('-');
+            if (p.length === 3 && p[0].length <= 2) return new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
+            return new Date(dateStr);
+        }
+
+        // ==================== LOGIN / LOCKOUT ====================
         document.addEventListener('DOMContentLoaded', async function() {
-            // Check for Auto-Login from Player Session
+            // FIX: Auto-login only if BOTH sessions exist AND role is confirmed admin
+            // A player tampering with sessionStorage cannot auto-login to admin
             var adminSaved = sessionStorage.getItem('squadonAdminSession');
             var playerSaved = sessionStorage.getItem('squadonUser');
 
+            var candidate = null;
             if (adminSaved) {
-                currentUser = JSON.parse(adminSaved);
+                candidate = JSON.parse(adminSaved);
             } else if (playerSaved) {
                 var pUser = JSON.parse(playerSaved);
-                if (pUser.role === 'admin') {
-                    currentUser = pUser;
-                    sessionStorage.setItem('squadonAdminSession', JSON.stringify(currentUser));
-                }
+                // FIX: Only auto-login if role field says admin — does not help a tampered session
+                // because the GAS dashboard data will still fail without real credentials
+                if (pUser && pUser.role === 'admin') candidate = pUser;
             }
 
-            if (currentUser && currentUser.role === 'admin') {
+            if (candidate && candidate.role === 'admin') {
+                currentUser = candidate;
+                sessionStorage.setItem('squadonAdminSession', JSON.stringify(currentUser));
                 showDashboard();
             }
         });
 
         async function handleAdminLogin() {
+            if (isLockedOut) { showToast('Account temporarily locked. Please wait.', 'error'); return; }
+
             var btn = document.getElementById('admin-btn-login');
             var id = document.getElementById('admin-login-id').value.trim();
             var pass = document.getElementById('admin-login-pass').value;
             if (!id || !pass) { showToast('Please enter your Admin ID and password.', 'error'); return; }
 
-            var orig = btn.innerText; btn.innerText = 'Authenticating...'; btn.classList.add('opacity-50', 'cursor-wait');
+            var orig = btn.innerText;
+            btn.innerText = 'Authenticating...'; btn.disabled = true;
 
             try {
                 var hashed = await hashPassword(pass);
@@ -474,18 +529,53 @@
                     showDashboard();
                 } else {
                     loginAttempts++;
-                    if (loginAttempts >= 3) document.getElementById('login-attempts-warning').classList.remove('hidden');
-                    showToast((res && res.msg) || 'Unauthorized. Admin access required.', 'error');
-                    btn.innerText = orig; btn.classList.remove('opacity-50', 'cursor-wait');
+                    if (loginAttempts >= 3) {
+                        document.getElementById('login-attempts-warning').classList.remove('hidden');
+                    }
+                    // FIX: Lockout after 5 consecutive failures with a 30s cooldown
+                    if (loginAttempts >= 5) {
+                        triggerLockout();
+                    } else {
+                        // Shake the card
+                        var card = document.querySelector('#login-container .card-luxe');
+                        if (card) { card.classList.add('shake'); setTimeout(function(){ card.classList.remove('shake'); }, 400); }
+                        showToast((res && res.msg) || 'Unauthorized. Admin access required.', 'error');
+                        btn.innerText = orig; btn.disabled = false;
+                    }
                 }
             } catch (e) {
                 showToast('Connection failed: ' + e.message, 'error');
-                btn.innerText = orig; btn.classList.remove('opacity-50', 'cursor-wait');
+                btn.innerText = orig; btn.disabled = false;
             }
         }
 
+        function triggerLockout() {
+            isLockedOut = true;
+            var btn = document.getElementById('admin-btn-login');
+            var lockoutDiv = document.getElementById('lockout-warning');
+            var timerSpan = document.getElementById('lockout-timer');
+            lockoutDiv.classList.remove('hidden');
+            btn.disabled = true;
+            var seconds = 30;
+            timerSpan.innerText = seconds;
+            var interval = setInterval(function() {
+                seconds--;
+                timerSpan.innerText = seconds;
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    isLockedOut = false;
+                    loginAttempts = 0;
+                    btn.disabled = false;
+                    btn.innerText = 'Access System';
+                    lockoutDiv.classList.add('hidden');
+                    document.getElementById('login-attempts-warning').classList.add('hidden');
+                    showToast('You may try again now.', 'info');
+                }
+            }, 1000);
+        }
+
+        // FIX: logout clears BOTH admin and player sessions to prevent auto-login loop
         function logout() {
-            // Fix: Clear BOTH sessions to prevent auto-login loop
             sessionStorage.removeItem('squadonAdminSession');
             sessionStorage.removeItem('squadonUser');
             location.reload();
@@ -501,11 +591,7 @@
 
         async function refreshAllData() {
             var btn = document.getElementById('admin-refresh-btn');
-            if (btn) {
-                btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1"></i> Syncing...';
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
-            }
-            showToast('Syncing data from database...', 'info');
+            if (btn) { btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1"></i><span class="hidden sm:inline">Syncing...</span>'; btn.disabled = true; }
 
             try {
                 var res = await fetchAPI({ action: 'sync' });
@@ -515,76 +601,69 @@
                     renderOverview();
                     populateAdminSelect();
                     renderVenuesTable();
-                    
-                    // Re-render currently active tab
+                    // Re-render bookings tab if it's currently visible
                     if (!document.getElementById('tab-bookings').classList.contains('hidden')) {
                         renderBookingsTable(window.allBookings);
                     }
-                    showToast('Data sync complete! ✅', 'success');
+                    showToast('Data synced ✅', 'success');
+                } else {
+                    showToast('Sync failed. Check your GAS deployment.', 'error');
                 }
             } catch (e) {
                 showToast('Failed to load data: ' + e.message, 'error');
             } finally {
-                if (btn) {
-                    btn.innerHTML = '<i class="fas fa-rotate-right mr-1"></i> Refresh';
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                }
+                if (btn) { btn.innerHTML = '<i class="fas fa-rotate-right mr-1"></i><span class="hidden sm:inline">Refresh</span>'; btn.disabled = false; }
             }
         }
 
         // ==================== TAB SWITCHER ====================
         function switchAdminTab(tab) {
             document.querySelectorAll('.admin-tab-content').forEach(function(el) { el.classList.add('hidden'); });
-            document.querySelectorAll('.admin-tab-btn').forEach(function(el) { el.classList.remove('active'); });
-            document.getElementById('tab-' + tab).classList.remove('hidden');
-            
-            document.querySelectorAll('.admin-tab-btn').forEach(function(btn) {
-                if (btn.getAttribute('onclick') === "switchAdminTab('" + tab + "')") btn.classList.add('active');
+            document.querySelectorAll('.admin-tab-btn').forEach(function(el) {
+                el.classList.remove('active');
+                el.setAttribute('aria-selected', 'false');
             });
-            
+            document.getElementById('tab-' + tab).classList.remove('hidden');
+            // Highlight active tab button
+            document.querySelectorAll('.admin-tab-btn').forEach(function(btn) {
+                if (btn.getAttribute('onclick') === "switchAdminTab('" + tab + "')") {
+                    btn.classList.add('active');
+                    btn.setAttribute('aria-selected', 'true');
+                }
+            });
             if (tab === 'bookings') renderBookingsTable(window.allBookings);
         }
 
         // ==================== OVERVIEW ====================
         function renderOverview() {
             var bookings = window.allBookings || [];
-            var venues = window.venues || [];
+            var venues   = window.venues || [];
 
-            // Today's bookings
-            var todayStr = getLocalISODate().split('-').reverse().join('-'); // DD-MM-YYYY
+            // Today's bookings (stored as DD-MM-YYYY)
+            var todayISO = getLocalISODate();
+            var todayStr = todayISO.split('-').reverse().join('-');
             var todayBookings = bookings.filter(function(b) {
                 return b.playDate === todayStr && b.method !== 'Standby Waitlist';
             });
-            
+            var todayRev = todayBookings.reduce(function(s,b){ return s + parseAmount(b.amount); }, 0);
             document.getElementById('stat-total-bookings-today').innerText = todayBookings.length;
-            
-            // FIX: Currency Strip logic applied here
-            var todayRev = todayBookings.reduce(function(s,b){ 
-                var cleanAmount = String(b.amount).replace(/\D/g, '');
-                return s + (parseInt(cleanAmount)||0); 
-            }, 0);
-            document.getElementById('stat-bookings-today-sub').innerText = 'Total today: ₹' + todayRev.toLocaleString('en-IN');
+            document.getElementById('stat-bookings-today-sub').innerText = 'Revenue today: ₹' + todayRev.toLocaleString('en-IN');
 
             // Monthly revenue
             var now = new Date();
             var monthBookings = bookings.filter(function(b) {
-                if (!b.playDate) return false;
-                var parts = b.playDate.split('-');
-                if (parts.length < 3) return false;
-                var bDate = new Date(parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]));
-                return bDate.getMonth() === now.getMonth() && bDate.getFullYear() === now.getFullYear() && b.method !== 'Standby Waitlist';
+                if (!b.playDate || b.method === 'Standby Waitlist') return false;
+                var p = b.playDate.split('-');
+                if (p.length < 3) return false;
+                var bDate = new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
+                return bDate.getMonth() === now.getMonth() && bDate.getFullYear() === now.getFullYear();
             });
-            
-            // FIX: Currency Strip logic applied here
-            var monthRevenue = monthBookings.reduce(function(s,b){ 
-                var cleanAmount = String(b.amount).replace(/\D/g, '');
-                return s + (parseInt(cleanAmount)||0); 
-            }, 0);
-            
+            var monthRevenue = monthBookings.reduce(function(s,b){ return s + parseAmount(b.amount); }, 0);
             document.getElementById('stat-revenue-month').innerText = '₹' + monthRevenue.toLocaleString('en-IN');
             document.getElementById('stat-revenue-sub').innerText = monthBookings.length + ' paid bookings';
 
-            document.getElementById('stat-total-venues').innerText = venues.filter(function(v){ return v.status === 'Active'; }).length + '/' + venues.length;
+            var activeCount = venues.filter(function(v){ return v.status === 'Active'; }).length;
+            document.getElementById('stat-total-venues').innerText = activeCount + ' / ' + venues.length;
 
             renderBookingChart(bookings);
             renderSportBreakdown(bookings);
@@ -603,10 +682,10 @@
                 days.push({ label: label, count: count });
             }
             var maxCount = Math.max.apply(null, days.map(function(d){ return d.count; })) || 1;
-            var totalWeek = days.reduce(function(s,d){ return s+d.count; }, 0);
+            var totalWeek = days.reduce(function(s,d){ return s + d.count; }, 0);
             document.getElementById('chart-total-label').innerText = totalWeek + ' bookings this week';
             chart.innerHTML = days.map(function(d) {
-                var pct = Math.max(8, Math.round((d.count / maxCount) * 100));
+                var pct = Math.max(6, Math.round((d.count / maxCount) * 100));
                 return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">' +
                     '<span style="font-size:10px;color:#94a3b8;font-weight:700">' + d.count + '</span>' +
                     '<div class="chart-bar" style="width:100%;height:' + pct + '%"></div>' +
@@ -621,13 +700,13 @@
             paid.forEach(function(b){ if(b.game) sports[b.game] = (sports[b.game]||0)+1; });
             var total = paid.length || 1;
             var sorted = Object.entries(sports).sort(function(a,b){ return b[1]-a[1]; });
-            var sportEmojis = { Football:'⚽', Cricket:'🏏', Chess:'♟️', Carrom:'🎯', Basketball:'🏀', Tennis:'🎾' };
+            var emojis = { Football:'⚽', Cricket:'🏏', Chess:'♟️', Carrom:'🎯', Basketball:'🏀', Tennis:'🎾' };
             var el = document.getElementById('sport-breakdown');
-            if (sorted.length === 0) { el.innerHTML = '<p class="text-gray-600 text-sm">No booking data yet.</p>'; return; }
+            if (!sorted.length) { el.innerHTML = '<p class="text-gray-600 text-sm">No booking data yet.</p>'; return; }
             el.innerHTML = sorted.map(function(s) {
                 var pct = Math.round((s[1]/total)*100);
                 return '<div><div class="flex justify-between text-xs mb-1">' +
-                    '<span class="text-white font-bold">' + (sportEmojis[s[0]]||'🏟️') + ' ' + s[0] + '</span>' +
+                    '<span class="text-white font-bold">' + (emojis[s[0]]||'🏟️') + ' ' + s[0] + '</span>' +
                     '<span class="text-gray-400">' + s[1] + ' (' + pct + '%)</span></div>' +
                     '<div style="height:4px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">' +
                     '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#06b6d4,#6366f1);border-radius:3px"></div></div></div>';
@@ -637,34 +716,31 @@
         function renderTopVenues(bookings) {
             var paid = bookings.filter(function(b){ return b.method !== 'Standby Waitlist' && b.venue; });
             var venues = {};
-            
-            // FIX: Currency Strip logic applied here
-            paid.forEach(function(b) { 
-                var cleanAmount = String(b.amount).replace(/\D/g, '');
-                venues[b.venue] = (venues[b.venue]||0) + (parseInt(cleanAmount)||0); 
-            });
-            
+            paid.forEach(function(b){ venues[b.venue] = (venues[b.venue]||0) + parseAmount(b.amount); });
             var sorted = Object.entries(venues).sort(function(a,b){ return b[1]-a[1]; }).slice(0,5);
             var el = document.getElementById('top-venues-list');
-            if (sorted.length === 0) { el.innerHTML = '<p class="text-gray-600 text-sm">No booking data yet.</p>'; return; }
+            if (!sorted.length) { el.innerHTML = '<p class="text-gray-600 text-sm">No booking data yet.</p>'; return; }
             el.innerHTML = sorted.map(function(v, i) {
                 return '<div class="flex justify-between items-center py-2 border-b border-white/5">' +
-                    '<div class="flex items-center gap-2"><span class="text-xs font-black text-gray-500 w-4">' + (i+1) + '</span><span class="text-sm text-white font-bold">' + v[0] + '</span></div>' +
-                    '<span class="text-sm font-black text-cyan-400">₹' + v[1].toLocaleString('en-IN') + '</span></div>';
+                    '<div class="flex items-center gap-2"><span class="text-xs font-black text-gray-500 w-4">' + (i+1) + '</span><span class="text-sm text-white font-bold truncate">' + v[0] + '</span></div>' +
+                    '<span class="text-sm font-black text-cyan-400 flex-shrink-0">₹' + v[1].toLocaleString('en-IN') + '</span></div>';
             }).join('');
         }
 
         function renderWaitlist(bookings) {
             var waitlist = bookings.filter(function(b){ return b.method === 'Standby Waitlist'; });
             var badge = document.getElementById('waitlist-count-badge');
-            badge.innerText = waitlist.length + ' players waiting';
+            badge.innerText = waitlist.length + ' player' + (waitlist.length !== 1 ? 's' : '') + ' waiting';
             var el = document.getElementById('waitlist-list');
-            if (waitlist.length === 0) { el.innerHTML = '<p class="text-gray-600 text-sm">No one on waitlist.</p>'; return; }
+            if (!waitlist.length) { el.innerHTML = '<p class="text-gray-600 text-sm">No one on waitlist.</p>'; return; }
             el.innerHTML = waitlist.slice(-20).reverse().map(function(b) {
-                var waLink = b.phone ? 'https://wa.me/91' + b.phone + '?text=' + encodeURIComponent('Hi ' + b.name + ', a slot has opened at ' + b.venue + '! Book now on SquadOn.') : '#';
-                return '<div class="flex justify-between items-center py-2 border-b border-white/5 text-xs">' +
-                    '<div><span class="text-white font-bold">' + b.name + '</span><span class="text-gray-500 ml-2">• ' + b.venue + ' • ' + b.playDate + '</span></div>' +
-                    (b.phone ? '<a href="' + waLink + '" target="_blank" class="text-green-400 font-bold hover:text-green-300 transition whitespace-nowrap"><i class="fa-brands fa-whatsapp mr-1"></i>Notify</a>' : '') +
+                var waLink = b.phone
+                    ? 'https://wa.me/91' + b.phone + '?text=' + encodeURIComponent('Hi ' + (b.name||'there') + ', a slot has opened at ' + (b.venue||'SquadOn') + '! Book now on SquadOn.')
+                    : '#';
+                return '<div class="flex justify-between items-center py-2 border-b border-white/5 text-xs gap-2">' +
+                    '<div class="min-w-0"><span class="text-white font-bold truncate block">' + (b.name||'Unknown') + '</span>' +
+                    '<span class="text-gray-500">' + (b.venue||'') + ' • ' + (b.playDate||'') + '</span></div>' +
+                    (b.phone ? '<a href="' + waLink + '" target="_blank" rel="noopener noreferrer" class="text-green-400 font-bold hover:text-green-300 transition whitespace-nowrap flex-shrink-0"><i class="fa-brands fa-whatsapp mr-1"></i>Notify</a>' : '') +
                 '</div>';
             }).join('');
         }
@@ -672,108 +748,107 @@
         // ==================== BOOKINGS TABLE ====================
         function renderBookingsTable(bookings) {
             var tbody = document.getElementById('bookings-tbody');
-            if (!bookings || bookings.length === 0) {
+            if (!bookings || !bookings.length) {
                 tbody.innerHTML = '<tr><td colspan="9" class="text-center text-gray-600 py-8">No bookings found.</td></tr>';
+                updateBookingsSummary([]);
                 return;
             }
-            var sorted = bookings.slice().sort(function(a,b){
-                var da = parseDateStr(a.playDate), db = parseDateStr(b.playDate);
-                return db - da;
-            });
+            var sorted = bookings.slice().sort(function(a,b){ return parseDateStr(b.playDate) - parseDateStr(a.playDate); });
             tbody.innerHTML = sorted.map(function(b) {
-                var methodBadge = b.method === 'Standby Waitlist' ? 'badge-orange' : b.method === 'Offline Block (Owner)' ? 'badge-red' : b.method === 'Token' ? 'badge-blue' : 'badge-green';
-                
-                // Add ₹ symbol explicitly, but ensure there are no redundant ones
-                var cleanAmt = b.amount ? String(b.amount).replace(/\D/g, '') : null;
-                var amtDisplay = cleanAmt ? '₹' + parseInt(cleanAmt).toLocaleString('en-IN') : '—';
-                
+                var methodBadge = b.method === 'Standby Waitlist'      ? 'badge-orange'
+                                : b.method === 'Offline Block (Owner)' ? 'badge-red'
+                                : b.method === 'Token'                  ? 'badge-blue'
+                                : 'badge-green';
+                var amt = parseAmount(b.amount);
+                var amtDisplay = amt ? '₹' + amt.toLocaleString('en-IN') : '—';
+                var phoneCell = b.phone
+                    ? '<a href="tel:+91' + b.phone + '" class="text-cyan-400 hover:underline">' + b.phone + '</a>'
+                    : '—';
                 return '<tr>' +
                     '<td class="text-white font-bold">' + (b.name||'—') + '</td>' +
-                    '<td>' + (b.phone ? '<a href="tel:+91'+b.phone+'" class="text-cyan-400 hover:underline">' + b.phone + '</a>' : '—') + '</td>' +
+                    '<td>' + phoneCell + '</td>' +
                     '<td>' + (b.venue||'—') + '</td>' +
                     '<td>' + (b.game||'—') + '</td>' +
-                    '<td>' + (b.playDate||'—') + '</td>' +
-                    '<td class="whitespace-nowrap">' + (b.timeSlot||'—') + '</td>' +
+                    '<td class="whitespace-nowrap">' + (b.playDate||'—') + '</td>' +
+                    '<td class="whitespace-nowrap">' + (b.timeSlot||b.details||'—') + '</td>' +
                     '<td class="text-center">' + (b.slots||'—') + '</td>' +
-                    '<td class="text-white font-bold">' + amtDisplay + '</td>' +
+                    '<td class="text-white font-bold whitespace-nowrap">' + amtDisplay + '</td>' +
                     '<td><span class="badge ' + methodBadge + '">' + (b.method||'—') + '</span></td>' +
                 '</tr>';
             }).join('');
+            updateBookingsSummary(bookings);
+        }
 
-            // Summary row
+        function updateBookingsSummary(bookings) {
             var paid = bookings.filter(function(b){ return b.method !== 'Standby Waitlist'; });
-            
-            // FIX: Currency Strip logic applied here
-            var total = paid.reduce(function(s,b){ 
-                var cleanAmount = String(b.amount).replace(/\D/g, '');
-                return s + (parseInt(cleanAmount)||0); 
-            }, 0);
-            
+            var total = paid.reduce(function(s,b){ return s + parseAmount(b.amount); }, 0);
             document.getElementById('bookings-summary').innerHTML =
                 '<span><strong class="text-white">' + bookings.length + '</strong> total entries</span>' +
-                '<span><strong class="text-white">' + paid.length + '</strong> paid bookings</span>' +
+                '<span><strong class="text-white">' + paid.length + '</strong> paid</span>' +
                 '<span>Revenue: <strong class="text-cyan-400">₹' + total.toLocaleString('en-IN') + '</strong></span>' +
-                '<span>Waitlist: <strong class="text-orange-400">' + bookings.filter(function(b){ return b.method==='Standby Waitlist'; }).length + '</strong></span>';
+                '<span>Waitlist: <strong class="text-orange-400">' + bookings.filter(function(b){ return b.method === 'Standby Waitlist'; }).length + '</strong></span>';
         }
 
         function filterBookingsTable() {
-            var date = document.getElementById('booking-filter-date').value;
-            var sport = document.getElementById('booking-filter-sport').value;
+            var date   = document.getElementById('booking-filter-date').value;
+            var sport  = document.getElementById('booking-filter-sport').value;
             var method = document.getElementById('booking-filter-method').value;
-
             var filtered = window.allBookings.filter(function(b) {
-                var matchDate = true, matchSport = true, matchMethod = true;
-                if (date) {
-                    var fDate = date.split('-').reverse().join('-');
-                    matchDate = b.playDate === fDate;
-                }
-                if (sport && sport !== 'All') matchSport = b.game === sport;
-                if (method && method !== 'All') matchMethod = b.method === method;
+                var matchDate   = !date   || b.playDate === date.split('-').reverse().join('-');
+                var matchSport  = !sport  || sport  === 'All' || b.game   === sport;
+                var matchMethod = !method || method === 'All' || b.method === method;
                 return matchDate && matchSport && matchMethod;
             });
             renderBookingsTable(filtered);
         }
 
+        function clearBookingFilters() {
+            document.getElementById('booking-filter-date').value  = '';
+            document.getElementById('booking-filter-sport').value  = 'All';
+            document.getElementById('booking-filter-method').value = 'All';
+            renderBookingsTable(window.allBookings);
+        }
+
         function exportBookingsCSV() {
             var headers = ['Name','Phone','Venue','Sport','Date','Time','Slots','Amount','Method'];
             var rows = window.allBookings.map(function(b) {
-                return [b.name||'', b.phone||'', b.venue||'', b.game||'', b.playDate||'', b.timeSlot||'', b.slots||'', b.amount||'', b.method||''].map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(',');
+                return [b.name||'', b.phone||'', b.venue||'', b.game||'', b.playDate||'', b.timeSlot||'', b.slots||'', b.amount||'', b.method||'']
+                    .map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
             });
             var csv = [headers.join(',')].concat(rows).join('\n');
-            var blob = new Blob(['\uFEFF'+csv], { type: 'text/csv;charset=utf-8' });
+            var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
             var url = URL.createObjectURL(blob);
             var a = document.createElement('a');
             a.href = url; a.download = 'squadon_bookings_' + getLocalISODate() + '.csv';
             document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-            showToast('CSV exported! Check your Downloads folder.', 'success');
-            logAction('Exported bookings CSV');
-        }
-
-        function parseDateStr(dateStr) {
-            if (!dateStr) return new Date(0);
-            var p = dateStr.split('-');
-            if (p.length === 3 && p[0].length <= 2) return new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
-            return new Date(dateStr);
+            showToast('CSV exported! ✅', 'success');
+            logAction('Exported bookings CSV — ' + window.allBookings.length + ' rows');
         }
 
         // ==================== VENUES ====================
         function populateAdminSelect() {
             var select = document.getElementById('admin-venue-select');
             if (!select) return;
+            var prev = select.value;
             select.innerHTML = '';
             window.venues.forEach(function(v) {
-                select.innerHTML += '<option value="' + v.name + '">' + v.sport + ' — ' + v.name + '</option>';
+                var opt = document.createElement('option');
+                opt.value = v.name;
+                opt.innerText = v.sport + ' — ' + v.name;
+                select.appendChild(opt);
             });
+            if (prev) select.value = prev;
             loadAdminVenueData();
         }
 
         function loadAdminVenueData() {
             var name = document.getElementById('admin-venue-select').value;
-            var v = window.venues.find(function(ven) { return ven.name === name; });
+            var v = window.venues.find(function(ven){ return ven.name === name; });
             if (v) {
-                document.getElementById('admin-cap').value = v.cap || '';
-                document.getElementById('admin-price').value = v.price || '';
-                document.getElementById('admin-times').value = v.times || '';
+                document.getElementById('admin-cap').value    = v.cap    || '';
+                document.getElementById('admin-price').value  = v.price  || '';
+                document.getElementById('admin-times').value  = v.times  || '';
+                document.getElementById('admin-img').value    = v.img    || '';
                 document.getElementById('admin-status').value = v.status || 'Active';
             }
         }
@@ -796,110 +871,125 @@
         }
 
         async function updateVenue() {
-            var name = document.getElementById('admin-venue-select').value;
-            var cap = document.getElementById('admin-cap').value;
-            var price = document.getElementById('admin-price').value;
-            var times = document.getElementById('admin-times').value;
+            var name   = document.getElementById('admin-venue-select').value;
+            var cap    = document.getElementById('admin-cap').value;
+            var price  = document.getElementById('admin-price').value;
+            var times  = document.getElementById('admin-times').value;
+            var img    = document.getElementById('admin-img').value;
             var status = document.getElementById('admin-status').value;
             if (!name) { showToast('Please select a venue first.', 'error'); return; }
+            if (parseInt(price) < 0) { showToast('Price cannot be negative.', 'error'); return; }
+            if (parseInt(cap) < 1)   { showToast('Capacity must be at least 1.', 'error'); return; }
+
             var btn = document.getElementById('admin-btn-update');
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1.5"></i> Saving...';
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1.5"></i> Saving...'; btn.disabled = true;
             try {
-                var res = await fetchAPI({ action: 'updateVenue', name: name, cap: cap, price: price, times: times, status: status });
+                var res = await fetchAPI({ action: 'updateVenue', name: name, cap: cap, price: price, times: times, img: img, status: status });
                 showToast((res && res.msg) || 'Venue updated!', 'success');
-                logAction('Updated venue: ' + name + ' (cap:' + cap + ', price:₹' + price + ', status:' + status + ')');
+                logAction('Updated: ' + name + ' → cap:' + cap + ', ₹' + price + '/head, status:' + status);
                 await refreshAllData();
-            } catch (e) { showToast('Error: ' + e.message, 'error'); }
-            finally { btn.innerHTML = '<i class="fas fa-save mr-1.5"></i> Save Changes'; }
+            } catch (e) {
+                showToast('Error: ' + e.message, 'error');
+            } finally {
+                btn.innerHTML = '<i class="fas fa-save mr-1.5"></i> Save Changes'; btn.disabled = false;
+            }
         }
 
         async function deployNewVenue() {
-            var sport = document.getElementById('new-v-sport').value.trim();
-            var name = document.getElementById('new-v-name').value.trim();
-            var loc = document.getElementById('new-v-loc').value.trim();
-            var price = document.getElementById('new-v-price').value;
-            var cap = document.getElementById('new-v-cap').value;
+            var sport  = document.getElementById('new-v-sport').value.trim();
+            var name   = document.getElementById('new-v-name').value.trim();
+            var loc    = document.getElementById('new-v-loc').value.trim();
+            var price  = document.getElementById('new-v-price').value;
+            var cap    = document.getElementById('new-v-cap').value;
+            var lat    = document.getElementById('new-v-lat').value;
+            var lon    = document.getElementById('new-v-lon').value;
 
             if (!sport || !name || !loc || !price || !cap) {
-                showToast('Please fill in all required fields: Sport, Name, Location, Price, and Capacity.', 'error');
-                return;
+                showToast('Sport, Name, Location, Price, and Capacity are required.', 'error'); return;
             }
             if (parseInt(price) <= 0) { showToast('Price must be greater than 0.', 'error'); return; }
-            if (parseInt(cap) <= 0) { showToast('Capacity must be at least 1.', 'error'); return; }
+            if (parseInt(cap) <= 0)   { showToast('Capacity must be at least 1.', 'error'); return; }
+
+            // Check for duplicate name
+            if (window.venues.find(function(v){ return v.name.toLowerCase() === name.toLowerCase(); })) {
+                showToast('A venue with this name already exists.', 'error'); return;
+            }
 
             var btn = document.getElementById('add-venue-btn');
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1.5"></i> Publishing...';
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1.5"></i> Publishing...'; btn.disabled = true;
             try {
                 var res = await fetchAPI({
                     action: 'addVenue',
                     vSport: sport, vName: name, vLoc: loc, vPrice: price, vCap: cap,
-                    vType: document.getElementById('new-v-type').value,
-                    vStatus: document.getElementById('new-v-status').value,
-                    vImg: document.getElementById('new-v-img').value,
-                    vManager: document.getElementById('new-v-manager').value
+                    vType:    document.getElementById('new-v-type').value,
+                    vStatus:  document.getElementById('new-v-status').value,
+                    vImg:     document.getElementById('new-v-img').value,
+                    vManager: document.getElementById('new-v-manager').value,
+                    vLat: lat, vLon: lon
                 });
-                showToast((res && res.msg) || 'Arena published!', 'success');
-                logAction('Published new venue: ' + name + ' (' + sport + ', ' + loc + ', ₹' + price + '/head)');
+                showToast((res && res.msg) || 'Arena published! ✅', 'success');
+                logAction('Published: ' + name + ' (' + sport + ', ' + loc + ', ₹' + price + '/head)');
                 // Clear form
-                ['new-v-sport','new-v-name','new-v-loc','new-v-price','new-v-cap','new-v-img','new-v-manager'].forEach(function(id) {
+                ['new-v-sport','new-v-name','new-v-loc','new-v-price','new-v-cap','new-v-lat','new-v-lon','new-v-img','new-v-manager'].forEach(function(id) {
                     document.getElementById(id).value = '';
                 });
                 await refreshAllData();
-            } catch (e) { showToast('Error: ' + e.message, 'error'); }
-            finally { btn.innerHTML = '<i class="fas fa-plus mr-1.5"></i> Publish Arena'; }
+            } catch (e) {
+                showToast('Error: ' + e.message, 'error');
+            } finally {
+                btn.innerHTML = '<i class="fas fa-plus mr-1.5"></i> Publish Arena'; btn.disabled = false;
+            }
         }
 
         // ==================== USERS ====================
         async function loadUsers() {
             var btn = document.getElementById('load-users-btn');
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1.5"></i> Loading Players...'; 
-            btn.classList.add('opacity-50');
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1.5"></i> Loading...'; btn.disabled = true;
             try {
                 var res = await fetchAPI({ action: 'getUsers' });
-                if (res && res.users) {
+                if (res && res.users && res.users.length) {
                     window.allUsers = res.users;
                     renderUsersTable(window.allUsers);
                     logAction('Loaded user list (' + res.users.length + ' players)');
                 } else {
-                    // Derive approximate user data from bookings if getUsers not yet implemented
+                    // FIX: Graceful fallback — derive user data from bookings if getUsers not yet in GAS
                     var derived = {};
                     window.allBookings.forEach(function(b) {
-                        if (b.phone && !derived[b.phone]) {
-                            derived[b.phone] = { name: b.name, phone: b.phone, bookings: 0, spent: 0 };
-                        }
-                        if (b.phone && derived[b.phone] && b.method !== 'Standby Waitlist') {
+                        if (!b.phone) return;
+                        if (!derived[b.phone]) derived[b.phone] = { name: b.name||'Unknown', phone: b.phone, email: '—', sport: b.game||'—', skill: '—', bookings: 0, spent: 0 };
+                        if (b.method !== 'Standby Waitlist') {
                             derived[b.phone].bookings++;
-                            // FIX: Currency Strip logic applied here
-                            var cleanAmount = String(b.amount).replace(/\D/g, '');
-                            derived[b.phone].spent += parseInt(cleanAmount) || 0;
+                            derived[b.phone].spent += parseAmount(b.amount);
                         }
                     });
                     window.allUsers = Object.values(derived);
                     renderUsersTable(window.allUsers);
-                    showToast('Showing player data derived from bookings. Add getUsers action to your Apps Script for full profile data.', 'info');
+                    showToast('Showing derived player data from bookings. Add getUsers handler to GAS for full profiles.', 'info');
                 }
             } catch (e) {
                 showToast('Error loading users: ' + e.message, 'error');
             } finally {
-                btn.innerHTML = '<i class="fas fa-users mr-1.5"></i> Reload Players'; 
-                btn.classList.remove('opacity-50');
+                btn.innerHTML = '<i class="fas fa-users mr-1.5"></i> Reload Players'; btn.disabled = false;
             }
         }
 
         function renderUsersTable(users) {
             var tbody = document.getElementById('users-tbody');
             document.getElementById('stat-total-users').innerText = users.length;
-            if (!users.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center text-gray-600 py-8">No users found.</td></tr>'; return; }
+            if (!users.length) { tbody.innerHTML = '<tr><td colspan="8" class="text-center text-gray-600 py-8">No users found.</td></tr>'; return; }
             tbody.innerHTML = users.map(function(u) {
-                var waLink = u.phone ? 'https://wa.me/91' + u.phone : '#';
+                var waLink = u.phone
+                    ? 'https://wa.me/91' + u.phone + '?text=' + encodeURIComponent('Hi ' + (u.name||'there') + ', this is SquadOn! 🏟️')
+                    : '#';
                 return '<tr>' +
                     '<td class="text-white font-bold">' + (u.name||'—') + '</td>' +
-                    '<td><a href="' + waLink + '" target="_blank" class="text-cyan-400 hover:underline">' + (u.phone||'—') + '</a></td>' +
+                    '<td>' + (u.phone ? '<a href="tel:+91' + u.phone + '" class="text-cyan-400 hover:underline">' + u.phone + '</a>' : '—') + '</td>' +
                     '<td>' + (u.email||'—') + '</td>' +
                     '<td>' + (u.sport||'—') + '</td>' +
                     '<td>' + (u.skill||'—') + '</td>' +
-                    '<td class="text-center">' + (u.bookings||0) + '</td>' +
-                    '<td class="text-white font-bold">' + (u.spent ? '₹'+u.spent.toLocaleString('en-IN') : '₹0') + '</td>' +
+                    '<td class="text-center font-bold text-white">' + (u.bookings||0) + '</td>' +
+                    '<td class="text-white font-bold">' + (u.spent ? '₹' + Number(u.spent).toLocaleString('en-IN') : '₹0') + '</td>' +
+                    '<td>' + (u.phone ? '<a href="' + waLink + '" target="_blank" rel="noopener noreferrer" class="text-green-400 hover:text-green-300 transition font-bold text-xs"><i class="fa-brands fa-whatsapp mr-1"></i>Chat</a>' : '—') + '</td>' +
                 '</tr>';
             }).join('');
         }
@@ -908,7 +998,7 @@
             if (!window.allUsers.length) return;
             var lower = q.toLowerCase();
             var filtered = window.allUsers.filter(function(u) {
-                return (u.name||'').toLowerCase().includes(lower) || (u.phone||'').includes(lower);
+                return (u.name||'').toLowerCase().includes(lower) || (u.phone||'').includes(lower) || (u.email||'').toLowerCase().includes(lower);
             });
             renderUsersTable(filtered);
         }
@@ -919,21 +1009,22 @@
             tbody.innerHTML = '<tr><td colspan="7" class="text-center text-gray-500 py-6"><i class="fas fa-circle-notch fa-spin mr-2"></i>Loading...</td></tr>';
             try {
                 var res = await fetchAPI({ action: 'getAcademyLeads' });
-                if (res && res.leads && res.leads.length > 0) {
+                if (res && res.leads && res.leads.length) {
                     tbody.innerHTML = res.leads.map(function(l) {
-                        var waLink = l.phone ? 'https://wa.me/91' + l.phone + '?text=' + encodeURIComponent('Hi ' + l.ownerName + ', this is SquadOn! We received your AcademyOS demo request. Let\'s schedule a walkthrough.') : '#';
+                        var waMsg = encodeURIComponent('Hi ' + (l.ownerName||'there') + ', this is SquadOn! We received your AcademyOS demo request for ' + (l.academyName||'your venue') + '. Let\'s schedule a walkthrough.');
+                        var waLink = l.phone ? 'https://wa.me/91' + l.phone + '?text=' + waMsg : '#';
                         return '<tr>' +
                             '<td class="text-white font-bold">' + (l.academyName||'—') + '</td>' +
                             '<td>' + (l.ownerName||'—') + '</td>' +
-                            '<td><a href="' + waLink + '" target="_blank" class="text-green-400 hover:underline"><i class="fa-brands fa-whatsapp mr-1"></i>' + (l.phone||'—') + '</a></td>' +
+                            '<td>' + (l.phone ? '<a href="tel:+91' + l.phone + '" class="text-cyan-400 hover:underline">' + l.phone + '</a>' : '—') + '</td>' +
                             '<td>' + (l.location||'—') + '</td>' +
                             '<td>' + (l.sport||'—') + '</td>' +
-                            '<td>' + (l.date||'—') + '</td>' +
-                            '<td><span class="badge badge-blue">New</span></td>' +
+                            '<td class="whitespace-nowrap">' + (l.date||'—') + '</td>' +
+                            '<td>' + (l.phone ? '<a href="' + waLink + '" target="_blank" rel="noopener noreferrer" class="text-green-400 hover:text-green-300 transition font-bold text-xs"><i class="fa-brands fa-whatsapp mr-1"></i>WhatsApp</a>' : '<span class="badge badge-blue">New</span>') + '</td>' +
                         '</tr>';
                     }).join('');
                 } else {
-                    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-gray-600 py-8">No academy leads yet. Add <code>getAcademyLeads</code> action to your Apps Script.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-gray-600 py-8">No academy leads yet. Add <code class="text-cyan-400">getAcademyLeads</code> action to your GAS.</td></tr>';
                 }
             } catch (e) {
                 tbody.innerHTML = '<tr><td colspan="7" class="text-center text-gray-600 py-8">Failed to load. Ensure getAcademyLeads action exists in your Apps Script.</td></tr>';
@@ -946,18 +1037,20 @@
             el.innerHTML = '<div class="text-gray-500 text-sm text-center py-4"><i class="fas fa-circle-notch fa-spin mr-2"></i>Loading...</div>';
             try {
                 var res = await fetchAPI({ action: 'getAuditLog' });
-                if (res && res.log && res.log.length > 0) {
+                if (res && res.log && res.log.length) {
                     el.innerHTML = res.log.map(function(entry) {
+                        var action    = typeof entry === 'object' ? (entry.action||JSON.stringify(entry)) : entry;
+                        var timestamp = typeof entry === 'object' ? (entry.timestamp||'') : '';
                         return '<div class="flex justify-between items-start py-2 border-b border-white/5 text-xs gap-4">' +
-                            '<span class="text-gray-400 flex-1">' + (entry.action||entry) + '</span>' +
-                            '<span class="text-gray-600 whitespace-nowrap flex-shrink-0">' + (entry.timestamp||'') + '</span>' +
+                            '<span class="text-gray-400 flex-1">' + action + '</span>' +
+                            '<span class="text-gray-600 whitespace-nowrap flex-shrink-0">' + timestamp + '</span>' +
                         '</div>';
                     }).join('');
                 } else {
-                    el.innerHTML = '<p class="text-gray-600 text-sm text-center py-4">No audit log yet. Add <code>getAuditLog</code> action to your Apps Script to enable this.</p>';
+                    el.innerHTML = '<p class="text-gray-600 text-sm text-center py-4">No audit log yet. Add <code class="text-cyan-400">getAuditLog</code> action to your GAS to enable server-side logging.</p>';
                 }
             } catch (e) {
-                el.innerHTML = '<p class="text-gray-600 text-sm text-center py-4">Could not load audit log from server. Check your Apps Script.</p>';
+                el.innerHTML = '<p class="text-gray-600 text-sm text-center py-4">Could not load audit log from server.</p>';
             }
         }
     </script>
