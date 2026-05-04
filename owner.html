@@ -6,22 +6,18 @@
     <meta name="robots" content="noindex, nofollow">
     <title>SquadOn | Turf Manager Portal</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏟️</text></svg>" type="image/svg+xml">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
-
     <style>
         :root {
-            --neon-cyan: #06b6d4;
             --electric-indigo: #6366f1;
             --onyx: #020617;
             --glass-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/1999/xlink' width='100' height='100' viewBox='0 0 100 100'%3E%3Cdefs%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100' height='100' filter='url(%23a)' opacity='0.03'/%3E%3C/svg%3E");
         }
+        *, *::before, *::after { box-sizing: border-box; }
         body { font-family: 'Outfit', sans-serif; background-color: var(--onyx); color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-
-        /* Global responsive safeguard */
         img, video, iframe, canvas { max-width: 100%; height: auto; }
 
         .input-luxe { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); color: white; border-radius: 0.75rem; padding: 0.875rem 1rem; width: 100%; outline: none; transition: 0.3s; color-scheme: dark; }
@@ -30,37 +26,58 @@
 
         .card-luxe { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.04); border-radius: 1.5rem; position: relative; overflow: hidden; background-image: var(--glass-pattern); }
 
-        .btn-indigo { background: #4f46e5; color: white; font-weight: 800; border-radius: 0.75rem; transition: all 0.3s; border: none; cursor: pointer; }
-        .btn-indigo:hover { background: #4338ca; transform: translateY(-2px); box-shadow: 0 0 20px rgba(99,102,241,0.5); }
-        .btn-outline-indigo { background: transparent; border: 1px solid rgba(99,102,241,0.5); color: #818cf8; font-weight: 800; border-radius: 0.75rem; transition: all 0.3s; cursor: pointer; }
-        .btn-outline-indigo:hover { background: rgba(99,102,241,0.1); }
+        .btn-indigo { background: #4f46e5; color: white; font-weight: 800; border-radius: 0.75rem; transition: all 0.3s; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-indigo:hover:not(:disabled) { background: #4338ca; transform: translateY(-2px); box-shadow: 0 0 20px rgba(99,102,241,0.5); }
+        .btn-outline-indigo { background: transparent; border: 1px solid rgba(99,102,241,0.5); color: #818cf8; font-weight: 800; border-radius: 0.75rem; transition: all 0.3s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-outline-indigo:hover:not(:disabled) { background: rgba(99,102,241,0.15); }
         .btn-danger { background: transparent; border: 1px solid rgba(239,68,68,0.4); color: #f87171; font-weight: 800; border-radius: 0.75rem; transition: all 0.3s; cursor: pointer; }
-        .btn-danger:hover { background: rgba(239,68,68,0.1); }
+        .btn-danger:hover:not(:disabled) { background: rgba(239,68,68,0.1); }
 
-        .luxe-shadow { filter: drop-shadow(0 0 10px rgba(99,102,241,0.6)); }
+        /* Stat cards */
         .stat-card { background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 1.25rem; padding: 1.25rem; }
-
-        /* Ledger */
-        .hide-scroll::-webkit-scrollbar { width: 4px; }
-        .hide-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
-        .hide-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
 
         /* Status badges */
         .badge { display: inline-block; font-size: 0.6rem; padding: 2px 8px; border-radius: 9999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; border: 1px solid; }
-        .badge-paid { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.2); }
-        .badge-wait { background: rgba(245,158,11,0.1); color: #fbbf24; border-color: rgba(245,158,11,0.2); }
-        .badge-block { background: rgba(239,68,68,0.1); color: #f87171; border-color: rgba(239,68,68,0.2); }
+        .badge-paid  { background: rgba(34,197,94,0.1);  color: #4ade80; border-color: rgba(34,197,94,0.2); }
+        .badge-wait  { background: rgba(245,158,11,0.1); color: #fbbf24; border-color: rgba(245,158,11,0.2); }
+        .badge-block { background: rgba(239,68,68,0.1);  color: #f87171; border-color: rgba(239,68,68,0.2); }
         .badge-token { background: rgba(99,102,241,0.1); color: #818cf8; border-color: rgba(99,102,241,0.2); }
 
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+
+        /* Disabled */
+        button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+        /* Pulse animation */
         @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
         .pulse-dot { animation: pulse-dot 2s infinite; }
+
+        /* Revenue tab pills */
+        .rev-tab { padding: 0.5rem 1rem; border-radius: 0.6rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: 0.2s; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color: #64748b; white-space: nowrap; }
+        .rev-tab.active { background: #4f46e5; color: white; border-color: #4f46e5; }
+
+        /* Ledger slot row */
+        .ledger-row { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.05); border-radius: 0.75rem; padding: 1rem; transition: border-color 0.2s; }
+        .ledger-row:hover { border-color: rgba(99,102,241,0.2); }
+
+        /* Chart bar */
+        .rev-bar { background: linear-gradient(to top, #6366f1, #818cf8); border-radius: 4px 4px 0 0; transition: height 0.5s ease; min-height: 4px; }
+
+        /* Login shake */
+        @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+        .shake { animation: shake 0.4s ease; }
     </style>
 </head>
 <body class="antialiased flex flex-col min-h-screen">
 
     <div class="fixed inset-0 pointer-events-none opacity-20" style="background-image: var(--glass-pattern)" aria-hidden="true"></div>
 
-    <div class="flex-grow flex items-center justify-center p-6 relative z-10" id="login-container">
+    <!-- ==================== LOGIN SCREEN ==================== -->
+    <div class="flex-grow flex items-center justify-center p-6 relative z-10 min-h-screen" id="login-container">
         <div class="card-luxe w-full max-w-md p-10 shadow-[0_0_50px_rgba(0,0,0,0.8)]">
             <div class="text-center mb-10">
                 <div class="w-16 h-16 bg-indigo-500/10 border border-indigo-500/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -71,13 +88,14 @@
             </div>
             <div class="space-y-5">
                 <div>
-                    <label for="owner-login-id" class="text-[10px] text-gray-500 font-bold uppercase block mb-1.5 tracking-wide">Manager ID / Phone</label>
+                    <label for="owner-login-id" class="text-[10px] text-gray-500 font-bold uppercase block mb-1.5 tracking-wide">Manager Phone / ID</label>
                     <input type="text" id="owner-login-id" placeholder="Your registered phone number" class="input-luxe" onkeydown="if(event.key==='Enter') handleOwnerLogin()" autocomplete="username">
                 </div>
                 <div>
                     <label for="owner-login-pass" class="text-[10px] text-gray-500 font-bold uppercase block mb-1.5 tracking-wide">Secure Password</label>
                     <input type="password" id="owner-login-pass" placeholder="••••••••" class="input-luxe" onkeydown="if(event.key==='Enter') handleOwnerLogin()" autocomplete="current-password">
                 </div>
+                <div id="login-error-msg" class="hidden bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium p-3 rounded-xl"></div>
                 <button onclick="handleOwnerLogin()" id="owner-btn-login" class="w-full py-4 btn-indigo mt-2 uppercase text-sm tracking-widest shadow-[0_0_20px_rgba(99,102,241,0.4)]">
                     <i class="fas fa-lock mr-2" aria-hidden="true"></i> Access Management
                 </button>
@@ -88,68 +106,119 @@
         </div>
     </div>
 
+    <!-- ==================== DASHBOARD ==================== -->
     <div id="dashboard-container" class="hidden w-full relative z-10 flex-grow flex flex-col">
 
-        <div class="sticky top-0 z-50 bg-[#020617]/95 backdrop-blur border-b border-white/5 px-6 sm:px-10 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <h1 class="text-xl font-black text-white">Squad<span class="text-indigo-400">On</span> <span class="text-sm font-medium text-gray-500">Turf Management</span></h1>
-                <div class="hidden md:flex items-center gap-1.5 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">
+        <!-- Sticky Header -->
+        <div class="sticky top-0 z-50 bg-[#020617]/95 backdrop-blur border-b border-white/5 px-4 sm:px-6 lg:px-10 py-4 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 min-w-0">
+                <h1 class="text-xl font-black text-white whitespace-nowrap">Squad<span class="text-indigo-400">On</span> <span class="text-sm font-medium text-gray-500 hidden sm:inline">Manager</span></h1>
+                <div class="hidden md:flex items-center gap-1.5 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full flex-shrink-0">
                     <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 pulse-dot" aria-hidden="true"></span>
-                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest" id="logged-in-badge">Manager</span>
+                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest" id="logged-in-badge">Turf Manager</span>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <p class="text-sm text-gray-400 hidden sm:block"><span id="owner-name-display" class="font-bold text-white"></span></p>
-                <button onclick="logout()" class="px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-red-500/20 transition">
-                    <i class="fas fa-sign-out-alt mr-1" aria-hidden="true"></i> Logout
+            <div class="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+                <p class="text-sm text-gray-400 hidden lg:block">Welcome, <span id="owner-name-display" class="font-bold text-white"></span></p>
+                <button onclick="refreshDashboard()" id="owner-refresh-btn" class="px-3 sm:px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-indigo-500/20 transition">
+                    <i class="fas fa-rotate-right mr-1" aria-hidden="true"></i><span class="hidden sm:inline">Refresh</span>
+                </button>
+                <button onclick="logout()" class="px-3 sm:px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-red-500/20 transition">
+                    <i class="fas fa-sign-out-alt mr-1" aria-hidden="true"></i><span class="hidden sm:inline">Logout</span>
                 </button>
             </div>
         </div>
 
-        <div class="max-w-4xl mx-auto w-full px-6 sm:px-8 py-8 flex-grow">
+        <!-- Main Content -->
+        <div class="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow flex flex-col gap-6">
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="revenue-stats-row">
-                <div class="stat-card text-center">
-                    <p class="text-2xl font-black text-white" id="rev-bookings-today">—</p>
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Bookings Today</p>
-                </div>
-                <div class="stat-card text-center">
-                    <p class="text-2xl font-black text-indigo-400" id="rev-today">—</p>
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Revenue Today</p>
-                </div>
-                <div class="stat-card text-center">
-                    <p class="text-2xl font-black text-cyan-400" id="rev-month">—</p>
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Revenue This Month</p>
-                </div>
-                <div class="stat-card text-center">
-                    <p class="text-2xl font-black text-amber-400" id="rev-year">—</p>
-                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Revenue This Year</p>
+            <!-- ===== VENUE SELECTOR (if manager owns multiple venues) ===== -->
+            <div id="venue-selector-row" class="hidden card-luxe p-5">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <label for="active-venue-select" class="text-[10px] text-indigo-400 font-bold uppercase tracking-widest flex-shrink-0">Managing Venue:</label>
+                    <select id="active-venue-select" class="input-luxe py-2.5 text-sm flex-grow" onchange="onVenueChange()"></select>
                 </div>
             </div>
 
-            <div class="card-luxe p-8 md:p-10 border-indigo-500/20 shadow-[0_0_40px_rgba(99,102,241,0.12)] mb-6">
-
-                <h3 class="text-xl font-bold text-indigo-400 luxe-shadow mb-2 uppercase tracking-wide">
-                    <i class="fas fa-sliders mr-2" aria-hidden="true"></i> Quick Slot Management
-                </h3>
-                <p class="text-sm text-gray-400 mb-8">Block a slot for an offline/walk-in customer, or unblock it to notify your waitlisted players.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-                    <div>
-                        <label for="owner-block-venue" class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Your Turf</label>
-                        <select id="owner-block-venue" class="input-luxe text-sm py-4" onchange="onVenueChange()"></select>
+            <!-- ===== REVENUE STATS ===== -->
+            <div>
+                <!-- Revenue period tabs -->
+                <div class="flex gap-2 mb-4 overflow-x-auto hide-scroll pb-1">
+                    <button class="rev-tab active" onclick="setRevPeriod('today', this)">Today</button>
+                    <button class="rev-tab" onclick="setRevPeriod('week', this)">This Week</button>
+                    <button class="rev-tab" onclick="setRevPeriod('month', this)">This Month</button>
+                    <button class="rev-tab" onclick="setRevPeriod('year', this)">This Year</button>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" id="revenue-stats-row">
+                    <div class="stat-card text-center">
+                        <p class="text-2xl font-black text-white" id="rev-bookings">—</p>
+                        <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1" id="rev-bookings-label">Bookings</p>
                     </div>
+                    <div class="stat-card text-center">
+                        <p class="text-2xl font-black text-indigo-400" id="rev-gross">—</p>
+                        <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Gross Revenue</p>
+                    </div>
+                    <div class="stat-card text-center">
+                        <p class="text-2xl font-black text-cyan-400" id="rev-share">—</p>
+                        <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Your Share (80%)</p>
+                    </div>
+                    <div class="stat-card text-center">
+                        <p class="text-2xl font-black text-amber-400" id="rev-waitlist">—</p>
+                        <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Waitlisted</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== 7-DAY REVENUE CHART ===== -->
+            <div class="card-luxe p-6 sm:p-8">
+                <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
+                    <div>
+                        <h3 class="text-base font-bold text-white">Daily Revenue — Last 7 Days</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">Your 80% share per day (₹)</p>
+                    </div>
+                    <span id="rev-chart-total" class="text-xs font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full"></span>
+                </div>
+                <div class="flex items-end gap-2 h-28" id="rev-chart" style="align-items:flex-end">
+                    <div class="text-gray-600 text-sm">Loading...</div>
+                </div>
+            </div>
+
+            <!-- ===== SLOT MANAGEMENT ===== -->
+            <div class="card-luxe p-6 sm:p-8 border-indigo-500/20 shadow-[0_0_40px_rgba(99,102,241,0.12)]">
+                <h3 class="text-xl font-bold text-indigo-400 mb-1 uppercase tracking-wide flex items-center gap-2">
+                    <i class="fas fa-sliders" aria-hidden="true"></i> Slot Management
+                </h3>
+                <p class="text-sm text-gray-400 mb-7">Block a slot for walk-in / offline customer, or unblock to free it up and notify waitlisted players.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
                     <div>
                         <label for="owner-block-date" class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Date</label>
-                        <input type="date" id="owner-block-date" class="input-luxe text-sm py-4" onchange="loadLedger()">
+                        <input type="date" id="owner-block-date" class="input-luxe text-sm py-3.5" onchange="onDateChange()">
+                    </div>
+                    <div>
+                        <label for="owner-block-time" class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Time Slot</label>
+                        <select id="owner-block-time" class="input-luxe text-sm py-3.5" onchange="checkSlotStatus()">
+                            <option value="">— Select a time slot —</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="mb-8">
-                    <label for="owner-block-time" class="text-[10px] text-indigo-400 font-bold uppercase mb-1.5 block tracking-wide">Time Slot</label>
-                    <select id="owner-block-time" class="input-luxe text-sm py-4">
-                        <option value="">— Select a time slot —</option>
-                    </select>
+                <!-- FIX: Added slot status indicator so manager sees live availability before blocking -->
+                <div id="slot-status-bar" class="hidden mb-5 bg-[#0a0a0a] border border-white/5 rounded-xl p-4 flex items-center justify-between gap-4">
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Slot Status</span>
+                    <span id="slot-status-text" class="text-sm font-black text-white">—</span>
+                </div>
+
+                <!-- Walk-in customer details (shown when blocking) -->
+                <div id="walkin-fields" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                    <div>
+                        <label for="walkin-name" class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-wide">Walk-in Customer Name</label>
+                        <input type="text" id="walkin-name" placeholder="Optional — e.g. Rahul" class="input-luxe text-sm py-3">
+                    </div>
+                    <div>
+                        <label for="walkin-phone" class="text-[10px] text-gray-500 font-bold uppercase mb-1.5 block tracking-wide">Walk-in Phone (optional)</label>
+                        <input type="tel" id="walkin-phone" placeholder="10-digit number" maxlength="10" class="input-luxe text-sm py-3">
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -157,32 +226,62 @@
                         <i class="fas fa-ban mr-2" aria-hidden="true"></i> Block Slot
                     </button>
                     <button onclick="manageSlotAsOwner('unblock')" id="owner-btn-unblock" class="w-full py-4 btn-outline-indigo uppercase tracking-widest text-sm">
-                        <i class="fas fa-lock-open mr-2" aria-hidden="true"></i> Unblock & Notify Waitlist
+                        <i class="fas fa-lock-open mr-2" aria-hidden="true"></i> Unblock &amp; Notify Waitlist
                     </button>
                 </div>
             </div>
 
-            <div class="card-luxe p-8 md:p-10">
-                <div class="flex items-center justify-between mb-6">
+            <!-- ===== LIVE LEDGER ===== -->
+            <div class="card-luxe p-6 sm:p-8">
+                <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
                     <div>
-                        <h4 class="text-lg font-bold text-white">
-                            <i class="fas fa-book mr-2 text-indigo-400" aria-hidden="true"></i>
-                            Live Ledger: <span id="ledger-date-display" class="text-indigo-400">Select a Date</span>
+                        <h4 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fas fa-book text-indigo-400" aria-hidden="true"></i>
+                            Live Ledger — <span id="ledger-date-display" class="text-indigo-400">Select a Date</span>
                         </h4>
                         <p class="text-xs text-gray-500 mt-0.5">All bookings, blocks, and waitlisted players for the selected date</p>
                     </div>
-                    <button onclick="loadLedger()" class="px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold rounded-xl hover:bg-indigo-500/20 transition" title="Refresh ledger">
-                        <i class="fas fa-rotate-right" aria-hidden="true"></i>
+                    <button onclick="loadLedger(true)" id="ledger-refresh-btn" class="px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold rounded-xl hover:bg-indigo-500/20 transition" title="Refresh ledger">
+                        <i class="fas fa-rotate-right" aria-hidden="true"></i> Refresh
                     </button>
                 </div>
 
+                <!-- Ledger summary strip -->
                 <div id="ledger-summary" class="hidden grid grid-cols-3 gap-3 mb-5"></div>
 
-                <div id="ledger-container" class="space-y-2.5 max-h-[420px] overflow-y-auto hide-scroll pr-1">
-                    <div class="bg-[#0a0a0a] p-5 rounded-2xl border border-white/5 text-center text-gray-500 text-sm">
+                <!-- Slot-by-slot ledger -->
+                <div id="ledger-container" class="space-y-2.5 max-h-[450px] overflow-y-auto hide-scroll pr-1">
+                    <div class="ledger-row text-center text-gray-500 text-sm py-6">
                         <i class="fas fa-calendar-alt text-2xl text-gray-700 mb-3 block" aria-hidden="true"></i>
-                        Select a date above to view current bookings, blocks, and waitlists.
+                        Select a date above to view bookings, blocks, and waitlists.
                     </div>
+                </div>
+            </div>
+
+            <!-- ===== QUICK ACTIONS ===== -->
+            <div class="card-luxe p-6 sm:p-8">
+                <h3 class="text-base font-bold text-white mb-5">Quick Actions</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <button onclick="exportLedgerCSV()" class="py-3 bg-white/5 border border-white/10 text-white text-xs font-bold rounded-xl hover:bg-white/10 transition uppercase tracking-widest">
+                        <i class="fas fa-download mr-2" aria-hidden="true"></i> Export Today's Ledger
+                    </button>
+                    <button onclick="showAllWaitlisted()" class="py-3 bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold rounded-xl hover:bg-amber-500/20 transition uppercase tracking-widest">
+                        <i class="fas fa-clock mr-2" aria-hidden="true"></i> View All Waitlisted
+                    </button>
+                    <a href="mailto:support@squadon.in?subject=Manager Support Request" class="py-3 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold rounded-xl hover:bg-indigo-500/20 transition uppercase tracking-widest flex items-center justify-center gap-2">
+                        <i class="fas fa-headset" aria-hidden="true"></i> Contact Support
+                    </a>
+                </div>
+            </div>
+
+            <!-- ===== ALL WAITLISTED PANEL (hidden by default) ===== -->
+            <div id="waitlist-panel" class="hidden card-luxe p-6 sm:p-8 border-amber-500/20">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold text-white">All Waitlisted Players — Your Venue</h3>
+                    <button onclick="document.getElementById('waitlist-panel').classList.add('hidden')" class="text-gray-500 hover:text-white transition text-xl font-bold">✕</button>
+                </div>
+                <div id="waitlist-entries" class="space-y-2 max-h-72 overflow-y-auto hide-scroll">
+                    <p class="text-gray-600 text-sm">Loading...</p>
                 </div>
             </div>
 
@@ -191,26 +290,35 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-        // ⚠️ Replace with your deployed Google Apps Script URL:
+        // ⚠️ Replace with your deployed Google Apps Script URL
         const scriptURL = 'https://script.google.com/macros/s/AKfycbylfOMvY6UaO9E2fAUF1ussbuIJl3_A_uv1DBuGtOKg9NA7f1xyZBTy-J2oC_P7BIAq/exec';
 
-        let currentUser = null;
-        window.venues = [];
+        let currentUser  = null;
+        let myVenues     = [];       // venues assigned to this manager
+        let activeVenue  = null;     // currently selected venue object
         window.allBookings = [];
+        window.venues      = [];
+        let currentRevPeriod = 'today';
+        let ledgerCache  = {};       // FIX: cache ledger responses to avoid hammering API
 
         // ==================== UTILITIES ====================
         function showToast(msg, type) {
             type = type || 'success';
-            var bgs = { success:'linear-gradient(to right,#6366f1,#8b5cf6)', error:'linear-gradient(to right,#ef4444,#dc2626)', info:'linear-gradient(to right,#06b6d4,#6366f1)', warning:'linear-gradient(to right,#f59e0b,#d97706)' };
+            var bgs = {
+                success: 'linear-gradient(to right,#6366f1,#8b5cf6)',
+                error:   'linear-gradient(to right,#ef4444,#dc2626)',
+                info:    'linear-gradient(to right,#06b6d4,#6366f1)',
+                warning: 'linear-gradient(to right,#f59e0b,#d97706)'
+            };
             Toastify({ text: msg, duration: 3500, close: true, gravity: 'top', position: 'center',
                 style: { background: bgs[type] || bgs.success, borderRadius: '10px', fontWeight: 'bold', fontFamily: "'Outfit',sans-serif", fontSize: '13px' }
             }).showToast();
         }
 
         async function hashPassword(password) {
-            var buf = new TextEncoder().encode(password);
+            var buf  = new TextEncoder().encode(password);
             var hash = await crypto.subtle.digest('SHA-256', buf);
-            return Array.from(new Uint8Array(hash)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+            return Array.from(new Uint8Array(hash)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
         }
 
         async function fetchAPI(data) {
@@ -222,81 +330,93 @@
             return await res.json();
         }
 
+        // FIX: Unified amount parser — strips ₹ and other non-numeric chars before parseInt
+        function parseAmount(val) {
+            return parseInt(String(val).replace(/\D/g, '')) || 0;
+        }
+
         function getLocalISODate() {
             var now = new Date();
             return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
         }
 
-        function formatDateDisplay(isoDate) {
+        // Convert ISO date (YYYY-MM-DD) → DD-MM-YYYY (format stored in GAS)
+        function isoToDisplay(isoDate) {
             if (!isoDate) return '—';
-            var parts = isoDate.split('-');
-            if (parts.length === 3) return parts[2] + '-' + parts[1] + '-' + parts[0]; // DD-MM-YYYY
-            return isoDate;
-        }
-
-        // Extracts only the owner's base rate (removes the 20% markup added by Squad On)
-        function calculateOwnerShare(amountStr) {
-            var cleanAmount = String(amountStr).replace(/\D/g, '');
-            var totalPaidByPlayer = parseInt(cleanAmount) || 0;
-            // Since Total = Base * 1.20, Base = Total / 1.20
-            return Math.round(totalPaidByPlayer / 1.2); 
+            var p = isoDate.split('-');
+            return p.length === 3 ? p[2] + '-' + p[1] + '-' + p[0] : isoDate;
         }
 
         // ==================== LOGIN / AUTO-LOGIN ====================
         document.addEventListener('DOMContentLoaded', async function() {
-            // Check for Player Portal Session to auto-login
+            var ownerSaved  = sessionStorage.getItem('squadonOwnerSession');
             var playerSaved = sessionStorage.getItem('squadonUser');
-            var ownerSaved = sessionStorage.getItem('squadonOwnerSession');
-            
+
+            var candidate = null;
             if (ownerSaved) {
-                currentUser = JSON.parse(ownerSaved);
+                candidate = JSON.parse(ownerSaved);
             } else if (playerSaved) {
                 var pUser = JSON.parse(playerSaved);
-                if (pUser.role === 'owner' || pUser.role === 'admin') {
-                    currentUser = pUser;
-                    sessionStorage.setItem('squadonOwnerSession', JSON.stringify(currentUser));
-                }
+                if (pUser && (pUser.role === 'owner' || pUser.role === 'admin')) candidate = pUser;
             }
 
-            if (currentUser && (currentUser.role === 'owner' || currentUser.role === 'admin')) {
+            if (candidate && (candidate.role === 'owner' || candidate.role === 'admin')) {
+                currentUser = candidate;
+                sessionStorage.setItem('squadonOwnerSession', JSON.stringify(currentUser));
                 setupDashboard();
             }
         });
 
         async function handleOwnerLogin() {
-            var btn = document.getElementById('owner-btn-login');
-            var id = document.getElementById('owner-login-id').value.trim();
+            var btn  = document.getElementById('owner-btn-login');
+            var id   = document.getElementById('owner-login-id').value.trim();
             var pass = document.getElementById('owner-login-pass').value;
-            if (!id || !pass) { showToast('Please enter your ID and password.', 'error'); return; }
+            var errEl = document.getElementById('login-error-msg');
 
-            var orig = btn.innerText; btn.innerText = 'Authenticating...'; btn.classList.add('opacity-50', 'cursor-wait');
+            if (!id || !pass) { showError(errEl, 'Please enter your ID and password.'); return; }
+
+            var orig = btn.innerText;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>Authenticating...';
+            btn.disabled = true;
+            errEl.classList.add('hidden');
 
             try {
                 var hashed = await hashPassword(pass);
-                var res = await fetchAPI({ action: 'login', loginId: id, password: hashed });
+                var res    = await fetchAPI({ action: 'login', loginId: id, password: hashed });
 
                 if (res && res.status === 'success' && res.user && (res.user.role === 'owner' || res.user.role === 'admin')) {
                     currentUser = res.user;
                     sessionStorage.setItem('squadonOwnerSession', JSON.stringify(currentUser));
-                    showToast('Welcome, ' + currentUser.name + '!', 'success');
+                    showToast('Welcome, ' + currentUser.name + '! 🏟️', 'success');
+                    // Pass full sync data from login response if available
+                    if (res.venues)   window.venues       = res.venues;
+                    if (res.bookings) window.allBookings  = res.bookings;
                     setupDashboard();
                 } else {
-                    showToast((res && res.msg) || 'Unauthorized. Turf Manager access required.', 'error');
-                    btn.innerText = orig; btn.classList.remove('opacity-50', 'cursor-wait');
+                    var msg = (res && res.msg) || 'Unauthorized. Turf Manager access required.';
+                    showError(errEl, msg);
+                    // Shake the card
+                    var card = document.querySelector('#login-container .card-luxe');
+                    if (card) { card.classList.add('shake'); setTimeout(function(){ card.classList.remove('shake'); }, 400); }
+                    btn.innerHTML = '<i class="fas fa-lock mr-2"></i> Access Management';
+                    btn.disabled = false;
                 }
             } catch (e) {
-                showToast('Connection failed: ' + e.message, 'error');
-                btn.innerText = orig; btn.classList.remove('opacity-50', 'cursor-wait');
+                showError(errEl, 'Connection failed. Please check your internet.');
+                btn.innerHTML = '<i class="fas fa-lock mr-2"></i> Access Management';
+                btn.disabled = false;
             }
         }
 
+        function showError(el, msg) {
+            el.innerText = '⚠️ ' + msg;
+            el.classList.remove('hidden');
+        }
+
+        // FIX: logout clears BOTH sessions to prevent auto-login loop
         function logout() {
-            // Clear the specific owner session
             sessionStorage.removeItem('squadonOwnerSession');
-            // Clear the player session to prevent the auto-login loop
-            sessionStorage.removeItem('squadonUser'); 
-            
-            // Refresh the page to show the login screen
+            sessionStorage.removeItem('squadonUser');
             location.reload();
         }
 
@@ -305,247 +425,467 @@
             document.getElementById('login-container').classList.add('hidden');
             document.getElementById('dashboard-container').classList.remove('hidden');
             document.getElementById('owner-name-display').innerText = currentUser.name;
-            document.getElementById('logged-in-badge').innerText = currentUser.role === 'admin' ? 'Admin (Owner View)' : 'Turf Manager';
+            document.getElementById('logged-in-badge').innerText =
+                currentUser.role === 'admin' ? 'Admin (Owner View)' : 'Turf Manager';
 
-            // Pre-fill today's date and prevent past date selection
+            // Set today as default date, prevent past date selection
             var todayStr = getLocalISODate();
             var dateInput = document.getElementById('owner-block-date');
             dateInput.value = todayStr;
-            dateInput.min = todayStr;
+            dateInput.min   = todayStr;
+
+            await refreshDashboard();
+        }
+
+        async function refreshDashboard() {
+            var btn = document.getElementById('owner-refresh-btn');
+            if (btn) { btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1"></i><span class="hidden sm:inline">Syncing...</span>'; btn.disabled = true; }
 
             try {
                 var res = await fetchAPI({ action: 'sync' });
                 if (res && res.status === 'success') {
-                    window.venues = res.venues || [];
+                    window.venues      = res.venues   || [];
                     window.allBookings = res.bookings || [];
-                    populateOwnerSelect();
-                    renderRevenueStats();
+                    ledgerCache = {}; // invalidate cache on refresh
                 }
             } catch (e) {
-                showToast('Could not load venue data: ' + e.message, 'error');
+                showToast('Could not sync venue data. Working with cached data.', 'warning');
+            } finally {
+                if (btn) { btn.innerHTML = '<i class="fas fa-rotate-right mr-1"></i><span class="hidden sm:inline">Refresh</span>'; btn.disabled = false; }
             }
+
+            buildMyVenuesList();
+            renderRevenueStats();
+            renderRevenueChart();
+            loadLedger(false);
         }
 
-        function populateOwnerSelect() {
-            var blockSelect = document.getElementById('owner-block-venue');
-            if (!blockSelect) return;
-            blockSelect.innerHTML = '<option value="">— Select your turf —</option>';
-
-            var myVenues = window.venues;
-            if (currentUser.role !== 'admin' && currentUser.phone) {
-                // Filter to only venues assigned to this manager's phone number
-                var filtered = window.venues.filter(function(v) {
+        // ==================== VENUE SELECTOR ====================
+        function buildMyVenuesList() {
+            // FIX: Admins see all venues; owners see only their assigned venues (matched by phone)
+            if (currentUser.role === 'admin') {
+                myVenues = window.venues;
+            } else {
+                myVenues = window.venues.filter(function(v) {
                     return v.managerPhone === currentUser.phone || v.manager === currentUser.phone;
                 });
-                myVenues = filtered.length > 0 ? filtered : window.venues;
+                // Graceful fallback: if no venues match the phone, show all (common in dev/test)
+                if (myVenues.length === 0) {
+                    myVenues = window.venues;
+                    showToast('No venues are assigned to your phone number. Showing all venues.', 'info');
+                }
             }
 
+            var select = document.getElementById('active-venue-select');
+            var prevVal = activeVenue ? activeVenue.name : null;
+
+            select.innerHTML = '';
             myVenues.forEach(function(v) {
-                blockSelect.innerHTML += '<option value="' + v.name + '">' + v.sport + ' — ' + v.name + ' (' + v.loc + ')</option>';
+                var opt = document.createElement('option');
+                opt.value   = v.name;
+                opt.innerText = v.sport + ' — ' + v.name + ' (' + v.loc + ')';
+                select.appendChild(opt);
             });
 
-            if (myVenues.length > 0) {
-                blockSelect.value = myVenues[0].name;
-                onVenueChange();
-                loadLedger();
+            // Restore previous selection or default to first
+            if (prevVal && myVenues.find(function(v){ return v.name === prevVal; })) {
+                select.value = prevVal;
             }
+
+            // Show selector row only if manager has more than 1 venue
+            var selectorRow = document.getElementById('venue-selector-row');
+            selectorRow.classList.toggle('hidden', myVenues.length <= 1);
+
+            onVenueChange();
         }
 
         function onVenueChange() {
-            var venueName = document.getElementById('owner-block-venue').value;
-            var venue = window.venues.find(function(v) { return v.name === venueName; });
+            var name = document.getElementById('active-venue-select').value;
+            activeVenue = myVenues.find(function(v){ return v.name === name; }) || myVenues[0] || null;
+            if (!activeVenue) return;
+            populateTimeSlots();
+            renderRevenueStats();
+            renderRevenueChart();
+            checkSlotStatus();
+            loadLedger(false);
+        }
+
+        // ==================== TIME SLOTS ====================
+        function populateTimeSlots() {
             var timeSelect = document.getElementById('owner-block-time');
             timeSelect.innerHTML = '<option value="">— Select a time slot —</option>';
+            if (!activeVenue) return;
 
-            var times = (venue && venue.times && venue.times.trim())
-                ? venue.times
+            var times = (activeVenue.times && activeVenue.times.trim())
+                ? activeVenue.times
                 : '06:00 AM to 08:00 AM, 09:00 AM to 11:00 AM, 05:00 PM to 07:00 PM, 08:00 PM to 10:00 PM';
 
             times.split(',').forEach(function(t) {
                 var ts = t.trim();
-                if (ts) timeSelect.innerHTML += '<option value="' + ts + '">' + ts + '</option>';
+                if (ts) {
+                    var opt = document.createElement('option');
+                    opt.value = ts; opt.innerText = ts;
+                    timeSelect.appendChild(opt);
+                }
             });
+        }
 
-            loadLedger();
+        function onDateChange() {
+            ledgerCache = {}; // invalidate cache when date changes
+            checkSlotStatus();
+            loadLedger(false);
+        }
+
+        // ==================== SLOT STATUS CHECK ====================
+        // FIX: New feature — shows live slot availability before manager blocks/unblocks
+        function checkSlotStatus() {
+            var dateISO  = document.getElementById('owner-block-date').value;
+            var timeSlot = document.getElementById('owner-block-time').value;
+            var bar      = document.getElementById('slot-status-bar');
+            var text     = document.getElementById('slot-status-text');
+
+            if (!activeVenue || !dateISO || !timeSlot) { bar.classList.add('hidden'); return; }
+
+            var fDate = isoToDisplay(dateISO);
+            var booked = window.allBookings.filter(function(b) {
+                return b.venue === activeVenue.name && b.playDate === fDate
+                    && (b.timeSlot === timeSlot || (b.details && b.details.includes(timeSlot)))
+                    && b.method !== 'Standby Waitlist';
+            });
+            var totalSlots   = parseInt(activeVenue.cap) || 10;
+            var bookedCount  = booked.reduce(function(s,b){ return s + (parseInt(b.slots)||1); }, 0);
+            var remaining    = Math.max(0, totalSlots - bookedCount);
+            var isBlocked    = booked.some(function(b){ return b.method === 'Offline Block (Owner)'; });
+            var isFullOnline = bookedCount >= totalSlots && !isBlocked;
+
+            bar.classList.remove('hidden');
+            if (isBlocked) {
+                text.innerText = '🔴 Blocked (walk-in)';
+                text.className = 'text-sm font-black text-red-400';
+            } else if (isFullOnline) {
+                text.innerText = '🔴 Fully booked (' + totalSlots + '/' + totalSlots + ')';
+                text.className = 'text-sm font-black text-red-400';
+            } else if (remaining <= 2) {
+                text.innerText = '🟡 ' + remaining + ' slot' + (remaining !== 1 ? 's' : '') + ' left';
+                text.className = 'text-sm font-black text-amber-400';
+            } else {
+                text.innerText = '🟢 ' + remaining + ' / ' + totalSlots + ' slots available';
+                text.className = 'text-sm font-black text-green-400';
+            }
+        }
+
+        // ==================== REVENUE STATS ====================
+        function setRevPeriod(period, btn) {
+            currentRevPeriod = period;
+            document.querySelectorAll('.rev-tab').forEach(function(b){ b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
             renderRevenueStats();
+            renderRevenueChart();
         }
 
-        // ==================== REVENUE STATS (Owner Only Share) ====================
+        function getBookingsForPeriod(period) {
+            if (!activeVenue) return [];
+            var now   = new Date();
+            var books = window.allBookings.filter(function(b){
+                return b.venue === activeVenue.name && b.method !== 'Standby Waitlist';
+            });
+
+            return books.filter(function(b) {
+                if (!b.playDate) return false;
+                var p = b.playDate.split('-'); // DD-MM-YYYY
+                if (p.length < 3) return false;
+                var bDate = new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
+
+                if (period === 'today') {
+                    var todayStr = isoToDisplay(getLocalISODate());
+                    return b.playDate === todayStr;
+                }
+                if (period === 'week') {
+                    var weekAgo = new Date(now); weekAgo.setDate(now.getDate() - 6); weekAgo.setHours(0,0,0,0);
+                    return bDate >= weekAgo && bDate <= now;
+                }
+                if (period === 'month') {
+                    return bDate.getMonth() === now.getMonth() && bDate.getFullYear() === now.getFullYear();
+                }
+                if (period === 'year') {
+                    return bDate.getFullYear() === now.getFullYear();
+                }
+                return false;
+            });
+        }
+
         function renderRevenueStats() {
-            var venueName = document.getElementById('owner-block-venue').value;
-            var bookings = window.allBookings.filter(function(b) {
-                return (!venueName || b.venue === venueName) && b.method !== 'Standby Waitlist';
-            });
+            if (!activeVenue) return;
+            var periodBooks = getBookingsForPeriod(currentRevPeriod);
+            var gross       = periodBooks.reduce(function(s,b){ return s + parseAmount(b.amount); }, 0);
+            var share       = Math.round(gross * 0.8); // 80% owner share
+            var waitlist    = (window.allBookings || []).filter(function(b){
+                return b.venue === activeVenue.name && b.method === 'Standby Waitlist';
+            }).length;
 
-            var now = new Date();
-            var todayISO = getLocalISODate();
-            var todayStr = formatDateDisplay(todayISO); // DD-MM-YYYY
-            var currentMonth = now.getMonth();
-            var currentYear = now.getFullYear();
-
-            // Today's Bookings and Revenue
-            var todayBookings = bookings.filter(function(b) { return b.playDate === todayStr; });
-            var todayRev = todayBookings.reduce(function(s,b){ return s + calculateOwnerShare(b.amount); }, 0);
-
-            var monthRev = 0;
-            var yearRev = 0;
-
-            bookings.forEach(function(b) {
-                if (!b.playDate) return;
-                var parts = b.playDate.split('-');
-                if (parts.length === 3) {
-                    var bMonth = parseInt(parts[1]) - 1;
-                    var bYear = parseInt(parts[2]);
-                    
-                    var ownerCut = calculateOwnerShare(b.amount);
-                    if (bYear === currentYear) {
-                        yearRev += ownerCut;
-                        if (bMonth === currentMonth) {
-                            monthRev += ownerCut;
-                        }
-                    }
-                }
-            });
-
-            document.getElementById('rev-bookings-today').innerText = todayBookings.length;
-            document.getElementById('rev-today').innerText = '₹' + todayRev.toLocaleString('en-IN');
-            document.getElementById('rev-month').innerText = '₹' + monthRev.toLocaleString('en-IN');
-            document.getElementById('rev-year').innerText = '₹' + yearRev.toLocaleString('en-IN');
+            var labels = { today: 'Today', week: 'This Week', month: 'This Month', year: 'This Year' };
+            document.getElementById('rev-bookings-label').innerText = 'Bookings (' + (labels[currentRevPeriod]||'') + ')';
+            document.getElementById('rev-bookings').innerText = periodBooks.length;
+            document.getElementById('rev-gross').innerText    = '₹' + gross.toLocaleString('en-IN');
+            document.getElementById('rev-share').innerText    = '₹' + share.toLocaleString('en-IN');
+            document.getElementById('rev-waitlist').innerText = waitlist;
         }
 
-        // ==================== LEDGER (Owner Only Share) ====================
-        async function loadLedger() {
-            var venue = document.getElementById('owner-block-venue').value;
-            var date = document.getElementById('owner-block-date').value;
-            var container = document.getElementById('ledger-container');
-            var displayDate = document.getElementById('ledger-date-display');
+        function renderRevenueChart() {
+            if (!activeVenue) return;
+            var chart = document.getElementById('rev-chart');
+            var days  = [];
+            var totalWeekShare = 0;
 
-            if (!venue || !date) {
-                container.innerHTML = '<div class="bg-[#0a0a0a] p-5 rounded-2xl border border-white/5 text-center text-gray-500 text-sm">Select a turf and date to view the ledger.</div>';
-                return;
+            for (var i = 6; i >= 0; i--) {
+                var d = new Date(); d.setDate(d.getDate() - i);
+                var label = d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric' });
+                var dStr  = [String(d.getDate()).padStart(2,'0'), String(d.getMonth()+1).padStart(2,'0'), d.getFullYear()].join('-');
+                var dayBooks = window.allBookings.filter(function(b){
+                    return b.venue === activeVenue.name && b.playDate === dStr && b.method !== 'Standby Waitlist';
+                });
+                var dayGross = dayBooks.reduce(function(s,b){ return s + parseAmount(b.amount); }, 0);
+                var dayShare = Math.round(dayGross * 0.8);
+                totalWeekShare += dayShare;
+                days.push({ label: label, share: dayShare });
             }
 
-            var fDate = formatDateDisplay(date);
-            displayDate.innerText = fDate;
+            var maxShare = Math.max.apply(null, days.map(function(d){ return d.share; })) || 1;
+            document.getElementById('rev-chart-total').innerText = '7-day share: ₹' + totalWeekShare.toLocaleString('en-IN');
 
-            container.innerHTML = '<div class="text-center py-6"><i class="fas fa-circle-notch fa-spin text-indigo-400 text-2xl" aria-hidden="true"></i><p class="text-gray-500 text-sm mt-2">Loading ledger...</p></div>';
-
-            try {
-                var res = await fetchAPI({ action: 'getLedger', venue: venue, date: fDate });
-                container.innerHTML = '';
-
-                if (res.ledger && res.ledger.length > 0) {
-                    var paid = res.ledger.filter(function(l){ return l.method !== 'Standby Waitlist' && l.method !== 'Offline Block (Owner)'; });
-                    var totalRev = paid.reduce(function(s,l){ return s + calculateOwnerShare(l.amount); }, 0);
-                    var blocks = res.ledger.filter(function(l){ return l.method === 'Offline Block (Owner)'; });
-                    var waiters = res.ledger.filter(function(l){ return l.method === 'Standby Waitlist'; });
-
-                    // Ledger summary
-                    var summaryEl = document.getElementById('ledger-summary');
-                    summaryEl.classList.remove('hidden');
-                    summaryEl.innerHTML =
-                        '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-cyan-400">₹' + totalRev.toLocaleString('en-IN') + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Online Revenue</p></div>' +
-                        '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-red-400">' + blocks.length + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Offline Blocks</p></div>' +
-                        '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-amber-400">' + waiters.length + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Waitlisted</p></div>';
-
-                    res.ledger.forEach(function(l) {
-                        var badgeClass = 'badge-paid';
-                        if (l.method === 'Standby Waitlist') badgeClass = 'badge-wait';
-                        if (l.method === 'Offline Block (Owner)') badgeClass = 'badge-block';
-                        if (l.method === 'Token') badgeClass = 'badge-token';
-
-                        var timeStr = l.details ? (l.details.split(' | ')[2] || l.details) : l.timeSlot || '—';
-                        var ownerCutAmount = calculateOwnerShare(l.amount);
-
-                        // WhatsApp quick-contact link
-                        var waHtml = '';
-                        if (l.phone && l.phone !== '—') {
-                            var waMsg = encodeURIComponent('Hi ' + (l.name||'there') + ', this is ' + currentUser.name + ' from SquadOn regarding your booking at ' + venue + ' on ' + fDate + '.');
-                            waHtml = '<a href="https://wa.me/91' + l.phone + '?text=' + waMsg + '" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-green-400 hover:text-green-300 text-xs font-bold transition whitespace-nowrap" aria-label="WhatsApp ' + (l.name||'player') + '"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp</a>';
-                        }
-
-                        container.innerHTML += '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-4 hover:border-white/10 transition">' +
-                            '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">' +
-                                '<div class="flex items-start gap-3">' +
-                                    '<div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">' +
-                                        '<i class="fas fa-clock text-indigo-400 text-xs" aria-hidden="true"></i>' +
-                                    '</div>' +
-                                    '<div>' +
-                                        '<p class="text-white font-bold text-sm">' + timeStr + '</p>' +
-                                        '<p class="text-xs text-gray-500 mt-0.5">' + (l.name||'Unknown') + (l.phone ? ' • ' + l.phone : '') + '</p>' +
-                                    '</div>' +
-                                '</div>' +
-                                '<div class="flex items-center gap-3 flex-shrink-0 ml-11 sm:ml-0">' +
-                                    '<span class="badge ' + badgeClass + '">' + l.method + '</span>' +
-                                    (ownerCutAmount > 0 ? '<span class="text-xs font-black text-white">₹' + ownerCutAmount + '</span>' : '') +
-                                    waHtml +
-                                '</div>' +
-                            '</div>' +
-                        '</div>';
-                    });
-                } else {
-                    document.getElementById('ledger-summary').classList.add('hidden');
-                    container.innerHTML = '<div class="bg-[#0a0a0a] p-5 rounded-2xl border border-white/5 text-center">' +
-                        '<i class="fas fa-check-circle text-green-500/40 text-3xl mb-3 block" aria-hidden="true"></i>' +
-                        '<p class="text-gray-500 text-sm font-medium">No bookings or blocks for this date.</p>' +
-                        '<p class="text-gray-600 text-xs mt-1">All slots are currently open.</p>' +
-                    '</div>';
-                }
-            } catch (e) {
-                container.innerHTML = '<div class="bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-red-400 text-sm text-center"><i class="fas fa-exclamation-triangle mr-2" aria-hidden="true"></i>Failed to load ledger. Check your connection.</div>';
-            }
+            chart.innerHTML = days.map(function(d) {
+                var pct = Math.max(4, Math.round((d.share / maxShare) * 100));
+                return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">' +
+                    '<span style="font-size:9px;color:#94a3b8;font-weight:700">' + (d.share > 0 ? '₹' + d.share : '—') + '</span>' +
+                    '<div class="rev-bar" style="width:100%;height:' + pct + '%"></div>' +
+                    '<span style="font-size:8px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;text-align:center">' + d.label + '</span>' +
+                '</div>';
+            }).join('');
         }
 
         // ==================== BLOCK / UNBLOCK ====================
         async function manageSlotAsOwner(actionType) {
-            var venue = document.getElementById('owner-block-venue').value;
-            var date = document.getElementById('owner-block-date').value;
-            var time = document.getElementById('owner-block-time').value;
+            if (!activeVenue) { showToast('No venue selected.', 'error'); return; }
 
-            if (!venue) { showToast('Please select your turf first.', 'error'); return; }
-            if (!date) { showToast('Please select a date.', 'error'); return; }
-            if (!time) { showToast('Please select a time slot.', 'error'); return; }
+            var dateISO  = document.getElementById('owner-block-date').value;
+            var timeSlot = document.getElementById('owner-block-time').value;
+            var walkinName  = document.getElementById('walkin-name').value.trim()  || 'Walk-in Customer';
+            var walkinPhone = document.getElementById('walkin-phone').value.trim() || '';
 
-            var fDate = formatDateDisplay(date);
+            if (!dateISO)  { showToast('Please select a date.', 'error'); return; }
+            if (!timeSlot) { showToast('Please select a time slot.', 'error'); return; }
+
+            var fDate = isoToDisplay(dateISO);
+
             var confirmMsg = actionType === 'block'
-                ? 'Block ' + time + ' on ' + fDate + ' at ' + venue + '?\n\nThis will mark the slot as unavailable to online players.'
-                : 'Unblock ' + time + ' on ' + fDate + ' at ' + venue + '?\n\nThis will notify all waitlisted players that the slot is open again.';
+                ? 'Block "' + timeSlot + '" on ' + fDate + ' at ' + activeVenue.name + '?\n\nThis marks the slot unavailable for online bookings.'
+                : 'Unblock "' + timeSlot + '" on ' + fDate + ' at ' + activeVenue.name + '?\n\nWaitlisted players will be notified automatically.';
 
             if (!window.confirm(confirmMsg)) return;
 
-            var btn = actionType === 'block' ? document.getElementById('owner-btn-block') : document.getElementById('owner-btn-unblock');
-            var origText = btn.innerText;
-            btn.innerText = actionType === 'block' ? 'Blocking...' : 'Unblocking...';
-            btn.classList.add('opacity-50', 'cursor-wait');
+            var blockBtn   = document.getElementById('owner-btn-block');
+            var unblockBtn = document.getElementById('owner-btn-unblock');
+            blockBtn.disabled   = true;
+            unblockBtn.disabled = true;
+            blockBtn.innerHTML   = '<i class="fas fa-circle-notch fa-spin mr-2"></i>' + (actionType === 'block' ? 'Blocking...' : 'Unblocking...');
+            unblockBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>' + (actionType === 'unblock' ? 'Unblocking...' : 'Waiting...');
 
             try {
-                var vData = window.venues.find(function(v) { return v.name === venue; });
                 var res = await fetchAPI({
                     action: 'manageSlot',
-                    type: actionType,
-                    venue: venue,
-                    sport: vData ? vData.sport : 'Multi-Sport',
-                    date: fDate,
-                    time: time,
-                    cap: vData ? vData.cap : 10,
-                    ownerPhone: currentUser.phone,
-                    offlineCustomerName: 'Walk-in Customer',
-                    offlineCustomerPhone: ''
+                    type:   actionType,
+                    venue:  activeVenue.name,
+                    sport:  activeVenue.sport || 'Multi-Sport',
+                    date:   fDate,
+                    time:   timeSlot,
+                    cap:    activeVenue.cap || 10,
+                    ownerPhone:          currentUser.phone,
+                    offlineCustomerName:  walkinName,
+                    offlineCustomerPhone: walkinPhone
                 });
 
                 if (res && res.status === 'success') {
-                    showToast(res.msg || (actionType === 'block' ? 'Slot blocked successfully.' : 'Slot unblocked! Waitlisted players notified.'), 'success');
-                    loadLedger();
-                    renderRevenueStats();
+                    showToast(res.msg || (actionType === 'block' ? 'Slot blocked.' : 'Slot unblocked! Waitlist notified.'), 'success');
+                    ledgerCache = {}; // invalidate ledger cache
+                    await refreshDashboard();
                 } else {
                     showToast((res && res.msg) || 'Failed to ' + actionType + ' the slot. Try again.', 'error');
                 }
             } catch (e) {
                 showToast('Error: ' + e.message, 'error');
             } finally {
-                btn.innerText = origText;
-                btn.classList.remove('opacity-50', 'cursor-wait');
+                blockBtn.disabled   = false;
+                unblockBtn.disabled = false;
+                blockBtn.innerHTML   = '<i class="fas fa-ban mr-2"></i> Block Slot';
+                unblockBtn.innerHTML = '<i class="fas fa-lock-open mr-2"></i> Unblock &amp; Notify Waitlist';
             }
+        }
+
+        // ==================== LEDGER ====================
+        async function loadLedger(forceRefresh) {
+            var dateISO  = document.getElementById('owner-block-date').value;
+            var container = document.getElementById('ledger-container');
+            var displayEl = document.getElementById('ledger-date-display');
+            var summaryEl = document.getElementById('ledger-summary');
+
+            if (!activeVenue || !dateISO) {
+                displayEl.innerText = 'Select a Date';
+                container.innerHTML = '<div class="ledger-row text-center text-gray-500 text-sm py-6"><i class="fas fa-calendar-alt text-2xl text-gray-700 mb-3 block"></i>Select a venue and date to view the ledger.</div>';
+                summaryEl.classList.add('hidden');
+                return;
+            }
+
+            var fDate   = isoToDisplay(dateISO);
+            var cacheKey = activeVenue.name + '|' + fDate;
+            displayEl.innerText = fDate;
+
+            // FIX: Use cached response if available and not forced refresh
+            if (!forceRefresh && ledgerCache[cacheKey]) {
+                renderLedger(ledgerCache[cacheKey]);
+                return;
+            }
+
+            container.innerHTML = '<div class="ledger-row text-center py-6"><i class="fas fa-circle-notch fa-spin text-indigo-400 text-2xl" aria-hidden="true"></i><p class="text-gray-500 text-sm mt-2">Loading ledger...</p></div>';
+            summaryEl.classList.add('hidden');
+
+            try {
+                var res = await fetchAPI({ action: 'getLedger', venue: activeVenue.name, date: fDate });
+                if (res && res.ledger) {
+                    ledgerCache[cacheKey] = res.ledger;
+                    renderLedger(res.ledger);
+                } else {
+                    renderLedger([]);
+                }
+            } catch (e) {
+                container.innerHTML = '<div class="ledger-row bg-red-500/10 border-red-500/20 text-red-400 text-sm text-center py-4"><i class="fas fa-exclamation-triangle mr-2"></i>Failed to load ledger. Check your connection.</div>';
+                summaryEl.classList.add('hidden');
+            }
+        }
+
+        function renderLedger(ledger) {
+            var container = document.getElementById('ledger-container');
+            var summaryEl = document.getElementById('ledger-summary');
+
+            if (!ledger || !ledger.length) {
+                summaryEl.classList.add('hidden');
+                container.innerHTML = '<div class="ledger-row text-center py-8"><i class="fas fa-check-circle text-green-500/40 text-3xl mb-3 block" aria-hidden="true"></i><p class="text-gray-500 text-sm font-medium">No bookings or blocks for this date.</p><p class="text-gray-600 text-xs mt-1">All slots are currently open.</p></div>';
+                return;
+            }
+
+            var paid    = ledger.filter(function(l){ return l.method !== 'Standby Waitlist' && l.method !== 'Offline Block (Owner)'; });
+            var blocks  = ledger.filter(function(l){ return l.method === 'Offline Block (Owner)'; });
+            var waiters = ledger.filter(function(l){ return l.method === 'Standby Waitlist'; });
+            var gross   = paid.reduce(function(s,l){ return s + parseAmount(l.amount); }, 0);
+            var share   = Math.round(gross * 0.8);
+
+            // Summary strip
+            summaryEl.classList.remove('hidden');
+            summaryEl.innerHTML =
+                '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-cyan-400">₹' + share.toLocaleString('en-IN') + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Your Share</p></div>' +
+                '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-red-400">' + blocks.length + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Offline Blocks</p></div>' +
+                '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-amber-400">' + waiters.length + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Waitlisted</p></div>';
+
+            container.innerHTML = '';
+            ledger.forEach(function(l) {
+                var badgeClass = 'badge-paid';
+                if (l.method === 'Standby Waitlist')       badgeClass = 'badge-wait';
+                if (l.method === 'Offline Block (Owner)')  badgeClass = 'badge-block';
+                if (l.method === 'Token')                   badgeClass = 'badge-token';
+
+                var timeStr    = l.timeSlot || (l.details ? (l.details.split(' | ')[2] || l.details) : '—');
+                var ownerShare = Math.round(parseAmount(l.amount) * 0.8);
+                var venueName  = activeVenue ? activeVenue.name : '';
+
+                var waHtml = '';
+                if (l.phone && l.phone !== '—') {
+                    var waMsg = encodeURIComponent('Hi ' + (l.name||'there') + ', this is ' + currentUser.name + ' from SquadOn regarding your booking at ' + venueName + ' on ' + (l.playDate||'') + '.');
+                    waHtml = '<a href="https://wa.me/91' + l.phone + '?text=' + waMsg + '" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-green-400 hover:text-green-300 text-xs font-bold transition whitespace-nowrap" aria-label="WhatsApp ' + (l.name||'player') + '"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Chat</a>';
+                }
+
+                // FIX: Show slots booked count alongside player name
+                var slotsText = l.slots && parseInt(l.slots) > 1 ? ' ×' + l.slots + ' slots' : '';
+
+                var div = document.createElement('div');
+                div.className = 'ledger-row';
+                div.innerHTML =
+                    '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">' +
+                        '<div class="flex items-start gap-3">' +
+                            '<div class="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">' +
+                                '<i class="fas fa-clock text-indigo-400 text-xs" aria-hidden="true"></i>' +
+                            '</div>' +
+                            '<div class="min-w-0">' +
+                                '<p class="text-white font-bold text-sm truncate">' + timeStr + '</p>' +
+                                '<p class="text-xs text-gray-500 mt-0.5 truncate">' + (l.name||'Unknown') + slotsText + (l.phone ? ' • ' + l.phone : '') + '</p>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="flex items-center gap-3 flex-shrink-0 ml-12 sm:ml-0">' +
+                            '<span class="badge ' + badgeClass + '">' + l.method + '</span>' +
+                            (ownerShare > 0 ? '<span class="text-xs font-black text-white whitespace-nowrap">₹' + ownerShare.toLocaleString('en-IN') + '</span>' : '') +
+                            waHtml +
+                        '</div>' +
+                    '</div>';
+                container.appendChild(div);
+            });
+        }
+
+        // ==================== QUICK ACTIONS ====================
+        function exportLedgerCSV() {
+            var dateISO = document.getElementById('owner-block-date').value;
+            if (!activeVenue || !dateISO) { showToast('Select a venue and date first.', 'error'); return; }
+            var fDate    = isoToDisplay(dateISO);
+            var cacheKey = activeVenue.name + '|' + fDate;
+            var ledger   = ledgerCache[cacheKey];
+
+            if (!ledger || !ledger.length) {
+                showToast('No ledger data to export. Load the ledger first.', 'warning');
+                return;
+            }
+
+            var headers = ['Time Slot', 'Player Name', 'Phone', 'Slots', 'Method', 'Gross Amount', 'Your Share (80%)'];
+            var rows = ledger.map(function(l) {
+                var timeStr    = l.timeSlot || (l.details ? (l.details.split(' | ')[2] || l.details) : '');
+                var ownerShare = Math.round(parseAmount(l.amount) * 0.8);
+                return [timeStr, l.name||'', l.phone||'', l.slots||'', l.method||'', l.amount||'', '₹' + ownerShare]
+                    .map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
+            });
+            var csv  = [headers.join(',')].concat(rows).join('\n');
+            var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+            var url  = URL.createObjectURL(blob);
+            var a    = document.createElement('a');
+            a.href     = url;
+            a.download = activeVenue.name.replace(/\s+/g, '_') + '_' + fDate + '.csv';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+            showToast('Ledger exported as CSV ✅', 'success');
+        }
+
+        function showAllWaitlisted() {
+            var panel = document.getElementById('waitlist-panel');
+            var list  = document.getElementById('waitlist-entries');
+            panel.classList.remove('hidden');
+            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            if (!activeVenue) { list.innerHTML = '<p class="text-gray-600 text-sm">No venue selected.</p>'; return; }
+
+            var waiters = (window.allBookings || []).filter(function(b){
+                return b.venue === activeVenue.name && b.method === 'Standby Waitlist';
+            });
+
+            if (!waiters.length) {
+                list.innerHTML = '<p class="text-gray-600 text-sm">No waitlisted players for this venue.</p>';
+                return;
+            }
+
+            list.innerHTML = waiters.map(function(b) {
+                var waMsg  = encodeURIComponent('Hi ' + (b.name||'there') + ', a slot has opened at ' + activeVenue.name + '! Please book on SquadOn now.');
+                var waLink = b.phone ? 'https://wa.me/91' + b.phone + '?text=' + waMsg : '#';
+                return '<div class="flex justify-between items-center py-2 border-b border-white/5 text-xs gap-3">' +
+                    '<div class="min-w-0">' +
+                        '<p class="text-white font-bold truncate">' + (b.name||'Unknown') + '</p>' +
+                        '<p class="text-gray-500">' + (b.playDate||'—') + ' • ' + (b.timeSlot||b.details||'—') + '</p>' +
+                    '</div>' +
+                    (b.phone ? '<a href="' + waLink + '" target="_blank" rel="noopener noreferrer" class="text-green-400 font-bold hover:text-green-300 transition whitespace-nowrap flex-shrink-0"><i class="fa-brands fa-whatsapp mr-1"></i>Notify</a>' : '') +
+                '</div>';
+            }).join('');
         }
     </script>
 </body>
