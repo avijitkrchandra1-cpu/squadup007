@@ -1034,12 +1034,27 @@
 
     // ==================== FORGOT PASSWORD FLOW ====================
     function showForgotStep(step) {
-        ['login-box','register-box','forgot-step-1','forgot-step-2','forgot-step-3'].forEach(function(id) { document.getElementById(id).classList.add('hidden'); });
-        var subtitles = { 0: 'Please login to continue.', 1: 'Reset your password via OTP.', 2: 'Enter the OTP sent to your phone.', 3: 'Set your new password.' };
-        document.getElementById('auth-subtitle').innerText = subtitles[step] || '';
-        if (step === 0) { document.getElementById('login-box').classList.remove('hidden'); }
-        else { document.getElementById('forgot-step-' + step).classList.remove('hidden'); }
+    ['login-box','register-box','forgot-step-1','forgot-step-2','forgot-step-3'].forEach(function(id) { 
+        document.getElementById(id).classList.add('hidden'); 
+    });
+    var subtitles = { 0: 'Please login to continue.', 1: 'Reset your password via OTP.', 2: 'Enter the OTP sent to your phone.', 3: 'Set your new password.' };
+    document.getElementById('auth-subtitle').innerText = subtitles[step] || '';
+    
+    if (step === 0) { 
+        document.getElementById('login-box').classList.remove('hidden'); 
+    } else { 
+        document.getElementById('forgot-step-' + step).classList.remove('hidden'); 
     }
+    
+    // Reset step 1 button and input when opening fresh
+    if (step === 1) {
+        var btn = document.getElementById('fp-send-btn');
+        if (btn) { btn.innerText = 'Send OTP'; btn.disabled = false; }
+        var input = document.getElementById('fp-phone');
+        if (input) input.value = '';
+        fpPhone = ''; fpOTP = '';
+    }
+}
 
     async function sendForgotOTP() {
         var phone = document.getElementById('fp-phone').value.trim().replace(/\D/g,'').slice(-10);
