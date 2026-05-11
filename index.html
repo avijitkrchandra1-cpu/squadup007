@@ -925,7 +925,7 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzsOBkeYxGmP21xP0kihZhMVN8I_SLlap2Z7qWydGcUebXnv8tWCTL72WO2T0BqJ_v8/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzr08dXiUj2xK8uuPEZhME2APb3T0sGdzpmADi58TCZbC-kUvTj3NogowlT69SBeXY0/exec';
 
     let currentUser = null;
     let activeVenue = null;
@@ -1578,19 +1578,76 @@
 
     // ==================== PROCESS BOOKING ====================
     async function processBooking() {
-        var rawDate = document.getElementById('book-date').value;
-        var total = parseInt(document.getElementById('total-price').innerText.replace('₹','')) || 0;
-        var payType = document.getElementById('book-pay').value;
-        var count = parseInt(document.getElementById('book-count').value) || 0;
-        var timeSlot = document.getElementById('book-time').value;
-        var isRecurring = document.getElementById('recurring-booking').checked;
-        var btn = document.getElementById('main-deploy-btn');
-        if (count === 0 && payType !== 'Waitlist') return showToast('Please select at least 1 player.', 'error');
-        if (!timeSlot) return showToast('Please select a time slot.', 'error');
-        var fDate = rawDate.split('-').reverse().join('-');
-        var coinsEarned = Math.floor(total/100);
-        lastBookingSlots = count;
-        lastBookingPricePerHead = activeVenue ? activeVenue.price : 0;
+            var rawDate = document.getElementById('book-date').value;
+            var totalText = document.getElementById('total-price').innerText;
+            var cleanTotal = totalText.includes('₹') ? totalText.split('₹').pop() : totalText;
+            var total = parseInt(cleanTotal.replace(/\D/g, '')) || 0;
+            var payType = document.getElementById('book-pay').value;
+            var count = parseInt(document.getElementById('book-count').value) || 0;
+            var timeSlot = document.getElementById('book-time').value;
+            var isRecurring = document.getElementById('recurring-booking').checked;
+            var btn = document.getElementById('main-deploy-btn');
+            
+            if (count === 0 && payType !== 'Waitlist') return showToast('Please select at least 1 player.', 'error');
+            if (!timeSlot) return showToast('Please select a time slot.', 'error');
+            var fDate = rawDate.split('-').reverse().join('-');
+            var coinsEarned = Math.floor(total / 100);
+            
+            if (payType === 'Waitlist') {
+                btn.innerText = 'Adding to queue...'; btn.classList.add('opacity-50');
+                try {
+                    await fetchAPI({ action: 'book', name: currentUser.name, phone: currentUser.phone || '', skill: currentUser.skill || '', game: activeVenue.sport, playDate: fDate, timeSlot: timeSlot, venue: activeVenue.name, payMethod: 'Standby Waitlist', totalAmount: 0, slots: 0 });
+                    showSuccessScreen(0, isRecurring);
+                } catch (e) { showToast('Queue error: ' + e.message, 'error'); }
+                finally { btn.innerText = 'Confirm Booking'; btn.classList.remove('opacity-50'); }
+                return;
+            }
+            
+            var tokenPct = count >= 6 ? 1.00 : (count >= 3 ? 0.50 : 0.20);
+            var finalAmount = payType === 'Token' ? Math.ceil(total * tokenPct) : total;
+            
+            try {
+                btn.innerText = 'Processing...'; btn.classList.add('opacity-50', 'cursor-wait');
+                var orderRes = await fetchAPI({ action: 'createOrder', venueName: activeVenue.name, slots: count, payType: payType });
+                
+                var options = {
+                    // === UPDATED FRONTEND KEY ===
+                    key: 'rzp_test_SoBAMp2JeyqDeP', 
+                    // ============================
+                    amount: orderRes.order.amount,
+                    currency: 'INR',
+                    name: 'SquadOn',
+                    description: 'Booking: ' + activeVenue.name,
+                    order_id: orderRes.order.id,
+                    prefill: { contact: currentUser.phone || '', name: currentUser.name || '' },
+                    theme: { color: '#06b6d4' },
+                    handler: async function(res) {
+                        btn.innerText = 'Verifying...';
+                        try {
+                            var verify = await fetchAPI({ action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature, venue: activeVenue.name, game: activeVenue.sport, slots: count, playDate: fDate, timeSlot: timeSlot, totalAmount: orderRes.order.amount / 100, phone: currentUser.phone || '', name: currentUser.name || '', recurring: isRecurring });
+                            if (verify && verify.status === 'success') {
+                                if (currentUser) { currentUser.coins = (currentUser.coins || 0) + coinsEarned; sessionStorage.setItem('squadonUser', JSON.stringify(currentUser)); }
+                                lastBookedVenueName = activeVenue.name;
+                                showSuccessScreen(coinsEarned, isRecurring);
+                                fetchAPI({ action: 'sync' }).then(function(r) { if (r && r.status === 'success') { window.venues = r.venues; window.activeBookings = r.bookings; } }).catch(function(){});
+                            } else { showToast((verify && verify.msg) || 'Verification failed. Contact support.', 'error'); btn.innerText = 'Confirm Booking'; btn.classList.remove('opacity-50', 'cursor-wait'); }
+                        } catch (e) { showToast('Verification error: ' + e.message, 'error'); btn.innerText = 'Confirm Booking'; btn.classList.remove('opacity-50', 'cursor-wait'); }
+                    }
+                };
+                var rzp = new Razorpay(options);
+                rzp.on('payment.failed', function(response) { 
+                    console.error(response.error);
+                    showToast('Payment failed: ' + response.error.description, 'error'); 
+                    btn.innerText = 'Confirm Booking'; 
+                    btn.classList.remove('opacity-50', 'cursor-wait'); 
+                });
+                rzp.open();
+            } catch (e) { 
+                showToast('Checkout error: ' + e.message, 'error'); 
+                btn.innerText = 'Confirm Booking'; 
+                btn.classList.remove('opacity-50', 'cursor-wait'); 
+            }
+        }
 
         if (payType === 'Waitlist') {
             btn.innerText = 'Adding to queue...'; btn.classList.add('opacity-50');
