@@ -1603,7 +1603,7 @@
             btn.innerText = 'Processing...'; btn.classList.add('opacity-50','cursor-wait');
             var orderRes = await fetchAPI({ action: 'createOrder', venueName: activeVenue.name, slots: count, payType: payType, pricePerHead: activeVenue.price, timeSlot: timeSlot });
             var options = {
-                key: 'key: 'rzp_test_SoAFh6CaO0JP1w',',
+                key: 'rzp_test_SoAFh6CaO0JP1w',
                 amount: orderRes.order.amount,
                 currency: 'INR',
                 name: 'SquadOn',
@@ -1674,7 +1674,7 @@
         btn.innerText = 'Opening Razorpay...'; btn.disabled = true;
         var amount = spData.perHead || 0;
         var options = {
-            key: 'key: 'rzp_test_SoAFh6CaO0JP1w',',
+            key: 'rzp_test_SoAFh6CaO0JP1w',
             amount: amount * 100,
             currency: 'INR',
             name: 'SquadOn — Split Pay',
