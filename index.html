@@ -1407,8 +1407,8 @@
         list.innerHTML = '';
         var sorted = userBookings.slice().sort(function(a,b){ return parseDateStr(b.playDate)-parseDateStr(a.playDate); });
         sorted.forEach(function(b) {
-            console.log('BOOKING KEYS:', JSON.stringify(b));
-            var isUpcoming = isBookingUpcoming(b.playDate);
+            var isCancelled = (b.status === 'Cancelled' || b.Status === 'Cancelled');
+            var isUpcoming = !isCancelled && isBookingUpcoming(b.playDate);
            var bid = (b.bookingID||b.bookingId||b.BookingID||b['Booking ID']||b.id||b.ID||'').toString().replace(/'/g,"&apos;");
             var venueSafe = (b.venue||'').replace(/'/g,"&apos;");
             var actionHTML = isUpcoming
