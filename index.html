@@ -1448,35 +1448,38 @@
 
     // ==================== CANCEL BOOKING ====================
     async function cancelBooking(bookingId) {
-        if (!bookingId) { showToast('Booking ID not found. Contact support.', 'error'); return; }
-        if (!confirm('Cancel this booking?\n\nNote: Cancellations within 24 hours of the slot are not eligible for refunds.')) return;
-        var btn = document.querySelector('[data-bid="'+bookingId+'"]');
-        if (btn) { btn.innerText = 'Cancelling...'; btn.disabled = true; }
-        try {
-            var res = await fetchAPI({ action: 'cancelBooking', bookingId: bookingId, phone: currentUser ? currentUser.phone : '' });
-            if (res && res.status === 'success') {
-    showToast(res.msg || 'Booking cancelled.', 'success');
-    // Remove from local cache immediately so UI updates without waiting for sync
-    window.activeBookings = window.activeBookings.filter(function(ab) {
-    var abId = (ab.bookingID||ab.bookingId||ab.BookingID||ab.id||ab.ID||'').toString();
-    return abId !== bookingId;
-});
-    setTimeout(function(){
-        // Also re-sync from server then reload
-        fetchAPI({ action: 'sync' }).then(function(r) {
-            if (r && r.status === 'success') {
-                window.activeBookings = r.bookings || [];
-                window.venues = r.venues || [];
-            }
-            loadMyBookings();
-        }).catch(function() {
-            loadMyBookings();
-        });
-    }, 500);
-}
-            else { showToast((res && res.msg) || 'Cancellation failed. Contact support@squadon.in', 'error'); if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; } }
-        } catch(e) { showToast('Error: ' + e.message, 'error'); if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; } }
+    if (!bookingId) { showToast('Booking ID not found. Contact support.', 'error'); return; }
+    if (!confirm('Cancel this booking?\n\nNote: Cancellations within 24 hours of the slot are not eligible for refunds.')) return;
+    var btn = document.querySelector('[data-bid="'+bookingId+'"]');
+    if (btn) { btn.innerText = 'Cancelling...'; btn.disabled = true; }
+    try {
+        var res = await fetchAPI({ action: 'cancelBooking', bookingId: bookingId, phone: currentUser ? currentUser.phone : '' });
+        if (res && res.status === 'success') {
+            showToast(res.msg || 'Booking cancelled.', 'success');
+            window.activeBookings = window.activeBookings.filter(function(ab) {
+                var abId = (ab.bookingID||ab.bookingId||ab.BookingID||ab.id||ab.ID||'').toString();
+                return abId !== bookingId;
+            });
+            setTimeout(function() {
+                fetchAPI({ action: 'sync' }).then(function(r) {
+                    if (r && r.status === 'success') {
+                        window.activeBookings = r.bookings || [];
+                        window.venues = r.venues || [];
+                    }
+                    loadMyBookings();
+                }).catch(function() {
+                    loadMyBookings();
+                });
+            }, 500);
+        } else {
+            showToast((res && res.msg) || 'Cancellation failed. Contact support@squadon.in', 'error');
+            if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; }
+        }
+    } catch(e) {
+        showToast('Error: ' + e.message, 'error');
+        if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; }
     }
+}
         
     </script>
 </body>
