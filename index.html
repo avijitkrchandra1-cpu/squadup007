@@ -1355,7 +1355,7 @@
         var btn = document.getElementById('split-pay-btn'); btn.innerText = 'Opening Razorpay...'; btn.disabled = true;
         var amount = spData.perHead || 0;
         var options = {
-            key: 'rzp_test_SoBAMp2JeyqDeP', amount: amount * 100, currency: 'INR', name: 'SquadOn — Split Pay',
+            key: 'rzp_live_SokotQPgwNk4Y6', amount: amount * 100, currency: 'INR', name: 'SquadOn — Split Pay',
             description: 'Your slot at ' + (spData.venue||'Arena'), prefill: { contact: phone, name: name }, theme: { color: '#6366f1' },
             handler: async function(res) {
                 btn.innerText = 'Recording payment...';
