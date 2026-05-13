@@ -1215,7 +1215,7 @@
         var maxR = parseInt(document.getElementById('book-count').max) || 0; var paySelect = document.getElementById('book-pay');
         if (maxR === 0) { paySelect.innerHTML = '<option value="Waitlist">Join Standby Queue (₹0)</option>'; }
         else if (count >= 6) { paySelect.innerHTML = '<option value="Razorpay">Pay Full Amount (100%)</option><option value="Waitlist">Join Standby Queue</option>'; }
-        else { var tokenPct = count >= 3 ? 50 : 20; var tokenAmt = Math.ceil(total * tokenPct/100); paySelect.innerHTML = '<option value="Token">Pay '+ tokenPct +'% Advance (₹'+tokenAmt+')</option><option value="Razorpay">Pay Full (₹'+total+')</option><option value="Waitlist">Join Standby Queue</option>'; }
+        else { var tokenPct = count >= 3 ? 50 : 20; var tokenAmt = Math.ceil(total * tokenPct/100); paySelect.innerHTML = '<option value="Razorpay">Pay Full (₹'+total+')</option><option value="Token">Pay '+ tokenPct +'% Advance (₹'+tokenAmt+')</option><option value="Waitlist">Join Standby Queue</option>'; }
         toggleWarning();
     }
     function toggleWarning() {
