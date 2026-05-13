@@ -837,7 +837,7 @@
     function switchTab(tabId) {
         ['view-home','venues-section','view-rank','view-blog-hub','view-blog-detail','view-academy','view-partner','view-news','view-careers','view-my-bookings'].forEach(function(id) { var el = document.getElementById(id); if (el) el.classList.add('hidden'); });
         if (tabId === 'feed') { document.getElementById('view-home').classList.remove('hidden'); document.getElementById('venues-section').classList.remove('hidden'); }
-        else if (tabId === 'my-bookings') { document.getElementById('view-my-bookings').classList.remove('hidden'); loadMyBookings(); }
+        else if (tabId === 'my-bookings') { document.getElementById('view-my-bookings').classList.remove('hidden'); (); }
         else { var el = document.getElementById('view-' + tabId); if (el) el.classList.remove('hidden'); }
         window.scrollTo(0,0);
         document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) { el.classList.remove('active'); observer.observe(el); });
@@ -1409,7 +1409,7 @@
         sorted.forEach(function(b) {
             console.log('BOOKING KEYS:', JSON.stringify(b));
             var isUpcoming = isBookingUpcoming(b.playDate);
-           var bid = (b.bookingId||b.id||b['ID']||'').toString().replace(/'/g,"&apos;");
+           var bid = (b.bookingID||b.bookingId||b.BookingID||b['Booking ID']||b.id||b.ID||'').toString().replace(/'/g,"&apos;");
             var venueSafe = (b.venue||'').replace(/'/g,"&apos;");
             var actionHTML = isUpcoming
                 ? '<div class="flex flex-wrap gap-2 mt-4 pt-3 border-t border-white/5"><span class="text-[9px] text-gray-500 font-bold uppercase w-full mb-1">Get to the Turf:</span><a href="#" class="text-[10px] bg-black text-white px-2 py-1.5 rounded border border-white/10">Uber</a><a href="#" class="text-[10px] bg-[#d7df23] text-black px-2 py-1.5 rounded font-bold">Ola</a><a href="#" class="text-[10px] bg-[#f9c900] text-black px-2 py-1.5 rounded font-bold">Rapido</a><button data-bid="'+bid+'" class="cancel-booking-btn text-[10px] bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-1.5 rounded font-bold uppercase tracking-widest hover:bg-red-500/20 transition ml-auto">Cancel</button></div>'
@@ -1458,8 +1458,9 @@
     showToast(res.msg || 'Booking cancelled.', 'success');
     // Remove from local cache immediately so UI updates without waiting for sync
     window.activeBookings = window.activeBookings.filter(function(ab) {
-        return (ab.bookingId || ab.id || ab['ID'] || '').toString() !== bookingId;
-    });
+    var abId = (ab.bookingID||ab.bookingId||ab.BookingID||ab.id||ab.ID||'').toString();
+    return abId !== bookingId;
+});
     setTimeout(function(){
         // Also re-sync from server then reload
         fetchAPI({ action: 'sync' }).then(function(r) {
