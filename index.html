@@ -837,7 +837,7 @@
     function switchTab(tabId) {
         ['view-home','venues-section','view-rank','view-blog-hub','view-blog-detail','view-academy','view-partner','view-news','view-careers','view-my-bookings'].forEach(function(id) { var el = document.getElementById(id); if (el) el.classList.add('hidden'); });
         if (tabId === 'feed') { document.getElementById('view-home').classList.remove('hidden'); document.getElementById('venues-section').classList.remove('hidden'); }
-        else if (tabId === 'my-bookings') { document.getElementById('view-my-bookings').classList.remove('hidden'); (); }
+        else if (tabId === 'my-bookings') { document.getElementById('view-my-bookings').classList.remove('hidden'); loadMyBookings(); }
         else { var el = document.getElementById('view-' + tabId); if (el) el.classList.remove('hidden'); }
         window.scrollTo(0,0);
         document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) { el.classList.remove('active'); observer.observe(el); });
