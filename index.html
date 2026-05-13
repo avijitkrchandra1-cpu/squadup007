@@ -1371,6 +1371,23 @@ setTimeout(function(){ clearInterval(pollInterval); }, 600000);
         } else { splitShare.classList.add('hidden'); }
         if (coins > 0) { setTimeout(function(){ document.getElementById('rating-venue-name').innerText = lastBookedVenueName; showModal('rating-modal'); }, 2000); }
     }
+        function openInvoiceForLastBooking() {
+    if (!activeVenue || !currentUser) return;
+    var rawDate = document.getElementById('book-date').value;
+    var timeSlot = document.getElementById('book-time').value;
+    var count = lastBookingSlots || 1;
+    var amount = parseInt(document.getElementById('total-price').innerText.replace(/[^\d]/g,'')) || 0;
+    var url = 'invoice.html'
+        + '?name=' + encodeURIComponent(currentUser.name || '')
+        + '&phone=' + encodeURIComponent(currentUser.phone || '')
+        + '&venue=' + encodeURIComponent(activeVenue.name || '')
+        + '&sport=' + encodeURIComponent(activeVenue.sport || 'Cricket')
+        + '&date=' + encodeURIComponent(rawDate)
+        + '&time=' + encodeURIComponent(timeSlot)
+        + '&amount=' + encodeURIComponent(amount)
+        + '&players=' + encodeURIComponent(count);
+    window.open(url, '_blank');
+}
 
     function copySplitLink() {
         var text = document.getElementById('split-link-text').innerText;
