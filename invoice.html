@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SquadOn — GST Invoice</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --ink-muted: #4a4a4a;
+    --ink-light: #8a8a8a;
+    --rule: #d0d0d0;
+    --rule-heavy: #0a0a0a;
+    --accent: #06b6d4;
+    --accent-dark: #0891b2;
+    --bg: #fafaf8;
+    --white: #ffffff;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --gst-green: #166534;
+    --gst-green-bg: #f0fdf4;
+    --gst-green-border: #bbf7d0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: #e8e8e4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    color: var(--ink);
+  }
+
+  /* ── CONTROLS BAR ── */
+  .controls {
+    width: 100%;
+    max-width: 860px;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .controls label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .controls input, .controls select {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 4px;
+    color: var(--ink);
+    outline: none;
+  }
+  .controls input:focus, .controls select:focus {
+    border-color: var(--accent);
+  }
+  .ctrl-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .btn-generate {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 8px 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: auto;
+  }
+  .btn-generate:hover { background: var(--accent-dark); }
+  .btn-print {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 8px 20px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: auto;
+  }
+  .btn-print:hover { background: #333; }
+
+  /* ── INVOICE PAPER ── */
+  .invoice {
+    width: 100%;
+    max-width: 860px;
+    background: var(--white);
+    box-shadow: 0 4px 40px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Top accent bar */
+  .invoice::before {
+    content: '';
+    display: block;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent) 0%, #6366f1 100%);
+  }
+
+  /* ── HEADER ── */
+  .inv-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    padding: 36px 48px 28px;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .brand-block { display: flex; flex-direction: column; gap: 6px; }
+
+  .brand-name {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .brand-name span { color: var(--accent); }
+
+  .brand-tagline {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+  }
+
+  .brand-address {
+    margin-top: 10px;
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    line-height: 1.7;
+  }
+  .brand-address strong {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .gstin-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 4px 10px;
+    background: var(--gst-green-bg);
+    border: 1px solid var(--gst-green-border);
+    border-radius: 3px;
+  }
+  .gstin-chip span {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--gst-green);
+    letter-spacing: 0.05em;
+  }
+  .gstin-chip .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gst-green);
+    flex-shrink: 0;
+  }
+
+  /* Invoice meta (right side) */
+  .inv-meta {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 220px;
+  }
+
+  .inv-title {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .inv-subtitle {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--ink-light);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .meta-key {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .meta-val {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .meta-val.accent { color: var(--accent-dark); }
+
+  /* ── BILL TO + BOOKING SUMMARY ── */
+  .inv-body-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .bill-to {
+    padding: 28px 48px;
+    border-right: 1px solid var(--rule);
+  }
+  .booking-summary {
+    padding: 28px 48px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .player-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .player-detail {
+    font-size: 12px;
+    color: var(--ink-muted);
+    line-height: 1.8;
+    font-family: var(--mono);
+  }
+
+  .booking-grid {
+    display: grid;
+    gap: 8px;
+  }
+  .bk-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 8px;
+    align-items: start;
+  }
+  .bk-key {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-top: 1px;
+  }
+  .bk-val {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .bk-val.venue-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .sport-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.25);
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── LINE ITEMS TABLE ── */
+  .inv-table-wrap {
+    padding: 0 48px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section-label-padded {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    padding: 20px 0 12px;
+    border-bottom: 1px solid var(--rule-heavy);
+    display: block;
+  }
+
+  table.line-items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0;
+  }
+  table.line-items thead th {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    padding: 10px 0 10px;
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+  }
+  table.line-items thead th:not(:first-child) { text-align: right; }
+  table.line-items thead th.center { text-align: center; }
+
+  table.line-items tbody td {
+    font-size: 12.5px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    color: var(--ink);
+  }
+  table.line-items tbody td:not(:first-child) { text-align: right; }
+  table.line-items tbody td.center { text-align: center; }
+
+  .item-name {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  .item-desc {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-light);
+    line-height: 1.5;
+  }
+  .sac-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: #6b7280;
+    letter-spacing: 0.05em;
+  }
+
+  table.line-items tfoot td {
+    padding: 8px 0;
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    text-align: right;
+  }
+  table.line-items tfoot td:first-child { text-align: left; }
+  table.line-items tfoot tr.subtotal td {
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+  table.line-items tfoot tr.gst-row td {
+    color: var(--gst-green);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  table.line-items tfoot tr.grand-total td {
+    padding-top: 14px;
+    padding-bottom: 16px;
+    border-top: 2px solid var(--ink);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  table.line-items tfoot tr.grand-total td.amount {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-dark);
+  }
+
+  /* ── COMMISSION NOTE ── */
+  .commission-note {
+    margin: 0 48px;
+    padding: 14px 18px;
+    background: #fefce8;
+    border: 1px solid #fde68a;
+    border-radius: 4px;
+    border-left: 3px solid #f59e0b;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .commission-note .icon { font-size: 14px; margin-top: 1px; }
+  .commission-note p {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: #78350f;
+    line-height: 1.6;
+  }
+  .commission-note p strong { font-weight: 700; }
+
+  /* ── GST BREAKDOWN BOX ── */
+  .gst-breakdown {
+    margin: 16px 48px 0;
+    border: 1px solid var(--gst-green-border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .gst-breakdown-header {
+    background: var(--gst-green-bg);
+    padding: 8px 16px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gst-green);
+    border-bottom: 1px solid var(--gst-green-border);
+  }
+  .gst-breakdown-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .gst-cell {
+    padding: 10px 16px;
+    border-right: 1px solid var(--gst-green-border);
+    text-align: center;
+  }
+  .gst-cell:last-child { border-right: none; }
+  .gst-cell-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--gst-green);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .gst-cell-val {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .gst-cell-sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--ink-light);
+    margin-top: 2px;
+  }
+
+  /* ── PAYMENT CONFIRMED BADGE ── */
+  .payment-confirmed {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 48px 0;
+    padding: 10px 16px;
+    background: #f0fdf4;
+    border: 1px solid var(--gst-green-border);
+    border-radius: 4px;
+  }
+  .payment-confirmed .check {
+    width: 20px; height: 20px;
+    background: var(--gst-green);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .payment-confirmed span {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gst-green);
+    letter-spacing: 0.04em;
+  }
+  .payment-confirmed .pay-method {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-light);
+  }
+
+  /* ── FOOTER ── */
+  .inv-footer {
+    margin-top: 24px;
+    padding: 20px 48px 28px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .footer-note {
+    font-size: 10.5px;
+    color: var(--ink-light);
+    line-height: 1.7;
+  }
+  .footer-note strong {
+    font-weight: 600;
+    color: var(--ink-muted);
+    display: block;
+    margin-bottom: 3px;
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-sig {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+  .sig-line {
+    width: 160px;
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 4px;
+    height: 32px;
+  }
+  .sig-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .inv-very-bottom {
+    padding: 12px 48px;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .inv-very-bottom span {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.08em;
+  }
+  .inv-very-bottom .powered {
+    color: rgba(255,255,255,0.8);
+    font-weight: 600;
+  }
+
+  /* ── AMOUNT IN WORDS ── */
+  .amount-words {
+    margin: 12px 48px 0;
+    padding: 10px 16px;
+    background: #f8f8f8;
+    border-left: 3px solid var(--ink);
+  }
+  .amount-words p {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-muted);
+  }
+  .amount-words p strong {
+    color: var(--ink);
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; padding: 0; }
+    .controls { display: none; }
+    .invoice { box-shadow: none; max-width: 100%; }
+    @page { margin: 15mm; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="ctrl-group">
+    <label>Player Name</label>
+    <input type="text" id="playerName" value="Arjun Chatterjee" style="width:160px">
+  </div>
+  <div class="ctrl-group">
+    <label>Phone</label>
+    <input type="text" id="playerPhone" value="9876543210" style="width:120px">
+  </div>
+  <div class="ctrl-group">
+    <label>Venue</label>
+    <input type="text" id="venueName" value="Kasba Turf Edge" style="width:160px">
+  </div>
+  <div class="ctrl-group">
+    <label>Sport</label>
+    <select id="sport" style="width:110px">
+      <option>Cricket</option>
+      <option>Football</option>
+      <option>Chess</option>
+      <option>Carrom</option>
+      <option>Basketball</option>
+      <option>Tennis</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <label>Play Date</label>
+    <input type="date" id="playDate" value="2026-05-20" style="width:140px">
+  </div>
+  <div class="ctrl-group">
+    <label>Time Slot</label>
+    <input type="text" id="timeSlot" value="05:00 PM to 07:00 PM" style="width:160px">
+  </div>
+  <div class="ctrl-group">
+    <label>Base Fee (₹)</label>
+    <input type="number" id="baseFee" value="179" style="width:90px">
+  </div>
+  <div class="ctrl-group">
+    <label>Players</label>
+    <input type="number" id="players" value="1" min="1" max="20" style="width:70px">
+  </div>
+  <div class="ctrl-group">
+    <label>Pay Method</label>
+    <select id="payMethod" style="width:100px">
+      <option>Razorpay</option>
+      <option>Token</option>
+      <option>Cash</option>
+    </select>
+  </div>
+  <button class="btn-generate" onclick="generateInvoice()">Generate</button>
+  <button class="btn-print" onclick="window.print()">🖨 Print / PDF</button>
+</div>
+
+<!-- INVOICE -->
+<div class="invoice" id="invoice">
+
+  <!-- HEADER -->
+  <div class="inv-header">
+    <div class="brand-block">
+      <div class="brand-name">Squad<span>On</span></div>
+      <div class="brand-tagline">Kolkata's Elite Sports Network</div>
+      <div class="brand-address">
+        <strong>TrendNexus India</strong>
+        Parnasree, Behala,<br>
+        Kolkata — 700060, West Bengal, India<br>
+        support@squadon.in &nbsp;·&nbsp; www.squadon.in
+      </div>
+      <div class="gstin-chip">
+        <span class="dot"></span>
+        <span>GSTIN: 19BJKPC9485M1ZC</span>
+      </div>
+    </div>
+
+    <div class="inv-meta">
+      <div class="inv-title">Invoice</div>
+      <div class="inv-subtitle">Tax Invoice — B2C</div>
+      <div class="meta-row">
+        <span class="meta-key">Invoice No.</span>
+        <span class="meta-val accent" id="inv-number">SQD-INV-2600001</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Issue Date</span>
+        <span class="meta-val" id="inv-date">14 May 2026</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Due Date</span>
+        <span class="meta-val" id="inv-due">Immediate</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Place of Supply</span>
+        <span class="meta-val">West Bengal (19)</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Supply Type</span>
+        <span class="meta-val">Intra-State</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BILL TO + BOOKING SUMMARY -->
+  <div class="inv-body-top">
+    <div class="bill-to">
+      <div class="section-label">Billed To</div>
+      <div class="player-name" id="disp-player-name">Arjun Chatterjee</div>
+      <div class="player-detail" id="disp-player-phone">+91 9876543210</div>
+      <div class="player-detail" style="margin-top:6px; font-family: var(--sans); font-size:11.5px; color:var(--ink-light); line-height:1.6">
+        Consumer (Unregistered)<br>
+        PAN: Not Applicable (B2C)
+      </div>
+    </div>
+    <div class="booking-summary">
+      <div class="section-label">Booking Details</div>
+      <div class="booking-grid">
+        <div class="bk-row">
+          <span class="bk-key">Venue</span>
+          <span class="bk-val venue-name" id="disp-venue">Kasba Turf Edge</span>
+        </div>
+        <div class="bk-row">
+          <span class="bk-key">Sport</span>
+          <span class="bk-val">
+            <span class="sport-badge" id="disp-sport">🏏 Cricket</span>
+          </span>
+        </div>
+        <div class="bk-row">
+          <span class="bk-key">Play Date</span>
+          <span class="bk-val" id="disp-date">20 May 2026</span>
+        </div>
+        <div class="bk-row">
+          <span class="bk-key">Time Slot</span>
+          <span class="bk-val" id="disp-time">05:00 PM to 07:00 PM</span>
+        </div>
+        <div class="bk-row">
+          <span class="bk-key">Players</span>
+          <span class="bk-val" id="disp-players">1 Player</span>
+        </div>
+        <div class="bk-row">
+          <span class="bk-key">Booking ID</span>
+          <span class="bk-val" style="font-family:var(--mono);font-size:11px;color:var(--ink-light)" id="disp-booking-id">SQD-59928956</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINE ITEMS -->
+  <div class="inv-table-wrap">
+    <span class="section-label-padded">Particulars of Services Rendered</span>
+    <table class="line-items">
+      <thead>
+        <tr>
+          <th style="width:40%">Description of Service</th>
+          <th class="center" style="width:12%">SAC Code</th>
+          <th style="width:10%">Qty</th>
+          <th style="width:12%">Rate (₹)</th>
+          <th style="width:13%">Taxable Amt (₹)</th>
+          <th style="width:13%">Total (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="item-name" id="li-name">Sports Turf Booking — Cricket</div>
+            <div class="item-desc" id="li-desc">
+              Kasba Turf Edge · 20 May 2026<br>
+              Slot: 05:00 PM to 07:00 PM
+            </div>
+          </td>
+          <td class="center">
+            <span class="sac-badge">9996</span>
+          </td>
+          <td id="li-qty">1</td>
+          <td id="li-rate">179.00</td>
+          <td id="li-taxable">179.00</td>
+          <td id="li-total">179.00</td>
+        </tr>
+        <!-- Platform commission row -->
+        <tr style="background:#fafafa">
+          <td>
+            <div class="item-name" style="font-size:12px;color:var(--ink-muted)">Platform Service Fee (SquadOn Commission)</div>
+            <div class="item-desc">20% of base booking fee — Digital booking &amp; payment processing</div>
+          </td>
+          <td class="center">
+            <span class="sac-badge">9985</span>
+          </td>
+          <td id="comm-qty">1</td>
+          <td id="comm-rate">35.80</td>
+          <td id="comm-taxable">35.80</td>
+          <td id="comm-total">35.80</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="subtotal">
+          <td colspan="4"></td>
+          <td style="font-weight:600;color:var(--ink);font-size:11.5px">Subtotal</td>
+          <td style="font-weight:700;color:var(--ink)" id="subtotal-val">214.80</td>
+        </tr>
+        <tr class="gst-row">
+          <td colspan="4"></td>
+          <td>CGST @ 9%</td>
+          <td id="cgst-val">19.33</td>
+        </tr>
+        <tr class="gst-row">
+          <td colspan="4"></td>
+          <td>SGST @ 9%</td>
+          <td id="sgst-val">19.33</td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td style="font-size:11.5px;color:var(--ink-muted)">Total GST (18%)</td>
+          <td style="font-weight:600;color:var(--ink-muted)" id="total-gst-val">38.66</td>
+        </tr>
+        <tr class="grand-total">
+          <td colspan="4" style="text-align:left;font-family:var(--mono);font-size:11px;color:var(--ink-light);letter-spacing:0.08em;text-transform:uppercase">Grand Total (Inclusive of GST)</td>
+          <td style="font-size:11px;color:var(--ink-muted)">INR</td>
+          <td class="amount" id="grand-total-val">₹253.46</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- AMOUNT IN WORDS -->
+  <div class="amount-words">
+    <p>Amount in words: <strong id="amount-words-val">Two Hundred Fifty Three Rupees and Forty Six Paise Only</strong></p>
+  </div>
+
+  <!-- PAYMENT CONFIRMED -->
+  <div class="payment-confirmed">
+    <div class="check">✓</div>
+    <span>Payment Received — Amount Fully Settled</span>
+    <span class="pay-method" id="disp-pay-method">Via Razorpay (UPI/Card/Netbanking)</span>
+  </div>
+
+  <!-- GST BREAKDOWN -->
+  <div class="gst-breakdown">
+    <div class="gst-breakdown-header">GST Breakdown Summary (SAC 9996 — Sporting Services)</div>
+    <div class="gst-breakdown-body">
+      <div class="gst-cell">
+        <div class="gst-cell-label">Taxable Value</div>
+        <div class="gst-cell-val" id="gb-taxable">₹214.80</div>
+        <div class="gst-cell-sub">Base + Commission</div>
+      </div>
+      <div class="gst-cell">
+        <div class="gst-cell-label">CGST @ 9%</div>
+        <div class="gst-cell-val" id="gb-cgst">₹19.33</div>
+        <div class="gst-cell-sub">Central Tax</div>
+      </div>
+      <div class="gst-cell">
+        <div class="gst-cell-label">SGST @ 9%</div>
+        <div class="gst-cell-val" id="gb-sgst">₹19.33</div>
+        <div class="gst-cell-sub">State Tax (WB)</div>
+      </div>
+      <div class="gst-cell">
+        <div class="gst-cell-label">Grand Total</div>
+        <div class="gst-cell-val" id="gb-grand" style="color:var(--accent-dark)">₹253.46</div>
+        <div class="gst-cell-sub">Amount Paid</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMISSION NOTE -->
+  <div class="commission-note" style="margin-top:16px">
+    <span class="icon">ℹ</span>
+    <p>
+      <strong>Platform Commission Disclosure:</strong> SquadOn (TrendNexus India) charges a 20% platform service fee on the base turf booking rate as remuneration for digital booking, payment processing, and venue management services rendered. This fee is included in the amount billed above and is subject to 18% GST (SAC 9985 — Auxiliary Business Services).
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="inv-footer">
+    <div>
+      <div class="footer-note">
+        <strong>Terms & Conditions</strong>
+        1. This is a computer-generated invoice and does not require a physical signature.<br>
+        2. GST charged as per prevailing rates under the CGST/SGST Act, 2017.<br>
+        3. Cancellations within 24 hours of booking are not eligible for refunds.<br>
+        4. This invoice is valid for GST input credit claim by registered businesses only.<br>
+        5. For disputes, write to support@squadon.in within 7 days of issue date.
+      </div>
+    </div>
+    <div class="footer-sig">
+      <div class="sig-line"></div>
+      <div class="sig-label">For TrendNexus India (SquadOn)</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--ink-light);margin-top:4px">Authorised Signatory</div>
+    </div>
+  </div>
+
+  <!-- VERY BOTTOM BAR -->
+  <div class="inv-very-bottom">
+    <span>This is a system-generated invoice · No signature required</span>
+    <span class="powered">SquadOn · Powered by TrendNexus India</span>
+    <span id="inv-footer-num">SQD-INV-2600001</span>
+  </div>
+
+</div>
+
+<script>
+const sportEmoji = {
+  Cricket:'🏏', Football:'⚽', Chess:'♟️',
+  Carrom:'🎯', Basketball:'🏀', Tennis:'🎾'
+};
+
+function fmt(n) { return n.toFixed(2); }
+
+function numberToWords(amount) {
+  const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine',
+    'Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+  const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+
+  function words(n) {
+    if (n === 0) return '';
+    if (n < 20) return ones[n] + ' ';
+    if (n < 100) return tens[Math.floor(n/10)] + (n%10 ? ' ' + ones[n%10] : '') + ' ';
+    if (n < 1000) return ones[Math.floor(n/100)] + ' Hundred ' + words(n%100);
+    if (n < 100000) return words(Math.floor(n/1000)) + 'Thousand ' + words(n%1000);
+    if (n < 10000000) return words(Math.floor(n/100000)) + 'Lakh ' + words(n%100000);
+    return words(Math.floor(n/10000000)) + 'Crore ' + words(n%10000000);
+  }
+
+  const rupees = Math.floor(amount);
+  const paise  = Math.round((amount - rupees) * 100);
+  let result   = words(rupees).trim() + ' Rupees';
+  if (paise > 0) result += ' and ' + words(paise).trim() + ' Paise';
+  return result + ' Only';
+}
+
+function formatDate(isoDate) {
+  const d = new Date(isoDate);
+  return d.toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+}
+
+function generateInvoiceNumber() {
+  const d = new Date();
+  const yr = d.getFullYear().toString().slice(-2);
+  const rand = Math.floor(Math.random() * 90000) + 10000;
+  return `SQD-INV-${yr}${rand}`;
+}
+
+function generateBookingId() {
+  return 'SQD-' + Math.floor(Math.random() * 90000000 + 10000000);
+}
+
+function generateInvoice() {
+  const playerName  = document.getElementById('playerName').value.trim() || 'Player';
+  const playerPhone = document.getElementById('playerPhone').value.trim();
+  const venueName   = document.getElementById('venueName').value.trim();
+  const sport       = document.getElementById('sport').value;
+  const playDate    = document.getElementById('playDate').value;
+  const timeSlot    = document.getElementById('timeSlot').value.trim();
+  const baseFee     = parseFloat(document.getElementById('baseFee').value) || 0;
+  const players     = parseInt(document.getElementById('players').value) || 1;
+  const payMethod   = document.getElementById('payMethod').value;
+
+  // Calculations
+  const baseTotal   = baseFee * players;
+  const commission  = Math.round(baseTotal * 0.20 * 100) / 100;
+  const subtotal    = baseTotal + commission;
+  const cgst        = Math.round(subtotal * 0.09 * 100) / 100;
+  const sgst        = cgst;
+  const totalGst    = cgst + sgst;
+  const grandTotal  = subtotal + totalGst;
+
+  const invNum     = generateInvoiceNumber();
+  const bookingId  = generateBookingId();
+  const today      = new Date();
+  const todayFmt   = today.toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+
+  // Update invoice
+  document.getElementById('inv-number').textContent = invNum;
+  document.getElementById('inv-footer-num').textContent = invNum;
+  document.getElementById('inv-date').textContent = todayFmt;
+  document.getElementById('disp-player-name').textContent = playerName;
+  document.getElementById('disp-player-phone').textContent = '+91 ' + playerPhone;
+  document.getElementById('disp-venue').textContent = venueName;
+  document.getElementById('disp-sport').textContent = (sportEmoji[sport] || '🏟') + ' ' + sport;
+  document.getElementById('disp-date').textContent = formatDate(playDate);
+  document.getElementById('disp-time').textContent = timeSlot;
+  document.getElementById('disp-players').textContent = players + ' Player' + (players > 1 ? 's' : '');
+  document.getElementById('disp-booking-id').textContent = bookingId;
+  document.getElementById('disp-pay-method').textContent = 'Via ' + payMethod;
+
+  // Line item 1: turf booking
+  document.getElementById('li-name').textContent = 'Sports Turf Booking — ' + sport;
+  document.getElementById('li-desc').innerHTML =
+    venueName + ' · ' + formatDate(playDate) + '<br>Slot: ' + timeSlot;
+  document.getElementById('li-qty').textContent = players;
+  document.getElementById('li-rate').textContent = fmt(baseFee);
+  document.getElementById('li-taxable').textContent = fmt(baseTotal);
+  document.getElementById('li-total').textContent = fmt(baseTotal);
+
+  // Line item 2: commission
+  document.getElementById('comm-qty').textContent = 1;
+  document.getElementById('comm-rate').textContent = fmt(commission);
+  document.getElementById('comm-taxable').textContent = fmt(commission);
+  document.getElementById('comm-total').textContent = fmt(commission);
+
+  // Totals
+  document.getElementById('subtotal-val').textContent = fmt(subtotal);
+  document.getElementById('cgst-val').textContent = fmt(cgst);
+  document.getElementById('sgst-val').textContent = fmt(sgst);
+  document.getElementById('total-gst-val').textContent = fmt(totalGst);
+  document.getElementById('grand-total-val').textContent = '₹' + fmt(grandTotal);
+
+  // Amount in words
+  document.getElementById('amount-words-val').textContent = numberToWords(grandTotal);
+
+  // GST breakdown
+  document.getElementById('gb-taxable').textContent = '₹' + fmt(subtotal);
+  document.getElementById('gb-cgst').textContent = '₹' + fmt(cgst);
+  document.getElementById('gb-sgst').textContent = '₹' + fmt(sgst);
+  document.getElementById('gb-grand').textContent = '₹' + fmt(grandTotal);
+}
+
+// Run on load with defaults
+generateInvoice();
+</script>
+</body>
+</html>
