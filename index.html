@@ -1312,7 +1312,13 @@
                 showToast('Payment failed: ' + ((response.error && response.error.description) || 'Please try again.'), 'error');
                 btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait');
             });
-            rzp.open();
+
+            // FIX: Reset button when user closes/dismisses the Razorpay modal
+            rzp.on('modal.ondismiss', function(){
+                btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait');
+            });
+
+rzp.open();
 
         } catch(e) {
             showToast('Checkout error: '+e.message,'error');
