@@ -1454,9 +1454,10 @@
         try {
             var res = await fetchAPI({ action: 'cancelBooking', bookingId: bookingId, phone: currentUser ? currentUser.phone : '' });
             if (res && res.status === 'success') { showToast(res.msg || 'Booking cancelled.', 'success'); setTimeout(function(){ loadMyBookings(); }, 800); }
-            else { showToast((res && res.msg) || 'Cancellation failed. Contact support@squadon.in', 'error'); if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; } 
-        } catch(e) { showToast('Error: ' + e.message, 'error'); btn.innerText = 'Cancel'; btn.disabled = false; }
+            else { showToast((res && res.msg) || 'Cancellation failed. Contact support@squadon.in', 'error'); if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; } }
+        } catch(e) { showToast('Error: ' + e.message, 'error'); if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; } }
     }
+        
     </script>
 </body>
 </html>
