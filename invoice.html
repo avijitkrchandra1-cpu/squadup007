@@ -1043,7 +1043,32 @@ function generateInvoice() {
 }
 
 // Run on load with defaults
-generateInvoice();
+  (function() {
+      var p = new URLSearchParams(window.location.search);
+      if (p.get('name')) {
+          document.getElementById('playerName').value = p.get('name') || '';
+          document.getElementById('playerPhone').value = p.get('phone') || '';
+          var sp = p.get('sport') || 'Cricket';
+          var sel = document.getElementById('sport');
+          for (var i = 0; i < sel.options.length; i++) {
+              if (sel.options[i].value === sp) { sel.selectedIndex = i; break; }
+          }
+          var rawDate = p.get('date') || '';
+          if (rawDate.includes('-') && rawDate.split('-')[0].length === 2) {
+              var parts = rawDate.split('-');
+              document.getElementById('playDate').value = parts[2] + '-' + parts[1] + '-' + parts[0];
+          } else {
+              document.getElementById('playDate').value = rawDate;
+          }
+          document.getElementById('venueName').value = p.get('venue') || '';
+          document.getElementById('timeSlot').value = p.get('time') || '';
+          document.getElementById('players').value = parseInt(p.get('players')) || 1;
+          // Back-calculate base fee: paid = baseFee × 1.20 commission × 1.18 GST = baseFee × 1.416
+          var paid = parseFloat(p.get('amount')) || 0;
+          document.getElementById('baseFee').value = paid > 0 ? Math.round(paid / 1.416) : 179;
+      }
+      generateInvoice();
+  })();
 </script>
 </body>
 </html>
