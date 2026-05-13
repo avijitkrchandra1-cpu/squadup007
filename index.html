@@ -1453,7 +1453,25 @@
         if (btn) { btn.innerText = 'Cancelling...'; btn.disabled = true; }
         try {
             var res = await fetchAPI({ action: 'cancelBooking', bookingId: bookingId, phone: currentUser ? currentUser.phone : '' });
-            if (res && res.status === 'success') { showToast(res.msg || 'Booking cancelled.', 'success'); setTimeout(function(){ loadMyBookings(); }, 800); }
+            if (res && res.status === 'success') {
+    showToast(res.msg || 'Booking cancelled.', 'success');
+    // Remove from local cache immediately so UI updates without waiting for sync
+    window.activeBookings = window.activeBookings.filter(function(ab) {
+        return (ab.bookingId || ab.id || ab['ID'] || '').toString() !== bookingId;
+    });
+    setTimeout(function(){
+        // Also re-sync from server then reload
+        fetchAPI({ action: 'sync' }).then(function(r) {
+            if (r && r.status === 'success') {
+                window.activeBookings = r.bookings || [];
+                window.venues = r.venues || [];
+            }
+            loadMyBookings();
+        }).catch(function() {
+            loadMyBookings();
+        });
+    }, 500);
+}
             else { showToast((res && res.msg) || 'Cancellation failed. Contact support@squadon.in', 'error'); if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; } }
         } catch(e) { showToast('Error: ' + e.message, 'error'); if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; } }
     }
