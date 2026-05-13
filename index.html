@@ -1136,7 +1136,14 @@
         setTimeout(function(){ overlay.classList.remove('opacity-0','pointer-events-none'); }, 10);
         checkAvailability(); checkHappyHour();
     }
-    function closeSheet() { var o = document.getElementById('modal-backdrop'); o.classList.add('opacity-0','pointer-events-none'); setTimeout(function(){ o.classList.add('hidden'); }, 400); }
+        function closeSheet() {
+            var o = document.getElementById('modal-backdrop'); 
+            o.classList.add('opacity-0','pointer-events-none'); 
+            setTimeout(function(){ o.classList.add('hidden'); }, 400);
+            // Always reset button when sheet closes
+            var btn = document.getElementById('main-deploy-btn');
+            if (btn) { btn.innerText = 'Confirm Booking'; btn.disabled = false; btn.classList.remove('opacity-50','cursor-wait'); }
+        }
     function closeSheetAndReset() {
         closeSheet();
         setTimeout(function() { document.getElementById('booking-form-content').classList.remove('hidden'); document.getElementById('booking-success-screen').classList.add('hidden'); document.getElementById('booking-success-screen').classList.remove('flex'); }, 400);
