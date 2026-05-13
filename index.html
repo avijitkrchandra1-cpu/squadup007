@@ -1334,6 +1334,22 @@
 
 rzp.open();
 
+// Poll every 500ms — reset button as soon as Razorpay modal disappears
+var pollInterval = setInterval(function() {
+    var rzpContainer = document.querySelector('.razorpay-container');
+    if (!rzpContainer || rzpContainer.style.display === 'none') {
+        clearInterval(pollInterval);
+        if (btn.innerText === 'Processing...' || btn.innerText === 'Verifying...') {
+            btn.innerText = 'Confirm Booking';
+            btn.disabled = false;
+            btn.classList.remove('opacity-50','cursor-wait');
+        }
+    }
+}, 500);
+
+// Clear poll after 10 minutes
+setTimeout(function(){ clearInterval(pollInterval); }, 600000);
+
         } catch(e) {
             showToast('Checkout error: '+e.message,'error');
             btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait');
