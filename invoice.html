@@ -1046,7 +1046,9 @@ function generateInvoice() {
   (function() {
       var p = new URLSearchParams(window.location.search);
       if (p.get('name')) {
-          document.getElementById('playerName').value = p.get('name') || '';
+    // Hide controls bar — invoice opened from a booking, not manual
+    document.querySelector('.controls').style.display = 'none';
+    document.getElementById('playerName').value = p.get('name') || '';
           document.getElementById('playerPhone').value = p.get('phone') || '';
           var sp = p.get('sport') || 'Cricket';
           var sel = document.getElementById('sport');
