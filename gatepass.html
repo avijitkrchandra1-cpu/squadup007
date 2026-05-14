@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SquadOn — Entry Gatepass</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #06b6d4;
+    --cyan-dark: #0891b2;
+    --ink: #0a0a0a;
+    --ink-muted: #4a4a4a;
+    --ink-light: #8a8a8a;
+    --rule: #e0e0e0;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --green-border: #bbf7d0;
+    --white: #ffffff;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: #e8e8e4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px;
+    color: var(--ink);
+  }
+
+  /* ── PRINT BUTTON BAR ── */
+  .print-bar {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .btn-print {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 8px 20px;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .btn-print:hover { background: #333; }
+
+  /* ── PASS CARD ── */
+  .pass {
+    width: 100%;
+    max-width: 480px;
+    background: var(--white);
+    box-shadow: 0 4px 40px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  /* Top accent */
+  .pass::before {
+    content: '';
+    display: block;
+    height: 5px;
+    background: linear-gradient(90deg, var(--cyan) 0%, #6366f1 100%);
+  }
+
+  /* ── PASS HEADER ── */
+  .pass-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 28px 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .brand-name {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .brand-name span { color: var(--cyan); }
+  .brand-sub {
+    font-family: var(--mono);
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .pass-type {
+    text-align: right;
+  }
+  .pass-type-label {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .pass-type-sub {
+    font-family: var(--mono);
+    font-size: 8px;
+    font-weight: 500;
+    color: var(--ink-light);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  /* ── VALID BANNER ── */
+  .valid-banner {
+    background: var(--green-bg);
+    border-top: 1px solid var(--green-border);
+    border-bottom: 1px solid var(--green-border);
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .valid-check {
+    width: 28px;
+    height: 28px;
+    background: var(--green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .valid-text {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .valid-sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--green);
+    opacity: 0.7;
+    margin-top: 1px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── PLAYER SECTION ── */
+  .player-section {
+    padding: 20px 28px 0;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 18px;
+  }
+  .field-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cyan-dark);
+    margin-bottom: 4px;
+  }
+  .player-name {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .player-phone {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+  }
+
+  /* ── DETAILS GRID ── */
+  .details-section {
+    padding: 18px 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .detail-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .detail-row:last-child { margin-bottom: 0; }
+  .detail-row.full { grid-template-columns: 1fr; }
+  .detail-val {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .detail-val.venue {
+    font-size: 16px;
+    font-weight: 800;
+  }
+  .sport-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.25);
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--cyan-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  /* ── BOOKING ID SECTION ── */
+  .booking-id-section {
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: #fafafa;
+  }
+  .booking-id-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 4px;
+  }
+  .booking-id-val {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── BARCODE ── */
+  .barcode {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+  .bar {
+    width: 2px;
+    background: var(--ink);
+    border-radius: 1px;
+  }
+
+  /* ── FOOTER ── */
+  .pass-footer {
+    padding: 14px 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--ink);
+  }
+  .pass-footer span {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+  }
+  .pass-footer .right {
+    text-align: right;
+    color: rgba(255,255,255,0.7);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ── TEAR LINE ── */
+  .tear-line {
+    margin: 0 28px;
+    border: none;
+    border-top: 2px dashed var(--rule);
+    position: relative;
+  }
+  .tear-line::before,
+  .tear-line::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 16px;
+    height: 16px;
+    background: #e8e8e4;
+    border-radius: 50%;
+  }
+  .tear-line::before { left: -36px; }
+  .tear-line::after { right: -36px; }
+
+  /* ── STUB ── */
+  .stub {
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .stub-text {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--ink-light);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+  .no-amounts-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background: white; padding: 0; }
+    .print-bar { display: none; }
+    .pass { box-shadow: none; max-width: 100%; }
+    .tear-line::before, .tear-line::after { background: white; }
+    @page { margin: 10mm; size: A5; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PRINT BAR -->
+<div class="print-bar">
+  <button class="btn-print" onclick="window.print()">🖨 Print / Save as PDF</button>
+</div>
+
+<!-- GATEPASS -->
+<div class="pass">
+
+  <!-- HEADER -->
+  <div class="pass-header">
+    <div>
+      <div class="brand-name">Squad<span>On</span></div>
+      <div class="brand-sub">Kolkata's Elite Sports Network</div>
+    </div>
+    <div class="pass-type">
+      <div class="pass-type-label">Entry Pass</div>
+      <div class="pass-type-sub">Venue Access · Non-Transferable</div>
+    </div>
+  </div>
+
+  <!-- VALID BANNER -->
+  <div class="valid-banner">
+    <div class="valid-check">✓</div>
+    <div>
+      <div class="valid-text">Valid for Entry</div>
+      <div class="valid-sub">Show this pass to venue staff before entering</div>
+    </div>
+  </div>
+
+  <!-- PLAYER -->
+  <div class="player-section">
+    <div class="field-label">Pass Holder</div>
+    <div class="player-name" id="disp-name">Player Name</div>
+    <div class="player-phone" id="disp-phone">+91 XXXXXXXXXX</div>
+  </div>
+
+  <!-- BOOKING DETAILS -->
+  <div class="details-section">
+    <div class="detail-row full">
+      <div>
+        <div class="field-label">Venue</div>
+        <div class="detail-val venue" id="disp-venue">Arena Name</div>
+      </div>
+    </div>
+    <div class="detail-row">
+      <div>
+        <div class="field-label">Sport</div>
+        <div class="sport-badge" id="disp-sport">🏟 Sport</div>
+      </div>
+      <div>
+        <div class="field-label">Players</div>
+        <div class="detail-val" id="disp-players">1 Player</div>
+      </div>
+    </div>
+    <div class="detail-row">
+      <div>
+        <div class="field-label">Play Date</div>
+        <div class="detail-val" id="disp-date">—</div>
+      </div>
+      <div>
+        <div class="field-label">Time Slot</div>
+        <div class="detail-val" id="disp-time">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKING ID + BARCODE -->
+  <div class="booking-id-section">
+    <div>
+      <div class="booking-id-label">Booking Reference</div>
+      <div class="booking-id-val" id="disp-booking-id">SQD-00000000</div>
+    </div>
+    <div class="barcode" id="barcode"></div>
+  </div>
+
+  <!-- TEAR LINE -->
+  <hr class="tear-line">
+
+  <!-- STUB -->
+  <div class="stub">
+    <div class="stub-text">
+      This pass is valid only for the date &amp; time slot shown above.<br>
+      Non-transferable. For support: support@squadon.in
+    </div>
+    <div class="no-amounts-badge">📋 Entry Only</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="pass-footer">
+    <span>This pass does not contain any financial information.<br>This pass does not guarantee entry after slot time expires.</span>
+    <span class="right">SquadOn<br>TrendNexus India</span>
+  </div>
+
+</div>
+
+<script>
+const sportEmoji = {
+  Cricket:'🏏', Football:'⚽', Chess:'♟️',
+  Carrom:'🎯', Basketball:'🏀', Tennis:'🎾',
+  'Table Tennis':'🏓'
+};
+
+function formatDate(rawDate) {
+  if (!rawDate) return '—';
+  var d;
+  // YYYY-MM-DD
+  var iso = rawDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (iso) {
+    d = new Date(parseInt(iso[1]), parseInt(iso[2]) - 1, parseInt(iso[3]));
+  } else {
+    // DD-MM-YYYY
+    var dmy = rawDate.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+    if (dmy) {
+      d = new Date(parseInt(dmy[3]), parseInt(dmy[2]) - 1, parseInt(dmy[1]));
+    } else {
+      d = new Date(rawDate);
+    }
+  }
+  if (isNaN(d.getTime())) return rawDate;
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function generateBarcode(text) {
+  // CSS barcode from text char codes
+  var bars = '';
+  for (var i = 0; i < text.length; i++) {
+    var code = text.charCodeAt(i);
+    var heights = [60, 80, 50, 90, 40, 70, 55, 85, 45, 75];
+    var h = heights[code % 10];
+    bars += '<div class="bar" style="height:' + h + '%;"></div>';
+    if (i % 2 === 0) bars += '<div class="bar" style="height:30%;background:transparent;"></div>';
+  }
+  return bars;
+}
+
+(function() {
+  var p = new URLSearchParams(window.location.search);
+
+  var name    = p.get('name')      || 'Player';
+  var phone   = p.get('phone')     || '';
+  var venue   = p.get('venue')     || 'Arena';
+  var sport   = p.get('sport')     || 'Sport';
+  var rawDate = p.get('date')      || '';
+  var time    = p.get('time')      || '—';
+  var players = parseInt(p.get('players')) || 1;
+  var bid     = p.get('bookingId') || ('SQD-' + Math.floor(Math.random() * 90000000 + 10000000));
+
+  document.getElementById('disp-name').textContent    = name;
+  document.getElementById('disp-phone').textContent   = phone ? '+91 ' + phone : '';
+  document.getElementById('disp-venue').textContent   = venue;
+  document.getElementById('disp-sport').textContent   = (sportEmoji[sport] || '🏟') + ' ' + sport;
+  document.getElementById('disp-date').textContent    = formatDate(rawDate);
+  document.getElementById('disp-time').textContent    = time;
+  document.getElementById('disp-players').textContent = players + ' Player' + (players > 1 ? 's' : '');
+  document.getElementById('disp-booking-id').textContent = bid;
+  document.getElementById('barcode').innerHTML        = generateBarcode(bid);
+
+  document.title = 'SquadOn Gatepass — ' + venue;
+})();
+</script>
+</body>
+</html>
