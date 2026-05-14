@@ -958,8 +958,16 @@ function numberToWords(amount) {
 }
 
 function formatDate(isoDate) {
-  const d = new Date(isoDate);
-  return d.toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+  if (!isoDate) return 'Date not specified';
+  var d;
+  var ddmmyyyy = String(isoDate).match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+  if (ddmmyyyy) {
+    d = new Date(parseInt(ddmmyyyy[3]), parseInt(ddmmyyyy[2]) - 1, parseInt(ddmmyyyy[1]));
+  } else {
+    d = new Date(isoDate);
+  }
+  if (isNaN(d.getTime())) return String(isoDate);
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 function generateInvoiceNumber() {
