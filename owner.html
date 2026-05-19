@@ -131,6 +131,12 @@
             </div>
 
             <!-- REVENUE STATS -->
+            <!--
+                CHANGE: Removed "Total Revenue" (gross) stat entirely.
+                Owner now sees: Bookings | Your Revenue | Players Hosted | Waitlisted.
+                "Your Revenue" = turf owner's actual earning = totalBookingAmount × 0.8
+                The gross (which includes SquadOn's 20%) is never shown.
+            -->
             <div>
                 <div class="flex gap-2 mb-4 overflow-x-auto hide-scroll pb-1">
                     <button class="rev-tab active" onclick="setRevPeriod('today', this)">Today</button>
@@ -138,35 +144,35 @@
                     <button class="rev-tab" onclick="setRevPeriod('month', this)">This Month</button>
                     <button class="rev-tab" onclick="setRevPeriod('year', this)">This Year</button>
                 </div>
-                <!-- FIX: Removed "Per-Head Price" stat entirely — owners see total booking revenue only -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <div class="stat-card text-center">
                         <p class="text-2xl font-black text-white" id="rev-bookings">—</p>
                         <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1" id="rev-bookings-label">Bookings</p>
                     </div>
+                    <!-- CHANGE: This was "Total Revenue" showing gross. Now shows owner's net revenue only. -->
                     <div class="stat-card text-center">
-                        <p class="text-2xl font-black text-indigo-400" id="rev-gross">—</p>
-                        <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Total Revenue</p>
+                        <p class="text-2xl font-black text-cyan-400" id="rev-net">—</p>
+                        <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Your Revenue</p>
                     </div>
+                    <!-- CHANGE: "Players Hosted" replaces the old per-head price card. Counts total slots filled. -->
                     <div class="stat-card text-center">
-                        <p class="text-2xl font-black text-cyan-400" id="rev-share">—</p>
-                        <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Your Share (80%)</p>
+                        <p class="text-2xl font-black text-indigo-400" id="rev-players">—</p>
+                        <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Players Hosted</p>
                     </div>
                     <div class="stat-card text-center">
                         <p class="text-2xl font-black text-amber-400" id="rev-waitlist">—</p>
                         <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1">Waitlisted</p>
                     </div>
                 </div>
-                <!-- Revenue note -->
-                <p class="text-[10px] text-gray-600 mt-2 text-right font-medium">Revenue = total booking amount collected (not per-head slot price)</p>
             </div>
 
             <!-- 7-DAY REVENUE CHART -->
             <div class="card-luxe p-6 sm:p-8">
                 <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
                     <div>
+                        <!-- CHANGE: Subtitle no longer mentions "80% share" — framed as "your daily earnings" -->
                         <h3 class="text-base font-bold text-white">Daily Revenue — Last 7 Days</h3>
-                        <p class="text-xs text-gray-500 mt-0.5">Your 80% share per day (total booking value)</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Your earnings per day from bookings</p>
                     </div>
                     <span id="rev-chart-total" class="text-xs font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full"></span>
                 </div>
@@ -321,12 +327,31 @@
             return await res.json();
         }
 
-        // FIX: Reads totalBookingAmount first, then legacy aliases.
-        // Never reads per-head "price" from the venue object.
-        function getBookingRevenue(b) {
-            return parseInt(
+        /*
+         * REVENUE MODEL (per-head slot booking):
+         *
+         *   totalBookingAmount  = perHeadPrice × slotsBooked  (what SquadOn collects)
+         *   ownerRevenue        = totalBookingAmount × 0.8     (turf owner's actual earning)
+         *   squadOnCut          = totalBookingAmount × 0.2     (SquadOn's platform fee — NOT shown to owner)
+         *
+         * The owner's "perHeadPrice" is therefore: venuePrice × 0.8
+         * The owner NEVER sees the gross totalBookingAmount — only their net ownerRevenue.
+         *
+         * getOwnerRevenue(b) is the single source of truth for any revenue figure shown in the UI.
+         */
+        function getOwnerRevenue(b) {
+            // totalBookingAmount is what the player paid (includes SquadOn's 20%).
+            // We return only the owner's 80% of that.
+            var gross = parseInt(
                 b.totalBookingAmount || b.totalamount || b.amount || 0
             ) || 0;
+            return Math.round(gross * 0.8);
+        }
+
+        // Convenience: owner's revenue from a ledger row (which already has totalBookingAmount)
+        function getLedgerOwnerRevenue(l) {
+            var gross = parseInt(l.totalBookingAmount) || 0;
+            return Math.round(gross * 0.8);
         }
 
         function getLocalISODate() {
@@ -343,8 +368,6 @@
 
         // ==================== LOGIN / AUTO-LOGIN ====================
         document.addEventListener('DOMContentLoaded', async function() {
-            // FIX: Only auto-login if role is explicitly owner or admin.
-            // Never auto-login a plain 'player' session from index.html.
             var ownerSaved  = sessionStorage.getItem('squadonOwnerSession');
             var playerSaved = sessionStorage.getItem('squadonUser');
             var candidate   = null;
@@ -356,7 +379,6 @@
                 if (pUser && (pUser.role === 'owner' || pUser.role === 'admin')) {
                     candidate = pUser;
                 }
-                // If player, do NOT auto-login — fall through to login screen
             }
 
             if (candidate && (candidate.role === 'owner' || candidate.role === 'admin')) {
@@ -388,7 +410,6 @@
                     currentUser = res.user;
                     sessionStorage.setItem('squadonOwnerSession', JSON.stringify(currentUser));
 
-                    // FIX: Store venues and bookings from login response (no per-head price in venues)
                     if (res.venues)   window.venues      = res.venues;
                     if (res.bookings) window.allBookings = res.bookings;
 
@@ -414,7 +435,6 @@
             el.classList.remove('hidden');
         }
 
-        // FIX: Clears BOTH sessions to prevent auto-login as wrong role
         function logout() {
             sessionStorage.removeItem('squadonOwnerSession');
             sessionStorage.removeItem('squadonUser');
@@ -442,13 +462,9 @@
             if (btn) { btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-1"></i><span class="hidden sm:inline">Syncing...</span>'; btn.disabled = true; }
 
             try {
-                // FIX: For the owner portal sync we call the regular sync but the
-                // GAS handleSync() still includes per-head price for player-facing use.
-                // We intentionally discard the price field on the client side so it
-                // is never rendered anywhere in the owner UI.
                 var res = await fetchAPI({ action: 'sync' });
                 if (res && res.status === 'success') {
-                    // Strip per-head price before storing locally
+                    // Strip the per-head price field so it never surfaces in the UI
                     window.venues = (res.venues || []).map(function(v) {
                         var vCopy = Object.assign({}, v);
                         delete vCopy.price;
@@ -474,10 +490,30 @@
             if (currentUser.role === 'admin') {
                 myVenues = window.venues;
             } else {
-                myVenues = window.venues.filter(function(v) {
+                /*
+                 * MULTI-COURT MATCHING:
+                 * A manager is assigned to a location (e.g. "New Alipore"), not individual courts.
+                 * Step 1: find any venue row where managerPhone matches — collect their locations.
+                 * Step 2: include ALL venue rows sharing those locations.
+                 * This means one manager phone covers TurfXL Full Ground, Pickleball 1–4, Skyball etc.
+                 * at the same site automatically, without needing the phone on every row.
+                 */
+                var directMatches = window.venues.filter(function(v) {
                     return v.managerPhone === currentUser.phone || v.manager === currentUser.phone;
                 });
-                if (myVenues.length === 0) {
+
+                if (directMatches.length > 0) {
+                    // Collect all unique locations this manager is assigned to
+                    var managerLocs = directMatches.map(function(v) {
+                        return (v.loc || '').toString().trim().toLowerCase();
+                    }).filter(function(loc, i, arr) { return loc && arr.indexOf(loc) === i; });
+
+                    // Include all courts at those locations
+                    myVenues = window.venues.filter(function(v) {
+                        return managerLocs.indexOf((v.loc || '').toString().trim().toLowerCase()) !== -1;
+                    });
+                } else {
+                    // No assigned venues — show all (fallback for unassigned managers)
                     myVenues = window.venues;
                     if (window.venues.length > 0) {
                         showToast('No venues assigned to your phone. Showing all venues.', 'info');
@@ -489,12 +525,33 @@
             var prevVal  = activeVenue ? activeVenue.name : null;
             select.innerHTML = '';
 
+            // Group courts by location with an optgroup for readability
+            var locGroups = {};
             myVenues.forEach(function(v) {
-                var opt = document.createElement('option');
-                opt.value     = v.name;
-                // FIX: Display shows sport + name + location only — NO price
-                opt.innerText = (v.sport || '') + ' — ' + (v.name || '') + ' (' + (v.loc || '') + ')';
-                select.appendChild(opt);
+                var loc = (v.loc || 'Other').toString().trim();
+                if (!locGroups[loc]) locGroups[loc] = [];
+                locGroups[loc].push(v);
+            });
+
+            Object.keys(locGroups).sort().forEach(function(loc) {
+                var group = locGroups[loc];
+                // Only wrap in optgroup if there are multiple courts at this location
+                if (group.length > 1) {
+                    var og = document.createElement('optgroup');
+                    og.label = loc;
+                    group.forEach(function(v) {
+                        var opt = document.createElement('option');
+                        opt.value     = v.name;
+                        opt.innerText = (v.sport || '') + ' — ' + (v.name || '');
+                        og.appendChild(opt);
+                    });
+                    select.appendChild(og);
+                } else {
+                    var opt = document.createElement('option');
+                    opt.value     = group[0].name;
+                    opt.innerText = (group[0].sport || '') + ' — ' + (group[0].name || '') + ' (' + loc + ')';
+                    select.appendChild(opt);
+                }
             });
 
             if (prevVal && myVenues.find(function(v){ return v.name === prevVal; })) {
@@ -553,7 +610,6 @@
             var fDate      = isoToDisplay(dateISO);
             var totalSlots = parseInt(activeVenue.cap) || 10;
 
-            // FIX: use normalised field names from GAS v7.1
             var booked = window.allBookings.filter(function(b) {
                 var bVenue  = (b.venue || '').toString();
                 var bDate   = (b.playDate || b['Play Date'] || '').toString();
@@ -596,9 +652,8 @@
 
         function getBookingsForPeriod(period) {
             if (!activeVenue) return [];
-            var now   = new Date();
+            var now = new Date();
 
-            // FIX: Use normalised field names; filter out waitlist & blocks (£0 revenue)
             return window.allBookings.filter(function(b) {
                 var bVenue  = (b.venue || '').toString();
                 var bMethod = (b.method || b.payMethod || '').toString();
@@ -639,9 +694,15 @@
             if (!activeVenue) return;
             var periodBooks = getBookingsForPeriod(currentRevPeriod);
 
-            // FIX: sum totalBookingAmount (full booking value), not per-head price
-            var gross = periodBooks.reduce(function(s, b) { return s + getBookingRevenue(b); }, 0);
-            var share = Math.round(gross * 0.8);
+            /*
+             * CHANGE: ownerRevenue replaces both "gross" and "share" stats.
+             * The owner sees ONE revenue number — what they actually earn.
+             * totalBookingAmount × 0.8 = owner's net (SquadOn's 20% is already deducted silently).
+             */
+            var ownerRevenue = periodBooks.reduce(function(s, b) { return s + getOwnerRevenue(b); }, 0);
+
+            // Count total players hosted (sum of slots across all bookings in period)
+            var playersHosted = periodBooks.reduce(function(s, b) { return s + (parseInt(b.slots) || 1); }, 0);
 
             var waitlist = (window.allBookings || []).filter(function(b) {
                 return (b.venue || '').toString() === activeVenue.name &&
@@ -651,16 +712,16 @@
             var labels = { today: 'Today', week: 'This Week', month: 'This Month', year: 'This Year' };
             document.getElementById('rev-bookings-label').innerText = 'Bookings (' + (labels[currentRevPeriod] || '') + ')';
             document.getElementById('rev-bookings').innerText = periodBooks.length;
-            document.getElementById('rev-gross').innerText    = '₹' + gross.toLocaleString('en-IN');
-            document.getElementById('rev-share').innerText    = '₹' + share.toLocaleString('en-IN');
+            document.getElementById('rev-net').innerText      = '₹' + ownerRevenue.toLocaleString('en-IN');
+            document.getElementById('rev-players').innerText  = playersHosted;
             document.getElementById('rev-waitlist').innerText = waitlist;
         }
 
         function renderRevenueChart() {
             if (!activeVenue) return;
-            var chart          = document.getElementById('rev-chart');
-            var days           = [];
-            var totalWeekShare = 0;
+            var chart         = document.getElementById('rev-chart');
+            var days          = [];
+            var totalWeekNet  = 0;
 
             for (var i = 6; i >= 0; i--) {
                 var d = new Date(); d.setDate(d.getDate() - i);
@@ -675,20 +736,20 @@
                         && bMethod !== 'Offline Block (Owner)';
                 });
 
-                // FIX: use totalBookingAmount for chart bars
-                var dayGross = dayBooks.reduce(function(s, b) { return s + getBookingRevenue(b); }, 0);
-                var dayShare = Math.round(dayGross * 0.8);
-                totalWeekShare += dayShare;
-                days.push({ label: label, share: dayShare });
+                // CHANGE: chart bars show owner's net revenue only (no gross)
+                var dayNet = dayBooks.reduce(function(s, b) { return s + getOwnerRevenue(b); }, 0);
+                totalWeekNet += dayNet;
+                days.push({ label: label, net: dayNet });
             }
 
-            var maxShare = Math.max.apply(null, days.map(function(d){ return d.share; })) || 1;
-            document.getElementById('rev-chart-total').innerText = '7-day share: ₹' + totalWeekShare.toLocaleString('en-IN');
+            var maxNet = Math.max.apply(null, days.map(function(d){ return d.net; })) || 1;
+            // CHANGE: "7-day revenue" label — no mention of "80% share"
+            document.getElementById('rev-chart-total').innerText = '7-day revenue: ₹' + totalWeekNet.toLocaleString('en-IN');
 
             chart.innerHTML = days.map(function(d) {
-                var pct = Math.max(4, Math.round((d.share / maxShare) * 100));
+                var pct = Math.max(4, Math.round((d.net / maxNet) * 100));
                 return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">' +
-                    '<span style="font-size:9px;color:#94a3b8;font-weight:700">' + (d.share > 0 ? '₹' + d.share : '—') + '</span>' +
+                    '<span style="font-size:9px;color:#94a3b8;font-weight:700">' + (d.net > 0 ? '₹' + d.net : '—') + '</span>' +
                     '<div class="rev-bar" style="width:100%;height:' + pct + '%"></div>' +
                     '<span style="font-size:8px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;text-align:center">' + d.label + '</span>' +
                 '</div>';
@@ -799,20 +860,21 @@
                 return;
             }
 
-            // FIX: use normalised keys from GAS v7.1 getLedger response
             var paid    = ledger.filter(function(l){ return l.method !== 'Standby Waitlist' && l.method !== 'Offline Block (Owner)'; });
             var blocks  = ledger.filter(function(l){ return l.method === 'Offline Block (Owner)'; });
             var waiters = ledger.filter(function(l){ return l.method === 'Standby Waitlist'; });
 
-            // FIX: sum totalBookingAmount (full booking revenue), not per-head
-            var gross = paid.reduce(function(s, l) {
-                return s + (parseInt(l.totalBookingAmount) || 0);
+            /*
+             * CHANGE: Summary strip shows "Your Revenue" (ownerNet) instead of gross.
+             * Owner never sees the raw totalBookingAmount.
+             */
+            var ownerNet = paid.reduce(function(s, l) {
+                return s + getLedgerOwnerRevenue(l);
             }, 0);
-            var share = Math.round(gross * 0.8);
 
             summaryEl.classList.remove('hidden');
             summaryEl.innerHTML =
-                '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-cyan-400">₹' + share.toLocaleString('en-IN') + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Your Share</p></div>' +
+                '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-cyan-400">₹' + ownerNet.toLocaleString('en-IN') + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Your Revenue</p></div>' +
                 '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-red-400">' + blocks.length + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Offline Blocks</p></div>' +
                 '<div class="bg-[#0a0a0a] border border-white/5 rounded-xl p-3 text-center"><p class="text-lg font-black text-amber-400">' + waiters.length + '</p><p class="text-[10px] text-gray-500 uppercase font-bold mt-0.5">Waitlisted</p></div>';
 
@@ -826,15 +888,17 @@
                 if (meth === 'Token')                  badgeClass = 'badge-token';
                 if (meth === 'Split Pay')              badgeClass = 'badge-split';
 
-                // FIX: Use normalised field names from GAS v7.1
                 var timeStr  = (l.timeSlot || '—').toString();
                 var nameStr  = (l.name     || 'Unknown').toString();
                 var phoneStr = (l.phone    || '').toString();
                 var slots    = parseInt(l.slots) || 1;
 
-                // FIX: owner's share based on totalBookingAmount (full revenue), not per-head
-                var bookingAmt = parseInt(l.totalBookingAmount) || 0;
-                var ownerShare = Math.round(bookingAmt * 0.8);
+                /*
+                 * CHANGE: Each ledger row shows only ownerRevenue (net).
+                 * The raw totalBookingAmount is computed but never displayed.
+                 * Label is "Your Revenue" — no mention of percentage.
+                 */
+                var ownerRevenue = getLedgerOwnerRevenue(l);
 
                 var slotsText = slots > 1 ? ' ×' + slots + ' slots' : '';
 
@@ -855,13 +919,16 @@
                             '<div class="min-w-0">' +
                                 '<p class="text-white font-bold text-sm truncate">' + timeStr + '</p>' +
                                 '<p class="text-xs text-gray-500 mt-0.5 truncate">' + nameStr + slotsText + (phoneStr ? ' • ' + phoneStr : '') + '</p>' +
-                                // FIX: Show full booking amount + owner share, never per-head price
-                                (bookingAmt > 0 ? '<p class="text-[10px] text-gray-600 mt-0.5">Booking: ₹' + bookingAmt.toLocaleString('en-IN') + ' → Your share: ₹' + ownerShare.toLocaleString('en-IN') + '</p>' : '') +
+                                /*
+                                 * CHANGE: Was "Booking: ₹X → Your share: ₹Y" (exposed gross).
+                                 * Now shows only "Your Revenue: ₹Y" — clean, no gross amount visible.
+                                 */
+                                (ownerRevenue > 0 ? '<p class="text-[10px] text-gray-600 mt-0.5">Your Revenue: ₹' + ownerRevenue.toLocaleString('en-IN') + '</p>' : '') +
                             '</div>' +
                         '</div>' +
                         '<div class="flex items-center gap-3 flex-shrink-0 ml-12 sm:ml-0">' +
                             '<span class="badge ' + badgeClass + '">' + meth + '</span>' +
-                            (ownerShare > 0 ? '<span class="text-xs font-black text-white whitespace-nowrap">₹' + ownerShare.toLocaleString('en-IN') + '</span>' : '') +
+                            (ownerRevenue > 0 ? '<span class="text-xs font-black text-white whitespace-nowrap">₹' + ownerRevenue.toLocaleString('en-IN') + '</span>' : '') +
                             waHtml +
                         '</div>' +
                     '</div>';
@@ -884,12 +951,13 @@
                 return;
             }
 
-            // FIX: CSV columns use totalBookingAmount, no per-head price column
-            var headers = ['Booking ID', 'Time Slot', 'Player Name', 'Phone', 'Slots', 'Method',
-                           'Total Booking Amount', 'Your Share (80%)'];
+            /*
+             * CHANGE: CSV no longer has a "Total Booking Amount" (gross) column.
+             * Only "Your Revenue" is exported — owner cannot reconstruct SquadOn's margin from the CSV.
+             */
+            var headers = ['Booking ID', 'Time Slot', 'Player Name', 'Phone', 'Slots', 'Method', 'Your Revenue'];
             var rows = ledger.map(function(l) {
-                var bookingAmt = parseInt(l.totalBookingAmount) || 0;
-                var ownerShare = Math.round(bookingAmt * 0.8);
+                var ownerRevenue = getLedgerOwnerRevenue(l);
                 return [
                     l.bookingId || '',
                     l.timeSlot  || '',
@@ -897,8 +965,7 @@
                     l.phone     || '',
                     l.slots     || '',
                     l.method    || '',
-                    '₹' + bookingAmt,
-                    '₹' + ownerShare
+                    '₹' + ownerRevenue
                 ].map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
             });
 
