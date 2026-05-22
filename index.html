@@ -157,26 +157,16 @@
                 <h2 class="text-4xl font-black tracking-premium text-white">Squad<span class="text-cyan-400 luxe-shadow">On</span></h2>
                 <p id="auth-subtitle" class="text-gray-400 text-sm mt-2 font-medium">Please login to continue.</p>
             </div>
-
             <!-- LOGIN BOX -->
             <div id="login-box" class="space-y-5">
-                <div>
-                    <label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Mobile Number or Email</label>
-                    <input type="text" id="login-id" placeholder="your@email.com or mobile number" class="input-luxe" onkeydown="if(event.key==='Enter') handleLogin()">
-                </div>
-                <div>
-                    <label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Password</label>
-                    <input type="password" id="login-pass" placeholder="Your password" class="input-luxe" onkeydown="if(event.key==='Enter') handleLogin()">
-                </div>
+                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Mobile Number or Email</label><input type="text" id="login-id" placeholder="your@email.com or mobile number" class="input-luxe" onkeydown="if(event.key==='Enter') handleLogin()"></div>
+                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Password</label><input type="password" id="login-pass" placeholder="Your password" class="input-luxe" onkeydown="if(event.key==='Enter') handleLogin()"></div>
                 <button onclick="handleLogin()" id="login-btn" class="w-full py-4 btn-luxe text-lg mt-3">Login</button>
                 <div class="flex justify-between items-center pt-4 border-t border-white/5 mt-6">
                     <p onclick="showForgotStep(1)" class="text-xs text-gray-500 font-bold cursor-pointer hover:text-white transition">Forgot Password?</p>
                 </div>
-                <div class="text-center mt-4">
-                    <p onclick="toggleAuth('register')" class="text-xs text-cyan-400 font-bold cursor-pointer hover:underline">Create New Account</p>
-                </div>
+                <div class="text-center mt-4"><p onclick="toggleAuth('register')" class="text-xs text-cyan-400 font-bold cursor-pointer hover:underline">Create New Account</p></div>
             </div>
-
             <!-- REGISTER BOX -->
             <form id="register-box" class="hidden space-y-4" onsubmit="event.preventDefault(); handleRegister();">
                 <input type="text" id="reg-name" placeholder="Full Name *" class="input-luxe py-3.5 text-sm" required>
@@ -185,62 +175,26 @@
                     <input type="email" id="reg-email" placeholder="Email *" class="input-luxe py-3.5 text-sm" required>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="relative">
-                        <input type="date" id="reg-dob" class="input-luxe py-3.5 text-sm text-gray-300" placeholder="dd-mm-yyyy" required>
-                        <label class="absolute -top-2 left-3 text-[9px] text-cyan-400 font-bold uppercase tracking-wide bg-slate-900 px-1">Date of Birth</label>
-                    </div>
-                    <select id="reg-blood" class="input-luxe py-3.5 text-sm text-gray-300" required>
-                        <option value="" disabled selected>Blood Group *</option>
-                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                        <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
-                    </select>
+                    <div class="relative"><input type="date" id="reg-dob" class="input-luxe py-3.5 text-sm text-gray-300" placeholder="dd-mm-yyyy" required><label class="absolute -top-2 left-3 text-[9px] text-cyan-400 font-bold uppercase tracking-wide bg-slate-900 px-1">Date of Birth</label></div>
+                    <select id="reg-blood" class="input-luxe py-3.5 text-sm text-gray-300" required><option value="" disabled selected>Blood Group *</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <select id="reg-sport" class="input-luxe py-3.5 text-sm text-gray-300" required>
-                        <option value="" disabled selected>Primary Sport *</option>
-                        <option value="Football">Football</option><option value="Cricket">Cricket</option>
-                        <option value="Chess">Chess</option><option value="Carrom">Carrom</option>
-                        <option value="Basketball">Basketball</option><option value="Tennis">Tennis</option>
-                        <option value="Table Tennis">Table Tennis</option>
-                    </select>
-                    <select id="reg-skill" class="input-luxe py-3.5 text-sm text-gray-300" required>
-                        <option value="" disabled selected>Skill Level *</option>
-                        <option value="Beginner">Beginner</option>
-                        <option value="Intermediate">Intermediate</option>
-                        <option value="Pro">Pro Player</option>
-                    </select>
+                    <select id="reg-sport" class="input-luxe py-3.5 text-sm text-gray-300" required><option value="" disabled selected>Primary Sport *</option><option value="Football">Football</option><option value="Cricket">Cricket</option><option value="Chess">Chess</option><option value="Carrom">Carrom</option><option value="Basketball">Basketball</option><option value="Tennis">Tennis</option><option value="Table Tennis">Table Tennis</option></select>
+                    <select id="reg-skill" class="input-luxe py-3.5 text-sm text-gray-300" required><option value="" disabled selected>Skill Level *</option><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Pro">Pro Player</option></select>
                 </div>
                 <input type="password" id="reg-pass" placeholder="Create Password * (min 8 chars)" class="input-luxe py-3.5 text-sm" minlength="8" required>
                 <button type="submit" id="reg-btn" class="w-full py-4 btn-luxe mt-3">Sign Up & Join SquadOn</button>
                 <p onclick="toggleAuth('login')" class="text-center text-xs text-gray-500 cursor-pointer mt-3 hover:text-white transition">Already registered? Login</p>
             </form>
-
-            <!-- FORGOT PASSWORD — STEP 1 -->
+            <!-- FORGOT PASSWORD STEPS -->
             <div id="forgot-step-1" class="hidden space-y-5">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-cyan-500/10 border border-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i class="fas fa-mobile-alt text-2xl text-cyan-400"></i>
-                    </div>
-                    <p class="text-white font-bold">Reset via OTP</p>
-                    <p class="text-xs text-gray-400 mt-1">We'll send a 6-digit OTP to your registered mobile number</p>
-                </div>
-                <div>
-                    <label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Registered Mobile Number</label>
-                    <input type="tel" id="fp-phone" placeholder="10-digit mobile number" class="input-luxe" maxlength="10" onkeydown="if(event.key==='Enter') sendForgotOTP()">
-                </div>
+                <div class="text-center mb-6"><div class="w-16 h-16 bg-cyan-500/10 border border-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-3"><i class="fas fa-mobile-alt text-2xl text-cyan-400"></i></div><p class="text-white font-bold">Reset via OTP</p><p class="text-xs text-gray-400 mt-1">We'll send a 6-digit OTP to your registered mobile number</p></div>
+                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Registered Mobile Number</label><input type="tel" id="fp-phone" placeholder="10-digit mobile number" class="input-luxe" maxlength="10" onkeydown="if(event.key==='Enter') sendForgotOTP()"></div>
                 <button onclick="sendForgotOTP()" id="fp-send-btn" class="w-full py-4 btn-luxe text-sm font-bold uppercase tracking-widest">Send OTP</button>
                 <p onclick="showForgotStep(0)" class="text-center text-xs text-gray-500 cursor-pointer hover:text-white transition">← Back to Login</p>
             </div>
-
-            <!-- FORGOT PASSWORD — STEP 2 -->
             <div id="forgot-step-2" class="hidden space-y-5">
-                <div class="text-center mb-4">
-                    <div class="w-16 h-16 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i class="fas fa-shield-halved text-2xl text-green-400"></i>
-                    </div>
-                    <p class="text-white font-bold">Enter OTP</p>
-                    <p class="text-xs text-gray-400 mt-1">Sent to <span id="fp-phone-display" class="text-cyan-400 font-bold"></span></p>
-                </div>
+                <div class="text-center mb-4"><div class="w-16 h-16 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3"><i class="fas fa-shield-halved text-2xl text-green-400"></i></div><p class="text-white font-bold">Enter OTP</p><p class="text-xs text-gray-400 mt-1">Sent to <span id="fp-phone-display" class="text-cyan-400 font-bold"></span></p></div>
                 <div class="flex gap-2 justify-center" id="otp-inputs-container">
                     <input type="text" inputmode="numeric" maxlength="1" class="otp-input" oninput="otpMove(this,0)" onkeydown="otpBack(event,0)" onpaste="otpPaste(event)">
                     <input type="text" inputmode="numeric" maxlength="1" class="otp-input" oninput="otpMove(this,1)" onkeydown="otpBack(event,1)">
@@ -254,24 +208,10 @@
                 <p onclick="resendOTP()" id="fp-resend-btn" class="text-center text-xs text-cyan-400 font-bold cursor-pointer hover:underline hidden">Resend OTP</p>
                 <p onclick="showForgotStep(1)" class="text-center text-xs text-gray-500 cursor-pointer hover:text-white transition">← Change Number</p>
             </div>
-
-            <!-- FORGOT PASSWORD — STEP 3 -->
             <div id="forgot-step-3" class="hidden space-y-5">
-                <div class="text-center mb-4">
-                    <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <i class="fas fa-key text-2xl text-amber-400"></i>
-                    </div>
-                    <p class="text-white font-bold">Set New Password</p>
-                    <p class="text-xs text-gray-400 mt-1">Choose a strong password for your account</p>
-                </div>
-                <div>
-                    <label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">New Password (min 8 chars)</label>
-                    <input type="password" id="fp-newpass" placeholder="Enter new password" class="input-luxe" minlength="8">
-                </div>
-                <div>
-                    <label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Confirm New Password</label>
-                    <input type="password" id="fp-confirmpass" placeholder="Re-enter new password" class="input-luxe" onkeydown="if(event.key==='Enter') resetPassword()">
-                </div>
+                <div class="text-center mb-4"><div class="w-16 h-16 bg-amber-500/10 border border-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-3"><i class="fas fa-key text-2xl text-amber-400"></i></div><p class="text-white font-bold">Set New Password</p><p class="text-xs text-gray-400 mt-1">Choose a strong password for your account</p></div>
+                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">New Password (min 8 chars)</label><input type="password" id="fp-newpass" placeholder="Enter new password" class="input-luxe" minlength="8"></div>
+                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Confirm New Password</label><input type="password" id="fp-confirmpass" placeholder="Re-enter new password" class="input-luxe" onkeydown="if(event.key==='Enter') resetPassword()"></div>
                 <button onclick="resetPassword()" id="fp-reset-btn" class="w-full py-4 btn-luxe text-sm font-bold uppercase tracking-widest">Reset Password</button>
             </div>
         </div>
@@ -307,20 +247,13 @@
             <div id="marketing-sections">
                 <!-- HERO -->
                 <section class="relative w-full min-h-[85vh] h-auto py-24 lg:py-0 flex items-center overflow-hidden">
-                    <div class="absolute inset-0 bg-slate-900 z-0">
-                        <img src="https://images.unsplash.com/photo-1518610543666-419b4891157c?auto=format&fit=crop&w=1920&q=80" alt="" aria-hidden="true" class="w-full h-full object-cover opacity-20">
-                    </div>
-                    <video id="hero-video" autoplay loop muted playsinline preload="none" poster="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1920&q=30" class="absolute inset-0 w-full h-full object-cover z-0 opacity-80 pointer-events-none" aria-hidden="true">
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-playing-football-on-a-dark-field-41154-large.mp4" type="video/mp4">
-                    </video>
+                    <div class="absolute inset-0 bg-slate-900 z-0"><img src="https://images.unsplash.com/photo-1518610543666-419b4891157c?auto=format&fit=crop&w=1920&q=80" alt="" aria-hidden="true" class="w-full h-full object-cover opacity-20"></div>
+                    <video id="hero-video" autoplay loop muted playsinline preload="none" poster="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1920&q=30" class="absolute inset-0 w-full h-full object-cover z-0 opacity-80 pointer-events-none" aria-hidden="true"><source src="https://assets.mixkit.co/videos/preview/mixkit-playing-football-on-a-dark-field-41154-large.mp4" type="video/mp4"></video>
                     <div class="absolute inset-0 hero-overlay z-10 pointer-events-none"></div>
                     <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-20 w-full">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                             <div class="reveal-left">
-                                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-8">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse luxe-shadow"></span>
-                                    <span class="text-xs font-bold text-cyan-400 uppercase tracking-wide">Kolkata's Premium Network</span>
-                                </div>
+                                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-8"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse luxe-shadow"></span><span class="text-xs font-bold text-cyan-400 uppercase tracking-wide">Kolkata's Premium Network</span></div>
                                 <h2 class="text-5xl sm:text-6xl md:text-8xl font-black text-white leading-[0.95] tracking-premium mb-8">OWN THE<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-indigo-500">PITCH.</span></h2>
                                 <p class="text-xl text-slate-300 font-medium mb-12 max-w-xl leading-relaxed">Access the highest standard of sports venues instantly across Salt Lake, Behala, and New Town. Zero waiting, secure payments.</p>
                                 <div class="flex flex-wrap gap-5">
@@ -333,31 +266,11 @@
                                 <div class="mockup-frame w-[310px] h-[620px] bg-slate-900 transform rotate-[-3deg] cursor-pointer">
                                     <div class="mockup-notch"></div>
                                     <div class="mockup-inner pointer-events-none">
-                                        <div class="flex justify-between items-center mb-4">
-                                            <h3 class="font-black text-2xl tracking-premium">SquadOn</h3>
-                                            <div class="flex items-center gap-2">
-                                                <span class="coin-badge">🪙 120</span>
-                                                <div class="w-9 h-9 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-black text-sm border border-cyan-500/40">A</div>
-                                            </div>
-                                        </div>
-                                        <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 mb-4">
-                                            <div class="flex items-center gap-2">
-                                                <span class="happy-hour-badge">⚡ Happy Hour</span>
-                                                <span class="text-amber-400 text-xs font-bold">20% OFF — 6-8 AM</span>
-                                            </div>
-                                        </div>
-                                        <div class="bg-slate-800/60 rounded-xl p-4 mb-4 border border-slate-700/50">
-                                            <p class="text-[10px] text-cyan-400 font-bold uppercase mb-1 tracking-wide">Confirmed Booking</p>
-                                            <p class="font-bold text-white text-lg mb-1">Salt Lake Sportsplex</p>
-                                            <div class="flex justify-between text-xs text-gray-400"><span>Today, 8:00 PM</span><span class="font-bold text-white">₹359 / Head</span></div>
-                                        </div>
-                                        <div class="grid grid-cols-2 gap-3 mb-4">
-                                            <div class="bg-slate-800 h-24 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1">⚽</span><span class="text-xs font-bold text-gray-400 uppercase">Football</span></div>
-                                            <div class="bg-slate-800 h-24 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1">🏏</span><span class="text-xs font-bold text-gray-400 uppercase">Cricket</span></div>
-                                        </div>
-                                        <div class="mt-auto bg-gradient-to-r from-cyan-500 to-indigo-600 p-3 rounded-xl text-center">
-                                            <p class="font-bold text-white text-sm uppercase tracking-wide">Split Pay Active ✓</p>
-                                        </div>
+                                        <div class="flex justify-between items-center mb-4"><h3 class="font-black text-2xl tracking-premium">SquadOn</h3><div class="flex items-center gap-2"><span class="coin-badge">🪙 120</span><div class="w-9 h-9 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 font-black text-sm border border-cyan-500/40">A</div></div></div>
+                                        <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 mb-4"><div class="flex items-center gap-2"><span class="happy-hour-badge">⚡ Happy Hour</span><span class="text-amber-400 text-xs font-bold">20% OFF — 6-8 AM</span></div></div>
+                                        <div class="bg-slate-800/60 rounded-xl p-4 mb-4 border border-slate-700/50"><p class="text-[10px] text-cyan-400 font-bold uppercase mb-1 tracking-wide">Confirmed Booking</p><p class="font-bold text-white text-lg mb-1">Salt Lake Sportsplex</p><div class="flex justify-between text-xs text-gray-400"><span>Today, 8:00 PM</span><span class="font-bold text-white">₹359 / Head</span></div></div>
+                                        <div class="grid grid-cols-2 gap-3 mb-4"><div class="bg-slate-800 h-24 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1">⚽</span><span class="text-xs font-bold text-gray-400 uppercase">Football</span></div><div class="bg-slate-800 h-24 rounded-2xl border border-slate-700 flex flex-col items-center justify-center"><span class="text-3xl mb-1">🏏</span><span class="text-xs font-bold text-gray-400 uppercase">Cricket</span></div></div>
+                                        <div class="mt-auto bg-gradient-to-r from-cyan-500 to-indigo-600 p-3 rounded-xl text-center"><p class="font-bold text-white text-sm uppercase tracking-wide">Split Pay Active ✓</p></div>
                                     </div>
                                 </div>
                             </div>
@@ -381,31 +294,11 @@
                 <section class="py-32 relative overflow-hidden">
                     <div class="absolute -bottom-48 -left-48 w-[500px] h-[500px] bg-indigo-600/10 blur-[130px] rounded-full pointer-events-none"></div>
                     <div class="max-w-[90rem] mx-auto px-6 lg:px-12 relative z-10">
-                        <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 reveal pointer-events-none">
-                            <div class="mb-6 md:mb-0">
-                                <p class="text-cyan-400 font-bold tracking-wide text-xs uppercase mb-2">How It Works</p>
-                                <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium">Simple. Fast. Elite.</h2>
-                            </div>
-                            <p class="text-slate-400 font-medium max-w-md text-sm leading-relaxed">Search, book, and play in Kolkata's finest sports environments without the hassle.</p>
-                        </div>
+                        <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 reveal pointer-events-none"><div class="mb-6 md:mb-0"><p class="text-cyan-400 font-bold tracking-wide text-xs uppercase mb-2">How It Works</p><h2 class="text-4xl md:text-5xl font-black text-white tracking-premium">Simple. Fast. Elite.</h2></div><p class="text-slate-400 font-medium max-w-md text-sm leading-relaxed">Search, book, and play in Kolkata's finest sports environments without the hassle.</p></div>
                         <div class="grid grid-cols-1 md:grid-cols-5 gap-6 h-auto md:h-[450px]">
-                            <div class="card-luxe p-10 md:col-span-3 flex flex-col reveal pointer-events-none">
-                                <div class="w-20 h-20 bg-slate-800 rounded-3xl flex items-center justify-center border border-slate-700 text-3xl mb-8">🔍</div>
-                                <h3 class="text-2xl font-bold text-white mb-4">Find Your Arena</h3>
-                                <p class="text-slate-300 text-base leading-relaxed max-w-md">Browse real-time availability. Look for ⚡ Happy Hour slots to save up to 20%.</p>
-                            </div>
-                            <div class="card-luxe p-10 md:col-span-2 reveal pointer-events-none" style="transition-delay:150ms">
-                                <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center border border-slate-700 text-2xl mb-6">⚡</div>
-                                <h3 class="text-xl font-bold text-white mb-3">Instant Booking</h3>
-                                <p class="text-slate-400 text-sm leading-relaxed">Lock your slot instantly. Split pay with your squad or pay solo.</p>
-                            </div>
-                            <div class="card-luxe px-10 py-8 md:col-span-5 flex flex-col md:flex-row md:items-center md:justify-between reveal pointer-events-none" style="transition-delay:300ms">
-                                <div>
-                                    <h3 class="text-xl font-bold text-white mb-1">Step Onto the Pitch</h3>
-                                    <p class="text-slate-400 text-sm max-w-lg">Arrive at the verified arena, check in digitally, and focus on the game. Earn SquadOn Coins on every booking.</p>
-                                </div>
-                                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl mt-5 md:mt-0 luxe-shadow">🏆</div>
-                            </div>
+                            <div class="card-luxe p-10 md:col-span-3 flex flex-col reveal pointer-events-none"><div class="w-20 h-20 bg-slate-800 rounded-3xl flex items-center justify-center border border-slate-700 text-3xl mb-8">🔍</div><h3 class="text-2xl font-bold text-white mb-4">Find Your Arena</h3><p class="text-slate-300 text-base leading-relaxed max-w-md">Browse real-time availability. Look for ⚡ Happy Hour slots to save up to 20%.</p></div>
+                            <div class="card-luxe p-10 md:col-span-2 reveal pointer-events-none" style="transition-delay:150ms"><div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center border border-slate-700 text-2xl mb-6">⚡</div><h3 class="text-xl font-bold text-white mb-3">Instant Booking</h3><p class="text-slate-400 text-sm leading-relaxed">Lock your slot instantly. Split pay with your squad or pay solo.</p></div>
+                            <div class="card-luxe px-10 py-8 md:col-span-5 flex flex-col md:flex-row md:items-center md:justify-between reveal pointer-events-none" style="transition-delay:300ms"><div><h3 class="text-xl font-bold text-white mb-1">Step Onto the Pitch</h3><p class="text-slate-400 text-sm max-w-lg">Arrive at the verified arena, check in digitally, and focus on the game. Earn SquadOn Coins on every booking.</p></div><div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl mt-5 md:mt-0 luxe-shadow">🏆</div></div>
                         </div>
                     </div>
                 </section>
@@ -416,15 +309,12 @@
                     <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                             <div class="reveal-left">
-                                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
-                                    <span class="happy-hour-badge">⚡ NEW</span>
-                                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest ml-1">Dynamic Happy Hour Pricing</span>
-                                </div>
+                                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6"><span class="happy-hour-badge">⚡ NEW</span><span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest ml-1">Dynamic Happy Hour Pricing</span></div>
                                 <h2 class="text-4xl md:text-5xl font-black text-white tracking-premium mb-6 uppercase leading-tight">Play More.<br><span class="text-amber-400">Pay Less.</span></h2>
                                 <p class="text-slate-400 text-base md:text-lg leading-relaxed mb-8">Book during Happy Hours and save automatically — no codes, no hassle.</p>
                                 <div class="grid grid-cols-2 gap-4 mb-8">
                                     <div class="bg-white/5 border border-amber-500/20 rounded-2xl p-5 text-center"><p class="text-3xl font-black text-amber-400 mb-1">20%</p><p class="text-xs text-gray-400 font-bold uppercase">Early Bird</p><p class="text-xs text-gray-500 mt-1">6:00 AM – 8:00 AM</p></div>
-                                    <div class="bg-white/5 border border-amber-500/20 rounded-2xl p-5 text-center"><p class="text-3xl font-black text-amber-400 mb-1">15%</p><p class="text-xs text-gray-400 font-bold uppercase">Afternoon Special</p><p class="text-xs text-gray-500 mt-1">2:00 PM – 4:00 PM</p></div>
+                                    <div class="bg-white/5 border border-amber-500/20 rounded-2xl p-5 text-center"><p class="text-3xl font-black text-amber-400 mb-1">20%</p><p class="text-xs text-gray-400 font-bold uppercase">Afternoon Special</p><p class="text-xs text-gray-500 mt-1">1:00 PM – 4:00 PM</p></div>
                                 </div>
                                 <button onclick="document.getElementById('venues-section').scrollIntoView({behavior:'smooth'})" class="bg-amber-500 hover:bg-amber-400 text-black font-black px-8 py-4 rounded-xl transition text-sm uppercase tracking-widest w-full md:w-auto">Browse Happy Hour Slots</button>
                             </div>
@@ -495,51 +385,38 @@
                 </section>
             </div>
 
-            <!-- VENUES SECTION -->
+            <!-- ═══════════════════════════════════════════════════════
+                 VENUES SECTION — DRILL-DOWN BROWSER (PATCH 1 applied)
+                 Old flat grid + filter pills replaced with dd-shell
+                 ═══════════════════════════════════════════════════════ -->
             <section id="venues-section" class="py-20 bg-slate-950/40 border-t border-white/5 min-h-screen">
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
                     <div id="view-feed" class="block">
-                        <div class="flex flex-col xl:flex-row xl:items-center justify-between mb-8 reveal">
-                            <div class="mb-6 xl:mb-0 pr-10">
-                                <h2 class="text-4xl font-black text-white tracking-premium">Available Arenas</h2>
-                                <p class="text-slate-400 mt-1 font-medium text-sm">Real-time availability — Salt Lake, Behala, New Town, Jadavpur.</p>
-                            </div>
-                            <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
-                                <div class="relative w-full md:w-64">
-                                    <input type="text" id="venue-search" onkeyup="searchVenues(this.value)" placeholder="Search arenas or areas..." class="input-luxe py-2 px-4 pl-10 text-sm">
-                                    <i class="fas fa-search absolute left-4 top-3 text-gray-500"></i>
-                                </div>
-                                <div class="flex overflow-x-auto gap-3.5 hide-scroll pb-2.5 md:pb-0 w-full" id="sport-filters">
-                                    <button onclick="filterVenues('All', this)" class="filter-pill active">All</button>
-                                    <button onclick="filterVenues('Football', this)" class="filter-pill">Football</button>
-                                    <button onclick="filterVenues('Cricket', this)" class="filter-pill">Cricket</button>
-                                    <button onclick="filterVenues('Chess', this)" class="filter-pill">Chess</button>
-                                    <button onclick="filterVenues('Carrom', this)" class="filter-pill">Carrom</button>
-                                    <button onclick="filterVenues('Basketball', this)" class="filter-pill">Basketball</button>
-                                    <button onclick="filterVenues('Tennis', this)" class="filter-pill">Tennis</button>
-                                </div>
-                            </div>
+                        <div class="mb-6 reveal">
+                            <h2 class="text-4xl font-black text-white tracking-premium">Available Arenas</h2>
+                            <p class="text-slate-400 mt-1 font-medium text-sm">Real-time availability — Salt Lake, Behala, New Town, Jadavpur.</p>
                         </div>
-                        <div id="venue-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 reveal"></div>
+                        <!-- Drill-down shell — populated by initDrillDown() -->
+                        <div id="dd-shell">
+                            <div id="dd-breadcrumb"></div>
+                            <div id="dd-panel-locations"></div>
+                            <div id="dd-panel-grounds"  style="display:none"></div>
+                            <div id="dd-panel-sports"   style="display:none"></div>
+                            <div id="dd-panel-slots"    style="display:none"></div>
+                        </div>
                     </div>
                 </div>
             </section>
         </div>
-
         <!-- MY BOOKINGS VIEW -->
         <div id="view-my-bookings" class="hidden max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 w-full py-16">
-            <div class="flex items-center justify-between mb-10">
-                <div><h2 class="text-4xl font-black text-white tracking-premium">My Bookings</h2><p class="text-slate-400 mt-1 text-sm font-medium">Your upcoming and past slots.</p></div>
-                <div id="user-coins-display" class="coin-badge text-base px-4 py-2"></div>
-            </div>
+            <div class="flex items-center justify-between mb-10"><div><h2 class="text-4xl font-black text-white tracking-premium">My Bookings</h2><p class="text-slate-400 mt-1 text-sm font-medium">Your upcoming and past slots.</p></div><div id="user-coins-display" class="coin-badge text-base px-4 py-2"></div></div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 <div class="card-luxe p-6 text-center"><p class="text-3xl font-black text-white mb-1" id="stat-total-bookings">0</p><p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Total Bookings</p></div>
                 <div class="card-luxe p-6 text-center"><p class="text-3xl font-black text-amber-400 mb-1" id="stat-coins">0 🪙</p><p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Squad Coins</p></div>
                 <div class="card-luxe p-6 text-center"><p class="text-3xl font-black text-white mb-1" id="stat-spent">₹0</p><p class="text-[10px] text-gray-500 uppercase font-bold tracking-wide">Total Spent</p></div>
             </div>
-            <div id="bookings-list" class="space-y-4">
-                <div class="text-center py-24 text-slate-500 font-bold border-2 border-dashed border-white/10 rounded-3xl"><p class="text-4xl mb-4">📋</p><p>No bookings yet. <span class="text-cyan-400 cursor-pointer underline" onclick="switchTab('feed')">Book your first arena →</span></p></div>
-            </div>
+            <div id="bookings-list" class="space-y-4"><div class="text-center py-24 text-slate-500 font-bold border-2 border-dashed border-white/10 rounded-3xl"><p class="text-4xl mb-4">📋</p><p>No bookings yet. <span class="text-cyan-400 cursor-pointer underline" onclick="switchTab('feed')">Book your first arena →</span></p></div></div>
         </div>
 
         <!-- OTHER VIEWS -->
@@ -547,33 +424,16 @@
             <section class="relative w-full py-32 flex items-center overflow-hidden border-b border-white/5 bg-slate-900">
                 <div class="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1518610543666-419b4891157c?auto=format&fit=crop&w=1920&q=80" alt="" class="w-full h-full object-cover opacity-30 mix-blend-luminosity"></div>
                 <div class="absolute inset-0 bg-gradient-to-r from-[#020617] via-[#020617]/80 to-transparent z-10 pointer-events-none"></div>
-                <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-20 w-full">
-                    <div class="max-w-3xl reveal">
-                        <h2 class="text-5xl md:text-7xl font-black text-white tracking-premium leading-[1.1] mb-6">AcademyOS: <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Total Control.</span></h2>
-                        <p class="text-lg text-slate-300 mb-10 max-w-xl font-medium leading-relaxed">Stop managing your sports academy with spreadsheets and WhatsApp groups.</p>
-                        <button onclick="document.getElementById('academy-form-section').scrollIntoView({behavior:'smooth'})" class="btn-luxe px-10 py-5 text-base flex items-center gap-3 w-max">Request Demo</button>
-                    </div>
-                </div>
+                <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 relative z-20 w-full"><div class="max-w-3xl reveal"><h2 class="text-5xl md:text-7xl font-black text-white tracking-premium leading-[1.1] mb-6">AcademyOS: <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Total Control.</span></h2><p class="text-lg text-slate-300 mb-10 max-w-xl font-medium leading-relaxed">Stop managing your sports academy with spreadsheets and WhatsApp groups.</p><button onclick="document.getElementById('academy-form-section').scrollIntoView({behavior:'smooth'})" class="btn-luxe px-10 py-5 text-base flex items-center gap-3 w-max">Request Demo</button></div></div>
             </section>
             <section id="academy-form-section" class="py-24 border-t border-white/5 bg-gradient-to-b from-[#050505] to-slate-950 relative overflow-hidden">
                 <div class="max-w-[50rem] mx-auto px-6 sm:px-8 relative z-10 reveal">
                     <div class="card-luxe p-10 md:p-14 shadow-2xl">
                         <div class="text-center mb-10"><h2 class="text-3xl font-black text-white tracking-premium mb-3">Request a Live Demo</h2><p class="text-slate-400 text-sm">Our integration team will contact you within 24 hours.</p></div>
                         <form id="academy-lead-form" onsubmit="submitAcademyLead(event)" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Academy Name *</label><input type="text" id="acad-name" required placeholder="Salt Lake Strikers" class="input-luxe text-sm py-3.5"></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Location *</label><input type="text" id="acad-loc" required placeholder="Sector V, Kolkata" class="input-luxe text-sm py-3.5"></div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Owner Name *</label><input type="text" id="acad-owner" required class="input-luxe text-sm py-3.5"></div>
-                                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Contact Number *</label><input type="tel" id="acad-phone" required placeholder="10-digit" pattern="[0-9]{10}" class="input-luxe text-sm py-3.5"></div>
-                            </div>
-                            <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Primary Sport *</label>
-                                <select id="acad-sport" required class="input-luxe text-sm py-3.5 text-gray-300">
-                                    <option value="" disabled selected>Select a sport...</option>
-                                    <option value="Cricket">Cricket</option><option value="Football">Football</option><option value="Tennis">Tennis</option><option value="Multi-Sport">Multi-Sport</option>
-                                </select>
-                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Academy Name *</label><input type="text" id="acad-name" required placeholder="Salt Lake Strikers" class="input-luxe text-sm py-3.5"></div><div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Location *</label><input type="text" id="acad-loc" required placeholder="Sector V, Kolkata" class="input-luxe text-sm py-3.5"></div></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Owner Name *</label><input type="text" id="acad-owner" required class="input-luxe text-sm py-3.5"></div><div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Contact Number *</label><input type="tel" id="acad-phone" required placeholder="10-digit" pattern="[0-9]{10}" class="input-luxe text-sm py-3.5"></div></div>
+                            <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-2 tracking-wide">Primary Sport *</label><select id="acad-sport" required class="input-luxe text-sm py-3.5 text-gray-300"><option value="" disabled selected>Select a sport...</option><option value="Cricket">Cricket</option><option value="Football">Football</option><option value="Tennis">Tennis</option><option value="Multi-Sport">Multi-Sport</option></select></div>
                             <button type="submit" id="acad-submit-btn" class="w-full py-5 btn-luxe text-base tracking-wide uppercase">Submit Request</button>
                         </form>
                     </div>
@@ -593,92 +453,35 @@
     <footer class="bg-slate-950/80 border-t border-white/5 pt-20 pb-10 mt-auto relative z-20">
         <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
-                <div class="md:col-span-2 pr-10">
-                    <h2 class="text-4xl font-black text-white tracking-premium mb-5">Squad<span class="text-cyan-400 luxe-shadow">On</span></h2>
-                    <p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-4">Kolkata's definitive sports venue network. Secure payments, instant bookings across Salt Lake, Behala, New Town & Jadavpur.</p>
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">Operated by TrendNexus India</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm">Policies</h4>
-                    <ul class="space-y-3 text-sm text-slate-400 font-medium">
-                        <li><span onclick="showModal('disc-modal')" class="hover:text-cyan-400 cursor-pointer transition">Terms & Conditions</span></li>
-                        <li><span onclick="showModal('about-modal')" class="hover:text-cyan-400 cursor-pointer transition">About Us</span></li>
-                        <li><span onclick="showModal('disc-modal')" class="hover:text-cyan-400 cursor-pointer transition">Privacy Policy</span></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm">Contact</h4>
-                    <p class="text-sm text-slate-400 mb-2">support@squadon.in</p>
-                    <p class="text-sm text-slate-400 mb-6">partner@squadon.in</p>
-                    <div class="flex gap-4">
-                        <a href="https://instagram.com/squadon_kolkata" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-cyan-400 transition text-lg"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="https://facebook.com/squadonkolkata" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-cyan-400 transition text-lg"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="https://youtube.com/@squadon" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-cyan-400 transition text-lg"><i class="fa-brands fa-youtube"></i></a>
-                    </div>
-                </div>
+                <div class="md:col-span-2 pr-10"><h2 class="text-4xl font-black text-white tracking-premium mb-5">Squad<span class="text-cyan-400 luxe-shadow">On</span></h2><p class="text-slate-400 text-sm leading-relaxed max-w-sm mb-4">Kolkata's definitive sports venue network. Secure payments, instant bookings across Salt Lake, Behala, New Town & Jadavpur.</p><p class="text-xs font-bold text-slate-500 uppercase tracking-wide">Operated by TrendNexus India</p></div>
+                <div><h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm">Policies</h4><ul class="space-y-3 text-sm text-slate-400 font-medium"><li><span onclick="showModal('disc-modal')" class="hover:text-cyan-400 cursor-pointer transition">Terms & Conditions</span></li><li><span onclick="showModal('about-modal')" class="hover:text-cyan-400 cursor-pointer transition">About Us</span></li><li><span onclick="showModal('disc-modal')" class="hover:text-cyan-400 cursor-pointer transition">Privacy Policy</span></li></ul></div>
+                <div><h4 class="text-white font-bold mb-5 tracking-wide uppercase text-sm">Contact</h4><p class="text-sm text-slate-400 mb-2">support@squadon.in</p><p class="text-sm text-slate-400 mb-6">partner@squadon.in</p><div class="flex gap-4"><a href="https://instagram.com/squadon_kolkata" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-cyan-400 transition text-lg"><i class="fa-brands fa-instagram"></i></a><a href="https://facebook.com/squadonkolkata" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-cyan-400 transition text-lg"><i class="fa-brands fa-facebook-f"></i></a><a href="https://youtube.com/@squadon" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-cyan-400 transition text-lg"><i class="fa-brands fa-youtube"></i></a></div></div>
             </div>
-            <div class="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-5">
-                <p class="text-xs text-slate-600 font-medium">© 2026 SquadOn. All rights reserved.</p>
-                <div class="text-xs text-slate-600 font-medium">Built for Kolkata. 🇮🇳</div>
-            </div>
+            <div class="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-5"><p class="text-xs text-slate-600 font-medium">© 2026 SquadOn. All rights reserved.</p><div class="text-xs text-slate-600 font-medium">Built for Kolkata. 🇮🇳</div></div>
         </div>
     </footer>
-
     <!-- BOOKING SHEET MODAL -->
     <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[500] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeSheet()">
         <div id="booking-sheet" class="w-full md:max-w-xl bg-[#0a0a0a] rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col border border-white/10 max-h-[92vh] transition-all duration-300" onclick="event.stopPropagation()">
             <div id="booking-form-content" class="flex flex-col h-full overflow-hidden">
                 <div class="p-8 flex-shrink-0 border-b border-white/10 bg-[#121212] rounded-t-3xl">
                     <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-4 md:hidden"></div>
-                    <div class="flex justify-between items-start">
-                        <div><h2 class="text-2xl font-black text-white tracking-tight" id="book-venue-name">Arena Name</h2><p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1">Sport</p></div>
-                        <button onclick="closeSheet()" class="w-8 h-8 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 transition text-lg">✕</button>
-                    </div>
+                    <div class="flex justify-between items-start"><div><h2 class="text-2xl font-black text-white tracking-tight" id="book-venue-name">Arena Name</h2><p id="book-venue-sport" class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1">Sport</p></div><button onclick="closeSheet()" class="w-8 h-8 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-gray-400 font-bold hover:bg-white/10 transition text-lg">✕</button></div>
                 </div>
                 <div class="p-6 overflow-y-auto hide-scroll flex-grow space-y-5 min-h-0">
-                    <div id="happy-hour-alert" class="hidden bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl flex items-center gap-3">
-                        <span class="text-2xl">⚡</span>
-                        <div><p class="text-sm font-black text-amber-400" id="happy-hour-alert-text">Happy Hour Active!</p><p class="text-xs text-gray-400 mt-0.5">Discount applied automatically at checkout</p></div>
-                    </div>
-                    <div class="flex justify-between items-center bg-[#121212] p-4 rounded-2xl border border-white/5">
-                        <div><label class="text-sm font-bold text-white block">Number of Players</label><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mt-1">Limits apply per arena</p></div>
-                        <div class="flex items-center gap-3 bg-[#050505] p-1.5 rounded-full border border-white/10">
-                            <button onclick="adjCount(-1)" id="count-minus-btn" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition">-</button>
-                            <input type="number" id="book-count" min="1" max="10" value="1" class="w-8 bg-transparent text-center text-lg font-black text-white outline-none" readonly>
-                            <button onclick="adjCount(1)" id="count-plus-btn" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition">+</button>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div><label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest">Select Date</label><input type="date" id="book-date" class="input-luxe py-3 text-sm" onchange="handleDateChange()"></div>
-                        <div><label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest">Select Time</label><select id="book-time" class="input-luxe py-3 text-sm" onchange="checkAvailability(); checkHappyHour();"></select></div>
-                    </div>
-                    <div class="flex items-center gap-3 bg-[#121212] p-4 rounded-2xl border border-white/5">
-                        <input type="checkbox" id="recurring-booking" class="w-4 h-4 accent-cyan-400" onchange="toggleRecurring()">
-                        <div><label for="recurring-booking" class="text-sm font-bold text-white cursor-pointer">Book this slot every week 🔄</label><p class="text-[10px] text-gray-500 mt-0.5">Lock the same day & time for the next 4 weeks.</p></div>
-                    </div>
+                    <div id="happy-hour-alert" class="hidden bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl flex items-center gap-3"><span class="text-2xl">⚡</span><div><p class="text-sm font-black text-amber-400" id="happy-hour-alert-text">Happy Hour Active!</p><p class="text-xs text-gray-400 mt-0.5">Discount applied automatically at checkout</p></div></div>
+                    <div class="flex justify-between items-center bg-[#121212] p-4 rounded-2xl border border-white/5"><div><label class="text-sm font-bold text-white block">Number of Players</label><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mt-1">Limits apply per arena</p></div><div class="flex items-center gap-3 bg-[#050505] p-1.5 rounded-full border border-white/10"><button onclick="adjCount(-1)" id="count-minus-btn" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition">-</button><input type="number" id="book-count" min="1" max="10" value="1" class="w-8 bg-transparent text-center text-lg font-black text-white outline-none" readonly><button onclick="adjCount(1)" id="count-plus-btn" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition">+</button></div></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"><div><label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest">Select Date</label><input type="date" id="book-date" class="input-luxe py-3 text-sm" onchange="handleDateChange()"></div><div><label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest">Select Time</label><select id="book-time" class="input-luxe py-3 text-sm" onchange="checkAvailability(); checkHappyHour();"></select></div></div>
+                    <div class="flex items-center gap-3 bg-[#121212] p-4 rounded-2xl border border-white/5"><input type="checkbox" id="recurring-booking" class="w-4 h-4 accent-cyan-400" onchange="toggleRecurring()"><div><label for="recurring-booking" class="text-sm font-bold text-white cursor-pointer">Book this slot every week 🔄</label><p class="text-[10px] text-gray-500 mt-0.5">Lock the same day & time for the next 4 weeks.</p></div></div>
                     <div id="recurring-info" class="hidden bg-cyan-500/10 p-3 rounded-xl border border-cyan-500/20 text-xs text-cyan-400 font-medium">📅 This creates 4 weekly bookings. Each earns Squad Coins separately.</div>
-                    <div class="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-center justify-between">
-                        <span class="text-xs font-bold text-cyan-500 uppercase tracking-wide">Availability</span>
-                        <span id="slot-status" class="text-sm font-black text-white">Checking...</span>
-                    </div>
+                    <div class="bg-cyan-500/10 p-4 rounded-xl border border-cyan-500/20 flex items-center justify-between"><span class="text-xs font-bold text-cyan-500 uppercase tracking-wide">Availability</span><span id="slot-status" class="text-sm font-black text-white">Checking...</span></div>
                     <div><label class="text-[10px] text-gray-400 font-bold uppercase mb-1.5 block tracking-widest">Payment Method</label><select id="book-pay" class="input-luxe py-4 font-semibold text-white" onchange="toggleWarning()"></select></div>
                     <div id="liquidation-warning" class="hidden bg-orange-500/10 text-orange-400 text-[11px] font-medium p-4 rounded-xl border border-orange-500/20 leading-relaxed"></div>
-                    <div id="split-pay-panel" class="hidden bg-indigo-500/10 p-5 rounded-xl border border-indigo-500/20">
-                        <div class="flex items-center gap-2 mb-3"><span class="text-xl">🤝</span><p class="text-sm font-black text-indigo-300">Split Pay Enabled</p></div>
-                        <p class="text-xs text-gray-400 mb-3 leading-relaxed">Pay only your share now. After booking, a unique link will be generated — share it with your squad.</p>
-                        <div id="split-per-head-display" class="bg-[#0a0a0a] rounded-lg p-3 text-center"><p class="text-xs text-gray-500 uppercase font-bold mb-1">Your share</p><p class="text-2xl font-black text-indigo-400" id="split-per-head">₹0</p></div>
-                    </div>
-                    <div id="coins-preview" class="hidden bg-amber-500/10 p-3 rounded-xl border border-amber-500/20 flex items-center gap-3">
-                        <span class="text-xl">🪙</span>
-                        <div><p class="text-xs font-bold text-amber-400">You'll earn <span id="coins-to-earn">0</span> Squad Coins on this booking</p><p class="text-[10px] text-gray-500 mt-0.5">1 coin per ₹100 spent</p></div>
-                    </div>
+                    <div id="split-pay-panel" class="hidden bg-indigo-500/10 p-5 rounded-xl border border-indigo-500/20"><div class="flex items-center gap-2 mb-3"><span class="text-xl">🤝</span><p class="text-sm font-black text-indigo-300">Split Pay Enabled</p></div><p class="text-xs text-gray-400 mb-3 leading-relaxed">Pay only your share now. After booking, a unique link will be generated — share it with your squad.</p><div id="split-per-head-display" class="bg-[#0a0a0a] rounded-lg p-3 text-center"><p class="text-xs text-gray-500 uppercase font-bold mb-1">Your share</p><p class="text-2xl font-black text-indigo-400" id="split-per-head">₹0</p></div></div>
+                    <div id="coins-preview" class="hidden bg-amber-500/10 p-3 rounded-xl border border-amber-500/20 flex items-center gap-3"><span class="text-xl">🪙</span><div><p class="text-xs font-bold text-amber-400">You'll earn <span id="coins-to-earn">0</span> Squad Coins on this booking</p><p class="text-[10px] text-gray-500 mt-0.5">1 coin per ₹100 spent</p></div></div>
                 </div>
                 <div class="p-6 border-t border-white/10 bg-[#121212] md:rounded-b-3xl flex items-center justify-between flex-shrink-0">
-                    <div>
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5">Total Amount</p>
-                        <p id="total-price" class="text-3xl font-black text-white luxe-shadow">₹0</p>
-                        <p id="original-price" class="hidden text-xs text-gray-500 line-through"></p>
-                    </div>
+                    <div><p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-0.5">Total Amount</p><p id="total-price" class="text-3xl font-black text-white luxe-shadow">₹0</p><p id="original-price" class="hidden text-xs text-gray-500 line-through"></p></div>
                     <button onclick="processBooking()" id="main-deploy-btn" class="px-8 py-4 btn-luxe text-base w-1/2">Confirm Booking</button>
                 </div>
             </div>
@@ -687,10 +490,7 @@
                 <h2 class="text-4xl font-black text-white mb-2">Confirmed!</h2>
                 <p class="text-gray-400 text-sm mb-3">Your slot is locked in. Check My Bookings for details.</p>
                 <p id="success-coins-msg" class="text-amber-400 font-bold text-sm mb-4">+0 🪙 Squad Coins added!</p>
-                <div id="split-pay-share" class="hidden w-full mb-6">
-                    <p class="text-xs text-indigo-400 font-bold uppercase tracking-widest mb-2">Share with your squad to split the payment</p>
-                    <div class="split-link-box"><p class="text-xs text-gray-300 font-mono truncate flex-1" id="split-link-text"></p><button onclick="copySplitLink()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3 py-1.5 rounded-lg transition flex-shrink-0">Copy Link</button></div>
-                </div>
+                <div id="split-pay-share" class="hidden w-full mb-6"><p class="text-xs text-indigo-400 font-bold uppercase tracking-widest mb-2">Share with your squad to split the payment</p><div class="split-link-box"><p class="text-xs text-gray-300 font-mono truncate flex-1" id="split-link-text"></p><button onclick="copySplitLink()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3 py-1.5 rounded-lg transition flex-shrink-0">Copy Link</button></div></div>
                 <button onclick="closeSheetAndReset()" class="w-full py-4 btn-luxe text-sm font-bold uppercase tracking-widest">Back to Arenas</button>
                 <button onclick="closeSheetAndReset(); switchTab('my-bookings');" class="w-full mt-3 py-3 bg-white/5 border border-white/10 text-white text-sm font-bold rounded-xl hover:bg-white/10 transition">View My Bookings</button>
                 <button onclick="openGatepassForLastBooking()" class="w-full mt-3 py-3 bg-green-500/10 border border-green-500/30 text-green-400 text-sm font-bold rounded-xl hover:bg-green-500/20 transition">🎫 Get Entry Gatepass</button>
@@ -703,23 +503,14 @@
         <div class="card-luxe w-full max-w-md p-8 relative transform scale-95 transition-transform duration-400" onclick="event.stopPropagation()">
             <button onclick="closeModal('split-pay-modal')" class="absolute top-6 right-6 text-gray-500 hover:text-white font-bold text-2xl transition">✕</button>
             <div class="text-center mb-6"><div class="w-16 h-16 bg-indigo-500/10 border border-indigo-500/20 rounded-full flex items-center justify-center mx-auto mb-4"><span class="text-3xl">🤝</span></div><h2 class="text-2xl font-black text-white">Pay Your Share</h2><p class="text-xs text-gray-400 mt-1" id="split-modal-info"></p></div>
-            <div class="space-y-4">
-                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Your Name</label><input type="text" id="split-payer-name" placeholder="Enter your name" class="input-luxe text-sm py-3"></div>
-                <div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Mobile Number</label><input type="tel" id="split-payer-phone" placeholder="10-digit mobile" maxlength="10" class="input-luxe text-sm py-3"></div>
-                <div class="bg-slate-900 rounded-xl p-4 flex justify-between"><span class="text-sm text-gray-400 font-bold">Amount Due</span><span class="text-lg font-black text-white" id="split-modal-amount">₹0</span></div>
-                <button onclick="processSplitPayment()" id="split-pay-btn" class="w-full py-4 btn-luxe text-sm uppercase tracking-widest">Pay via Razorpay</button>
-            </div>
+            <div class="space-y-4"><div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Your Name</label><input type="text" id="split-payer-name" placeholder="Enter your name" class="input-luxe text-sm py-3"></div><div><label class="text-[10px] text-cyan-400 font-bold uppercase block mb-1.5 tracking-wide">Mobile Number</label><input type="tel" id="split-payer-phone" placeholder="10-digit mobile" maxlength="10" class="input-luxe text-sm py-3"></div><div class="bg-slate-900 rounded-xl p-4 flex justify-between"><span class="text-sm text-gray-400 font-bold">Amount Due</span><span class="text-lg font-black text-white" id="split-modal-amount">₹0</span></div><button onclick="processSplitPayment()" id="split-pay-btn" class="w-full py-4 btn-luxe text-sm uppercase tracking-widest">Pay via Razorpay</button></div>
         </div>
     </div>
 
     <!-- TERMS MODAL -->
     <div id="disc-modal" class="hidden fixed inset-0 z-[600] bg-black/80 flex items-center justify-center p-4 backdrop-blur-3xl opacity-0 pointer-events-none transition-opacity duration-400" onclick="closeModal('disc-modal')">
         <div class="card-luxe w-full max-w-xl relative transform scale-95 transition-transform duration-400 max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
-            <div class="p-8 pb-0 flex-shrink-0">
-                <button onclick="closeModal('disc-modal')" class="absolute top-6 right-6 text-gray-500 hover:text-white font-bold text-2xl transition">✕</button>
-                <h2 class="text-3xl font-black text-white mb-1">Terms &amp; <span class="text-cyan-400 luxe-shadow">Conditions</span></h2>
-                <p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-6">Effective: April 2026 · SquadOn by TrendNexus India</p>
-            </div>
+            <div class="p-8 pb-0 flex-shrink-0"><button onclick="closeModal('disc-modal')" class="absolute top-6 right-6 text-gray-500 hover:text-white font-bold text-2xl transition">✕</button><h2 class="text-3xl font-black text-white mb-1">Terms &amp; <span class="text-cyan-400 luxe-shadow">Conditions</span></h2><p class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-6">Effective: April 2026 · SquadOn by TrendNexus India</p></div>
             <div class="overflow-y-auto hide-scroll px-8 pb-6 space-y-5 text-sm text-slate-400 leading-relaxed flex-grow">
                 <p><strong class="text-white text-base">1. Acceptance of Terms</strong><br>By accessing or using SquadOn, you confirm that you are at least 14 years of age and agree to be bound by these Terms.</p>
                 <p><strong class="text-white text-base">2. Booking Policy</strong><br>Bookings are confirmed only upon successful payment processing via Razorpay. Cancellations must be initiated at least 24 hours before your booked slot.</p>
@@ -768,7 +559,6 @@
             <div class="flex gap-3"><button onclick="closeModal('player-rating-modal')" class="flex-1 py-3 bg-white/5 border border-white/10 text-gray-400 font-bold rounded-xl hover:bg-white/10 transition text-sm uppercase tracking-widest">Skip</button><button onclick="submitPlayerRating()" class="flex-1 py-3 bg-green-600 hover:bg-green-500 text-white text-sm font-black rounded-xl transition uppercase tracking-widest">Submit</button></div>
         </div>
     </div>
-
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyhXcIHrd9L_EVe6AJMK4rSUB-2awFFoxn5hUSLWevo-RKfAwDLXSz6XdRZ_Xt86BG5/exec';
@@ -869,21 +659,14 @@
         document.getElementById('auth-subtitle').innerText = subtitles[step] || '';
         if (step === 0) { document.getElementById('login-box').classList.remove('hidden'); }
         else { document.getElementById('forgot-step-' + step).classList.remove('hidden'); }
-        if (step === 1) {
-            var btn = document.getElementById('fp-send-btn');
-            if (btn) { btn.innerText = 'Send OTP'; btn.disabled = false; }
-            var input = document.getElementById('fp-phone');
-            if (input) input.value = '';
-            fpPhone = ''; fpOTP = '';
-        }
+        if (step === 1) { var btn = document.getElementById('fp-send-btn'); if (btn) { btn.innerText = 'Send OTP'; btn.disabled = false; } var input = document.getElementById('fp-phone'); if (input) input.value = ''; fpPhone = ''; fpOTP = ''; }
     }
 
     async function sendForgotOTP() {
         var phone = document.getElementById('fp-phone').value.trim().replace(/\D/g,'').slice(-10);
         if (!phone || phone.length !== 10) { showToast('Please enter a valid 10-digit mobile number.', 'error'); return; }
         fpPhone = phone;
-        var btn = document.getElementById('fp-send-btn');
-        btn.innerText = 'Sending OTP...'; btn.disabled = true;
+        var btn = document.getElementById('fp-send-btn'); btn.innerText = 'Sending OTP...'; btn.disabled = true;
         try {
             var res = await fetchAPI({ action: 'sendOTP', phone: phone });
             if (res && res.status === 'success') {
@@ -893,13 +676,9 @@
                 document.getElementById('fp-phone-display').innerText = '+91-' + masked;
                 var timerEl = document.getElementById('otp-timer');
                 if (res.emailSent && !res.smsSent) { timerEl.innerText = '⚠️ OTP sent to your registered email instead.'; timerEl.style.color = '#f59e0b'; }
-                showForgotStep(2);
-                startOTPTimer(600);
+                showForgotStep(2); startOTPTimer(600);
                 setTimeout(function(){ var first = document.querySelector('#otp-inputs-container .otp-input'); if(first) first.focus(); }, 200);
-            } else {
-                showToast((res && res.msg) || 'Failed to send OTP. Please try again.', 'error');
-                btn.innerText = 'Send OTP'; btn.disabled = false;
-            }
+            } else { showToast((res && res.msg) || 'Failed to send OTP. Please try again.', 'error'); btn.innerText = 'Send OTP'; btn.disabled = false; }
         } catch(e) { showToast('Connection error: ' + e.message, 'error'); btn.innerText = 'Send OTP'; btn.disabled = false; }
     }
 
@@ -919,12 +698,7 @@
         var timerEl = document.getElementById('otp-timer'); var resendBtn = document.getElementById('fp-resend-btn');
         resendBtn.classList.add('hidden');
         var remaining = seconds;
-        function tick() {
-            var m = Math.floor(remaining / 60), s = remaining % 60;
-            timerEl.innerText = 'OTP expires in ' + m + ':' + (s < 10 ? '0' : '') + s;
-            remaining--;
-            if (remaining < 0) { clearInterval(otpTimerInterval); timerEl.innerText = 'OTP expired.'; resendBtn.classList.remove('hidden'); }
-        }
+        function tick() { var m = Math.floor(remaining / 60), s = remaining % 60; timerEl.innerText = 'OTP expires in ' + m + ':' + (s < 10 ? '0' : '') + s; remaining--; if (remaining < 0) { clearInterval(otpTimerInterval); timerEl.innerText = 'OTP expired.'; resendBtn.classList.remove('hidden'); } }
         tick(); otpTimerInterval = setInterval(tick, 1000);
     }
 
@@ -982,16 +756,28 @@
     document.addEventListener('DOMContentLoaded', async function() {
         var savedUser = sessionStorage.getItem('squadonUser');
         if (savedUser) { currentUser = JSON.parse(savedUser); }
-        var cont = document.getElementById('venue-grid');
-        if (cont) { cont.innerHTML = ''; for (var i = 0; i < 4; i++) { cont.innerHTML += '<div class="card-luxe p-6 animate-skeleton opacity-40"><div class="h-44 bg-slate-800 rounded-2xl mb-4"></div><div class="h-6 bg-slate-800 w-3/4 rounded mb-2"></div><div class="h-4 bg-slate-800 w-1/2 rounded mb-6"></div><div class="h-12 bg-slate-800 rounded-xl"></div></div>'; } }
+
+        // Show skeleton in the dd-shell while data loads
+        var locPanel = document.getElementById('dd-panel-locations');
+        if (locPanel) {
+            var skels = '<div class="dd-loc-grid">';
+            for (var s = 0; s < 6; s++) skels += '<div class="dd-card animate-skeleton" style="height:90px;opacity:0.3"></div>';
+            skels += '</div>';
+            locPanel.innerHTML = skels;
+        }
+
         try {
             var res = await fetchAPI({ action: 'sync' });
             if (res && res.status === 'success') { window.venues = res.venues || []; window.activeBookings = res.bookings || []; window.happyHours = res.happyHours || []; }
         } catch(e) { console.log('Sync pending:', e.message); }
         finally { hidePreloader(); }
-        if (currentUser) { updateUILoggedIn(); } else { filterVenues('All', document.querySelector('.filter-pill')); showTnCIfNeeded(); }
+
+        // ── PATCH 2: initDrillDown instead of filterVenues ──
+        if (currentUser) { updateUILoggedIn(); } else { initDrillDown(); showTnCIfNeeded(); }
+
         var urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('splitpay')) { try { var spData = JSON.parse(atob(urlParams.get('splitpay'))); openSplitPayModal(spData); } catch(e){} }
+
         var mockup = document.getElementById('hero-mockup-container');
         if (mockup) {
             mockup.addEventListener('mousemove', function(e) { var frame = mockup.querySelector('.mockup-frame'); var rect = mockup.getBoundingClientRect(); var x = e.clientX - rect.left - rect.width/2, y = e.clientY - rect.top - rect.height/2; frame.style.transform = 'rotateY('+(x/20)+'deg) rotateX('+(-y/20)+'deg) rotateZ(-3deg)'; });
@@ -1012,7 +798,10 @@
         var role = currentUser && currentUser.role ? currentUser.role : 'player';
         if (role === 'admin') { var navA = document.getElementById('nav-btn-admin-portal'); if (navA) navA.classList.remove('hidden'); var menuA = document.getElementById('menu-btn-admin-portal'); if (menuA) menuA.classList.remove('hidden'); }
         if (role === 'owner' || role === 'admin') { var navO = document.getElementById('nav-btn-owner-portal'); if (navO) navO.classList.remove('hidden'); var menuO = document.getElementById('menu-btn-owner-portal'); if (menuO) menuO.classList.remove('hidden'); }
-        renderRankings(); filterVenues('All', document.querySelector('.filter-pill')); showTnCIfNeeded();
+        renderRankings();
+        // ── PATCH 4: refreshDrillDown instead of filterVenues ──
+        if (document.getElementById('dd-shell')) { refreshDrillDown(); } else { initDrillDown(); }
+        showTnCIfNeeded();
     }
 
     // ==================== LOGIN ====================
@@ -1025,7 +814,10 @@
             var res = await fetchAPI({ action: 'login', loginId: loginId, password: hashedPass });
             if (res && res.status === 'success') {
                 currentUser = res.user; window.venues = res.venues || window.venues; window.activeBookings = res.bookings || []; window.happyHours = res.happyHours || [];
-                sessionStorage.setItem('squadonUser', JSON.stringify(currentUser)); closeAuth(); updateUILoggedIn();
+                sessionStorage.setItem('squadonUser', JSON.stringify(currentUser));
+                closeAuth(); updateUILoggedIn();
+                // ── PATCH 5: refresh drill-down after login ──
+                if (typeof refreshDrillDown === 'function') refreshDrillDown();
                 showToast('Welcome back, '+(currentUser.name||'Player')+'! 🏟️', 'success');
                 setTimeout(function(){ var vs = document.getElementById('venues-section'); if (vs) vs.scrollIntoView({behavior:'smooth'}); }, 500);
             } else { showToast((res && res.msg) || 'Login failed. Check your credentials.', 'error'); btn.innerText = 'Login'; btn.classList.remove('opacity-50','cursor-wait'); }
@@ -1074,19 +866,7 @@
         finally { btn.innerText = 'Submit Request'; btn.classList.remove('opacity-50','cursor-wait'); }
     }
 
-    // ==================== VENUE SEARCH & FILTER ====================
-    function searchVenues(query) {
-        var lq = query.toLowerCase();
-        var filtered = window.venues.filter(function(v) { return (currentFilter === 'All' || v.sport === currentFilter) && (v.name.toLowerCase().includes(lq) || v.loc.toLowerCase().includes(lq)); });
-        window.currentFilteredVenues = filtered; renderVenueGrid(filtered, document.getElementById('venue-grid'));
-    }
-    function filterVenues(sport, btnElement) {
-        currentFilter = sport;
-        if (btnElement) { document.querySelectorAll('#sport-filters .filter-pill').forEach(function(b){ b.classList.remove('bg-white','text-black','border-white'); b.classList.add('text-[#a1a1aa]','border-white/10'); }); btnElement.classList.add('bg-white','text-black','border-white'); }
-        var search = document.getElementById('venue-search'); if (search) search.value = '';
-        var filtered = sport === 'All' ? window.venues : window.venues.filter(function(v){ return v.sport === sport; });
-        window.currentFilteredVenues = filtered; renderVenueGrid(filtered, document.getElementById('venue-grid'));
-    }
+    // ==================== PROXIMITY SORT (kept for Find Near Me button) ====================
     function sortVenuesByProximity(btn) {
         if (!navigator.geolocation) { showToast('Geolocation not supported.','error'); return; }
         var orig = btn.innerHTML; btn.innerHTML = '📍 Locating...';
@@ -1098,25 +878,9 @@
                 else { v.distance = (Math.random()*13+2).toFixed(1); }
             });
             window.venues.sort(function(a,b){ return parseFloat(a.distance||99)-parseFloat(b.distance||99); });
-            filterVenues(currentFilter,null); btn.innerHTML = '📍 Sorted!'; setTimeout(function(){ btn.innerHTML = orig; }, 3000);
+            if (typeof refreshDrillDown === 'function') refreshDrillDown();
+            btn.innerHTML = '📍 Sorted!'; setTimeout(function(){ btn.innerHTML = orig; }, 3000);
         }, function() { clearTimeout(t); btn.innerHTML = '❌ Location denied'; showToast('Please allow location access.','warning'); setTimeout(function(){ btn.innerHTML = orig; }, 3000); }, { timeout:10000 });
-    }
-    function renderVenueGrid(filtered, cont) {
-        if (!cont) return; cont.innerHTML = '';
-        if (filtered.length === 0) { cont.innerHTML = '<div class="col-span-full text-center py-20"><p class="text-gray-600 font-bold uppercase tracking-widest text-sm">No arenas found.</p></div>'; return; }
-        var fallbackImgs = { football:'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80', cricket:'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80', chess:'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=800&q=80', basketball:'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80', tennis:'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=800&q=80', carrom:'shamoil-HEh0THXmU7M-unsplash.jpg' };
-        filtered.forEach(function(v, index) {
-            if (!v.name) return;
-            var isP = v.status === 'Pending'; var s = (v.sport||'').toLowerCase();
-            var fallback = fallbackImgs[s] || 'https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=800&q=80';
-            var img = (v.img && v.img.startsWith('http')) ? v.img : fallback;
-            var distDisplay = v.distance ? '<span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[9px] px-2 py-0.5 rounded-md font-bold ml-2">' + v.distance + ' km</span>' : '';
-            var visual = '<img src="'+img+'" onerror="this.onerror=null;this.src=\''+fallback+'\';" alt="'+v.name+'" loading="lazy" class="absolute inset-0 w-full h-full object-cover'+(isP?' grayscale opacity-30':'')+'">';
-            var hhBadge = (v.happyHourLabel) ? '<div class="absolute bottom-3 right-3 z-10"><span class="happy-hour-badge">⚡ '+v.happyHourLabel+'</span></div>' : '';
-            var btn = isP ? '<button disabled class="bg-white/5 text-gray-500 px-6 py-4 rounded-xl text-xs font-bold cursor-not-allowed w-full uppercase tracking-widest">Coming Soon</button>' : (!currentUser ? '<button onclick="openAuth()" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-4 rounded-xl text-xs font-black w-full uppercase tracking-widest transition">Login to Book</button>' : '<button onclick="openBookingByName(\''+(v.name||'').replace(/'/g,"\\'")+'\')" class="btn-luxe px-6 py-4 rounded-xl text-xs font-black w-full uppercase tracking-widest">Book Arena</button>');
-            cont.innerHTML += '<div class="card-luxe relative flex flex-col h-full reveal group" style="transition-delay:'+(index*50)+'ms">'+(isP?'<div class="absolute top-5 left-5 bg-gray-800 text-white text-[9px] px-3 py-1.5 rounded font-bold uppercase z-20 tracking-widest border border-white/10">Coming Soon</div>':'')+'<div class="relative w-full h-48 flex-shrink-0 bg-slate-900 overflow-hidden rounded-t-2xl border-b border-white/5">'+visual+hhBadge+'</div><div class="p-5 flex flex-col flex-grow"><div class="mb-4 flex-grow"><div class="flex items-center justify-between gap-2 mb-2"><p class="text-[10px] text-cyan-400 font-black uppercase tracking-widest shrink-0">'+v.sport+'</p><div class="bg-slate-900/80 px-2.5 py-1 rounded-lg border border-slate-700/50 flex-shrink-0"><p class="text-[8px] text-gray-500 uppercase font-bold tracking-widest leading-none mb-0.5">Per Head</p><p class="text-sm font-black text-white leading-none">₹'+v.price+'</p></div></div><h3 class="font-bold text-white text-sm sm:text-base leading-snug mb-1.5">'+v.name+'</h3><p class="text-xs text-gray-400 font-medium">'+v.loc+distDisplay+'</p></div><div class="mt-auto">'+btn+'</div></div></div>';
-        });
-        document.querySelectorAll('#venue-grid .reveal').forEach(function(el){ observer.observe(el); });
     }
 
     // ==================== BOOKING SHEET ====================
@@ -1138,14 +902,13 @@
         setTimeout(function(){ overlay.classList.remove('opacity-0','pointer-events-none'); }, 10);
         checkAvailability(); checkHappyHour();
     }
-        function closeSheet() {
-            var o = document.getElementById('modal-backdrop'); 
-            o.classList.add('opacity-0','pointer-events-none'); 
-            setTimeout(function(){ o.classList.add('hidden'); }, 400);
-            // Always reset button when sheet closes
-            var btn = document.getElementById('main-deploy-btn');
-            if (btn) { btn.innerText = 'Confirm Booking'; btn.disabled = false; btn.classList.remove('opacity-50','cursor-wait'); }
-        }
+    function closeSheet() {
+        var o = document.getElementById('modal-backdrop');
+        o.classList.add('opacity-0','pointer-events-none');
+        setTimeout(function(){ o.classList.add('hidden'); }, 400);
+        var btn = document.getElementById('main-deploy-btn');
+        if (btn) { btn.innerText = 'Confirm Booking'; btn.disabled = false; btn.classList.remove('opacity-50','cursor-wait'); }
+    }
     function closeSheetAndReset() {
         closeSheet();
         setTimeout(function() { document.getElementById('booking-form-content').classList.remove('hidden'); document.getElementById('booking-success-screen').classList.add('hidden'); document.getElementById('booking-success-screen').classList.remove('flex'); }, 400);
@@ -1189,14 +952,8 @@
         document.getElementById('book-count').max = remaining;
         var plusBtn = document.getElementById('count-plus-btn'), minusBtn = document.getElementById('count-minus-btn');
         var countInput = document.getElementById('book-count');
-        if (remaining === 0) {
-            countInput.value = 0; countInput.min = 0;
-            if (plusBtn) plusBtn.disabled = true; if (minusBtn) minusBtn.disabled = true;
-            document.getElementById('book-pay').innerHTML = '<option value="Waitlist">Join Standby Queue (₹0)</option>';
-        } else {
-            countInput.min = 1; if (parseInt(countInput.value) < 1) countInput.value = 1; if (parseInt(countInput.value) > remaining) countInput.value = remaining;
-            if (plusBtn) plusBtn.disabled = false; if (minusBtn) minusBtn.disabled = false;
-        }
+        if (remaining === 0) { countInput.value = 0; countInput.min = 0; if (plusBtn) plusBtn.disabled = true; if (minusBtn) minusBtn.disabled = true; document.getElementById('book-pay').innerHTML = '<option value="Waitlist">Join Standby Queue (₹0)</option>'; }
+        else { countInput.min = 1; if (parseInt(countInput.value) < 1) countInput.value = 1; if (parseInt(countInput.value) > remaining) countInput.value = remaining; if (plusBtn) plusBtn.disabled = false; if (minusBtn) minusBtn.disabled = false; }
         updatePrice();
     }
     function adjCount(change) { var el = document.getElementById('book-count'); var val = parseInt(el.value) + change; if (val >= (parseInt(el.min)||0) && val <= (parseInt(el.max)||10)) { el.value = val; updatePrice(); checkHappyHour(); } }
@@ -1226,7 +983,7 @@
         else { warning.classList.add('hidden'); }
     }
 
-    // ==================== PROCESS BOOKING (FIXED) ====================
+    // ==================== PROCESS BOOKING ====================
     async function processBooking() {
         var rawDate = document.getElementById('book-date').value;
         var total = parseInt(document.getElementById('total-price').innerText.replace(/[^\d]/g,'')) || 0;
@@ -1254,21 +1011,8 @@
 
         try {
             btn.innerText = 'Processing...'; btn.classList.add('opacity-50','cursor-wait');
-
-            var orderRes = await fetchAPI({
-                action: 'createOrder',
-                venueName: activeVenue.name,
-                slots: count,
-                payType: payType,
-                pricePerHead: activeVenue.price,
-                timeSlot: timeSlot
-            });
-
-            if (!orderRes || orderRes.status === 'error') {
-                showToast(orderRes.msg || 'Could not create order. Try again.', 'error');
-                btn.innerText = 'Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait');
-                return;
-            }
+            var orderRes = await fetchAPI({ action: 'createOrder', venueName: activeVenue.name, slots: count, payType: payType, pricePerHead: activeVenue.price, timeSlot: timeSlot });
+            if (!orderRes || orderRes.status === 'error') { showToast(orderRes.msg || 'Could not create order. Try again.', 'error'); btn.innerText = 'Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait'); return; }
 
             var options = {
                 key: 'rzp_live_SokotQPgwNk4Y6',
@@ -1282,80 +1026,24 @@
                 handler: async function(res) {
                     btn.innerText = 'Verifying...';
                     try {
-                        var verify = await fetchAPI({
-                            action: 'verifyAndBook',
-                            rzp_payment_id: res.razorpay_payment_id,
-                            rzp_order_id: res.razorpay_order_id,
-                            rzp_signature: res.razorpay_signature,
-                            venue: activeVenue.name,
-                            game: activeVenue.sport,
-                            slots: count,
-                            playDate: fDate,
-                            timeSlot: timeSlot,
-                            totalAmount: orderRes.order.amount / 100,
-                            phone: currentUser.phone||'',
-                            name: currentUser.name||'',
-                            recurring: isRecurring
-                        });
+                        var verify = await fetchAPI({ action: 'verifyAndBook', rzp_payment_id: res.razorpay_payment_id, rzp_order_id: res.razorpay_order_id, rzp_signature: res.razorpay_signature, venue: activeVenue.name, game: activeVenue.sport, slots: count, playDate: fDate, timeSlot: timeSlot, totalAmount: orderRes.order.amount / 100, phone: currentUser.phone||'', name: currentUser.name||'', recurring: isRecurring });
                         if (verify && verify.status === 'success') {
-                            lastBookingId = verify.bookingId || '';
-                            lastBookingSlots = count;
-                            lastBookingPricePerHead = activeVenue.price;
+                            lastBookingId = verify.bookingId || ''; lastBookingSlots = count; lastBookingPricePerHead = activeVenue.price;
                             if (currentUser) { currentUser.coins = (currentUser.coins||0) + coinsEarned; sessionStorage.setItem('squadonUser', JSON.stringify(currentUser)); }
                             lastBookedVenueName = activeVenue.name;
                             showSuccessScreen(coinsEarned, isRecurring, count >= 4);
                             fetchAPI({ action:'sync' }).then(function(r){ if(r&&r.status==='success'){window.venues=r.venues;window.activeBookings=r.bookings;} }).catch(function(){});
-                        } else {
-                            showToast((verify&&verify.msg)||'Verification failed.','error');
-                            btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait');
-                        }
-                    } catch(e) {
-                        showToast('Verification error: '+e.message,'error');
-                        btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait');
-                    }
+                        } else { showToast((verify&&verify.msg)||'Verification failed.','error'); btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait'); }
+                    } catch(e) { showToast('Verification error: '+e.message,'error'); btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait'); }
                 }
             };
-
             var rzp = new Razorpay(options);
-            rzp.on('payment.failed', function(response){
-                showToast('Payment failed: ' + ((response.error && response.error.description) || 'Please try again.'), 'error');
-                btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait');
-            });
-
-            // FIX: Reset button when user closes/dismisses the Razorpay modal
-            rzp.on('modal.ondismiss', function(){
-                btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait');
-            });
-
-            // Safety fallback — reset button if nothing happens within 3 minutes
-            var resetTimer = setTimeout(function(){
-                 if (btn.innerText !== 'Confirm Booking') {
-                    btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait');
-                }
-            }, 180000);
-
-rzp.open();
-
-// Poll every 500ms — reset button as soon as Razorpay modal disappears
-var pollInterval = setInterval(function() {
-    var rzpContainer = document.querySelector('.razorpay-container');
-    if (!rzpContainer || rzpContainer.style.display === 'none') {
-        clearInterval(pollInterval);
-        if (btn.innerText === 'Processing...' || btn.innerText === 'Verifying...') {
-            btn.innerText = 'Confirm Booking';
-            btn.disabled = false;
-            btn.classList.remove('opacity-50','cursor-wait');
-        }
-    }
-}, 500);
-
-// Clear poll after 10 minutes
-setTimeout(function(){ clearInterval(pollInterval); }, 600000);
-
-        } catch(e) {
-            showToast('Checkout error: '+e.message,'error');
-            btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait');
-        }
+            rzp.on('payment.failed', function(response){ showToast('Payment failed: ' + ((response.error && response.error.description) || 'Please try again.'), 'error'); btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait'); });
+            rzp.on('modal.ondismiss', function(){ btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait'); });
+            var pollInterval = setInterval(function() { var rzpContainer = document.querySelector('.razorpay-container'); if (!rzpContainer || rzpContainer.style.display === 'none') { clearInterval(pollInterval); if (btn.innerText === 'Processing...' || btn.innerText === 'Verifying...') { btn.innerText = 'Confirm Booking'; btn.disabled = false; btn.classList.remove('opacity-50','cursor-wait'); } } }, 500);
+            setTimeout(function(){ clearInterval(pollInterval); }, 600000);
+            rzp.open();
+        } catch(e) { showToast('Checkout error: '+e.message,'error'); btn.innerText='Confirm Booking'; btn.classList.remove('opacity-50','cursor-wait'); }
     }
 
     // ==================== SUCCESS SCREEN ====================
@@ -1372,38 +1060,14 @@ setTimeout(function(){ clearInterval(pollInterval); }, 600000);
         } else { splitShare.classList.add('hidden'); }
         if (coins > 0) { setTimeout(function(){ document.getElementById('rating-venue-name').innerText = lastBookedVenueName; showModal('rating-modal'); }, 2000); }
     }
-        function openInvoiceForLastBooking() {
-    if (!activeVenue || !currentUser) return;
-    var rawDate = document.getElementById('book-date').value;
-    var timeSlot = document.getElementById('book-time').value;
-    var count = lastBookingSlots || 1;
-    var amount = parseInt(document.getElementById('total-price').innerText.replace(/[^\d]/g,'')) || 0;
-    var url = 'invoice.html'
-        + '?name=' + encodeURIComponent(currentUser.name || '')
-        + '&phone=' + encodeURIComponent(currentUser.phone || '')
-        + '&venue=' + encodeURIComponent(activeVenue.name || '')
-        + '&sport=' + encodeURIComponent(activeVenue.sport || 'Cricket')
-        + '&date=' + encodeURIComponent(rawDate)
-        + '&time=' + encodeURIComponent(timeSlot)
-        + '&amount=' + encodeURIComponent(amount)
-        + '&players=' + encodeURIComponent(count);
-    window.open(url, '_blank');
-}
-        function openGatepassForLastBooking() {
-    if (!activeVenue || !currentUser) return;
-    var rawDate = document.getElementById('book-date').value;
-    var timeSlot = document.getElementById('book-time').value;
-    var url = 'gatepass.html'
-        + '?name='      + encodeURIComponent(currentUser.name || '')
-        + '&phone='     + encodeURIComponent(currentUser.phone || '')
-        + '&venue='     + encodeURIComponent(activeVenue.name || '')
-        + '&sport='     + encodeURIComponent(activeVenue.sport || '')
-        + '&date='      + encodeURIComponent(rawDate)
-        + '&time='      + encodeURIComponent(timeSlot)
-        + '&players='   + encodeURIComponent(lastBookingSlots || 1)
-        + '&bookingId=' + encodeURIComponent(lastBookingId || '');
-    window.open(url, '_blank');
-}
+
+    function openGatepassForLastBooking() {
+        if (!activeVenue || !currentUser) return;
+        var rawDate = document.getElementById('book-date').value;
+        var timeSlot = document.getElementById('book-time').value;
+        var url = 'gatepass.html?name='+encodeURIComponent(currentUser.name||'')+'&phone='+encodeURIComponent(currentUser.phone||'')+'&venue='+encodeURIComponent(activeVenue.name||'')+'&sport='+encodeURIComponent(activeVenue.sport||'')+'&date='+encodeURIComponent(rawDate)+'&time='+encodeURIComponent(timeSlot)+'&players='+encodeURIComponent(lastBookingSlots||1)+'&bookingId='+encodeURIComponent(lastBookingId||'');
+        window.open(url, '_blank');
+    }
 
     function copySplitLink() {
         var text = document.getElementById('split-link-text').innerText;
@@ -1411,12 +1075,7 @@ setTimeout(function(){ clearInterval(pollInterval); }, 600000);
     }
 
     // ==================== SPLIT PAY MODAL ====================
-    function openSplitPayModal(spData) {
-        if (!spData) return;
-        document.getElementById('split-modal-info').innerText = spData.venue + ' — Booking ' + spData.bookingId;
-        document.getElementById('split-modal-amount').innerText = '₹' + spData.perHead;
-        showModal('split-pay-modal');
-    }
+    function openSplitPayModal(spData) { if (!spData) return; document.getElementById('split-modal-info').innerText = spData.venue + ' — Booking ' + spData.bookingId; document.getElementById('split-modal-amount').innerText = '₹' + spData.perHead; showModal('split-pay-modal'); }
     async function processSplitPayment() {
         var urlParams = new URLSearchParams(window.location.search);
         var spRaw = urlParams.get('splitpay'); var spData = spRaw ? JSON.parse(decodeURIComponent(escape(atob(spRaw)))) : {};
@@ -1424,19 +1083,8 @@ setTimeout(function(){ clearInterval(pollInterval); }, 600000);
         if (!name || !phone || phone.length !== 10) { showToast('Please enter your name and 10-digit phone.', 'error'); return; }
         var btn = document.getElementById('split-pay-btn'); btn.innerText = 'Opening Razorpay...'; btn.disabled = true;
         var amount = spData.perHead || 0;
-        var options = {
-            key: 'rzp_live_SokotQPgwNk4Y6', amount: amount * 100, currency: 'INR', name: 'SquadOn — Split Pay',
-            description: 'Your slot at ' + (spData.venue||'Arena'), prefill: { contact: phone, name: name }, theme: { color: '#6366f1' },
-            handler: async function(res) {
-                btn.innerText = 'Recording payment...';
-                try { await fetchAPI({ action: 'recordSplitSlot', bookingId: spData.bookingId, venue: spData.venue||'', payerName: name, payerPhone: phone, paymentAmount: amount }); closeModal('split-pay-modal'); showToast('Payment recorded! See you on the pitch! 🏟️', 'success'); window.history.replaceState({}, document.title, window.location.pathname); }
-                catch(e) { showToast('Error recording payment. Show screenshot at venue.', 'warning'); }
-                finally { btn.innerText = 'Pay via Razorpay'; btn.disabled = false; }
-            }
-        };
-        var rzp = new Razorpay(options);
-        rzp.on('payment.failed', function(){ showToast('Payment failed.','error'); btn.innerText='Pay via Razorpay'; btn.disabled=false; });
-        rzp.open();
+        var options = { key: 'rzp_live_SokotQPgwNk4Y6', amount: amount * 100, currency: 'INR', name: 'SquadOn — Split Pay', description: 'Your slot at ' + (spData.venue||'Arena'), prefill: { contact: phone, name: name }, theme: { color: '#6366f1' }, handler: async function(res) { btn.innerText = 'Recording payment...'; try { await fetchAPI({ action: 'recordSplitSlot', bookingId: spData.bookingId, venue: spData.venue||'', payerName: name, payerPhone: phone, paymentAmount: amount }); closeModal('split-pay-modal'); showToast('Payment recorded! See you on the pitch! 🏟️', 'success'); window.history.replaceState({}, document.title, window.location.pathname); } catch(e) { showToast('Error recording payment. Show screenshot at venue.', 'warning'); } finally { btn.innerText = 'Pay via Razorpay'; btn.disabled = false; } } };
+        var rzp = new Razorpay(options); rzp.on('payment.failed', function(){ showToast('Payment failed.','error'); btn.innerText='Pay via Razorpay'; btn.disabled=false; }); rzp.open();
     }
 
     // ==================== RATINGS ====================
@@ -1479,31 +1127,19 @@ setTimeout(function(){ clearInterval(pollInterval); }, 600000);
         sorted.forEach(function(b) {
             var isCancelled = (b.status === 'Cancelled' || b.Status === 'Cancelled');
             var isUpcoming = !isCancelled && isBookingUpcoming(b.playDate);
-           var bid = (b.bookingID||b.bookingId||b.BookingID||b['Booking ID']||b.id||b.ID||'').toString().replace(/'/g,"&apos;");
+            var bid = (b.bookingID||b.bookingId||b.BookingID||b['Booking ID']||b.id||b.ID||'').toString().replace(/'/g,"&apos;");
             var venueSafe = (b.venue||'').replace(/'/g,"&apos;");
             var actionHTML = isUpcoming
                 ? '<div class="flex flex-wrap gap-2 mt-4 pt-3 border-t border-white/5"><span class="text-[9px] text-gray-500 font-bold uppercase w-full mb-1">Get to the Turf:</span><a href="#" class="text-[10px] bg-black text-white px-2 py-1.5 rounded border border-white/10">Uber</a><a href="#" class="text-[10px] bg-[#d7df23] text-black px-2 py-1.5 rounded font-bold">Ola</a><a href="#" class="text-[10px] bg-[#f9c900] text-black px-2 py-1.5 rounded font-bold">Rapido</a><a href="gatepass.html?name='+encodeURIComponent(currentUser.name||'')+'&phone='+encodeURIComponent(currentUser.phone||'')+'&venue='+encodeURIComponent(b.venue||'')+'&sport='+encodeURIComponent(b.game||'')+'&date='+encodeURIComponent(b.playDate||'')+'&time='+encodeURIComponent(b.timeSlot||'')+'&players='+encodeURIComponent(b.slots||1)+'&bookingId='+encodeURIComponent(bid)+'" target="_blank" class="text-[10px] bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-1.5 rounded font-bold">🎫 Gatepass</a><button data-bid="'+bid+'" class="cancel-booking-btn text-[10px] bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-1.5 rounded font-bold uppercase tracking-widest hover:bg-red-500/20 transition ml-auto">Cancel</button></div>'
                 : '<div class="mt-4 pt-3 border-t border-white/5"><a href="invoice.html?name='+encodeURIComponent(currentUser.name||'')+'&phone='+encodeURIComponent(currentUser.phone||'')+'&venue='+encodeURIComponent(b.venue||'')+'&sport='+encodeURIComponent(b.game||'Cricket')+'&date='+encodeURIComponent(b.playDate||'')+'&time='+encodeURIComponent(b.timeSlot||'')+'&amount='+encodeURIComponent(String(b.amount||0).replace(/\D/g,""))+'&players='+encodeURIComponent(b.slots||1)+'" target="_blank" class="text-[10px] bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1.5 rounded font-bold">🧾 Invoice</a><button data-venue="'+venueSafe+'" data-date="'+b.playDate+'" data-time="'+(b.timeSlot||'')+'" class="rate-players-btn text-[10px] bg-green-500/10 text-green-400 border border-green-500/20 px-3 py-1.5 rounded font-bold uppercase tracking-widest hover:bg-green-500/20 transition"><i class="fas fa-users mr-1"></i> Rate Co-Players</button></div>';
             list.innerHTML += '<div class="bg-[#0f172a] border border-white/6 rounded-2xl p-6 flex flex-col md:flex-row md:items-start justify-between gap-4"><div class="w-full"><div class="flex items-start gap-4"><div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-xl flex-shrink-0">'+getSportEmoji(b.game)+'</div><div><p class="font-bold text-white text-lg leading-tight">'+(b.venue||'Arena')+'</p><p class="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-0.5">'+(b.game||'')+'</p><p class="text-xs text-gray-500 mt-1">'+(b.playDate||'')+' • '+(b.timeSlot||'')+'</p></div></div>'+actionHTML+'</div><div class="flex items-center gap-4 flex-shrink-0 self-end md:self-center"><div class="text-right"><p class="text-sm font-black text-white">₹'+(b.amount||0)+'</p><p class="text-[10px] text-gray-500 uppercase font-bold">'+(b.method||'Paid')+'</p></div><span class="text-[10px] px-3 py-1.5 rounded-full font-bold uppercase tracking-wider '+(isUpcoming?'bg-green-500/10 text-green-400 border border-green-500/20':'bg-white/5 text-gray-500 border border-white/10')+'">'+(isUpcoming?'Upcoming':'Completed')+'</span></div></div>';
         });
-        list.querySelectorAll('.cancel-booking-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            cancelBooking(this.getAttribute('data-bid'));
-        });
-    });
-    list.querySelectorAll('.rate-players-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            openPlayerRating(
-                this.getAttribute('data-venue'),
-                this.getAttribute('data-date'),
-                this.getAttribute('data-time')
-            );
-        });
-    });
+        list.querySelectorAll('.cancel-booking-btn').forEach(function(btn) { btn.addEventListener('click', function() { cancelBooking(this.getAttribute('data-bid')); }); });
+        list.querySelectorAll('.rate-players-btn').forEach(function(btn) { btn.addEventListener('click', function() { openPlayerRating(this.getAttribute('data-venue'), this.getAttribute('data-date'), this.getAttribute('data-time')); }); });
     }
 
     function parseDateStr(dateStr) { if (!dateStr) return new Date(0); var p = dateStr.split('-'); if (p.length === 3 && p[0].length <= 2) return new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0])); return new Date(dateStr); }
-    function getSportEmoji(sport) { var e={Football:'⚽',Cricket:'🏏',Chess:'♟️',Carrom:'🎯',Basketball:'🏀',Tennis:'🎾'}; return e[sport]||'🏟️'; }
+    function getSportEmoji(sport) { var e={Football:'⚽',Cricket:'🏏',Chess:'♟️',Carrom:'🎯',Basketball:'🏀',Tennis:'🎾',Pickleball:'🏓',Padel:'🎾',Skyball:'🎈'}; return e[sport]||'🏟️'; }
     function isBookingUpcoming(dateStr) { if (!dateStr) return false; var p = dateStr.split('-'), d; if (p.length===3&&p[0].length<=2) { d = new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0])); } else { d = new Date(dateStr); } if (isNaN(d.getTime())) return false; var today = new Date(); today.setHours(0,0,0,0); return d >= today; }
 
     // ==================== RANKINGS ====================
@@ -1518,38 +1154,313 @@ setTimeout(function(){ clearInterval(pollInterval); }, 600000);
 
     // ==================== CANCEL BOOKING ====================
     async function cancelBooking(bookingId) {
-    if (!bookingId) { showToast('Booking ID not found. Contact support.', 'error'); return; }
-    if (!confirm('Cancel this booking?\n\nNote: Cancellations within 24 hours of the slot are not eligible for refunds.')) return;
-    var btn = document.querySelector('[data-bid="'+bookingId+'"]');
-    if (btn) { btn.innerText = 'Cancelling...'; btn.disabled = true; }
-    try {
-        var res = await fetchAPI({ action: 'cancelBooking', bookingId: bookingId, phone: currentUser ? currentUser.phone : '' });
-        if (res && res.status === 'success') {
-            showToast(res.msg || 'Booking cancelled.', 'success');
-            window.activeBookings = window.activeBookings.filter(function(ab) {
-                var abId = (ab.bookingID||ab.bookingId||ab.BookingID||ab.id||ab.ID||'').toString();
-                return abId !== bookingId;
-            });
-            setTimeout(function() {
-                fetchAPI({ action: 'sync' }).then(function(r) {
-                    if (r && r.status === 'success') {
-                        window.activeBookings = r.bookings || [];
-                        window.venues = r.venues || [];
-                    }
-                    loadMyBookings();
-                }).catch(function() {
-                    loadMyBookings();
-                });
-            }, 500);
-        } else {
-            showToast((res && res.msg) || 'Cancellation failed. Contact support@squadon.in', 'error');
-            if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; }
-        }
-    } catch(e) {
-        showToast('Error: ' + e.message, 'error');
-        if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; }
+        if (!bookingId) { showToast('Booking ID not found. Contact support.', 'error'); return; }
+        if (!confirm('Cancel this booking?\n\nNote: Cancellations within 24 hours of the slot are not eligible for refunds.')) return;
+        var btn = document.querySelector('[data-bid="'+bookingId+'"]');
+        if (btn) { btn.innerText = 'Cancelling...'; btn.disabled = true; }
+        try {
+            var res = await fetchAPI({ action: 'cancelBooking', bookingId: bookingId, phone: currentUser ? currentUser.phone : '' });
+            if (res && res.status === 'success') {
+                showToast(res.msg || 'Booking cancelled.', 'success');
+                window.activeBookings = window.activeBookings.filter(function(ab) { var abId = (ab.bookingID||ab.bookingId||ab.BookingID||ab.id||ab.ID||'').toString(); return abId !== bookingId; });
+                setTimeout(function() { fetchAPI({ action: 'sync' }).then(function(r) { if (r && r.status === 'success') { window.activeBookings = r.bookings || []; window.venues = r.venues || []; } loadMyBookings(); }).catch(function() { loadMyBookings(); }); }, 500);
+            } else { showToast((res && res.msg) || 'Cancellation failed. Contact support@squadon.in', 'error'); if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; } }
+        } catch(e) { showToast('Error: ' + e.message, 'error'); if (btn) { btn.innerText = 'Cancel'; btn.disabled = false; } }
     }
-}     
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         DRILL-DOWN VENUE BROWSER MODULE
+    ═══════════════════════════════════════════════════════════════ -->
+    <script>
+(function () {
+  var DS = { view: 'locations', locationKey: null, groundKey: null, sport: null };
+  var EMOJIS = { Football:'⚽', Cricket:'🏏', Pickleball:'🏓', Padel:'🎾', Skyball:'🎈', Basketball:'🏀', Tennis:'🎾', Badminton:'🏸', Chess:'♟️', Carrom:'🎯' };
+
+  function groupVenues(venues) {
+    var map = {};
+    (venues || []).forEach(function(v) {
+      if (!v || !v.name) return;
+      var k = (v.loc || 'Other').toString().trim();
+      if (!map[k]) map[k] = { loc: k, grounds: {} };
+      map[k].grounds[v.name] = v;
+    });
+    return map;
+  }
+
+  function getHHDiscount(t) {
+    if (!t) return 0;
+    var m = t.toString().match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i); if (!m) return 0;
+    var h = parseInt(m[1]); var ap = m[3].toUpperCase();
+    if (ap==='PM'&&h<12) h+=12; if (ap==='AM'&&h===12) h=0;
+    var HH = window.happyHours || [];
+    for (var i=0;i<HH.length;i++) { if (h>=HH[i].start&&h<HH[i].end) return HH[i].discount; }
+    return 0;
+  }
+
+  function todayISO() {
+    var n=new Date(); return new Date(n.getTime()-n.getTimezoneOffset()*60000).toISOString().split('T')[0];
+  }
+  function todayDDMMYYYY() { var p=todayISO().split('-'); return p[2]+'-'+p[1]+'-'+p[0]; }
+
+  function isPastSlot(t) {
+    var m=t.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i); if (!m) return false;
+    var h=parseInt(m[1]); var ap=m[3].toUpperCase();
+    if (ap==='PM'&&h<12) h+=12; if (ap==='AM'&&h===12) h=0;
+    var n=new Date(); return h<n.getHours()||(h===n.getHours()&&0<=n.getMinutes());
+  }
+
+  function nextHour(t) {
+    var m=t.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i); if (!m) return '';
+    var h=parseInt(m[1]); var ap=m[3].toUpperCase();
+    if (ap==='PM'&&h<12) h+=12; if (ap==='AM'&&h===12) h=0;
+    h=(h+1)%24;
+    var nAp=h<12?'AM':'PM'; var dH=h%12; if(dH===0)dH=12;
+    return String(dH).padStart(2,'0')+':00 '+nAp;
+  }
+
+  function getRemainingSlots(venueName, cap, timeSlot) {
+    var fDate=todayDDMMYYYY(); var booked=0;
+    (window.activeBookings||[]).forEach(function(b){
+      if (b.venue===venueName&&b.playDate===fDate&&
+          (b.timeSlot===timeSlot||(b.details&&b.details.includes(timeSlot)))&&
+          b.method!=='Standby Waitlist'&&b.status!=='Cancelled')
+        booked+=parseInt(b.slots)||1;
+    });
+    return Math.max(0,(parseInt(cap)||10)-booked);
+  }
+
+  function renderBreadcrumb() {
+    var bc=document.getElementById('dd-breadcrumb'); if(!bc) return;
+    var p=['<button class="dd-crumb" onclick="window.__dd.goHome()">All venues</button>'];
+    if (DS.locationKey) {
+      p.push('<span class="dd-sep">›</span>');
+      if (DS.view!=='locations')
+        p.push('<button class="dd-crumb" onclick="window.__dd.goToLocation()">'+DS.locationKey+'</button>');
+    }
+    if (DS.groundKey&&(DS.view==='sports'||DS.view==='slots')) {
+      p.push('<span class="dd-sep">›</span>');
+      if (DS.view==='slots') p.push('<button class="dd-crumb" onclick="window.__dd.goToGround()">'+DS.groundKey+'</button>');
+      else p.push('<span class="dd-active">'+DS.groundKey+'</span>');
+    }
+    if (DS.sport&&DS.view==='slots') {
+      p.push('<span class="dd-sep">›</span>');
+      p.push('<span class="dd-active">'+DS.sport+' — slots</span>');
+    }
+    bc.innerHTML=p.join('');
+  }
+
+  function showPanel(name) {
+    ['locations','grounds','sports','slots'].forEach(function(n){
+      var el=document.getElementById('dd-panel-'+n);
+      if(el) el.style.display=(n===name)?'':'none';
+    });
+    DS.view=name; renderBreadcrumb();
+  }
+
+  /* ── LOCATIONS ── */
+  function renderLocations() {
+    var grouped=groupVenues(window.venues);
+    var container=document.getElementById('dd-panel-locations'); if(!container) return;
+    var keys=Object.keys(grouped);
+    if (!keys.length) {
+      container.innerHTML='<div class="dd-loc-grid">'+Array(6).fill('<div class="dd-card animate-skeleton" style="height:90px;opacity:0.25"></div>').join('')+'</div>';
+      return;
+    }
+    container.innerHTML='<div class="dd-section-header"><h2 class="dd-section-title">Choose a venue</h2><p class="dd-section-sub">Select a location to browse grounds and book slots</p></div><div class="dd-loc-grid" id="dd-loc-grid"></div>';
+    var grid=document.getElementById('dd-loc-grid');
+    keys.forEach(function(locKey) {
+      var locData=grouped[locKey];
+      var grounds=Object.values(locData.grounds).filter(function(v){return v.status!=='Pending';});
+      if (!grounds.length) return;
+      var sports=[]; grounds.forEach(function(g){if(g.sport&&sports.indexOf(g.sport)===-1)sports.push(g.sport);});
+      var pills=sports.slice(0,3).map(function(sp){return '<span class="dd-pill">'+(EMOJIS[sp]||'')+' '+sp+'</span>';}).join('');
+      if (sports.length>3) pills+='<span class="dd-pill">+'+(sports.length-3)+'</span>';
+      var card=document.createElement('div');
+      card.className='dd-card dd-loc-card reveal';
+      card.innerHTML='<div class="dd-loc-pin">📍</div><div class="dd-card-content"><div class="dd-card-name">'+locKey+'</div><div class="dd-card-meta">'+grounds.length+' ground'+(grounds.length!==1?'s':'')+'</div><div class="dd-pills">'+pills+'</div></div><div class="dd-card-arrow">›</div>';
+      card.onclick=function(){DS.locationKey=locKey;renderGrounds();showPanel('grounds');};
+      grid.appendChild(card);
+      setTimeout(function(){card.classList.add('active');},30);
+    });
+  }
+
+  /* ── GROUNDS ── */
+  function renderGrounds() {
+    var grouped=groupVenues(window.venues);
+    var locData=grouped[DS.locationKey];
+    var container=document.getElementById('dd-panel-grounds'); if(!container||!locData) return;
+    var grounds=Object.entries(locData.grounds).filter(function(e){return e[1].status!=='Pending';});
+    container.innerHTML='<div class="dd-section-header"><h2 class="dd-section-title">'+DS.locationKey+'</h2><p class="dd-section-sub">Select a ground to see available time slots</p></div><div class="dd-ground-grid" id="dd-ground-grid"></div>';
+    var grid=document.getElementById('dd-ground-grid');
+    grounds.forEach(function(entry, idx) {
+      var groundKey=entry[0]; var v=entry[1];
+      var sport=v.sport||'Sport'; var emoji=EMOJIS[sport]||'🏟️';
+      var timesArr=v.times?v.times.split(','):[];
+      var pills='<span class="dd-pill dd-pill-price">₹'+v.price+'/head</span>'+'<span class="dd-pill">'+(v.type||'outdoor')+'</span>'+(timesArr.length?'<span class="dd-pill">'+timesArr.length+' slots</span>':'')+(v.happyHourLabel?'<span class="dd-pill dd-pill-hh">⚡ Happy Hour</span>':'');
+      var card=document.createElement('div');
+      card.className='dd-card dd-ground-card reveal';
+      card.innerHTML='<div class="dd-ground-top"><div class="dd-ground-emoji">'+emoji+'</div><div class="dd-card-content"><div class="dd-card-name">'+groundKey+'</div><div class="dd-card-meta">'+sport+' · Cap: '+(v.cap||'—')+'</div></div></div><div class="dd-pills" style="margin-top:0.6rem">'+pills+'</div><div class="dd-card-arrow">›</div>';
+      card.onclick=function(){DS.groundKey=groundKey;renderSports();showPanel('sports');};
+      grid.appendChild(card);
+      setTimeout(function(){card.classList.add('active');},idx*40);
+    });
+  }
+
+  /* ── SPORTS ── */
+  function renderSports() {
+    var grouped=groupVenues(window.venues);
+    var v=grouped[DS.locationKey]&&grouped[DS.locationKey].grounds[DS.groundKey];
+    var container=document.getElementById('dd-panel-sports'); if(!container||!v) return;
+    var sport=v.sport||'Sport'; var emoji=EMOJIS[sport]||'🏟️';
+    var timesArr=v.times?v.times.split(','):[];
+    container.innerHTML='<div class="dd-section-header"><h2 class="dd-section-title">'+DS.groundKey+'</h2><p class="dd-section-sub">'+DS.locationKey+' · '+(v.loc||'')+'</p></div><div class="dd-sports-grid" id="dd-sports-grid"></div>';
+    var grid=document.getElementById('dd-sports-grid');
+    var card=document.createElement('div');
+    card.className='dd-card dd-sport-card reveal';
+    var pills='<span class="dd-pill dd-pill-price">₹'+v.price+'/head/hr</span><span class="dd-pill">Cap: '+(v.cap||'—')+'</span><span class="dd-pill">'+(v.type||'outdoor')+'</span>'+(timesArr.length?'<span class="dd-pill">'+timesArr.length+' time slots</span>':'');
+    card.innerHTML='<div class="dd-sport-inner"><div class="dd-sport-emoji-big">'+emoji+'</div><div class="dd-card-content"><div class="dd-card-name" style="font-size:1.05rem">'+sport+'</div><div class="dd-card-meta">Capacity: '+(v.cap||'—')+' players per slot</div><div class="dd-card-meta">₹'+v.price+' per head per hour</div>'+(v.happyHourLabel?'<div class="dd-hh-label">⚡ '+v.happyHourLabel+'</div>':'')+'</div><div class="dd-card-arrow">›</div></div><hr class="dd-divider"><div class="dd-pills">'+pills+'</div>';
+    card.onclick=function(){DS.sport=sport;renderSlots();showPanel('slots');};
+    grid.appendChild(card);
+    setTimeout(function(){card.classList.add('active');},30);
+  }
+
+  /* ── SLOTS ── */
+  function renderSlots() {
+    var grouped=groupVenues(window.venues);
+    var v=grouped[DS.locationKey]&&grouped[DS.locationKey].grounds[DS.groundKey];
+    var container=document.getElementById('dd-panel-slots'); if(!container||!v) return;
+    var sport=v.sport||'Sport'; var emoji=EMOJIS[sport]||'🏟️';
+    var rawTimes=v.times?v.times.split(',').map(function(t){return t.trim();}).filter(Boolean):[];
+    var todaySlots=rawTimes.filter(function(t){return !isPastSlot(t);});
+
+    container.innerHTML='<div class="dd-section-header"><div class="dd-slots-info-bar"><span>'+emoji+'</span><strong>'+DS.groundKey+'</strong><span class="dd-info-sep">·</span><span>'+DS.locationKey+'</span><span class="dd-info-sep">·</span><span>₹'+v.price+'/head</span><span class="dd-info-sep">·</span><span>Cap: '+(v.cap||'—')+'</span></div></div>'+(todaySlots.length===0?'<div class="dd-empty"><p style="font-size:2.5rem;margin-bottom:.75rem">🕐</p><p>No more slots available today. Come back tomorrow!</p></div>':'')+'<div class="dd-slot-list" id="dd-slot-list"></div>';
+
+    if (!todaySlots.length) return;
+    var list=document.getElementById('dd-slot-list');
+    var isLoggedIn=!!window.currentUser;
+
+    todaySlots.forEach(function(t, idx) {
+      var disc=getHHDiscount(t);
+      var base=parseInt(v.price)||0;
+      var final=disc>0?Math.round(base*(1-disc/100)):base;
+      var rem=getRemainingSlots(v.name,v.cap,t);
+      var avCls=rem===0?'dd-avail-full':rem<=2?'dd-avail-low':'dd-avail-ok';
+      var avLbl=rem===0?'Sold out':rem<=2?rem+' left!':rem+' available';
+      var slotEnd=nextHour(t);
+      var vSafe=(v.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      var tSafe=t.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      var btn2=rem===0
+        ?'<button class="dd-btn-disabled" disabled>Full</button>'
+        :!isLoggedIn
+          ?'<button class="dd-btn-secondary" onclick="openAuth()">Login to book</button>'
+          :'<button class="dd-btn-primary" onclick="window.__dd.openBooking(\''+vSafe+'\',\''+tSafe+'\')">Book slot</button>';
+      var row=document.createElement('div');
+      row.className='dd-slot-row reveal';
+      row.innerHTML='<div class="dd-slot-time-col"><span class="dd-slot-time-main">'+t+' – '+slotEnd+'</span>'+(disc>0?'<span class="dd-hh-badge">⚡ '+disc+'% off</span>':'')+'</div><div class="dd-slot-price-col"><span class="dd-price-final">₹'+final+'</span>'+(disc>0?'<span class="dd-price-orig">₹'+base+'</span>':'')+'<span class="dd-price-label">/head</span></div><div class="dd-slot-avail-col"><span class="'+avCls+'">'+avLbl+'</span></div><div class="dd-slot-btn-col">'+btn2+'</div>';
+      list.appendChild(row);
+      setTimeout(function(){row.classList.add('active');},idx*35);
+    });
+  }
+
+  /* ── bridge to existing booking modal ── */
+  function openBookingFromDD(venueName, timeSlot) {
+    if (typeof openBookingByName !== 'function') return;
+    openBookingByName(venueName);
+    setTimeout(function(){
+      var sel=document.getElementById('book-time'); if(!sel) return;
+      for (var i=0;i<sel.options.length;i++) {
+        if (sel.options[i].value===timeSlot) { sel.selectedIndex=i; sel.dispatchEvent(new Event('change')); break; }
+      }
+      if (typeof checkAvailability==='function') checkAvailability();
+      if (typeof checkHappyHour==='function') checkHappyHour();
+      if (typeof updatePrice==='function') updatePrice();
+    }, 350);
+  }
+
+  window.__dd = {
+    goHome:function(){DS.locationKey=null;DS.groundKey=null;DS.sport=null;renderLocations();showPanel('locations');},
+    goToLocation:function(){DS.groundKey=null;DS.sport=null;renderGrounds();showPanel('grounds');},
+    goToGround:function(){DS.sport=null;renderSports();showPanel('sports');},
+    openBooking:openBookingFromDD
+  };
+
+  /* ── CSS ── */
+  var style=document.createElement('style');
+  style.textContent=[
+    '#dd-breadcrumb{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:1.5rem;flex-wrap:wrap}',
+    '.dd-crumb{background:none;border:none;color:#06b6d4;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:inherit;text-transform:inherit;padding:0;transition:color .2s}',
+    '.dd-crumb:hover{color:#a5f3fc}.dd-sep{color:#334155;font-size:1.1rem}.dd-active{color:#f8fafc}',
+    '.dd-section-header{margin-bottom:1.25rem}',
+    '.dd-section-title{font-size:1.4rem;font-weight:900;letter-spacing:-.04em;color:#f8fafc;margin:0 0 .25rem}',
+    '.dd-section-sub{font-size:.7rem;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:0}',
+    '.dd-card{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.04);border-radius:1.25rem;padding:1.1rem 1.25rem;cursor:pointer;transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;overflow:hidden}',
+    '.dd-card:hover{border-color:rgba(6,182,212,.22);transform:translateY(-4px);box-shadow:0 14px 36px rgba(0,0,0,.55)}',
+    '.dd-card-name{font-size:.95rem;font-weight:800;color:#f8fafc;margin-bottom:.2rem;letter-spacing:-.01em}',
+    '.dd-card-meta{font-size:.7rem;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.45rem}',
+    '.dd-card-arrow{position:absolute;top:50%;right:1.1rem;transform:translateY(-50%);font-size:1.2rem;color:#1e293b;transition:color .2s,right .2s}',
+    '.dd-card:hover .dd-card-arrow{color:#06b6d4;right:.85rem}',
+    '.dd-card-content{flex:1;min-width:0}',
+    '.dd-pills{display:flex;flex-wrap:wrap;gap:.3rem}',
+    '.dd-pill{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .55rem;border-radius:999px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);color:#64748b}',
+    '.dd-pill-price{color:#06b6d4;border-color:rgba(6,182,212,.2);background:rgba(6,182,212,.06)}',
+    '.dd-pill-hh{color:#f59e0b;border-color:rgba(245,158,11,.2);background:rgba(245,158,11,.06)}',
+    '.dd-loc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:.75rem}',
+    '.dd-loc-card{display:flex;align-items:flex-start;gap:.9rem;padding-right:2.5rem}',
+    '.dd-loc-pin{font-size:1.4rem;flex-shrink:0}',
+    '.dd-ground-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:.75rem}',
+    '.dd-ground-card{padding-right:2.5rem}',
+    '.dd-ground-top{display:flex;align-items:flex-start;gap:.75rem}',
+    '.dd-ground-emoji{font-size:1.6rem;flex-shrink:0;width:2.6rem;height:2.6rem;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);border-radius:.75rem;border:1px solid rgba(255,255,255,.05)}',
+    '.dd-sports-grid{display:grid;grid-template-columns:1fr;gap:.75rem;max-width:540px}',
+    '.dd-sport-card{padding-right:2.5rem}',
+    '.dd-sport-inner{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem}',
+    '.dd-sport-emoji-big{font-size:2.4rem;flex-shrink:0;width:3.4rem;height:3.4rem;display:flex;align-items:center;justify-content:center;background:rgba(6,182,212,.07);border-radius:1rem;border:1px solid rgba(6,182,212,.15)}',
+    '.dd-hh-label{font-size:.68rem;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.05em;margin-top:.3rem}',
+    '.dd-divider{border:none;border-top:1px solid rgba(255,255,255,.04);margin:.75rem 0}',
+    '.dd-slots-info-bar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.78rem;font-weight:700;color:#64748b;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:.75rem;padding:.6rem 1rem;margin-bottom:1rem}',
+    '.dd-slots-info-bar strong{color:#f8fafc;font-size:.82rem}.dd-info-sep{color:#1e293b}',
+    '.dd-slot-list{display:flex;flex-direction:column;gap:.45rem}',
+    '.dd-slot-row{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:1rem;background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.04);border-radius:1rem;padding:.85rem 1.1rem;transition:border-color .25s}',
+    '.dd-slot-row:hover{border-color:rgba(6,182,212,.14)}',
+    '.dd-slot-time-col{display:flex;flex-direction:column;gap:.3rem}',
+    '.dd-slot-time-main{font-size:.88rem;font-weight:800;color:#f8fafc;letter-spacing:-.01em}',
+    '.dd-hh-badge{display:inline-block;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:.15rem .5rem;border-radius:999px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:#f59e0b;animation:dd-pulse 1.8s infinite}',
+    '@keyframes dd-pulse{0%,100%{opacity:1}50%{opacity:.6}}',
+    '.dd-slot-price-col{display:flex;align-items:baseline;gap:.3rem}',
+    '.dd-price-final{font-size:1rem;font-weight:900;color:#f8fafc}',
+    '.dd-price-orig{font-size:.72rem;color:#334155;text-decoration:line-through}',
+    '.dd-price-label{font-size:.62rem;color:#334155;font-weight:700;text-transform:uppercase;letter-spacing:.04em}',
+    '.dd-slot-avail-col{font-size:.72rem;font-weight:700;white-space:nowrap}',
+    '.dd-avail-ok{color:#22c55e}.dd-avail-low{color:#f59e0b}.dd-avail-full{color:#ef4444}',
+    '.dd-btn-primary{background:linear-gradient(135deg,#06b6d4,#6366f1);color:#fff;border:none;border-radius:.6rem;padding:.5rem 1.1rem;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;white-space:nowrap;transition:opacity .2s,transform .15s;font-family:"Outfit",sans-serif}',
+    '.dd-btn-primary:hover{opacity:.85;transform:translateY(-1px)}',
+    '.dd-btn-secondary{background:rgba(255,255,255,.03);color:#64748b;border:1px solid rgba(255,255,255,.07);border-radius:.6rem;padding:.5rem 1.1rem;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;white-space:nowrap;font-family:"Outfit",sans-serif;transition:background .2s}',
+    '.dd-btn-secondary:hover{background:rgba(255,255,255,.07);color:#f8fafc}',
+    '.dd-btn-disabled{background:rgba(255,255,255,.01);color:#1e293b;border:1px solid rgba(255,255,255,.04);border-radius:.6rem;padding:.5rem 1.1rem;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;cursor:not-allowed;white-space:nowrap;font-family:"Outfit",sans-serif}',
+    '.dd-empty{text-align:center;padding:3rem 1rem;color:#334155;font-weight:700}',
+    '@media(max-width:640px){.dd-slot-row{grid-template-columns:1fr auto;grid-template-rows:auto auto}.dd-slot-avail-col{display:none}.dd-loc-grid,.dd-ground-grid{grid-template-columns:1fr}}'
+  ].join('');
+  document.head.appendChild(style);
+
+  /* ── public API ── */
+  window.initDrillDown = function() {
+    var shell=document.getElementById('dd-shell');
+    if (!shell) {
+      var feed=document.getElementById('view-feed'); if(!feed) return;
+      feed.innerHTML='<div id="dd-shell"><div id="dd-breadcrumb"></div><div id="dd-panel-locations"></div><div id="dd-panel-grounds" style="display:none"></div><div id="dd-panel-sports" style="display:none"></div><div id="dd-panel-slots" style="display:none"></div></div>';
+    }
+    renderLocations(); showPanel('locations');
+  };
+
+  window.refreshDrillDown = function() {
+    if      (DS.view==='locations') renderLocations();
+    else if (DS.view==='grounds')   renderGrounds();
+    else if (DS.view==='sports')    renderSports();
+    else if (DS.view==='slots')     renderSlots();
+  };
+
+})();
     </script>
 </body>
 </html>
