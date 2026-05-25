@@ -385,40 +385,23 @@
                 </section>
             </div>
 
-            <!-- ═══════════════════════════════════════════════════════
-            <!-- ══════════════════════════════════════════════════
-                 SQUADON BOOKING BAR — Area pills · Sport pills
-                 Turf dropdown · Slot dropdown · Spots stepper
-                 ══════════════════════════════════════════════════ -->
+            <!-- BOOKING BAR -->
             <section id="venues-section" class="py-20 bg-slate-950/40 border-t border-white/5 min-h-screen">
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
                     <div id="view-feed" class="block">
-
-                        <!-- Section heading -->
                         <div class="mb-8 reveal">
                             <h2 class="text-4xl font-black text-white tracking-premium">Book a Slot</h2>
                             <p class="text-slate-400 mt-1 font-medium text-sm">Filter by area &amp; sport, pick your turf, slot and spots.</p>
                         </div>
-
-                        <!-- ── BOOKING BAR ── -->
                         <div id="bk-shell" class="reveal">
-
-                            <!-- Area pills -->
                             <div id="bk-area-row" class="flex gap-2 flex-wrap mb-4"></div>
-
-                            <!-- Sport pills -->
                             <div id="bk-sport-row" class="flex gap-2 flex-wrap mb-6"></div>
-
-                            <!-- Turf cards grid -->
                             <div id="bk-turf-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-8"></div>
                             <div id="bk-no-results" class="hidden text-center py-16 text-slate-500 font-bold">
                                 <p class="text-3xl mb-3">🔍</p><p>No turfs match this filter.</p>
                             </div>
-
-                            <!-- Slot + Spots row (shown after turf selected) -->
                             <div id="bk-slot-row" class="hidden bg-slate-900/60 border border-white/5 rounded-2xl p-6 mb-6">
                                 <div class="flex flex-col md:flex-row gap-5 items-start md:items-end">
-                                    <!-- Selected turf info -->
                                     <div id="bk-selected-turf-info" class="flex items-center gap-4 flex-1 min-w-0">
                                         <div id="bk-turf-img-wrap" class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-slate-800 border border-white/5">
                                             <img id="bk-turf-img" src="" alt="" class="w-full h-full object-cover">
@@ -429,14 +412,12 @@
                                             <p id="bk-turf-meta" class="text-xs text-slate-400 font-medium mt-0.5"></p>
                                         </div>
                                     </div>
-                                    <!-- Slot select -->
                                     <div class="flex flex-col gap-1.5 w-full md:w-64">
                                         <label class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Time slot</label>
                                         <select id="bk-sel-slot" class="input-luxe py-3 text-sm" onchange="bkOnSlot()">
                                             <option value="">— select a slot —</option>
                                         </select>
                                     </div>
-                                    <!-- Spots stepper -->
                                     <div class="flex flex-col gap-1.5">
                                         <label class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Spots</label>
                                         <div class="flex items-center gap-3 bg-[#050505] p-1.5 rounded-full border border-white/10">
@@ -447,8 +428,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Summary + CTA (shown after slot selected) -->
                             <div id="bk-summary" class="hidden bg-slate-900/60 border border-white/5 rounded-2xl p-6 mb-4">
                                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
                                     <div class="bg-slate-800/60 rounded-xl p-3 border border-white/5">
@@ -477,12 +456,12 @@
                                     <button onclick="bkReset()" class="bg-white/5 hover:bg-white/10 border border-white/10 text-gray-400 font-bold px-6 py-4 rounded-xl text-sm transition uppercase tracking-widest">Reset</button>
                                 </div>
                             </div>
-
-                        </div><!-- /#bk-shell -->
-                    </div><!-- /#view-feed -->
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
+
         <!-- MY BOOKINGS VIEW -->
         <div id="view-my-bookings" class="hidden max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12 w-full py-16">
             <div class="flex items-center justify-between mb-10"><div><h2 class="text-4xl font-black text-white tracking-premium">My Bookings</h2><p class="text-slate-400 mt-1 text-sm font-medium">Your upcoming and past slots.</p></div><div id="user-coins-display" class="coin-badge text-base px-4 py-2"></div></div>
@@ -535,6 +514,7 @@
             <div class="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-5"><p class="text-xs text-slate-600 font-medium">© 2026 SquadOn. All rights reserved.</p><div class="text-xs text-slate-600 font-medium">Built for Kolkata. 🇮🇳</div></div>
         </div>
     </footer>
+
     <!-- BOOKING SHEET MODAL -->
     <div id="modal-backdrop" class="hidden fixed inset-0 bg-black/80 z-[500] flex items-end md:items-center justify-center p-0 md:p-6 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeSheet()">
         <div id="booking-sheet" class="w-full md:max-w-xl bg-[#0a0a0a] rounded-t-3xl md:rounded-3xl shadow-2xl flex flex-col border border-white/10 max-h-[92vh] transition-all duration-300" onclick="event.stopPropagation()">
@@ -634,6 +614,7 @@
             <div class="flex gap-3"><button onclick="closeModal('player-rating-modal')" class="flex-1 py-3 bg-white/5 border border-white/10 text-gray-400 font-bold rounded-xl hover:bg-white/10 transition text-sm uppercase tracking-widest">Skip</button><button onclick="submitPlayerRating()" class="flex-1 py-3 bg-green-600 hover:bg-green-500 text-white text-sm font-black rounded-xl transition uppercase tracking-widest">Submit</button></div>
         </div>
     </div>
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyhXcIHrd9L_EVe6AJMK4rSUB-2awFFoxn5hUSLWevo-RKfAwDLXSz6XdRZ_Xt86BG5/exec';
@@ -832,22 +813,12 @@
         var savedUser = sessionStorage.getItem('squadonUser');
         if (savedUser) { currentUser = JSON.parse(savedUser); }
 
-        // Show skeleton in the dd-shell while data loads
-        var locPanel = document.getElementById('dd-panel-locations');
-        if (locPanel) {
-            var skels = '<div class="dd-loc-grid">';
-            for (var s = 0; s < 6; s++) skels += '<div class="dd-card animate-skeleton" style="height:90px;opacity:0.3"></div>';
-            skels += '</div>';
-            locPanel.innerHTML = skels;
-        }
-
         try {
             var res = await fetchAPI({ action: 'sync' });
             if (res && res.status === 'success') { window.venues = res.venues || []; window.activeBookings = res.bookings || []; window.happyHours = res.happyHours || []; }
         } catch(e) { console.log('Sync pending:', e.message); }
         finally { hidePreloader(); }
 
-        // ── PATCH 2: initDrillDown instead of filterVenues ──
         if (currentUser) { updateUILoggedIn(); } else { initDrillDown(); showTnCIfNeeded(); }
 
         var urlParams = new URLSearchParams(window.location.search);
@@ -874,8 +845,7 @@
         if (role === 'admin') { var navA = document.getElementById('nav-btn-admin-portal'); if (navA) navA.classList.remove('hidden'); var menuA = document.getElementById('menu-btn-admin-portal'); if (menuA) menuA.classList.remove('hidden'); }
         if (role === 'owner' || role === 'admin') { var navO = document.getElementById('nav-btn-owner-portal'); if (navO) navO.classList.remove('hidden'); var menuO = document.getElementById('menu-btn-owner-portal'); if (menuO) menuO.classList.remove('hidden'); }
         renderRankings();
-        // ── PATCH 4: refreshDrillDown instead of filterVenues ──
-        if (document.getElementById('dd-shell')) { refreshDrillDown(); } else { initDrillDown(); }
+        if (typeof initDrillDown === 'function') { initDrillDown(); }
         showTnCIfNeeded();
     }
 
@@ -891,7 +861,6 @@
                 currentUser = res.user; window.venues = res.venues || window.venues; window.activeBookings = res.bookings || []; window.happyHours = res.happyHours || [];
                 sessionStorage.setItem('squadonUser', JSON.stringify(currentUser));
                 closeAuth(); updateUILoggedIn();
-                // ── PATCH 5: refresh drill-down after login ──
                 if (typeof refreshDrillDown === 'function') refreshDrillDown();
                 showToast('Welcome back, '+(currentUser.name||'Player')+'! 🏟️', 'success');
                 setTimeout(function(){ var vs = document.getElementById('venues-section'); if (vs) vs.scrollIntoView({behavior:'smooth'}); }, 500);
@@ -941,7 +910,7 @@
         finally { btn.innerText = 'Submit Request'; btn.classList.remove('opacity-50','cursor-wait'); }
     }
 
-    // ==================== PROXIMITY SORT (kept for Find Near Me button) ====================
+    // ==================== PROXIMITY SORT ====================
     function sortVenuesByProximity(btn) {
         if (!navigator.geolocation) { showToast('Geolocation not supported.','error'); return; }
         var orig = btn.innerHTML; btn.innerHTML = '📍 Locating...';
@@ -961,7 +930,14 @@
     // ==================== BOOKING SHEET ====================
     function openBookingByName(name) {
         var venue = window.venues.find(function(v){ return v.name === name; });
-        if (!venue) { showToast('Arena not found.', 'error'); return; }
+        if (!venue) {
+            // Fallback: create a minimal venue object from BK_TURFS if window.venues doesn't have it yet
+            if (typeof BK_TURFS !== 'undefined') {
+                var bkMatch = BK_TURFS.find(function(t){ return t.name === name; });
+                if (bkMatch) { venue = { name: bkMatch.name, sport: bkMatch.sport, price: bkMatch.price, cap: bkMatch.cap, times: '' }; }
+            }
+            if (!venue) { showToast('Arena not found.', 'error'); return; }
+        }
         activeVenue = venue;
         document.getElementById('book-venue-name').innerText = venue.name;
         document.getElementById('book-venue-sport').innerText = venue.sport;
@@ -1244,7 +1220,6 @@
     }
     </script>
 
-
     <!-- ══════════════════════════════════════════════════════════
          SQUADON BOOKING BAR MODULE
     ══════════════════════════════════════════════════════════════ -->
@@ -1296,13 +1271,16 @@ var BK_TURFS = [
    img:"https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=600&q=70"}
 ];
 
+/* expose for openBookingByName fallback */
+window.BK_TURFS = BK_TURFS;
+
 var SPORT_EMOJIS = {Football:"⚽",Cricket:"🏏",Pickleball:"🏓",Padel:"🎾",Skyball:"🎈",Basketball:"🏀",Tennis:"🎾",Chess:"♟️",Carrom:"🎯"};
 var FALLBACK_IMGS = {Football:"https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=70",Cricket:"https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=600&q=70",Pickleball:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70",Padel:"https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=600&q=70",default:"https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=600&q=70"};
 
 var SLOTS_DAY = ["06:00 AM","07:00 AM","08:00 AM","09:00 AM","10:00 AM","11:00 AM","12:00 PM","01:00 PM","02:00 PM","03:00 PM","04:00 PM","05:00 PM","06:00 PM","07:00 PM","08:00 PM","09:00 PM","10:00 PM","11:00 PM"];
 var SLOTS_24  = ["12:00 AM","01:00 AM","02:00 AM","03:00 AM","04:00 AM","05:00 AM"].concat(SLOTS_DAY);
 
-var HH = [{s:6,e:8,d:20,l:"Early Bird −20%"},{s:13,e:16,d:20,l:"Afternoon −20%"}];
+var HH = [{s:6,e:8,d:20,l:"Early Bird -20%"},{s:13,e:16,d:20,l:"Afternoon -20%"}];
 
 var bkActiveArea  = "All";
 var bkActiveSport = "All";
@@ -1324,7 +1302,6 @@ function bkNextHour(t){
 }
 function bkGetImg(turf){
   var img = turf.img;
-  // Try to use the live window.venues image if available
   if(window.venues && window.venues.length){
     var lv = window.venues.find(function(v){return v.name===turf.name;});
     if(lv && lv.img && lv.img.startsWith("http")) img = lv.img;
@@ -1396,7 +1373,6 @@ function bkRenderCards(){
   var filtered=BK_TURFS.filter(function(t){
     return (bkActiveArea==="All"||t.area===bkActiveArea)&&(bkActiveSport==="All"||t.sport===bkActiveSport);
   });
-  // merge live window.venues data
   if(window.venues&&window.venues.length){
     filtered=filtered.filter(function(t){
       var lv=window.venues.find(function(v){return v.name===t.name;});
@@ -1410,6 +1386,8 @@ function bkRenderCards(){
   if(!filtered.length){noRes.classList.remove("hidden");return;}
   noRes.classList.add("hidden");
 
+  var FALLBACK_SRC = "https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=600&q=70";
+
   filtered.forEach(function(turf){
     var price=bkGetPrice(turf);
     var img=bkGetImg(turf);
@@ -1418,28 +1396,49 @@ function bkRenderCards(){
 
     var card=document.createElement("div");
     card.className="card-luxe cursor-pointer group"+(bkActiveTurf&&bkActiveTurf.name===turf.name?" border-cyan-500/40 shadow-[0_0_20px_rgba(6,182,212,0.15)]":"");
-    card.innerHTML=
-      '<div class="relative w-full h-40 flex-shrink-0 overflow-hidden rounded-t-2xl bg-slate-900">'+
-        '<img src="'+img+'" alt="'+turf.name+'" loading="lazy" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" onerror="this.src=''https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=600&q=70''">'+
-        hhBadge+
-        '<div style="position:absolute;bottom:8px;right:8px;background:rgba(2,6,23,.85);border:1px solid rgba(255,255,255,.08);border-radius:.5rem;padding:3px 10px">'+
-          '<p style="font-size:.6rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:0;line-height:1.2">Per Head</p>'+
-          '<p style="font-size:.85rem;font-weight:900;color:#f8fafc;margin:0">₹'+price+'</p>'+
-        '</div>'+
-      '</div>'+
-      '<div class="p-4 flex flex-col gap-1 flex-grow">'+
-        '<p style="font-size:.62rem;color:#06b6d4;font-weight:800;text-transform:uppercase;letter-spacing:.06em">'+turf.sport+'</p>'+
-        '<h3 class="font-black text-white text-sm leading-snug">'+turf.brand+' — '+turf.name+'</h3>'+
-        '<p style="font-size:.7rem;color:#64748b;font-weight:600">'+turf.area+' · Cap '+bkGetCap(turf)+'</p>'+
-        '<button class="mt-auto btn-luxe w-full py-3 text-xs font-black uppercase tracking-widest" style="margin-top:.75rem">'+
-          (window.currentUser?"Select this turf":"Login to book")+
-        '</button>'+
-      '</div>';
+
+    /* ── FIX: build img element in JS to avoid quote nesting inside HTML string ── */
+    var imgEl = document.createElement("img");
+    imgEl.src = img;
+    imgEl.alt = turf.name;
+    imgEl.loading = "lazy";
+    imgEl.className = "w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500";
+    imgEl.onerror = function(){ this.src = FALLBACK_SRC; };
+
+    var imgWrapper = document.createElement("div");
+    imgWrapper.className = "relative w-full h-40 flex-shrink-0 overflow-hidden rounded-t-2xl bg-slate-900";
+    imgWrapper.appendChild(imgEl);
+    if(turf.is24hr){
+      var badge = document.createElement("span");
+      badge.className = "happy-hour-badge";
+      badge.style.cssText = "position:absolute;top:10px;left:10px;z-index:10";
+      badge.textContent = "24hr";
+      imgWrapper.appendChild(badge);
+    }
+    var priceTag = document.createElement("div");
+    priceTag.style.cssText = "position:absolute;bottom:8px;right:8px;background:rgba(2,6,23,.85);border:1px solid rgba(255,255,255,.08);border-radius:.5rem;padding:3px 10px";
+    priceTag.innerHTML = '<p style="font-size:.6rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:0;line-height:1.2">Per Head</p><p style="font-size:.85rem;font-weight:900;color:#f8fafc;margin:0">&#8377;'+price+'</p>';
+    imgWrapper.appendChild(priceTag);
+
+    var body = document.createElement("div");
+    body.className = "p-4 flex flex-col gap-1 flex-grow";
+    body.innerHTML =
+      '<p style="font-size:.62rem;color:#06b6d4;font-weight:800;text-transform:uppercase;letter-spacing:.06em">'+turf.sport+'</p>'+
+      '<h3 class="font-black text-white text-sm leading-snug">'+turf.brand+' — '+turf.name+'</h3>'+
+      '<p style="font-size:.7rem;color:#64748b;font-weight:600">'+turf.area+' · Cap '+bkGetCap(turf)+'</p>';
+
+    var selectBtn = document.createElement("button");
+    selectBtn.className = "mt-auto btn-luxe w-full py-3 text-xs font-black uppercase tracking-widest";
+    selectBtn.style.marginTop = ".75rem";
+    selectBtn.textContent = window.currentUser ? "Select this turf" : "Login to book";
+    body.appendChild(selectBtn);
+
+    card.appendChild(imgWrapper);
+    card.appendChild(body);
 
     card.onclick=function(){
       if(!window.currentUser){openAuth();return;}
       bkActiveTurf=turf;
-      // highlight selected card
       grid.querySelectorAll(".card-luxe").forEach(function(c){c.style.borderColor="";c.style.boxShadow="";});
       card.style.borderColor="rgba(6,182,212,.5)";
       card.style.boxShadow="0 0 20px rgba(6,182,212,.15)";
@@ -1456,9 +1455,8 @@ function bkShowSlotRow(turf){
   document.getElementById("bk-turf-img").src=img;
   document.getElementById("bk-turf-badge").textContent=turf.brand+" · "+turf.area;
   document.getElementById("bk-turf-title").textContent=turf.name;
-  document.getElementById("bk-turf-meta").textContent=turf.sport+" · Cap: "+bkGetCap(turf)+" · ₹"+price+"/head";
+  document.getElementById("bk-turf-meta").textContent=turf.sport+" · Cap: "+bkGetCap(turf)+" · \u20B9"+price+"/head";
 
-  // populate slots
   var sel=document.getElementById("bk-sel-slot");
   sel.innerHTML='<option value="">— select a slot —</option>';
   var now=new Date();
@@ -1468,7 +1466,7 @@ function bkShowSlotRow(turf){
     var disc=bkGetDisc(t);
     var opt=document.createElement("option");
     opt.value=t;
-    opt.textContent=t+" – "+bkNextHour(t)+(disc>0?"  ⚡ "+bkGetHHLabel(t):"");
+    opt.textContent=t+" \u2013 "+bkNextHour(t)+(disc>0?"  \u26A1 "+bkGetHHLabel(t):"");
     sel.appendChild(opt);
   });
 
@@ -1509,7 +1507,6 @@ function bkUpdateSummary(){
   var finalP=disc>0?Math.round(price*(1-disc/100)):price;
   var total=finalP*bkSpots;
 
-  // availability from activeBookings
   var fDate=(function(){var p=(new Date()).toLocaleDateString("en-IN",{day:"2-digit",month:"2-digit",year:"numeric"}).split("/");return p[0]+"-"+p[1]+"-"+p[2];})();
   var booked=0;
   (window.activeBookings||[]).forEach(function(b){
@@ -1523,13 +1520,13 @@ function bkUpdateSummary(){
   else if(rem<=2){avEl.textContent=rem+" left!";avEl.className="text-sm font-black text-amber-400";}
   else{avEl.textContent=rem+" available";avEl.className="text-sm font-black text-green-400";}
 
-  document.getElementById("bk-s-slot").textContent=slot+" – "+bkNextHour(slot);
-  document.getElementById("bk-s-pph").textContent="₹"+finalP+(disc>0?" (was ₹"+price+")":"");
-  document.getElementById("bk-s-total").textContent="₹"+total;
+  document.getElementById("bk-s-slot").textContent=slot+" \u2013 "+bkNextHour(slot);
+  document.getElementById("bk-s-pph").textContent="\u20B9"+finalP+(disc>0?" (was \u20B9"+price+")":"");
+  document.getElementById("bk-s-total").textContent="\u20B9"+total;
 
   var hhAlert=document.getElementById("bk-hh-alert");
   var hhText=document.getElementById("bk-hh-text");
-  if(disc>0){hhAlert.classList.remove("hidden");hhText.textContent="⚡ "+bkGetHHLabel(slot)+" active — ₹"+disc+" off per head automatically applied!";}
+  if(disc>0){hhAlert.classList.remove("hidden");hhText.textContent="\u26A1 "+bkGetHHLabel(slot)+" active \u2014 \u20B9"+disc+" off per head automatically applied!";}
   else{hhAlert.classList.add("hidden");}
 
   var btn=document.getElementById("bk-confirm-btn");
@@ -1543,7 +1540,6 @@ window.bkConfirm=function(){
   if(!bkActiveTurf){showToast("Please select a turf first.","error");return;}
   var slot=document.getElementById("bk-sel-slot").value;
   if(!slot){showToast("Please select a time slot.","error");return;}
-  // Bridge to existing booking sheet with pre-selected slot
   openBookingByName(bkActiveTurf.name);
   setTimeout(function(){
     var sel=document.getElementById("book-time");
@@ -1563,7 +1559,7 @@ window.bkWaitlist=function(){
   if(!bkActiveTurf||!window.currentUser)return;
   var slot=document.getElementById("bk-sel-slot").value;
   fetchAPI({action:"book",name:currentUser.name,phone:currentUser.phone||"",skill:currentUser.skill||"",game:bkActiveTurf.sport,playDate:(function(){var p=(new Date()).toLocaleDateString("en-IN",{day:"2-digit",month:"2-digit",year:"numeric"}).split("/");return p[0]+"-"+p[1]+"-"+p[2];})(),timeSlot:slot,venue:bkActiveTurf.name,payMethod:"Standby Waitlist",totalAmount:0,slots:0})
-    .then(function(){showToast("Added to waitlist! We\'ll notify you if a slot opens. 🕒","success");})
+    .then(function(){showToast("Added to waitlist! We'll notify you if a slot opens. \uD83D\uDD52","success");})
     .catch(function(e){showToast("Error: "+e.message,"error");});
 };
 
