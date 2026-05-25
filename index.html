@@ -386,25 +386,100 @@
             </div>
 
             <!-- ═══════════════════════════════════════════════════════
-                 VENUES SECTION — DRILL-DOWN BROWSER (PATCH 1 applied)
-                 Old flat grid + filter pills replaced with dd-shell
-                 ═══════════════════════════════════════════════════════ -->
+            <!-- ══════════════════════════════════════════════════
+                 SQUADON BOOKING BAR — Area pills · Sport pills
+                 Turf dropdown · Slot dropdown · Spots stepper
+                 ══════════════════════════════════════════════════ -->
             <section id="venues-section" class="py-20 bg-slate-950/40 border-t border-white/5 min-h-screen">
                 <div class="max-w-[90rem] mx-auto px-6 sm:px-8 lg:px-12">
                     <div id="view-feed" class="block">
-                        <div class="mb-6 reveal">
-                            <h2 class="text-4xl font-black text-white tracking-premium">Available Arenas</h2>
-                            <p class="text-slate-400 mt-1 font-medium text-sm">Real-time availability — Salt Lake, Behala, New Town, Jadavpur.</p>
+
+                        <!-- Section heading -->
+                        <div class="mb-8 reveal">
+                            <h2 class="text-4xl font-black text-white tracking-premium">Book a Slot</h2>
+                            <p class="text-slate-400 mt-1 font-medium text-sm">Filter by area &amp; sport, pick your turf, slot and spots.</p>
                         </div>
-                        <!-- Drill-down shell — populated by initDrillDown() -->
-                        <div id="dd-shell">
-                            <div id="dd-breadcrumb"></div>
-                            <div id="dd-panel-locations"></div>
-                            <div id="dd-panel-grounds"  style="display:none"></div>
-                            <div id="dd-panel-sports"   style="display:none"></div>
-                            <div id="dd-panel-slots"    style="display:none"></div>
-                        </div>
-                    </div>
+
+                        <!-- ── BOOKING BAR ── -->
+                        <div id="bk-shell" class="reveal">
+
+                            <!-- Area pills -->
+                            <div id="bk-area-row" class="flex gap-2 flex-wrap mb-4"></div>
+
+                            <!-- Sport pills -->
+                            <div id="bk-sport-row" class="flex gap-2 flex-wrap mb-6"></div>
+
+                            <!-- Turf cards grid -->
+                            <div id="bk-turf-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-8"></div>
+                            <div id="bk-no-results" class="hidden text-center py-16 text-slate-500 font-bold">
+                                <p class="text-3xl mb-3">🔍</p><p>No turfs match this filter.</p>
+                            </div>
+
+                            <!-- Slot + Spots row (shown after turf selected) -->
+                            <div id="bk-slot-row" class="hidden bg-slate-900/60 border border-white/5 rounded-2xl p-6 mb-6">
+                                <div class="flex flex-col md:flex-row gap-5 items-start md:items-end">
+                                    <!-- Selected turf info -->
+                                    <div id="bk-selected-turf-info" class="flex items-center gap-4 flex-1 min-w-0">
+                                        <div id="bk-turf-img-wrap" class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-slate-800 border border-white/5">
+                                            <img id="bk-turf-img" src="" alt="" class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="min-w-0">
+                                            <p id="bk-turf-badge" class="text-[10px] font-bold uppercase tracking-widest text-cyan-400 mb-0.5"></p>
+                                            <p id="bk-turf-title" class="font-black text-white text-lg leading-tight tracking-tight truncate"></p>
+                                            <p id="bk-turf-meta" class="text-xs text-slate-400 font-medium mt-0.5"></p>
+                                        </div>
+                                    </div>
+                                    <!-- Slot select -->
+                                    <div class="flex flex-col gap-1.5 w-full md:w-64">
+                                        <label class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Time slot</label>
+                                        <select id="bk-sel-slot" class="input-luxe py-3 text-sm" onchange="bkOnSlot()">
+                                            <option value="">— select a slot —</option>
+                                        </select>
+                                    </div>
+                                    <!-- Spots stepper -->
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Spots</label>
+                                        <div class="flex items-center gap-3 bg-[#050505] p-1.5 rounded-full border border-white/10">
+                                            <button onclick="bkAdjSpots(-1)" id="bk-btn-minus" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition text-lg" disabled>−</button>
+                                            <span id="bk-spots-val" class="w-8 text-center text-lg font-black text-white">1</span>
+                                            <button onclick="bkAdjSpots(1)"  id="bk-btn-plus"  class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center font-bold text-white transition text-lg" disabled>+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Summary + CTA (shown after slot selected) -->
+                            <div id="bk-summary" class="hidden bg-slate-900/60 border border-white/5 rounded-2xl p-6 mb-4">
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
+                                    <div class="bg-slate-800/60 rounded-xl p-3 border border-white/5">
+                                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Slot</p>
+                                        <p class="text-sm font-black text-white" id="bk-s-slot">—</p>
+                                    </div>
+                                    <div class="bg-slate-800/60 rounded-xl p-3 border border-white/5">
+                                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Availability</p>
+                                        <p class="text-sm font-black" id="bk-s-avail">—</p>
+                                    </div>
+                                    <div class="bg-slate-800/60 rounded-xl p-3 border border-white/5">
+                                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Price / head</p>
+                                        <p class="text-sm font-black text-white" id="bk-s-pph">—</p>
+                                    </div>
+                                    <div class="bg-cyan-500/10 border border-cyan-500/20 rounded-xl p-3">
+                                        <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest mb-1">Total</p>
+                                        <p class="text-lg font-black text-white luxe-shadow" id="bk-s-total">—</p>
+                                    </div>
+                                </div>
+                                <div id="bk-hh-alert" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 mb-4 flex items-center gap-2">
+                                    <span class="text-lg">⚡</span>
+                                    <p class="text-xs font-black text-amber-400" id="bk-hh-text"></p>
+                                </div>
+                                <div class="flex gap-4 items-center">
+                                    <button id="bk-confirm-btn" onclick="bkConfirm()" class="btn-luxe px-8 py-4 text-sm font-black uppercase tracking-widest flex-1">Confirm Booking</button>
+                                    <button onclick="bkReset()" class="bg-white/5 hover:bg-white/10 border border-white/10 text-gray-400 font-bold px-6 py-4 rounded-xl text-sm transition uppercase tracking-widest">Reset</button>
+                                </div>
+                            </div>
+
+                        </div><!-- /#bk-shell -->
+                    </div><!-- /#view-feed -->
                 </div>
             </section>
         </div>
@@ -1169,296 +1244,351 @@
     }
     </script>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         DRILL-DOWN VENUE BROWSER MODULE
-    ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- ══════════════════════════════════════════════════════════
+         SQUADON BOOKING BAR MODULE
+    ══════════════════════════════════════════════════════════════ -->
     <script>
-(function () {
-  var DS = { view: 'locations', locationKey: null, groundKey: null, sport: null };
-  var EMOJIS = { Football:'⚽', Cricket:'🏏', Pickleball:'🏓', Padel:'🎾', Skyball:'🎈', Basketball:'🏀', Tennis:'🎾', Badminton:'🏸', Chess:'♟️', Carrom:'🎯' };
+(function(){
 
-  function groupVenues(venues) {
-    var map = {};
-    (venues || []).forEach(function(v) {
-      if (!v || !v.name) return;
-      var k = (v.loc || 'Other').toString().trim();
-      if (!map[k]) map[k] = { loc: k, grounds: {} };
-      map[k].grounds[v.name] = v;
-    });
-    return map;
+var BK_TURFS = [
+  {area:"New Alipore",         brand:"TurfXL",         name:"Full Ground",                              sport:"Football",    cap:14, price:250,
+   img:"https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=70"},
+  {area:"New Alipore",         brand:"TurfXL",         name:"Half Ground",                              sport:"Football",    cap:14, price:157,
+   img:"https://images.unsplash.com/photo-1551958219-acbc630e2914?auto=format&fit=crop&w=600&q=70"},
+  {area:"New Alipore",         brand:"TurfXL",         name:"New Ground",                               sport:"Football",    cap:14, price:250,
+   img:"https://images.unsplash.com/photo-1518610543666-419b4891157c?auto=format&fit=crop&w=600&q=70"},
+  {area:"New Alipore",         brand:"TurfXL",         name:"Padel Court 1",                            sport:"Padel",       cap:10, price:200,
+   img:"https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=600&q=70"},
+  {area:"New Alipore",         brand:"TurfXL",         name:"Pickleball Court 1",                       sport:"Pickleball",  cap:4,  price:150,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"New Alipore",         brand:"TurfXL",         name:"Pickleball Court 2",                       sport:"Pickleball",  cap:4,  price:150,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"New Alipore",         brand:"TurfXL",         name:"Pickleball Court 3",                       sport:"Pickleball",  cap:4,  price:150,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"New Alipore",         brand:"TurfXL",         name:"Pickleball Court 4",                       sport:"Pickleball",  cap:4,  price:150,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"New Alipore",         brand:"TurfXL",         name:"Skyball",                                  sport:"Skyball",     cap:4,  price:200,
+   img:"https://images.unsplash.com/photo-1499336315816-097655dcfbda?auto=format&fit=crop&w=600&q=70"},
+  {area:"Sector 5",            brand:"TurfXL",         name:"Pickleball Court 1",                       sport:"Pickleball",  cap:4,  price:150,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"Harish Mukherjee Rd", brand:"TurfXL",         name:"Pickleball Court 1",                       sport:"Pickleball",  cap:4,  price:175,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"Science City",        brand:"TurfXL",         name:"New Ground (Science City)",                sport:"Football",    cap:14, price:157, is24hr:true,
+   img:"https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=70"},
+  {area:"Science City",        brand:"TurfXL",         name:"Original Ground",                          sport:"Football",    cap:14, price:157, is24hr:true,
+   img:"https://images.unsplash.com/photo-1518610543666-419b4891157c?auto=format&fit=crop&w=600&q=70"},
+  {area:"Science City",        brand:"TurfXL",         name:"Pickleball Court 1 (Science City)",        sport:"Pickleball",  cap:4,  price:150, is24hr:true,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"Science City",        brand:"TurfXL",         name:"Pickleball Court 2 (Science City)",        sport:"Pickleball",  cap:4,  price:150, is24hr:true,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"Science City",        brand:"TurfXL",         name:"Pickleball Court 3 (Science City)",        sport:"Pickleball",  cap:4,  price:150, is24hr:true,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"Salt Lake",           brand:"TurfXL",         name:"Cricket Ground",                           sport:"Cricket",     cap:14, price:157, is24hr:true,
+   img:"https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=600&q=70"},
+  {area:"Salt Lake",           brand:"TurfXL",         name:"Football Ground",                          sport:"Football",    cap:14, price:114, is24hr:true,
+   img:"https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=70"},
+  {area:"Racquet Club Ruby",   brand:"TurfXL",         name:"Pickleball Court 1 (Racquet Club Ruby)",   sport:"Pickleball",  cap:4,  price:175,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"Racquet Club Ruby",   brand:"TurfXL",         name:"Pickleball Court 2 (Racquet Club Ruby)",   sport:"Pickleball",  cap:4,  price:175,
+   img:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70"},
+  {area:"Kasba",               brand:"Kasba Turf Edge",name:"Kasba Turf Edge",                          sport:"Cricket",     cap:14, price:143,
+   img:"https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=600&q=70"}
+];
+
+var SPORT_EMOJIS = {Football:"⚽",Cricket:"🏏",Pickleball:"🏓",Padel:"🎾",Skyball:"🎈",Basketball:"🏀",Tennis:"🎾",Chess:"♟️",Carrom:"🎯"};
+var FALLBACK_IMGS = {Football:"https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=70",Cricket:"https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=600&q=70",Pickleball:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=600&q=70",Padel:"https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=600&q=70",default:"https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=600&q=70"};
+
+var SLOTS_DAY = ["06:00 AM","07:00 AM","08:00 AM","09:00 AM","10:00 AM","11:00 AM","12:00 PM","01:00 PM","02:00 PM","03:00 PM","04:00 PM","05:00 PM","06:00 PM","07:00 PM","08:00 PM","09:00 PM","10:00 PM","11:00 PM"];
+var SLOTS_24  = ["12:00 AM","01:00 AM","02:00 AM","03:00 AM","04:00 AM","05:00 AM"].concat(SLOTS_DAY);
+
+var HH = [{s:6,e:8,d:20,l:"Early Bird −20%"},{s:13,e:16,d:20,l:"Afternoon −20%"}];
+
+var bkActiveArea  = "All";
+var bkActiveSport = "All";
+var bkActiveTurf  = null;
+var bkSpots       = 1;
+
+/* ── helpers ── */
+function bkParseHour(t){
+  var m=t.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i); if(!m) return -1;
+  var h=parseInt(m[1]),ap=m[3].toUpperCase();
+  if(ap==="PM"&&h<12)h+=12; if(ap==="AM"&&h===12)h=0; return h;
+}
+function bkGetDisc(t){var h=bkParseHour(t);for(var i=0;i<HH.length;i++){if(h>=HH[i].s&&h<HH[i].e)return HH[i].d;}return 0;}
+function bkGetHHLabel(t){var h=bkParseHour(t);for(var i=0;i<HH.length;i++){if(h>=HH[i].s&&h<HH[i].e)return HH[i].l;}return "";}
+function bkNextHour(t){
+  var h=bkParseHour(t); h=(h+1)%24;
+  var ap=h<12?"AM":"PM",dH=h%12; if(dH===0)dH=12;
+  return String(dH).padStart(2,"0")+":00 "+ap;
+}
+function bkGetImg(turf){
+  var img = turf.img;
+  // Try to use the live window.venues image if available
+  if(window.venues && window.venues.length){
+    var lv = window.venues.find(function(v){return v.name===turf.name;});
+    if(lv && lv.img && lv.img.startsWith("http")) img = lv.img;
   }
-
-  function getHHDiscount(t) {
-    if (!t) return 0;
-    var m = t.toString().match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i); if (!m) return 0;
-    var h = parseInt(m[1]); var ap = m[3].toUpperCase();
-    if (ap==='PM'&&h<12) h+=12; if (ap==='AM'&&h===12) h=0;
-    var HH = window.happyHours || [];
-    for (var i=0;i<HH.length;i++) { if (h>=HH[i].start&&h<HH[i].end) return HH[i].discount; }
-    return 0;
+  return img || FALLBACK_IMGS[turf.sport] || FALLBACK_IMGS.default;
+}
+function bkGetCap(turf){
+  if(window.venues && window.venues.length){
+    var lv = window.venues.find(function(v){return v.name===turf.name;});
+    if(lv && lv.cap) return parseInt(lv.cap);
   }
-
-  function todayISO() {
-    var n=new Date(); return new Date(n.getTime()-n.getTimezoneOffset()*60000).toISOString().split('T')[0];
+  return turf.cap;
+}
+function bkGetPrice(turf){
+  if(window.venues && window.venues.length){
+    var lv = window.venues.find(function(v){return v.name===turf.name;});
+    if(lv && lv.price) return parseInt(lv.price);
   }
-  function todayDDMMYYYY() { var p=todayISO().split('-'); return p[2]+'-'+p[1]+'-'+p[0]; }
+  return turf.price;
+}
 
-  function isPastSlot(t) {
-    var m=t.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i); if (!m) return false;
-    var h=parseInt(m[1]); var ap=m[3].toUpperCase();
-    if (ap==='PM'&&h<12) h+=12; if (ap==='AM'&&h===12) h=0;
-    var n=new Date(); return h<n.getHours()||(h===n.getHours()&&0<=n.getMinutes());
-  }
-
-  function nextHour(t) {
-    var m=t.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i); if (!m) return '';
-    var h=parseInt(m[1]); var ap=m[3].toUpperCase();
-    if (ap==='PM'&&h<12) h+=12; if (ap==='AM'&&h===12) h=0;
-    h=(h+1)%24;
-    var nAp=h<12?'AM':'PM'; var dH=h%12; if(dH===0)dH=12;
-    return String(dH).padStart(2,'0')+':00 '+nAp;
-  }
-
-  function getRemainingSlots(venueName, cap, timeSlot) {
-    var fDate=todayDDMMYYYY(); var booked=0;
-    (window.activeBookings||[]).forEach(function(b){
-      if (b.venue===venueName&&b.playDate===fDate&&
-          (b.timeSlot===timeSlot||(b.details&&b.details.includes(timeSlot)))&&
-          b.method!=='Standby Waitlist'&&b.status!=='Cancelled')
-        booked+=parseInt(b.slots)||1;
-    });
-    return Math.max(0,(parseInt(cap)||10)-booked);
-  }
-
-  function renderBreadcrumb() {
-    var bc=document.getElementById('dd-breadcrumb'); if(!bc) return;
-    var p=['<button class="dd-crumb" onclick="window.__dd.goHome()">All venues</button>'];
-    if (DS.locationKey) {
-      p.push('<span class="dd-sep">›</span>');
-      if (DS.view!=='locations')
-        p.push('<button class="dd-crumb" onclick="window.__dd.goToLocation()">'+DS.locationKey+'</button>');
-    }
-    if (DS.groundKey&&(DS.view==='sports'||DS.view==='slots')) {
-      p.push('<span class="dd-sep">›</span>');
-      if (DS.view==='slots') p.push('<button class="dd-crumb" onclick="window.__dd.goToGround()">'+DS.groundKey+'</button>');
-      else p.push('<span class="dd-active">'+DS.groundKey+'</span>');
-    }
-    if (DS.sport&&DS.view==='slots') {
-      p.push('<span class="dd-sep">›</span>');
-      p.push('<span class="dd-active">'+DS.sport+' — slots</span>');
-    }
-    bc.innerHTML=p.join('');
-  }
-
-  function showPanel(name) {
-    ['locations','grounds','sports','slots'].forEach(function(n){
-      var el=document.getElementById('dd-panel-'+n);
-      if(el) el.style.display=(n===name)?'':'none';
-    });
-    DS.view=name; renderBreadcrumb();
-  }
-
-  /* ── LOCATIONS ── */
-  function renderLocations() {
-    var grouped=groupVenues(window.venues);
-    var container=document.getElementById('dd-panel-locations'); if(!container) return;
-    var keys=Object.keys(grouped);
-    if (!keys.length) {
-      container.innerHTML='<div class="dd-loc-grid">'+Array(6).fill('<div class="dd-card animate-skeleton" style="height:90px;opacity:0.25"></div>').join('')+'</div>';
-      return;
-    }
-    container.innerHTML='<div class="dd-section-header"><h2 class="dd-section-title">Choose a venue</h2><p class="dd-section-sub">Select a location to browse grounds and book slots</p></div><div class="dd-loc-grid" id="dd-loc-grid"></div>';
-    var grid=document.getElementById('dd-loc-grid');
-    keys.forEach(function(locKey) {
-      var locData=grouped[locKey];
-      var grounds=Object.values(locData.grounds).filter(function(v){return v.status!=='Pending';});
-      if (!grounds.length) return;
-      var sports=[]; grounds.forEach(function(g){if(g.sport&&sports.indexOf(g.sport)===-1)sports.push(g.sport);});
-      var pills=sports.slice(0,3).map(function(sp){return '<span class="dd-pill">'+(EMOJIS[sp]||'')+' '+sp+'</span>';}).join('');
-      if (sports.length>3) pills+='<span class="dd-pill">+'+(sports.length-3)+'</span>';
-      var card=document.createElement('div');
-      card.className='dd-card dd-loc-card reveal';
-      card.innerHTML='<div class="dd-loc-pin">📍</div><div class="dd-card-content"><div class="dd-card-name">'+locKey+'</div><div class="dd-card-meta">'+grounds.length+' ground'+(grounds.length!==1?'s':'')+'</div><div class="dd-pills">'+pills+'</div></div><div class="dd-card-arrow">›</div>';
-      card.onclick=function(){DS.locationKey=locKey;renderGrounds();showPanel('grounds');};
-      grid.appendChild(card);
-      setTimeout(function(){card.classList.add('active');},30);
-    });
-  }
-
-  /* ── GROUNDS ── */
-  function renderGrounds() {
-    var grouped=groupVenues(window.venues);
-    var locData=grouped[DS.locationKey];
-    var container=document.getElementById('dd-panel-grounds'); if(!container||!locData) return;
-    var grounds=Object.entries(locData.grounds).filter(function(e){return e[1].status!=='Pending';});
-    container.innerHTML='<div class="dd-section-header"><h2 class="dd-section-title">'+DS.locationKey+'</h2><p class="dd-section-sub">Select a ground to see available time slots</p></div><div class="dd-ground-grid" id="dd-ground-grid"></div>';
-    var grid=document.getElementById('dd-ground-grid');
-    grounds.forEach(function(entry, idx) {
-      var groundKey=entry[0]; var v=entry[1];
-      var sport=v.sport||'Sport'; var emoji=EMOJIS[sport]||'🏟️';
-      var timesArr=v.times?v.times.split(','):[];
-      var pills='<span class="dd-pill dd-pill-price">₹'+v.price+'/head</span>'+'<span class="dd-pill">'+(v.type||'outdoor')+'</span>'+(timesArr.length?'<span class="dd-pill">'+timesArr.length+' slots</span>':'')+(v.happyHourLabel?'<span class="dd-pill dd-pill-hh">⚡ Happy Hour</span>':'');
-      var card=document.createElement('div');
-      card.className='dd-card dd-ground-card reveal';
-      card.innerHTML='<div class="dd-ground-top"><div class="dd-ground-emoji">'+emoji+'</div><div class="dd-card-content"><div class="dd-card-name">'+groundKey+'</div><div class="dd-card-meta">'+sport+' · Cap: '+(v.cap||'—')+'</div></div></div><div class="dd-pills" style="margin-top:0.6rem">'+pills+'</div><div class="dd-card-arrow">›</div>';
-      card.onclick=function(){DS.groundKey=groundKey;renderSports();showPanel('sports');};
-      grid.appendChild(card);
-      setTimeout(function(){card.classList.add('active');},idx*40);
-    });
-  }
-
-  /* ── SPORTS ── */
-  function renderSports() {
-    var grouped=groupVenues(window.venues);
-    var v=grouped[DS.locationKey]&&grouped[DS.locationKey].grounds[DS.groundKey];
-    var container=document.getElementById('dd-panel-sports'); if(!container||!v) return;
-    var sport=v.sport||'Sport'; var emoji=EMOJIS[sport]||'🏟️';
-    var timesArr=v.times?v.times.split(','):[];
-    container.innerHTML='<div class="dd-section-header"><h2 class="dd-section-title">'+DS.groundKey+'</h2><p class="dd-section-sub">'+DS.locationKey+' · '+(v.loc||'')+'</p></div><div class="dd-sports-grid" id="dd-sports-grid"></div>';
-    var grid=document.getElementById('dd-sports-grid');
-    var card=document.createElement('div');
-    card.className='dd-card dd-sport-card reveal';
-    var pills='<span class="dd-pill dd-pill-price">₹'+v.price+'/head/hr</span><span class="dd-pill">Cap: '+(v.cap||'—')+'</span><span class="dd-pill">'+(v.type||'outdoor')+'</span>'+(timesArr.length?'<span class="dd-pill">'+timesArr.length+' time slots</span>':'');
-    card.innerHTML='<div class="dd-sport-inner"><div class="dd-sport-emoji-big">'+emoji+'</div><div class="dd-card-content"><div class="dd-card-name" style="font-size:1.05rem">'+sport+'</div><div class="dd-card-meta">Capacity: '+(v.cap||'—')+' players per slot</div><div class="dd-card-meta">₹'+v.price+' per head per hour</div>'+(v.happyHourLabel?'<div class="dd-hh-label">⚡ '+v.happyHourLabel+'</div>':'')+'</div><div class="dd-card-arrow">›</div></div><hr class="dd-divider"><div class="dd-pills">'+pills+'</div>';
-    card.onclick=function(){DS.sport=sport;renderSlots();showPanel('slots');};
-    grid.appendChild(card);
-    setTimeout(function(){card.classList.add('active');},30);
-  }
-
-  /* ── SLOTS ── */
-  function renderSlots() {
-    var grouped=groupVenues(window.venues);
-    var v=grouped[DS.locationKey]&&grouped[DS.locationKey].grounds[DS.groundKey];
-    var container=document.getElementById('dd-panel-slots'); if(!container||!v) return;
-    var sport=v.sport||'Sport'; var emoji=EMOJIS[sport]||'🏟️';
-    var rawTimes=v.times?v.times.split(',').map(function(t){return t.trim();}).filter(Boolean):[];
-    var todaySlots=rawTimes.filter(function(t){return !isPastSlot(t);});
-
-    container.innerHTML='<div class="dd-section-header"><div class="dd-slots-info-bar"><span>'+emoji+'</span><strong>'+DS.groundKey+'</strong><span class="dd-info-sep">·</span><span>'+DS.locationKey+'</span><span class="dd-info-sep">·</span><span>₹'+v.price+'/head</span><span class="dd-info-sep">·</span><span>Cap: '+(v.cap||'—')+'</span></div></div>'+(todaySlots.length===0?'<div class="dd-empty"><p style="font-size:2.5rem;margin-bottom:.75rem">🕐</p><p>No more slots available today. Come back tomorrow!</p></div>':'')+'<div class="dd-slot-list" id="dd-slot-list"></div>';
-
-    if (!todaySlots.length) return;
-    var list=document.getElementById('dd-slot-list');
-    var isLoggedIn=!!window.currentUser;
-
-    todaySlots.forEach(function(t, idx) {
-      var disc=getHHDiscount(t);
-      var base=parseInt(v.price)||0;
-      var final=disc>0?Math.round(base*(1-disc/100)):base;
-      var rem=getRemainingSlots(v.name,v.cap,t);
-      var avCls=rem===0?'dd-avail-full':rem<=2?'dd-avail-low':'dd-avail-ok';
-      var avLbl=rem===0?'Sold out':rem<=2?rem+' left!':rem+' available';
-      var slotEnd=nextHour(t);
-      var vSafe=(v.name||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      var tSafe=t.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      var btn2=rem===0
-        ?'<button class="dd-btn-disabled" disabled>Full</button>'
-        :!isLoggedIn
-          ?'<button class="dd-btn-secondary" onclick="openAuth()">Login to book</button>'
-          :'<button class="dd-btn-primary" onclick="window.__dd.openBooking(\''+vSafe+'\',\''+tSafe+'\')">Book slot</button>';
-      var row=document.createElement('div');
-      row.className='dd-slot-row reveal';
-      row.innerHTML='<div class="dd-slot-time-col"><span class="dd-slot-time-main">'+t+' – '+slotEnd+'</span>'+(disc>0?'<span class="dd-hh-badge">⚡ '+disc+'% off</span>':'')+'</div><div class="dd-slot-price-col"><span class="dd-price-final">₹'+final+'</span>'+(disc>0?'<span class="dd-price-orig">₹'+base+'</span>':'')+'<span class="dd-price-label">/head</span></div><div class="dd-slot-avail-col"><span class="'+avCls+'">'+avLbl+'</span></div><div class="dd-slot-btn-col">'+btn2+'</div>';
-      list.appendChild(row);
-      setTimeout(function(){row.classList.add('active');},idx*35);
-    });
-  }
-
-  /* ── bridge to existing booking modal ── */
-  function openBookingFromDD(venueName, timeSlot) {
-    if (typeof openBookingByName !== 'function') return;
-    openBookingByName(venueName);
-    setTimeout(function(){
-      var sel=document.getElementById('book-time'); if(!sel) return;
-      for (var i=0;i<sel.options.length;i++) {
-        if (sel.options[i].value===timeSlot) { sel.selectedIndex=i; sel.dispatchEvent(new Event('change')); break; }
+/* ── pill builders ── */
+function bkBuildAreas(){
+  var areas=["All"];
+  BK_TURFS.forEach(function(t){if(areas.indexOf(t.area)===-1)areas.push(t.area);});
+  var row=document.getElementById("bk-area-row"); if(!row)return;
+  row.innerHTML="";
+  areas.forEach(function(a){
+    var btn=document.createElement("button");
+    btn.className="filter-pill"+(a===bkActiveArea?" active":"");
+    btn.textContent=a;
+    btn.onclick=function(){
+      bkActiveArea=a;
+      row.querySelectorAll("button").forEach(function(b){b.classList.remove("active");});
+      btn.classList.add("active");
+      if(bkActiveSport!=="All"){
+        var vis=BK_TURFS.filter(function(t){return a==="All"||t.area===a;});
+        var sports=vis.map(function(t){return t.sport;});
+        if(sports.indexOf(bkActiveSport)===-1) bkActiveSport="All";
       }
-      if (typeof checkAvailability==='function') checkAvailability();
-      if (typeof checkHappyHour==='function') checkHappyHour();
-      if (typeof updatePrice==='function') updatePrice();
-    }, 350);
+      bkBuildSports(); bkRenderCards(); bkResetSlot();
+    };
+    row.appendChild(btn);
+  });
+}
+
+function bkBuildSports(){
+  var vis=BK_TURFS.filter(function(t){return bkActiveArea==="All"||t.area===bkActiveArea;});
+  var sports=["All"];
+  vis.forEach(function(t){if(sports.indexOf(t.sport)===-1)sports.push(t.sport);});
+  var row=document.getElementById("bk-sport-row"); if(!row)return;
+  row.innerHTML="";
+  sports.forEach(function(sp){
+    var btn=document.createElement("button");
+    btn.className="filter-pill"+(sp===bkActiveSport?" active":"");
+    btn.textContent=(SPORT_EMOJIS[sp]||"")+" "+sp;
+    btn.onclick=function(){
+      bkActiveSport=sp;
+      row.querySelectorAll("button").forEach(function(b){b.classList.remove("active");});
+      btn.classList.add("active");
+      bkRenderCards(); bkResetSlot();
+    };
+    row.appendChild(btn);
+  });
+}
+
+/* ── turf cards ── */
+function bkRenderCards(){
+  var filtered=BK_TURFS.filter(function(t){
+    return (bkActiveArea==="All"||t.area===bkActiveArea)&&(bkActiveSport==="All"||t.sport===bkActiveSport);
+  });
+  // merge live window.venues data
+  if(window.venues&&window.venues.length){
+    filtered=filtered.filter(function(t){
+      var lv=window.venues.find(function(v){return v.name===t.name;});
+      return !lv||lv.status!=="Pending";
+    });
   }
+  var grid=document.getElementById("bk-turf-grid");
+  var noRes=document.getElementById("bk-no-results");
+  if(!grid)return;
+  grid.innerHTML="";
+  if(!filtered.length){noRes.classList.remove("hidden");return;}
+  noRes.classList.add("hidden");
 
-  window.__dd = {
-    goHome:function(){DS.locationKey=null;DS.groundKey=null;DS.sport=null;renderLocations();showPanel('locations');},
-    goToLocation:function(){DS.groundKey=null;DS.sport=null;renderGrounds();showPanel('grounds');},
-    goToGround:function(){DS.sport=null;renderSports();showPanel('sports');},
-    openBooking:openBookingFromDD
-  };
+  filtered.forEach(function(turf){
+    var price=bkGetPrice(turf);
+    var img=bkGetImg(turf);
+    var emoji=SPORT_EMOJIS[turf.sport]||"🏟️";
+    var hhBadge=turf.is24hr?'<span class="happy-hour-badge" style="position:absolute;top:10px;left:10px;z-index:10">24hr</span>':'';
 
-  /* ── CSS ── */
-  var style=document.createElement('style');
-  style.textContent=[
-    '#dd-breadcrumb{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:1.5rem;flex-wrap:wrap}',
-    '.dd-crumb{background:none;border:none;color:#06b6d4;cursor:pointer;font-family:inherit;font-size:inherit;font-weight:inherit;letter-spacing:inherit;text-transform:inherit;padding:0;transition:color .2s}',
-    '.dd-crumb:hover{color:#a5f3fc}.dd-sep{color:#334155;font-size:1.1rem}.dd-active{color:#f8fafc}',
-    '.dd-section-header{margin-bottom:1.25rem}',
-    '.dd-section-title{font-size:1.4rem;font-weight:900;letter-spacing:-.04em;color:#f8fafc;margin:0 0 .25rem}',
-    '.dd-section-sub{font-size:.7rem;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:0}',
-    '.dd-card{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.04);border-radius:1.25rem;padding:1.1rem 1.25rem;cursor:pointer;transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;overflow:hidden}',
-    '.dd-card:hover{border-color:rgba(6,182,212,.22);transform:translateY(-4px);box-shadow:0 14px 36px rgba(0,0,0,.55)}',
-    '.dd-card-name{font-size:.95rem;font-weight:800;color:#f8fafc;margin-bottom:.2rem;letter-spacing:-.01em}',
-    '.dd-card-meta{font-size:.7rem;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.45rem}',
-    '.dd-card-arrow{position:absolute;top:50%;right:1.1rem;transform:translateY(-50%);font-size:1.2rem;color:#1e293b;transition:color .2s,right .2s}',
-    '.dd-card:hover .dd-card-arrow{color:#06b6d4;right:.85rem}',
-    '.dd-card-content{flex:1;min-width:0}',
-    '.dd-pills{display:flex;flex-wrap:wrap;gap:.3rem}',
-    '.dd-pill{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .55rem;border-radius:999px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);color:#64748b}',
-    '.dd-pill-price{color:#06b6d4;border-color:rgba(6,182,212,.2);background:rgba(6,182,212,.06)}',
-    '.dd-pill-hh{color:#f59e0b;border-color:rgba(245,158,11,.2);background:rgba(245,158,11,.06)}',
-    '.dd-loc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:.75rem}',
-    '.dd-loc-card{display:flex;align-items:flex-start;gap:.9rem;padding-right:2.5rem}',
-    '.dd-loc-pin{font-size:1.4rem;flex-shrink:0}',
-    '.dd-ground-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:.75rem}',
-    '.dd-ground-card{padding-right:2.5rem}',
-    '.dd-ground-top{display:flex;align-items:flex-start;gap:.75rem}',
-    '.dd-ground-emoji{font-size:1.6rem;flex-shrink:0;width:2.6rem;height:2.6rem;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);border-radius:.75rem;border:1px solid rgba(255,255,255,.05)}',
-    '.dd-sports-grid{display:grid;grid-template-columns:1fr;gap:.75rem;max-width:540px}',
-    '.dd-sport-card{padding-right:2.5rem}',
-    '.dd-sport-inner{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem}',
-    '.dd-sport-emoji-big{font-size:2.4rem;flex-shrink:0;width:3.4rem;height:3.4rem;display:flex;align-items:center;justify-content:center;background:rgba(6,182,212,.07);border-radius:1rem;border:1px solid rgba(6,182,212,.15)}',
-    '.dd-hh-label{font-size:.68rem;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.05em;margin-top:.3rem}',
-    '.dd-divider{border:none;border-top:1px solid rgba(255,255,255,.04);margin:.75rem 0}',
-    '.dd-slots-info-bar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.78rem;font-weight:700;color:#64748b;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:.75rem;padding:.6rem 1rem;margin-bottom:1rem}',
-    '.dd-slots-info-bar strong{color:#f8fafc;font-size:.82rem}.dd-info-sep{color:#1e293b}',
-    '.dd-slot-list{display:flex;flex-direction:column;gap:.45rem}',
-    '.dd-slot-row{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:1rem;background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.04);border-radius:1rem;padding:.85rem 1.1rem;transition:border-color .25s}',
-    '.dd-slot-row:hover{border-color:rgba(6,182,212,.14)}',
-    '.dd-slot-time-col{display:flex;flex-direction:column;gap:.3rem}',
-    '.dd-slot-time-main{font-size:.88rem;font-weight:800;color:#f8fafc;letter-spacing:-.01em}',
-    '.dd-hh-badge{display:inline-block;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:.15rem .5rem;border-radius:999px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:#f59e0b;animation:dd-pulse 1.8s infinite}',
-    '@keyframes dd-pulse{0%,100%{opacity:1}50%{opacity:.6}}',
-    '.dd-slot-price-col{display:flex;align-items:baseline;gap:.3rem}',
-    '.dd-price-final{font-size:1rem;font-weight:900;color:#f8fafc}',
-    '.dd-price-orig{font-size:.72rem;color:#334155;text-decoration:line-through}',
-    '.dd-price-label{font-size:.62rem;color:#334155;font-weight:700;text-transform:uppercase;letter-spacing:.04em}',
-    '.dd-slot-avail-col{font-size:.72rem;font-weight:700;white-space:nowrap}',
-    '.dd-avail-ok{color:#22c55e}.dd-avail-low{color:#f59e0b}.dd-avail-full{color:#ef4444}',
-    '.dd-btn-primary{background:linear-gradient(135deg,#06b6d4,#6366f1);color:#fff;border:none;border-radius:.6rem;padding:.5rem 1.1rem;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;white-space:nowrap;transition:opacity .2s,transform .15s;font-family:"Outfit",sans-serif}',
-    '.dd-btn-primary:hover{opacity:.85;transform:translateY(-1px)}',
-    '.dd-btn-secondary{background:rgba(255,255,255,.03);color:#64748b;border:1px solid rgba(255,255,255,.07);border-radius:.6rem;padding:.5rem 1.1rem;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;white-space:nowrap;font-family:"Outfit",sans-serif;transition:background .2s}',
-    '.dd-btn-secondary:hover{background:rgba(255,255,255,.07);color:#f8fafc}',
-    '.dd-btn-disabled{background:rgba(255,255,255,.01);color:#1e293b;border:1px solid rgba(255,255,255,.04);border-radius:.6rem;padding:.5rem 1.1rem;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;cursor:not-allowed;white-space:nowrap;font-family:"Outfit",sans-serif}',
-    '.dd-empty{text-align:center;padding:3rem 1rem;color:#334155;font-weight:700}',
-    '@media(max-width:640px){.dd-slot-row{grid-template-columns:1fr auto;grid-template-rows:auto auto}.dd-slot-avail-col{display:none}.dd-loc-grid,.dd-ground-grid{grid-template-columns:1fr}}'
-  ].join('');
-  document.head.appendChild(style);
+    var card=document.createElement("div");
+    card.className="card-luxe cursor-pointer group"+(bkActiveTurf&&bkActiveTurf.name===turf.name?" border-cyan-500/40 shadow-[0_0_20px_rgba(6,182,212,0.15)]":"");
+    card.innerHTML=
+      '<div class="relative w-full h-40 flex-shrink-0 overflow-hidden rounded-t-2xl bg-slate-900">'+
+        '<img src="'+img+'" alt="'+turf.name+'" loading="lazy" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" onerror="this.src=''https://images.unsplash.com/photo-1553481187-be93c21490a9?auto=format&fit=crop&w=600&q=70''">'+
+        hhBadge+
+        '<div style="position:absolute;bottom:8px;right:8px;background:rgba(2,6,23,.85);border:1px solid rgba(255,255,255,.08);border-radius:.5rem;padding:3px 10px">'+
+          '<p style="font-size:.6rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:0;line-height:1.2">Per Head</p>'+
+          '<p style="font-size:.85rem;font-weight:900;color:#f8fafc;margin:0">₹'+price+'</p>'+
+        '</div>'+
+      '</div>'+
+      '<div class="p-4 flex flex-col gap-1 flex-grow">'+
+        '<p style="font-size:.62rem;color:#06b6d4;font-weight:800;text-transform:uppercase;letter-spacing:.06em">'+turf.sport+'</p>'+
+        '<h3 class="font-black text-white text-sm leading-snug">'+turf.brand+' — '+turf.name+'</h3>'+
+        '<p style="font-size:.7rem;color:#64748b;font-weight:600">'+turf.area+' · Cap '+bkGetCap(turf)+'</p>'+
+        '<button class="mt-auto btn-luxe w-full py-3 text-xs font-black uppercase tracking-widest" style="margin-top:.75rem">'+
+          (window.currentUser?"Select this turf":"Login to book")+
+        '</button>'+
+      '</div>';
 
-  /* ── public API ── */
-  window.initDrillDown = function() {
-    var shell=document.getElementById('dd-shell');
-    if (!shell) {
-      var feed=document.getElementById('view-feed'); if(!feed) return;
-      feed.innerHTML='<div id="dd-shell"><div id="dd-breadcrumb"></div><div id="dd-panel-locations"></div><div id="dd-panel-grounds" style="display:none"></div><div id="dd-panel-sports" style="display:none"></div><div id="dd-panel-slots" style="display:none"></div></div>';
+    card.onclick=function(){
+      if(!window.currentUser){openAuth();return;}
+      bkActiveTurf=turf;
+      // highlight selected card
+      grid.querySelectorAll(".card-luxe").forEach(function(c){c.style.borderColor="";c.style.boxShadow="";});
+      card.style.borderColor="rgba(6,182,212,.5)";
+      card.style.boxShadow="0 0 20px rgba(6,182,212,.15)";
+      bkShowSlotRow(turf);
+    };
+    grid.appendChild(card);
+  });
+}
+
+/* ── slot row ── */
+function bkShowSlotRow(turf){
+  var price=bkGetPrice(turf);
+  var img=bkGetImg(turf);
+  document.getElementById("bk-turf-img").src=img;
+  document.getElementById("bk-turf-badge").textContent=turf.brand+" · "+turf.area;
+  document.getElementById("bk-turf-title").textContent=turf.name;
+  document.getElementById("bk-turf-meta").textContent=turf.sport+" · Cap: "+bkGetCap(turf)+" · ₹"+price+"/head";
+
+  // populate slots
+  var sel=document.getElementById("bk-sel-slot");
+  sel.innerHTML='<option value="">— select a slot —</option>';
+  var now=new Date();
+  var times=turf.is24hr?SLOTS_24:SLOTS_DAY;
+  times.forEach(function(t){
+    if(bkParseHour(t)<now.getHours())return;
+    var disc=bkGetDisc(t);
+    var opt=document.createElement("option");
+    opt.value=t;
+    opt.textContent=t+" – "+bkNextHour(t)+(disc>0?"  ⚡ "+bkGetHHLabel(t):"");
+    sel.appendChild(opt);
+  });
+
+  bkSpots=1;
+  document.getElementById("bk-spots-val").textContent="1";
+  document.getElementById("bk-btn-minus").disabled=true;
+  document.getElementById("bk-btn-plus").disabled=false;
+
+  document.getElementById("bk-slot-row").classList.remove("hidden");
+  document.getElementById("bk-summary").classList.add("hidden");
+  document.getElementById("bk-slot-row").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+window.bkOnSlot=function(){
+  var slot=document.getElementById("bk-sel-slot").value;
+  if(!slot){document.getElementById("bk-summary").classList.add("hidden");return;}
+  document.getElementById("bk-btn-minus").disabled=false;
+  document.getElementById("bk-btn-plus").disabled=false;
+  bkUpdateSummary();
+};
+
+window.bkAdjSpots=function(d){
+  if(!bkActiveTurf)return;
+  var max=bkGetCap(bkActiveTurf);
+  bkSpots=Math.max(1,Math.min(max,bkSpots+d));
+  document.getElementById("bk-spots-val").textContent=bkSpots;
+  document.getElementById("bk-btn-minus").disabled=(bkSpots<=1);
+  document.getElementById("bk-btn-plus").disabled=(bkSpots>=max);
+  bkUpdateSummary();
+};
+
+function bkUpdateSummary(){
+  var slot=document.getElementById("bk-sel-slot").value;
+  if(!slot||!bkActiveTurf)return;
+  var turf=bkActiveTurf;
+  var price=bkGetPrice(turf);
+  var disc=bkGetDisc(slot);
+  var finalP=disc>0?Math.round(price*(1-disc/100)):price;
+  var total=finalP*bkSpots;
+
+  // availability from activeBookings
+  var fDate=(function(){var p=(new Date()).toLocaleDateString("en-IN",{day:"2-digit",month:"2-digit",year:"numeric"}).split("/");return p[0]+"-"+p[1]+"-"+p[2];})();
+  var booked=0;
+  (window.activeBookings||[]).forEach(function(b){
+    if(b.venue===turf.name&&b.playDate===fDate&&(b.timeSlot===slot||(b.details&&b.details.includes(slot)))&&b.method!=="Standby Waitlist"&&b.status!=="Cancelled")
+      booked+=parseInt(b.slots)||1;
+  });
+  var cap=bkGetCap(turf);
+  var rem=Math.max(0,cap-booked);
+  var avEl=document.getElementById("bk-s-avail");
+  if(rem===0){avEl.textContent="Sold out";avEl.className="text-sm font-black text-red-400";}
+  else if(rem<=2){avEl.textContent=rem+" left!";avEl.className="text-sm font-black text-amber-400";}
+  else{avEl.textContent=rem+" available";avEl.className="text-sm font-black text-green-400";}
+
+  document.getElementById("bk-s-slot").textContent=slot+" – "+bkNextHour(slot);
+  document.getElementById("bk-s-pph").textContent="₹"+finalP+(disc>0?" (was ₹"+price+")":"");
+  document.getElementById("bk-s-total").textContent="₹"+total;
+
+  var hhAlert=document.getElementById("bk-hh-alert");
+  var hhText=document.getElementById("bk-hh-text");
+  if(disc>0){hhAlert.classList.remove("hidden");hhText.textContent="⚡ "+bkGetHHLabel(slot)+" active — ₹"+disc+" off per head automatically applied!";}
+  else{hhAlert.classList.add("hidden");}
+
+  var btn=document.getElementById("bk-confirm-btn");
+  if(rem===0){btn.textContent="Join Waitlist";btn.onclick=function(){bkWaitlist();};}
+  else{btn.textContent="Confirm Booking";btn.onclick=function(){bkConfirm();};}
+
+  document.getElementById("bk-summary").classList.remove("hidden");
+}
+
+window.bkConfirm=function(){
+  if(!bkActiveTurf){showToast("Please select a turf first.","error");return;}
+  var slot=document.getElementById("bk-sel-slot").value;
+  if(!slot){showToast("Please select a time slot.","error");return;}
+  // Bridge to existing booking sheet with pre-selected slot
+  openBookingByName(bkActiveTurf.name);
+  setTimeout(function(){
+    var sel=document.getElementById("book-time");
+    if(sel){
+      for(var i=0;i<sel.options.length;i++){
+        if(sel.options[i].value===slot){sel.selectedIndex=i;sel.dispatchEvent(new Event("change"));break;}
+      }
+      var bc=document.getElementById("book-count");
+      if(bc){bc.value=bkSpots;if(typeof updatePrice==="function")updatePrice();}
+      if(typeof checkAvailability==="function")checkAvailability();
+      if(typeof checkHappyHour==="function")checkHappyHour();
     }
-    renderLocations(); showPanel('locations');
-  };
+  },350);
+};
 
-  window.refreshDrillDown = function() {
-    if      (DS.view==='locations') renderLocations();
-    else if (DS.view==='grounds')   renderGrounds();
-    else if (DS.view==='sports')    renderSports();
-    else if (DS.view==='slots')     renderSlots();
-  };
+window.bkWaitlist=function(){
+  if(!bkActiveTurf||!window.currentUser)return;
+  var slot=document.getElementById("bk-sel-slot").value;
+  fetchAPI({action:"book",name:currentUser.name,phone:currentUser.phone||"",skill:currentUser.skill||"",game:bkActiveTurf.sport,playDate:(function(){var p=(new Date()).toLocaleDateString("en-IN",{day:"2-digit",month:"2-digit",year:"numeric"}).split("/");return p[0]+"-"+p[1]+"-"+p[2];})(),timeSlot:slot,venue:bkActiveTurf.name,payMethod:"Standby Waitlist",totalAmount:0,slots:0})
+    .then(function(){showToast("Added to waitlist! We\'ll notify you if a slot opens. 🕒","success");})
+    .catch(function(e){showToast("Error: "+e.message,"error");});
+};
+
+function bkResetSlot(){
+  bkActiveTurf=null; bkSpots=1;
+  var slotRow=document.getElementById("bk-slot-row");
+  var sumRow=document.getElementById("bk-summary");
+  if(slotRow)slotRow.classList.add("hidden");
+  if(sumRow)sumRow.classList.add("hidden");
+  var grid=document.getElementById("bk-turf-grid");
+  if(grid)grid.querySelectorAll(".card-luxe").forEach(function(c){c.style.borderColor="";c.style.boxShadow="";});
+}
+
+window.bkReset=function(){
+  bkActiveArea="All"; bkActiveSport="All";
+  document.querySelectorAll("#bk-area-row button").forEach(function(b){b.classList.remove("active");if(b.textContent==="All")b.classList.add("active");});
+  bkBuildSports(); bkRenderCards(); bkResetSlot();
+};
+
+/* ── public init/refresh ── */
+window.initDrillDown=function(){bkBuildAreas();bkBuildSports();bkRenderCards();};
+window.refreshDrillDown=function(){bkRenderCards();};
+
+/* ── auto-init ── */
+bkBuildAreas(); bkBuildSports(); bkRenderCards();
 
 })();
     </script>
